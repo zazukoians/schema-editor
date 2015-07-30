@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>FooWiki</title>
+
+    <link rel="stylesheet" href="css/columns.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <link href="css/jquery.tagit.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/tagit.ui-zendesk.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+
+    <script src="js/lib/jquery-1.10.2.js"></script>
+    <script src="js/lib/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- from https://github.com/aehlke/tag-it -->
+    <script src="js/lib/tag-it.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- markdown processor -->
+    <script src="js/lib/marked.js"></script>
+
+    <!-- mustache template compiler -->
+    <script src="js/lib/hogan-3.0.2.js"></script>
+
+    <!-- script src="js/jquery-ui.js"></script>
+    <script src="js/jquery.fileupload.js"></script>
+    <script src="js/jquery.iframe-transport.js"></script -->
+
+    <!-- date formatting -->
+    <script src="js/lib/moment.js"></script>
+
+    <!-- FooWiki scripts -->
+    <script src="js/foowiki/config.js"></script>
+    <script src="js/foowiki/sparql-templates.js"></script>
+    <script src="js/foowiki/html-templates.js"></script>
+    <script src="js/foowiki/utils.js"></script>
+    <script src="js/foowiki/core.js"></script>
+    <script src="js/foowiki/index.js"></script>
+    <script src="js/foowiki/sparql-connector.js"></script>
+
+    <script type="text/javascript" language="javascript">
+        var getPageListSparql = sparqlTemplater(getPageListSparqlTemplate, {
+            "graphURI": FooWiki.graphURI
+        });
+        var getPagesUrl = FooWiki.sparqlQueryEndpoint + encodeURIComponent(getPageListSparql) + "&output=xml";
+
+        $(function () {
+            setupErrorHandling();
+            spinner();
+
+            $("#graphName").attr("value", FooWiki.graphURI);
+            setupButtons();
+
+            var doneCallback = function (json) {
+                var rows = makeEntryListHTML(json, false);
+                $("#entries").replaceWith(rows);
+                setupTagsPanel("#tagsPanelTagsContainer");
+            };
+            getJsonForSparqlURL(getPagesUrl, doneCallback);
+            //      getDataForURL(doneCallback, getPagesUrl);
+        });
+    </script>
+</head>
+
+<body>
+    <!-- div id="container" -->
+    <div id="errorbox"></div>
+
+    <div id="header">FooWiki</div>
+
+    <div id="middle" class="column">
+
+        <table id="pagesTable">
+            <!-- refactor to use entryTableTemplate -->
+            <tr>
+                <th colspan="3"><a href="index.html">All</a> Pages</th>
+            </tr>
+            <tr>
+                <th class="center">Page</th>
+                <th class="center">Date</th>
+                <th class="center">Creator</th>
+            </tr>
+            <tr id="entries"></tr>
+        </table>
+        <p>
+
+            <!-- form id="upload-form" enctype="multipart/form-data">
+                <input type="file" id="upload-file" name="upload" />
+                <button type="submit" id="upload-button">Upload Turtle</button>
+            </form -->
+            <h3>Upload RDF</h3>
+            <form action="/foowiki/upload" enctype="multipart/form-data" method="post">
+                <!-- TODO move to config (bypass Fuseki) -->
+                <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
+                <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="">
+                <label for='graphName'>Graph</label>
+                <input name="graph" id="graphName" size="20" value="default" />
+                <br/>
+                <input type="submit" value="Upload">
+            </form>
+            <h3>Export Turtle</h3>
+            <button id="turtle">Export</button>
+        </p>
+
+    </div>
+
+    <div id="left" class="column">
+
+        <div class="tab"><a href="page.html?uri=http://hyperdata.it/wiki/">Home Page</a>
+        </div>
+        <div class="tab"><a href="resources.html">Resource List</a>
+        </div>
+        <div class="tab"><a href="yasgui.html">SPARQL</a>
+        </div>
+
+        <div id="newPage">
+            <button id="newPageButton">Create New Page</button>
+            <label for='newPageName'>New Page Title</label>
+            <input id="newPageName" type="text" />
+        </div>
+    </div>
+
+    <div id="right" class="column">
+        <div id='searchContainer'>
+            <button id='searchButton'>Search</button>
+            <!-- label for='searchText'>Search Text</label -->
+            <input id='searchText' type='text' value=''></input>
+            <div id='tagButtons'></div>
+            <ul id="results"></ul>
+        </div>
+    </div>
+    <!-- div id="tagsPanel">
+            <label for='tagsPanelTagsContainer'>Tags</label>
+            <ul id='tagsPanelTagsContainer'>
+            </ul>
+        </div -->
+
+    <!-- input id="fileupload" type="file" name="files[]" data-url="/foowiki/upload" multiple -->
+
+    <div id="footer"><em>thoughtcatchers.org</em>
+    </div>
+
+    </div>
+    <div id="spinner" class="spinner"></div>
+</body>
+
+</html>
