@@ -1,0 +1,25 @@
+<html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"></head><body><div class="container"><h1 id="rdf-ext-primer">RDF-Ext Primer</h1>
+<p>This is a work in progress document which explains how to use RDF-Ext and RDF Interaces.</p>
+<h2 id="basic-concepts">Basic Concepts</h2>
+<p>We assume you are familiar with basic RDF concepts like triples, graph, literals etc. If not please consult the <a href="http://www.w3.org/TR/rdf11-primer/">RDF 1.1 Primer</a>.</p>
+<h3 id="api-documentation">API Documentation</h3>
+<p>Currently you need to consult the <a href="http://bergos.github.io/rdf-ext-spec/">RDF-Ext</a> and <a href="http://www.w3.org/TR/rdf-interfaces/">RDF Interfaces</a>  specification to get an API doc. This will hopefully change in the future.</p>
+<h3 id="store">Store</h3>
+<p>The <code>Store</code> object is the basic abstraction of RDF-Ext. It provides ways to work with multiple graphs and access them over standardized interfaces.</p>
+<h3 id="graph">Graph</h3>
+<h3 id="clownface">Clownface</h3>
+<p>Clownface is an API to traverse <code>Graph</code> and <code>Store</code> objects.</p>
+<h4 id="clownface-graph">Clownface Graph</h4>
+<p><code>cf.Graph</code> requires a <code>Graph</code> object in the constructor.
+That object will be used to do the traversing.
+All methods of the <code>cf.Graph</code> object are synchronous.
+Clownface uses a set of nodes as context that is used for further traversing.</p>
+<h4 id="clownface-store">Clownface Store</h4>
+<p><code>cf.Store</code> requires a <code>Store</code> object in the constructor.
+That object will be used to do the traversing.
+All methods of the <code>cf.Graph</code> are supported.
+The context of <code>cf.Store</code> uses a combination of node + graph.
+Methods that cross a graph border are asynchronous.
+The Promise API is used to handle these operations.
+<code>.jump</code> loops over all selected nodes, fetches the graphs and uses the graphs as new context.</p>
+</div></body></html>

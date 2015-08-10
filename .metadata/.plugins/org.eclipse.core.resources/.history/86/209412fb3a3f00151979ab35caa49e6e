@@ -1,0 +1,9 @@
+# pack-refs with: peeled fully-peeled 
+d370e33a97654746e696973c7966b84b501a59dc refs/remotes/origin/master
+40ac26831ff887e3bbadf86ee9e2fd4ebb940277 refs/remotes/origin/sdo-gozer
+c98e0810a1c4858cd64a47bda075b8a411bb81ae refs/remotes/origin/sdo-jsonldtweaks
+98b5296fdaeb6dea500912eba6d30039603c4801 refs/remotes/origin/sdo-scripts
+6a38636233fe4f1d32f5772ef3043af195910094 refs/remotes/origin/sdo-stantz
+0696c5270c3b8b5640ad5c579a63fe8504008534 refs/remotes/origin/sdo-venkman
+da5c98879028a8a77d21ca25eddf9715e3e4ff9f refs/tags/v1.91
+^0871504974c8131e2e41ad400276614473461894

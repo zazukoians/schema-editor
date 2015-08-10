@@ -1,0 +1,24 @@
+{
+	"name": "schema-editor",
+	"version": "0.1.0",
+	"description": "in-browser RDF Schema editor",
+	"main": "schema-edit.js",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/webr3/rdf-interfaces.git"
+	},
+	"keywords": [
+		"RDF Interfaces"
+	],
+	"author": "webr3",
+	"license": "Public domain",
+	"bugs": {
+		"url": "https://github.com/webr3/rdf-interfaces/issues"
+	},
+	"homepage": "https://github.com/webr3/rdf-interfaces",
+	"readmeFilename": "README.md",
+	"scripts": {
+		"start": "node server.js",
+		"test": "mocha --reporter spec test"
+	},
+}

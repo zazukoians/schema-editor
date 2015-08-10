@@ -1,0 +1,6 @@
+# pack-refs with: peeled fully-peeled 
+11c660ed3bc44d39f78dbe81b38f8e516196bcca refs/remotes/origin/master
+2031126c6a67464170767cd5990de6cbee5b45c8 refs/remotes/origin/retog-patch-1
+0c81773cc769ac26533684d178cb1e6bba2314de refs/remotes/origin/rich-cf-node
+182a31afe8ec493d5b52096af5c8b047daaf127f refs/tags/0.2.0
+^752eef3ac1041a14306335950fe231a48f5f7b98

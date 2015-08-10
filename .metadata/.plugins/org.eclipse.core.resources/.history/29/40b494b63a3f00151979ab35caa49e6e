@@ -1,0 +1,5 @@
+# wipes the wiki
+
+WITH <http://hyperdata.it/wiki>
+DELETE { ?s  ?p ?o }  
+WHERE { ?s  ?p ?o } 

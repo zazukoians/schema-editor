@@ -1,0 +1,7 @@
+* spec codified into api.js etc.
+* infrastructure : npm build, tests etc.
+* as demo, use as schema.org editor
+* much as already implemented in foowiki
+ * one big addition : needs undo, so history feature added
+ * requires basic rdfdiff.js
+

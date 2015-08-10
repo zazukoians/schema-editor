@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;SchemaEdit/repo/docs/project/spec/api.md&apos;" deleteContents="false" description="Delete resource &apos;SchemaEdit/repo/docs/project/spec/api.md&apos;" element1="/SchemaEdit/repo/docs/project/spec/api.md" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1439163278698"/>
+</session>

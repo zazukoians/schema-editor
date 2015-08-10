@@ -1,0 +1,26 @@
+{
+  "name": "rdfjs-primer",
+  "version": "0.0.1",
+  "description": "RDF-Ext Primer explains how to use RDF-Ext and RDF Interaces",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zazukoians/rdfjs-primer.git"
+  },
+  "keywords": [
+    "rdf",
+    "rdf-ext",
+    "rdf-interfaces",
+    "clownface"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zazukoians/rdfjs-primer/issues"
+  },
+  "homepage": "https://github.com/zazukoians/rdfjs-primer#readme",
+  "dependencies": {
+    "rdf-ext": "0.2.*"
+  },
+  "devDependencies": {
+    "marked": "0.3.*"
+  }
+}

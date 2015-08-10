@@ -1,0 +1,16 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/schemaorg/schemaorg.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "sdo-ganymede"]
+	remote = origin
+	merge = refs/heads/sdo-ganymede
+[remote "upstream"]
+	url = https://github.com/schemaorg/schemaorg.git
+	fetch = +refs/heads/*:refs/remotes/upstream/*
+[user]
+	name = danja

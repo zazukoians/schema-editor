@@ -1,0 +1,51 @@
+var PublicModule = (function() {
+	"use strict";
+
+	// This is the public interface of the Module.
+	var SchemaEdit = {
+
+		// API, based on spec
+
+		setEndpoint : function(URL) {
+			return graphURI;
+		},
+
+		setEndpoint : function(graphURI) {
+			return graphURI;
+		},
+
+		listClasses : function(graphURI) {
+			var classes = [];
+			return classes;
+		},
+
+		listPropertiesForClass : function(graphURI, classURI) {
+			var properties = [];
+			return properties;
+		},
+
+		listClassesForProperty : function(graphURI, propertyURI) {
+			var classes = [];
+			return classes;
+		},
+
+		listProperties : function(graphURI) {
+			var properties = [];
+			return properties;
+		},
+
+	/*
+	 * naive ntriples-based CONSTRUCT logging/diff for now sparqlLog.add
+	 * sparqlLog.takeSnapshot sparqlLog.diff(snapshotBefore, snapshotAfter)
+	 */
+
+	};
+
+	// privateFunction is completely hidden
+	// from the outside.
+	function privateFunction() {
+		return "privateFunction cannot";
+	}
+
+	return SchemaEdit;
+}());

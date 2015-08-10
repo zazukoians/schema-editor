@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>FooWiki</title>
+
+    <link rel="stylesheet" href="css/columns.css" />
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/common.css">
+    <!-- link rel="stylesheet" type="text/css" href="css/jquery-ui.css" -->
+    <!-- from https://github.com/aehlke/tag-it -->
+    <link href="css/jquery.tagit.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/tagit.ui-zendesk.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+
+    <script src="js/lib/marked.js"></script>
+
+    <!-- mustache template compiler -->
+    <script src="js/lib/hogan-3.0.2.js"></script>
+
+    <script src="js/lib/jquery-1.10.2.js"></script>
+    <script src="js/lib/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- from https://github.com/aehlke/tag-it -->
+    <script src="js/lib/tag-it.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- date formatting -->
+    <script src="js/lib/moment.js"></script>
+
+    <!-- FooWiki scripts -->
+    <script src="js/foowiki/config.js"></script>
+    <script src="js/foowiki/sparql-templates.js"></script>
+    <script src="js/foowiki/html-templates.js"></script>
+    <script src="js/foowiki/utils.js"></script>
+    <script src="js/foowiki/core.js"></script>
+    <script src="js/foowiki/view.js"></script>
+    <script src="js/foowiki/sparql-connector.js"></script>
+    
+    <script type="text/javascript" language="javascript">
+        $(function () {
+
+            setupErrorHandling();
+            spinner();
+            var uri = queryString["uri"];
+            // console.log("URI="+uri);
+            uri = encodeURI(uri);
+            getResource(uri, buildPage);
+            
+            makeRecentChangesList();
+
+            $('#editButton').click(function () {
+                window.location.href = window.location.href.replace("page.html", "edit.html");
+                return false;
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <div id="errorbox"></div>
+
+    <div id="header">FooWiki</div>
+
+    <div id="middle" class="column">
+        <div id="entry">
+        </div>
+        <p id="buttons" class="center"></p>
+    </div>
+
+    <div id="left" class="column">
+        <div class="tab"><a href="index.html">Page Index</a> 
+        </div>
+        <div class="tab"><a href="page.html?uri=http://hyperdata.it/wiki/">Home Page</a>
+        </div>
+        <div>
+            <div id="recentChangesContainer">
+                <label for='recentChanges'>Recent Changes</label>
+                <ul id="recentChanges"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="right" class="column">
+        <button id="editButton">Edit</button>
+
+        <div id='searchContainer'>
+            <button id='searchButton'>Search</button>
+            <label for='searchText'>Search text</label>
+            <input id='searchText' type='text' value=''></input>
+            <label for='tagButtons'>Filter by Tags</label>
+            <div id='tagButtons'></div>
+            <ul id="results"></ul>
+        </div>
+    </div>
+
+    <div id="footer"><em>thoughtcatchers.org</em>
+    </div>
+
+    <div id="spinner" class="spinner"></div>
+    <!-- /div -->
+    <div id="testImage" />
+</body>
+
+</html>

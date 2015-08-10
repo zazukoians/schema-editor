@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SchemaEdit/repo/src/etc/foowiki-config.ttl&apos; to &apos;schema-editor_config.ttl&apos;" description="Rename resource &apos;foowiki-config.ttl&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="repo/src/etc/foowiki-config.ttl" name="schema-editor_config.ttl" stamp="1439164669412" updateReferences="true"/>
+</session>

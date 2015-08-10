@@ -1,0 +1,153 @@
+@prefix sioc:  <http://rdfs.org/sioc/ns#> .
+@prefix dc:    <http://purl.org/dc/terms/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix wiki:  <http://purl.org/stuff/wiki#> .
+
+<http://hyperdata.it/tags/manual>
+        rdfs:label  "manual" .
+
+
+<http://hyperdata.it/wiki/To%20Investigate>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-21T11:28:57.183Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "To Investigate" ;
+        dc:topic      <http://hyperdata.it/tags/todo> ;
+        sioc:content  "* for mobile http://ionicframework.com/ is supported in Brackets\n* http://en.wikipedia.org/wiki/Responsive_web_design\n* https://www.npmjs.com/package/http-template\n* https://trello.com\n\ndanbri : stand https://github.com/overtone/overtone (except am now lost in http://mitpress.mit.edu/sicp/ and http://community.schemewiki.org/?little-schemer ...)\n\nhttp://tobyschachman.com/Shadershop/\n\ntiddlywiki" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+<http://hyperdata.it/wiki/Foo>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-12T11:21:01.876Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "Foo" ;
+        sioc:content  "Foo is the working name of the extension/reflection parts of FuWiki\n\n* Javascript as content\n* SPARQL queries as content\n\n\n* [Hello World 1](Hello World 1)\n* [Hello World 2](Hello World 2)\n* [Hello World 3](Hello World 3?p1=one&amp;p2=2)\n\n## See Also\n* http://www.slideshare.net/ldodds/creating-apis-over-rdf" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+<http://hyperdata.it/wiki/FuWiki%20To%20Do>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-21T12:29:55.733Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "FooWiki To Do" ;
+        dc:topic      <http://hyperdata.it/tags/docs> , <http://hyperdata.it/tags/bugs> , <http://hyperdata.it/tags/foowiki> , <http://hyperdata.it/tags/todo> , <http://hyperdata.it/tags/bootstrap> ;
+        sioc:content  "See also [To Investigate](To Investigate)\n\n[To Do 2015-01-12](To Do 2015-01-12)\n\n### [Home Page](Home Page)\n\n* [Core](#Core)\n* [Admin](#Admin)\n* [Foo](#Foo)\n* [Foo Apps](#Foo Apps)\n\n## Core\n* **do some of these with [Foo](Foo)**\n* **BUG** fix escaping, see [This Page](Content Model)\n* search - filter by tags\n* mobile, printable views CSS\n* precompile templates\n* push everything to another store\n* edit conflict handling\n* ajaxian import http://www.nickdesteffen.com/blog/file-uploading-over-ajax-using-html5\n* support images \n* MD page import/export\n* view original MD\n* include related links in RDF - inlinks\n* priority\n* all literal fields???\n* [WikiWhiteBoard](WikiWhiteBoard)\n* showing whether an intended target page exists or not.\n* LaTex (for maths)\n* shove in local storage http://www.w3.org/wiki/IntegrityIsJobOne\n* bubble rename through pages&#39; content (fix deadening links)\n* Atom feed\n\n## Admin\n* docs in code\n* start proper docs - /projects on github\n* announce - Jena &amp; semweb lists\n\n## [Foo](Foo)\n* handle parameters\n* generic sparqlXMLToJSON\n* dropdown list for Apply Script to this page\n* foo = &#39;stored procedures&#39; - resources with SPARQL/JS literal templates, pass parameters, return graphs, json... use jsonp?\n* support JS source extensions\n* support SPARQL source extensions\n* messaging via URLs\n* graph view [vis.js](http://visjs.org/docs/index.html)\n  * http://jsplumb.org/demo/flowchart/dom.html\n* install from URL\n* reduce whole app to a single bootstrap HTML file + RDF?\n\n## Foo Apps\n* [Slide Show](Slide Show)\n* random page\n* tabs http://htmldog.com/techniques/tabs/\n\n* no! // not worth it right now...change model to include versioning (hasVersion) [Content Model](ContentModel)" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+
+<http://hyperdata.it/wiki/Markdown%20Cheatsheet>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-21T12:32:49.476Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "Markdown Cheatsheet" ;
+        dc:topic      <http://hyperdata.it/tags/foowiki> , <http://hyperdata.it/tags/bootstrap> , <http://hyperdata.it/tags/docs> , <http://hyperdata.it/tags/manual> ;
+        sioc:content  "This is intended as a quick reference and showcase. For more complete info, see [John Gruber&#39;s original spec](http://daringfireball.net/projects/markdown/) and the [Github-flavored Markdown info page](http://github.github.com/github-flavored-markdown/).\n\nNote that there is also a [Cheatsheet specific to Markdown Here](./Markdown-Here-Cheatsheet) if that&#39;s what you&#39;re looking for. You can also check out [more Markdown tools](./Other-Markdown-Tools).\n\n##### Table of Contents  \n[Headers](#headers)  \n[Emphasis](#emphasis)  \n[Lists](#lists)  \n[Links](#links)  \n[Images](#images)  \n[Code and Syntax Highlighting](#code)  \n[Tables](#tables)  \n[Blockquotes](#blockquotes)  \n[Inline HTML](#html)  \n[Horizontal Rule](#hr)  \n[Line Breaks](#lines)  \n[Youtube videos](#videos)  \n\n&lt;a name=\"headers\"/&gt;\n## Headers\n\n```no-highlight\n# H1\n## H2\n### H3\n#### H4\n##### H5\n###### H6\n\nAlternatively, for H1 and H2, an underline-ish style:\n\nAlt-H1\n======\n\nAlt-H2\n------\n```\n\n# H1\n## H2\n### H3\n#### H4\n##### H5\n###### H6\n\nAlternatively, for H1 and H2, an underline-ish style:\n\nAlt-H1\n======\n\nAlt-H2\n------\n\n&lt;a name=\"emphasis\"/&gt;\n## Emphasis\n\n```no-highlight\nEmphasis, aka italics, with *asterisks* or _underscores_.\n\nStrong emphasis, aka bold, with **asterisks** or __underscores__.\n\nCombined emphasis with **asterisks and _underscores_**.\n\nStrikethrough uses two tildes. ~~Scratch this.~~\n```\n\nEmphasis, aka italics, with *asterisks* or _underscores_.\n\nStrong emphasis, aka bold, with **asterisks** or __underscores__.\n\nCombined emphasis with **asterisks and _underscores_**.\n\nStrikethrough uses two tildes. ~~Scratch this.~~\n\n\n&lt;a name=\"lists\"/&gt;\n## Lists\n\n(In this example, leading and trailing spaces are shown with with dots: )\n\n```no-highlight\n1. First ordered list item\n2. Another item\n* Unordered sub-list. \n1. Actual numbers don&#39;t matter, just that it&#39;s a number\n1. Ordered sub-list\n4. And another item.\n\nYou can have properly indented paragraphs within list items. Notice the blank line above, and the leading spaces (at least one, but we&#39;ll use three here to also align the raw Markdown).\n\nTo have a line break without a paragraph, you will need to use two trailing spaces.\nNote that this line is separate, but within the same paragraph.\n(This is contrary to the typical GFM line break behaviour, where trailing spaces are not required.)\n\n* Unordered list can use asterisks\n- Or minuses\n+ Or pluses\n```\n\n1. First ordered list item\n2. Another item\n  * Unordered sub-list. \n1. Actual numbers don&#39;t matter, just that it&#39;s a number\n  1. Ordered sub-list\n4. And another item.\n\n   You can have properly indented paragraphs within list items. Notice the blank line above, and the leading spaces (at least one, but we&#39;ll use three here to also align the raw Markdown).\n\n   To have a line break without a paragraph, you will need to use two trailing spaces.  \n   Note that this line is separate, but within the same paragraph.  \n   (This is contrary to the typical GFM line break behaviour, where trailing spaces are not required.)\n\n* Unordered list can use asterisks\n- Or minuses\n+ Or pluses\n\n&lt;a name=\"links\"/&gt;\n## Links\n\nThere are two ways to create links.\n\n```no-highlight\n[I&#39;m an inline-style link](https://www.google.com)\n\n[I&#39;m an inline-style link with title](https://www.google.com \"Google&#39;s Homepage\")\n\n[I&#39;m a reference-style link][Arbitrary case-insensitive reference text]\n\n[I&#39;m a relative reference to a repository file](../blob/master/LICENSE)\n\n[You can use numbers for reference-style link definitions][1]\n\nOr leave it empty and use the [link text itself]\n\nSome text to show that the reference links can follow later.\n\n[arbitrary case-insensitive reference text]: https://www.mozilla.org\n[1]: http://slashdot.org\n[link text itself]: http://www.reddit.com\n```\n\n[I&#39;m an inline-style link](https://www.google.com)\n\n[I&#39;m an inline-style link with title](https://www.google.com \"Google&#39;s Homepage\")\n\n[I&#39;m a reference-style link][Arbitrary case-insensitive reference text]\n\n[I&#39;m a relative reference to a repository file](../blob/master/LICENSE)\n\n[You can use numbers for reference-style link definitions][1]\n\nOr leave it empty and use the [link text itself]\n\nSome text to show that the reference links can follow later.\n\n[arbitrary case-insensitive reference text]: https://www.mozilla.org\n[1]: http://slashdot.org\n[link text itself]: http://www.reddit.com\n\n&lt;a name=\"images\"/&gt;\n## Images\n\n```no-highlight\nHere&#39;s our logo (hover to see the title text):\n\nInline-style: \n![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png \"Logo Title Text 1\")\n\nReference-style: \n![alt text][logo]\n\n[logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png \"Logo Title Text 2\"\n```\n\nHere&#39;s our logo (hover to see the title text):\n\nInline-style: \n![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png \"Logo Title Text 1\")\n\nReference-style: \n![alt text][logo]\n\n[logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png \"Logo Title Text 2\"\n\n&lt;a name=\"code\"/&gt;\n## Code and Syntax Highlighting\n\nCode blocks are part of the Markdown spec, but syntax highlighting isn&#39;t. However, many renderers -- like Github&#39;s and *Markdown Here* -- support syntax highlighting. Which languages are supported and how those language names should be written will vary from renderer to renderer. *Markdown Here* supports highlighting for dozens of languages (and not-really-languages, like diffs and HTTP headers); to see the complete list, and how to write the language names, see the [highlight.js demo page](http://softwaremaniacs.org/media/soft/highlight/test.html).\n\n```no-highlight\nInline `code` has `back-ticks around` it.\n```\n\nInline `code` has `back-ticks around` it.\n\nBlocks of code are either fenced by lines with three back-ticks &lt;code&gt;```&lt;/code&gt;, or are indented with four spaces. I recommend only using the fenced code blocks -- they&#39;re easier and only they support syntax highlighting.\n\n&lt;pre lang=\"no-highlight\"&gt;&lt;code&gt;```javascript\nvar s = \"JavaScript syntax highlighting\";\nalert(s);\n```\n \n```python\ns = \"Python syntax highlighting\"\nprint s\n```\n \n```\nNo language indicated, so no syntax highlighting. \nBut let&#39;s throw in a &amp;lt;b&amp;gt;tag&amp;lt;/b&amp;gt;.\n```\n&lt;/code&gt;&lt;/pre&gt;\n\n\n\n```javascript\nvar s = \"JavaScript syntax highlighting\";\nalert(s);\n```\n\n```python\ns = \"Python syntax highlighting\"\nprint s\n```\n\n```\nNo language indicated, so no syntax highlighting in Markdown Here (varies on Github). \nBut let&#39;s throw in a &lt;b&gt;tag&lt;/b&gt;.\n```\n\n\n&lt;a name=\"tables\"/&gt;\n## Tables\n\nTables aren&#39;t part of the core Markdown spec, but they are part of GFM and *Markdown Here* supports them. They are an easy way of adding tables to your email -- a task that would otherwise require copy-pasting from another application.\n\n```no-highlight\nColons can be used to align columns.\n\n| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |\n\nThe outer pipes (|) are optional, and you don&#39;t need to make the raw Markdown line up prettily. You can also use inline Markdown.\n\nMarkdown | Less | Pretty\n--- | --- | ---\n*Still* | `renders` | **nicely**\n1 | 2 | 3\n```\n\nColons can be used to align columns.\n\n| Tables        | Are           | Cool |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |\n\nThe outer pipes (|) are optional, and you don&#39;t need to make the raw Markdown line up prettily. You can also use inline Markdown.\n\nMarkdown | Less | Pretty\n--- | --- | ---\n*Still* | `renders` | **nicely**\n1 | 2 | 3\n\n&lt;a name=\"blockquotes\"/&gt;\n## Blockquotes\n\n```no-highlight\n&gt; Blockquotes are very handy in email to emulate reply text.\n&gt; This line is part of the same quote.\n\nQuote break.\n\n&gt; This is a very long line that will still be quoted properly when it wraps. Oh boy let&#39;s keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can *put* **Markdown** into a blockquote. \n```\n\n&gt; Blockquotes are very handy in email to emulate reply text.\n&gt; This line is part of the same quote.\n\nQuote break.\n\n&gt; This is a very long line that will still be quoted properly when it wraps. Oh boy let&#39;s keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can *put* **Markdown** into a blockquote. \n\n&lt;a name=\"html\"/&gt;\n## Inline HTML\n\nYou can also use raw HTML in your Markdown, and it&#39;ll mostly work pretty well. \n\n```no-highlight\n&lt;dl&gt;\n  &lt;dt&gt;Definition list&lt;/dt&gt;\n  &lt;dd&gt;Is something people use sometimes.&lt;/dd&gt;\n\n  &lt;dt&gt;Markdown in HTML&lt;/dt&gt;\n  &lt;dd&gt;Does *not* work **very** well. Use HTML &lt;em&gt;tags&lt;/em&gt;.&lt;/dd&gt;\n&lt;/dl&gt;\n```\n\n&lt;dl&gt;\n  &lt;dt&gt;Definition list&lt;/dt&gt;\n  &lt;dd&gt;Is something people use sometimes.&lt;/dd&gt;\n\n  &lt;dt&gt;Markdown in HTML&lt;/dt&gt;\n  &lt;dd&gt;Does *not* work **very** well. Use HTML &lt;em&gt;tags&lt;/em&gt;.&lt;/dd&gt;\n&lt;/dl&gt;\n\n&lt;a name=\"hr\"/&gt;\n## Horizontal Rule\n\n```\nThree or more...\n\n---\n\nHyphens\n\n***\n\nAsterisks\n\n___\n\nUnderscores\n```\n\nThree or more...\n\n---\n\nHyphens\n\n***\n\nAsterisks\n\n___\n\nUnderscores\n\n&lt;a name=\"lines\"/&gt;\n## Line Breaks\n\nMy basic recommendation for learning how line breaks work is to experiment and discover -- hit &amp;lt;Enter&amp;gt; once (i.e., insert one newline), then hit it twice (i.e., insert two newlines), see what happens. You&#39;ll soon learn to get what you want. \"Markdown Toggle\" is your friend. \n\nHere are some things to try out:\n\n```\nHere&#39;s a line for us to start with.\n\nThis line is separated from the one above by two newlines, so it will be a *separate paragraph*.\n\nThis line is also a separate paragraph, but...\nThis line is only separated by a single newline, so it&#39;s a separate line in the *same paragraph*.\n```\n\nHere&#39;s a line for us to start with.\n\nThis line is separated from the one above by two newlines, so it will be a *separate paragraph*.\n\nThis line is also begins a separate paragraph, but...  \nThis line is only separated by a single newline, so it&#39;s a separate line in the *same paragraph*.\n\n(Technical note: *Markdown Here* uses GFM line breaks, so there&#39;s no need to use MD&#39;s two-space line breaks.)\n\n&lt;a name=\"videos\"/&gt;\n## Youtube videos\n\nThey can&#39;t be added directly but you can add an image with a link to the video like this:\n\n```no-highlight\n&lt;a href=\"http://www.youtube.com/watch?feature=player_embedded&amp;v=YOUTUBE_VIDEO_ID_HERE\n\" target=\"_blank\"&gt;&lt;img src=\"http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg\" \nalt=\"IMAGE ALT TEXT HERE\" width=\"240\" height=\"180\" border=\"10\" /&gt;&lt;/a&gt;\n```\n\nOr, in pure Markdown, but losing the image sizing and border:\n\n```no-highlight\n[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)\n```\n\nReferencing a bug by #bugID in your git commit links it to the slip. For example #1." ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+
+
+<http://hyperdata.it/wiki/Content%20Model>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-21T12:30:43.509Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "FooWiki Content Model" ;
+        dc:topic      <http://hyperdata.it/tags/foowiki> , <http://hyperdata.it/tags/bootstrap> , <http://hyperdata.it/tags/docs> ;
+        sioc:content  "to support versioning, looks like [SPARQL 1.1 subqueries](http://www.w3.org/TR/sparql11-query/#subqueries) will be needed for rendering\n\nmay be useful :\n    http://rdfs.org/sioc/types#Wiki\n    http://rdfs.org/sioc/types#Weblog\n    http://rdfs.org/sioc/types#WikiArticle\n    http://rdfs.org/sioc/ns#topic\n\n```\nGRAPH &lt;http://hyperdata.it/wiki&gt; { \n\n&lt;http://hyperdata.it/wiki/PageTwo&gt;\n    dc:format &lt;http://purl.org/NET/mediatypes/text/markdown&gt; ;\n    dc:date \"2012-04-02T07:24:54Z\" ;\n    dc:title \"Page Two!\" ;\n    sioc:content \"My second post.\" ;\n    a sioc:Post ;\n    a wiki:Page ;\n    dc:topic      &lt;http://hyperdata.it/tags/One&gt; , &lt;http://hyperdata.it/tags/Two&gt; ;\n    foaf:maker [\n        foaf:nick \"danja\"\n    ] .\n\t\n\n&lt;http://hyperdata.it/tags/One&gt;\n        rdfs:label  \"One\" .\n\n&lt;http://hyperdata.it/tags/Two&gt;\n        rdfs:label  \"Two\" .\n\n}\n\n```" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+<http://hyperdata.it/tags/script>
+        rdfs:label  "script" .
+
+<http://hyperdata.it/wiki/2.168.0.77:3030/foowiki/Mish%20To%20Do>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-14T18:16:04.662Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "Mish To Do" ;
+        sioc:content  "1. remember it's there" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+<http://hyperdata.it/tags/todo>
+        rdfs:label  "todo" .
+
+
+<http://hyperdata.it/tags/www>
+        rdfs:label  "www" .
+
+<http://hyperdata.it/tags/foowiki>
+        rdfs:label  "foowiki" .
+
+<http://hyperdata.it/wiki/FooWiki%20Files>
+        a             sioc:Post , wiki:Page ;
+        dc:date       "2015-01-21T12:30:58.638Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "FooWiki Files" ;
+        dc:topic      <http://hyperdata.it/tags/foowiki> , <http://hyperdata.it/tags/docs> , <http://hyperdata.it/tags/bootstrap> ;
+        sioc:content  "## HTML (foowiki/)\n* edit.html - page with form for editing pages\n* index.html - index of all pages, plus admin tools\n* page.html - page view\n* run.html - script runner\n\n## Javascript (foowiki/js/)\n\n### FooWiki Application\n* config.js - configuration/constants\n* core.js - core code\n* html-templates.js\n* sparql-templates.js\n* utils.js - misc. utilities\n\n### 3rd Party Libraries\n* ~ charset.js - UTF-8 encoding utils\n* ~ hinclude.js\n* hogan-3.0.2.js - (mustache) templating engine\n* jquery-1.10.2.js\n* jquery.fileupload.js\n* jquery.iframe-transport.js\n* jquery-ui.js\n* jquery-ui.min.js\n* marked.js - Markdown processor\n* moment.js - date/time utils\n* store.js\n* tag-it.js - jQuery plugin for tags\n\n~ not currently in use" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+
+<http://hyperdata.it/wiki/Home%20Page>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-21T11:07:32.838Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "Home Page" ;
+        dc:topic      <http://hyperdata.it/tags/bootstrap> ;
+        sioc:content  "[FooWiki Docs](FooWiki Docs)\n\nThis is my home page.\n\n[FooWiki To Do](FuWiki To Do)\n\n[FooWiki Manual](FooWiki Manual)\n\n[Mish](Mish)\n\n[Doggy](Sasha)\n\n[To Do 2015-01-13](To Do 2015-01-13)\n\n[To Investigate](To Investigate)\n\n[Test](Test)\n\n## Home Page\n\nIn markdown format.\n\n[I&#39;m an inline-style link](https://www.google.com)\n\n[Markdown Cheatsheet](Markdown Cheatsheet)\n\n[I&#39;m an inline-style relative link to a page in the store (PageTwo)](PageTwo)\n\n[Foo](Foo)\n\n[Play](Play)" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+
+<http://hyperdata.it/wiki/FooWiki%20Manual>
+        a             sioc:Post , wiki:Page ;
+        dc:date       "2015-01-21T11:11:21.144Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "FooWiki Manual" ;
+        dc:topic      <http://hyperdata.it/tags/manual> , <http://hyperdata.it/tags/foowiki> , <http://hyperdata.it/tags/bootstrap> , <http://hyperdata.it/tags/docs> ;
+        sioc:content  "## Overview\n\n## Contents\n* [Basic Features](Basic Features)\n  * [Tags](#Tags)\n\n\n* [Text Formatting](Text Formatting)\n  * [Links](#Links)\n\n## Text Formatting\n* [Links](#Links)\n\n### Links\nLinks more or less follow [Markdown](http://en.wikipedia.org/wiki/Markdown) conventions.\n\nHeaders in the text (#, ## etc.) will automatically become anchors, they may be addressed by using the title as the link target, prepended with a # symbol, e.g. ```` [Overview](#Overview) ````\n\n\n## Tags\nTags are converted to lower case." ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+<http://hyperdata.it/tags/docs>
+        rdfs:label  "docs" .
+
+
+<http://hyperdata.it/wiki/To%20Do%202015-01-12>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-13T13:03:33.875Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "To Do 2015-01-12" ;
+        sioc:content  "* ~~email~~\n* 1 hr Barry\n\n\n* setup music room machine - Android Studio\n* FooWiki install - doc\n* ~~add media type select~~\n  * formatting\n  * hide/show run button\n* support params &amp; return value\n\n* ~~lab window catch~~\n* find wood for steel guitar &amp; plan\n* Mish thing prep panels\n\n\n* yellow shelves?\n\n\n* ~~wash!~~" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+<http://hyperdata.it/wiki/Hello%20World%201>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-16T12:41:51.142Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/application/javascript> ;
+        dc:title      "HelloWorld1" ;
+        sioc:content  "function HelloWorld1(){\n   console.log(\"Hello World!\");\n}" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+
+<http://hyperdata.it/wiki/calhost:3030/foowiki/Mish>
+        a             wiki:Page , sioc:Post ;
+        dc:date       "2015-01-14T18:58:05.994Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "Today" ;
+        sioc:content  "A blog post." ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+
+<http://hyperdata.it/wiki/FooWiki%20Docs>
+        a             sioc:Post , wiki:Page ;
+        dc:date       "2015-01-21T12:30:18.022Z" ;
+        dc:format     <http://purl.org/NET/mediatypes/text/markdown> ;
+        dc:title      "FooWiki Docs" ;
+        dc:topic      <http://hyperdata.it/tags/foowiki> , <http://hyperdata.it/tags/bootstrap> , <http://hyperdata.it/tags/docs> ;
+        sioc:content  "* [FooWiki Files](FooWiki Files)\n* [FooWiki Content Model](Content Model)" ;
+        foaf:maker    [ foaf:nick  "danja" ] .
+
+<http://hyperdata.it/tags/bugs>
+        rdfs:label  "bugs" .
+
+<http://hyperdata.it/tags/bootstrap>
+        rdfs:label  "bootstrap" .
+

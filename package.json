@@ -12,6 +12,11 @@
 	],
 	"author": "webr3",
 	"license": "Public domain",
+	  "dependencies": {
+		    "connect": "~3.3",
+		    "serve-static": "~1.9",
+		    "morgan": "~1.6"
+		  },
 	"bugs": {
 		"url": "https://github.com/webr3/rdf-interfaces/issues"
 	},

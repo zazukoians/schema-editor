@@ -16,11 +16,18 @@
  *     fit in one line.
  */
 
-var commonPrefixes = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  \n\
-PREFIX dc: <http://purl.org/dc/terms/>  \n\
+var commonPrefixes = " \n\
+PREFIX schema: <http://schema.org/> \n\
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n\
+PREFIX dc: <http://purl.org/dc/terms/> \n\
+PREFIX owl: <http://www.w3.org/2002/07/owl#> \n\
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
+PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n\
+PREFIX dcat: <http://www.w3.org/ns/dcat#> \n\
+PREFIX void: <http://rdfs.org/ns/void#> \n\
+PREFIX bibo: <http://purl.org/ontology/bibo/> \n\
+	 \n\
 PREFIX dctype: <http://purl.org/dc/dcmitype/> \n\
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>  \n\
 PREFIX sioc: <http://rdfs.org/sioc/ns#>  \n\
 PREFIX wiki: <http://purl.org/stuff/wiki#>  \n\
 ";

@@ -1,0 +1,51 @@
+<http://hyperdata.it/wiki/To%20Investigate>
+        a       <http://purl.org/stuff/wiki#Page> , <http://rdfs.org/sioc/ns#Post> ;
+        <http://purl.org/dc/terms/date>
+                "2015-01-08T10:12:56.585Z" ;
+        <http://purl.org/dc/terms/format>
+                <http://purl.org/NET/mediatypes/text/markdown> ;
+        <http://purl.org/dc/terms/title>
+                "To Investigate" ;
+        <http://rdfs.org/sioc/ns#content>
+                "* for mobile http://ionicframework.com/ is supported in Brackets\n* http://en.wikipedia.org/wiki/Responsive_web_design\n* https://www.npmjs.com/package/http-template\n\n" ;
+        <http://xmlns.com/foaf/0.1/maker>
+                [<http://xmlns.com/foaf/0.1/nick> "danja" ]  .
+
+<http://hyperdata.it/wiki/Content%20Model>
+        a       <http://purl.org/stuff/wiki#Page> , <http://rdfs.org/sioc/ns#Post> ;
+        <http://purl.org/dc/terms/date>
+                "2015-01-07T09:46:23.885Z" ;
+        <http://purl.org/dc/terms/format>
+                <http://purl.org/NET/mediatypes/text/markdown> ;
+        <http://purl.org/dc/terms/title>
+                "Content Model" ;
+        <http://rdfs.org/sioc/ns#content>
+                "to support versioning, looks like [SPARQL 1.1 subqueries](http://www.w3.org/TR/sparql11-query/#subqueries) will be needed for rendering\n\nmay be useful :\n    http://rdfs.org/sioc/types#Wiki\n    http://rdfs.org/sioc/types#Weblog\n    http://rdfs.org/sioc/types#WikiArticle\n    http://rdfs.org/sioc/ns#topic\n\n```\nGRAPH <http://hyperdata.it/wiki> { \n\n<http://hyperdata.it/wiki/PageTwo>\n   dc:hasVersion [\n\tdc:format <http://purl.org/NET/mediatypes/text/markdown> ;\n    dc:date \"2012-04-02T07:24:54Z\" ;\n    dc:title \"Page Two!\" ;\n    sioc:content \"My second post.\" ;\n    a sioc:Post ;\n    a wiki:Page ;\n    foaf:maker [\n        foaf:nick \"danja\"\n    ] .\n\t} \n```" ;
+        <http://xmlns.com/foaf/0.1/maker>
+                [<http://xmlns.com/foaf/0.1/nick> "danja" ]  .
+
+<http://hyperdata.it/wiki/FuWiki%20To%20Do>
+        a       <http://purl.org/stuff/wiki#Page> , <http://rdfs.org/sioc/ns#Post> ;
+        <http://purl.org/dc/terms/date>
+                "2015-01-08T16:49:31.018Z" ;
+        <http://purl.org/dc/terms/format>
+                <http://purl.org/NET/mediatypes/text/markdown> ;
+        <http://purl.org/dc/terms/title>
+                "FuWiki To Do" ;
+        <http://rdfs.org/sioc/ns#content>
+                "See also [To Investigate](To Investigate)\n\n* fix deletes to remove orphan nick bnodes\n* make SELECT use graphs\n* tweak edit form labels for\n* format dates\n* import\n* MD page import/export\n* search\n* support images\n* include related links in RDF\n* tags\n* [WikiWhiteBoard](WikiWhiteBoard)\n\n\n\n* start proper docs - /projects on github\n* publish code to github as separate project\n* announce - Jena & semweb lists\n\n* support source extensions\n* graph view [vis.js](http://visjs.org/docs/index.html)\n\n* no! // not worth it right now...change model to include versioning (hasVersion) [Content Model](ContentModel)" ;
+        <http://xmlns.com/foaf/0.1/maker>
+                [<http://xmlns.com/foaf/0.1/nick> "danja" ]  .
+
+<http://hyperdata.it/wiki/Home%20Page>
+        a       <http://purl.org/stuff/wiki#Page> , <http://rdfs.org/sioc/ns#Post> ;
+        <http://purl.org/dc/terms/date>
+                "2012-04-02T07:24:53Z" ;
+        <http://purl.org/dc/terms/format>
+                <http://purl.org/NET/mediatypes/text/markdown> ;
+        <http://purl.org/dc/terms/title>
+                "Home Page" ;
+        <http://rdfs.org/sioc/ns#content>
+                "[FuWiki To Do](FuWiki To Do)\n\n[To Investigate](To Investigate)\n\n## Home Page\n\nIn markdown format.\n\n[I'm an inline-style link](https://www.google.com)\n\n[I'm an inline-style relative link to a page in the store (PageTwo)](PageTwo)" ;
+        <http://xmlns.com/foaf/0.1/maker>
+                [<http://xmlns.com/foaf/0.1/nick> "danja" ]  .

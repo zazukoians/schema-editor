@@ -1,0 +1,3 @@
+* spec codified into api.js etc.
+* infrastructure : npm build, tests etc.
+* as demo, use as schema.org editor

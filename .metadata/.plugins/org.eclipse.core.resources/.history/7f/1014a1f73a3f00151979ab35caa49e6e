@@ -1,0 +1,59 @@
+# moving from dc:date to dc:created + dc:modified
+
+PREFIX dc: <http://purl.org/dc/terms/>
+
+INSERT {
+  GRAPH <http://hyperdata.it/wiki> {
+    ?s dc:created ?o ;
+       dc:modified ?o 
+  }
+}
+WHERE {
+  GRAPH <http://hyperdata.it/wiki> {
+    ?s dc:date ?o
+  }
+}
+
+# check
+PREFIX dc: <http://purl.org/dc/terms/>
+
+SELECT DISTINCT * WHERE {
+    ?s dc:created ?o ;
+       dc:modified ?o 
+}
+
+## LATERS
+
+PREFIX dc: <http://purl.org/dc/terms/>
+
+DELETE WHERE {
+  GRAPH <http://hyperdata.it/wiki> {
+    ?s dc:date ?o
+  }
+}
+
+
+## ooops, tweaky fixes
+
+PREFIX dc: <http://purl.org/dc/terms/>
+
+INSERT {
+  GRAPH <http://hyperdata.it/wiki> {
+    ?s dc:created ?modified
+  }
+}
+WHERE {
+  GRAPH <http://hyperdata.it/wiki> {
+    ?s dc:modified ?modified ;
+       dc:created "" .
+  }
+}
+
+
+PREFIX dc: <http://purl.org/dc/terms/>
+
+DELETE WHERE {
+  GRAPH <http://hyperdata.it/wiki> {
+    ?s dc:created "" 
+  }
+}
