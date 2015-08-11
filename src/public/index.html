@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="css/columns.css" />
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/common.css">
-    <!-- link rel="stylesheet" type="text/css" href="css/jquery-ui.css" -->
-    <!-- from https://github.com/aehlke/tag-it -->
-    <link href="css/jquery.tagit.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="css/tagit.ui-zendesk.css">
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
 
     <script src="js/lib/marked.js"></script>
@@ -22,71 +18,137 @@
     <script src="js/lib/jquery-1.10.2.js"></script>
     <script src="js/lib/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
 
-    <!-- from https://github.com/aehlke/tag-it -->
-    <script src="js/lib/tag-it.js" type="text/javascript" charset="utf-8"></script>
-
     <!-- date formatting -->
     <script src="js/lib/moment.js"></script>
+
+    <!-- Schema Editor Specific -->
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/sparql-templates.js"></script>
+     <script src="js/sparql-connector.js"></script>
+    <!--
+        <script src="js/foowiki/config.js"></script>
+    
+    <script src="js/foowiki/html-templates.js"></script>
+   
+    <script src="js/foowiki/core.js"></script>
+    <script src="js/foowiki/index.js"></script>
+   
+-->
+
     <script type="text/javascript" language="javascript">
         $(function () {
 
-            setupErrorHandling();
-            spinner();
+            //    setupErrorHandling();
+            //  spinner();
             var uri = queryString["uri"];
             // console.log("URI="+uri);
             uri = encodeURI(uri);
-            getResource(uri, buildPage);
-            
-            makeRecentChangesList();
+          //  getResource(uri, buildPage);
+
+            makeClassesList();
+            makePropertiesList();
+
+            $("#upload-button").click(function () {
+                var data = new FormData($("#upload-file").val());
+                console.log("DATA = " + data);
+                $.ajax({
+                    url: config.sparqlUpdateEndpoint,
+                    type: 'POST',
+                    data: ({
+                        update: data
+                    }),
+                    //    contentType: "application/sparql-update",
+                    processData: false,
+                    contentType: false
+                });
+                //    e.preventDefault();
+            });
 
             //$('#editButton').click(function () {
-             //   window.location.href = window.location.href.replace("page.html", "edit.html");
-             //   return false;
+            //   window.location.href = window.location.href.replace("page.html", "edit.html");
+            //   return false;
             //});
+            function makeClassesList() {
+                var callback = function(){ // populate
+                      for(var classObject in classList){
+                    $("classes").add(classObject.label);
+                }
+                }
+                  var classList = SchemaEdit.listClasses(callback);
+              
+                console.log("makeClassesList");
+            }
         });
+    </script>
+    <script type="text/javascript" language="javascript">
     </script>
 
 </head>
+
 <body>
     <div id="header">Schema Editor</div>
 
+    <!-- *** Middle Column ***  -->
     <div id="middle" class="column">
-        <div id="entry">
-        </div>
-        <p id="buttons" class="center"></p>
-    </div>
-
-    <div id="left" class="column">
-        <div class="tab"><a href="index.html">Page Index</a> 
-        </div>
-        <div class="tab"><a href="page.html?uri=http://hyperdata.it/wiki/">Home Page</a>
+        <div>
+            <label for="endpointHost">Endpoint Host</label>
+            <input id="endpointHost" type='text' value=''></input>
         </div>
         <div>
-            <div id="recentChangesContainer">
-                <label for='recentChanges'>Recent Changes</label>
-                <ul id="recentChanges"></ul>
-            </div>
+            <label for="queryPath">Query Path</label>
+            <input id='queryPath' type='text' value=''></input>
         </div>
+        <div id="updatePath">
+            <label for="updatePath">Update Path</label>
+            <input id='updatePath' type='text' value=''></input>
+        </div>
+        <hr />
+
+        <p>
+            <!-- form id="upload-form" enctype="multipart/form-data">
+            <input type="file" id="upload-file" name="upload" />
+            <button type="submit" id="upload-button">Upload Turtle</button>
+            </form -->
+            <h3>Upload RDF</h3>
+            <!-- TODO change this from config -->
+            <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
+                <!-- TODO move to config (bypass Fuseki) -->
+                <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
+                <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="">
+                <label for='graphName'>Graph</label>
+                <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
+                <br />
+                <input type="submit" value="Upload">
+            </form>
+            <h3>Export Turtle</h3>
+            <button id="turtle">Export</button>
+        </p>
+
     </div>
 
+    <!-- *** Left Column ***  -->
+    <div id="left" class="column">
+        <h2>Classes</h2>
+        <div id="classes"></div>
+        <h2>Properties</h2>
+        <div id="properties"></div>
+    </div>
+
+    <!-- *** Right Column ***  -->
     <div id="right" class="column">
-        <button id="editButton">Edit</button>
 
-        <div id='searchContainer'>
-            <button id='searchButton'>Search</button>
-            <label for='searchText'>Search text</label>
-            <input id='searchText' type='text' value=''></input>
-            <label for='tagButtons'>Filter by Tags</label>
-            <div id='tagButtons'></div>
-            <ul id="results"></ul>
-        </div>
+        <h2>History</h2>
+
     </div>
 
-    <div id="footer"><em>thoughtcatchers.org</em>
+    <div id="footer">
+        <em>useful link</em>
     </div>
 
-    <div id="spinner" class="spinner"></div>
+    <!-- div id="spinner" class="spinner"></div -->
     <!-- /div -->
     <div id="testImage" />
 </body>
+
 </html>
