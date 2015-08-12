@@ -59,6 +59,8 @@ http://localhost:8888/
 
 should reveal the Schema Editor app.
 
+You may wish to start by uploading repo/data/schema.org.ttl
+
 
 
 

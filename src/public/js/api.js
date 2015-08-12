@@ -1,3 +1,6 @@
+// TODO move into module below
+
+
 var SchemaEdit = (function () {
     "use strict";
 
@@ -63,7 +66,7 @@ var SchemaEdit = (function () {
             console.log("json =" + json);
             return resources;
         },
-        
+
 
         listClasses: function (callback) {
             return SchemaEdit.listResourcesOfType("rdfs:Class", callback);
@@ -83,6 +86,36 @@ var SchemaEdit = (function () {
             return classes;
         },
 
+        setupButtons: function() {
+            $("#turtle").click(function () {
+                var query = "CONSTRUCT {?s ?p ?o } WHERE {?s ?p ?o}";
+                var turtleURL = config.sparqlServerHost + config.sparqlQueryEndpoint + encodeURIComponent(query)+"&output=text";
+                location.href = turtleURL;
+            });
+
+            $("#newPageButton").click(function () {
+                var newPageName = $("#newPageName").val();
+
+                window.location.href = window.location.href = config.serverRootPath + "edit.html?uri=" + config.graphURI + "/" + newPageName;
+            });
+
+            // OLD
+            $("#upload-button").click(function () {
+                var data = new FormData($("#upload-file").val());
+                console.log("DATA = " + data);
+                $.ajax({
+                    url: config.sparqlUpdateEndpoint,
+                    type: 'POST',
+                    data: ({
+                        update: data
+                    }),
+                    //    contentType: "application/sparql-update",
+                    processData: false,
+                    contentType: false
+                });
+                //    e.preventDefault();
+            });
+        }
 
 
         /*
