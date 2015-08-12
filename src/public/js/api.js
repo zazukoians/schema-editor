@@ -63,6 +63,7 @@ var SchemaEdit = (function () {
             console.log("json =" + json);
             return resources;
         },
+        
 
         listClasses: function (callback) {
             return SchemaEdit.listResourcesOfType("rdfs:Class", callback);
