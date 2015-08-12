@@ -40,46 +40,55 @@
     <script type="text/javascript" language="javascript">
         $(function () {
 
-                //    setupErrorHandling();
-                //  spinner();
-                var uri = queryString["uri"];
+            //    setupErrorHandling();
+            //  spinner();
+            var uri = queryString["uri"];
+            // console.log("URI="+uri);
+            uri = encodeURI(uri);
+            //  getResource(uri, buildPage);
+
+            makeClassesList();
+            makePropertiesList();
+            SchemaEdit.setupButtons();
+
+            var uri = queryString["uri"];
+
+            if (uri) { // need to check if this is working
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
-                //  getResource(uri, buildPage);
+                var buildEditor = function (json) {
+                    // console.log("json = " + JSON.stringify(json, null, 4));
+                    for (var i = 0; i < json.length; i++) {
+                        var current = json[i];
+                        var node = $("<div><br/></div>");
+                        var property = $("<a/>");
+                        property.attr("href", current["p"]);
+                        node.append(property);
+                        property.text(current["p"]);
 
-                makeClassesList();
-                makePropertiesList();
-                SchemaEdit.setupButtons();
-
-                var uri = queryString["uri"];
-
-                if (uri) { // need to check if this is working
-                    // console.log("URI="+uri);
-                    uri = encodeURI(uri);
-                    var buildEditor = function (json) {
-console.log("json = "+JSON.stringify(json, null, 4));
-                        for(var i=0;i<json.length;i++){
-                            var current = json[i];
-                            var node = $("<div></div>");
-                            var property = $("<div></div>");
-                            node.append(property);
-                            property.text("property: "+current["p"]);
-                            
-                            var value = $("<div></div>");
-                            if(current.type == "literal") {
-                                value = $("<input type='text' value='"+current["o"]+"'></div>");
-                            }
-                            
-                            node.append(value);
-                            
-                            value.text(current.type+" value: "+current["o"]);
-                            
-                            $("#currentResource").append(node);
+                        var value = $("<div>what?</div>");
+                        
+                        if (current.type == "literal") {
+                            value = $("<input type='text' value='" + current["o"] + "'></input>");
+                            console.log("IS LITERAL");
                         }
-                        // [{"p":"http://www.w3.org/2000/01/rdf-schema#subClassOf","o":"http://schema.org/AllocateAction"},{"p":"http://www.w3.org/2000/01/rdf-schema#comment","o":"The act of committing to/adopting an object.<p>Related actions:</p><ul><li><a href=\"http://schema.org/RejectAction\">RejectAction</a>: The antonym of AcceptAction</li></ul>."},{"p":"http://www.w3.org/2000/01/rdf-schema#label","o":"AcceptAction"},{"p":"http://www.w3.org/1999/02/22-rdf-syntax-ns#type","o":"http://www.w3.org/2000/01/rdf-schema#Class"}]
+                        if (current.type == "uri") {
+                            value = $("<a />");
+                            value.attr("href", current["o"]);
+                            console.log("IS URI");
+                            node.append($("<button class='inline'>Change</button>"));
+                        }
+
+
+                        node.append(value);
+
+                        value.text(current["o"]);
+
+                        $("#currentResource").append(node);
                     }
-                    SchemaEdit.getResource(uri, buildEditor);
                 }
+                SchemaEdit.getResource(uri, buildEditor);
+            }
 
             /*
             $("#upload-button").click(function () {
@@ -172,9 +181,9 @@ console.log("json = "+JSON.stringify(json, null, 4));
             <br/>
             <hr />
 
-    <div class="section">
-        <div id="currentResource"></div>
-    </div>
+            <div class="section">
+                <div id="currentResource"></div>
+            </div>
             <div class="section">
                 <!-- form id="upload-form" enctype="multipart/form-data">
             <input type="file" id="upload-file" name="upload" />

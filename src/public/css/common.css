@@ -26,6 +26,10 @@ button {
     border-radius: 5px;
 }
 
+.inline button {
+    // display:inline;
+}
+
 label { 
     display:block; 
     margin:8px; 
@@ -33,7 +37,7 @@ label {
     clear:right; 
     overflow:auto; 
 }
-input, button, textarea, select {
+input, textarea, select {
     width: 50%;
     box-sizing:border-box; 
     -moz-box-sizing:border-box
