@@ -1,5 +1,6 @@
 // TODO move into module below
 
+/* see http://www.w3.org/TR/sparql11-update/ */
 
 var SchemaEdit = (function () {
     "use strict";
@@ -16,9 +17,17 @@ var SchemaEdit = (function () {
         sparqlUpdateEndpoint: "/schema-edit/update"
     };
 
+    var currentResource;
 
     // This is the public interface of the SchemaEditor module.
     var SchemaEdit = {
+        setCurrentResource: function (uri) {
+            currentResource = uri;
+        },
+
+        getcurrentResource: function () {
+            return currentResource;
+        },
 
         getGraphURI: function () {
             return config.graphURI;
@@ -61,9 +70,9 @@ var SchemaEdit = (function () {
             var getResourcesUrl = config.sparqlServerHost + config.sparqlQueryEndpoint + encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             // getClassListSparqlTemplate
-          //  console.log("getClassesUrl = " + getResourcesUrl);
+            //  console.log("getClassesUrl = " + getResourcesUrl);
             var json = getJsonForSparqlURL(getResourcesUrl, callback); // is in sparql-connector.js
-        //    console.log("json =" + json);
+            //    console.log("json =" + json);
             return resources;
         },
 
@@ -102,7 +111,7 @@ var SchemaEdit = (function () {
             // OLD
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());
-               // console.log("DATA = " + data);
+                // console.log("DATA = " + data);
                 $.ajax({
                     url: config.sparqlUpdateEndpoint,
                     type: 'POST',
@@ -118,18 +127,18 @@ var SchemaEdit = (function () {
         },
 
         getResource: function (uri, callback) {
-          //  console.log("getresource " + uri);
+            //  console.log("getresource " + uri);
             // var type = queryString["type"];
             // console.log("TYPE=" + type);
 
             var map = {
-                graphURI : SchemaEdit.getGraphURI(),
-                uri : uri
+                graphURI: SchemaEdit.getGraphURI(),
+                uri: uri
             };
-            
+
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
-          //  console.log("getResourceUrl = " + getResourceUrl);
+            //  console.log("getResourceUrl = " + getResourceUrl);
             getJsonForSparqlURL(getResourceUrl, callback);
             // getDataForURL(handleEntry, getPageUrl);
         },
@@ -137,6 +146,18 @@ var SchemaEdit = (function () {
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
             return config.sparqlServerHost + config.sparqlQueryEndpoint + encodeURIComponent(sparql);
+        },
+
+        deleteResource: function (resourceURI) {
+            var map = {
+                "graphURI": SchemaEdit.getGraphURI(),
+                "resourceURI": resourceURI
+            };
+            var sparql = sparqlTemplater(deleteResourceSparqlTemplate, map);
+            console.log("SPARQL for delete = " + sparql);
+            postData(sparql);
+
+
         }
 
 

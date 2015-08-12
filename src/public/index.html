@@ -45,7 +45,8 @@
             var uri = queryString["uri"];
             // console.log("URI="+uri);
             uri = encodeURI(uri);
-            //  getResource(uri, buildPage);
+
+            $("#currentResource").text(uri);
 
             makeClassesList();
             makePropertiesList();
@@ -53,7 +54,9 @@
 
             var uri = queryString["uri"];
 
-            if (uri) { // need to check if this is working
+            SchemaEdit.setCurrentResource(uri);
+
+            if (uri) { // TODO need to check if this is working
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
                 var buildEditor = function (json) {
@@ -65,10 +68,13 @@
                         property.attr("href", current["p"]);
                         node.append(property);
                         property.text(current["p"]);
+                        var deleteButton = $("<button>Delete</button>");
+                        property.append(deleteButton);
+
                         node.append($("<br/>"));
 
                         var value = $("<div>what?</div>");
-                        
+
                         if (current.type == "literal") {
                             value = $("<input type='text' value='" + current["o"] + "'></input>");
                             console.log("IS LITERAL");
@@ -84,8 +90,9 @@
                         node.append(value);
 
                         value.text(current["o"]);
-
-                        $("#currentResource").append("<br/><span>Property :</span>").append(node);
+                        var update = $("<button>Update</button>");
+                        node.append(update);
+                        $("#currentResource").append("<br/><strong>Property</strong>").append(node);
                     }
                 }
                 SchemaEdit.getResource(uri, buildEditor);
@@ -155,72 +162,73 @@
     <div id="header">Schema Editor</div>
     <div id="container">
 
-        <!-- *** Middle Column ***  -->
-
+        <!-- *** Centre Column ***  -->
 
         <div id="center" class="column">
-            <div class="endpoints">
+            Current Resource : <span id="currentResource"></span>
+        </div>
 
-                <a href="#hide1" class="hide" id="hide1">+</a>
-                <a href="#show1" class="show" id="show1">-</a>
-                <div class="minimal">Endpoint Settings</div>
-                <div class="full">
-                    <div>
-                        <label for="endpointHost">Endpoint Host</label>
-                        <input id="endpointHost" type='text' value=''></input>
-                    </div>
-                    <div>
-                        <label for="queryPath">Query Path</label>
-                        <input id='queryPath' type='text' value=''></input>
-                    </div>
-                    <div id="updatePath">
-                        <label for="updatePath">Update Path</label>
-                        <input id='updatePath' type='text' value=''></input>
-                    </div>
+        <div class="endpoints">
+            <a href="#hide1" class="hide" id="hide1">+</a>
+            <a href="#show1" class="show" id="show1">-</a>
+            <div class="minimal">Endpoint Settings</div>
+            <div class="full">
+                <div>
+                    <label for="endpointHost">Endpoint Host</label>
+                    <input id="endpointHost" type='text' value=''></input>
+                </div>
+                <div>
+                    <label for="queryPath">Query Path</label>
+                    <input id='queryPath' type='text' value=''></input>
+                </div>
+                <div id="updatePath">
+                    <label for="updatePath">Update Path</label>
+                    <input id='updatePath' type='text' value=''></input>
                 </div>
             </div>
-            <br/>
-            <hr />
+        </div>
+        <br/>
+        <hr />
 
-            <div class="section">
-                <div id="currentResource"></div>
-            </div>
-            <div class="section">
-                <!-- form id="upload-form" enctype="multipart/form-data">
+        <div class="section">
+            <div id="currentResource"></div>
+        </div>
+        <div class="section">
+            <!-- form id="upload-form" enctype="multipart/form-data">
             <input type="file" id="upload-file" name="upload" />
             <button type="submit" id="upload-button">Upload Turtle</button>
             </form -->
-                <h3>Upload RDF</h3>
-                <!-- TODO change this from config -->
-                <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
-                    <!-- TODO move to config (bypass Fuseki) -->
-                    <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
-                    <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="">
-                    <label for='graphName'>Graph</label>
-                    <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
-                    <br />
-                    <input type="submit" value="Upload">
-                </form>
-                <h3>Export Turtle</h3>
-                <button id="turtle">Export</button>
-            </div>
-
+            <h3>Upload RDF</h3>
+            <!-- TODO change this from config -->
+            <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
+                <!-- TODO move to config (bypass Fuseki) -->
+                <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
+                <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="">
+                <label for='graphName'>Graph</label>
+                <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
+                <br />
+                <input type="submit" value="Upload">
+            </form>
+            <h3>Export Turtle</h3>
+            <button id="turtle">Export</button>
         </div>
 
-        <!-- *** Left Column ***  -->
-        <div id="left" class="column">
-            <h2>Classes</h2>
-            <div id="classes"></div>
-            <h2>Properties</h2>
-            <div id="properties"></div>
-        </div>
+    </div>
 
-        <!-- *** Right Column ***  -->
-        <div id="right" class="column">
+    <!-- *** Left Column ***  -->
+    <div id="left" class="column">
+        <h2>Classes</h2>
+        <div id="classes"></div>
+        <h2>Properties</h2>
+        <div id="properties"></div>
+    </div>
 
-            <h2>History</h2>
+    <!-- *** Right Column ***  -->
+    <div id="right" class="column">
 
-        </div>
+        <h2>History</h2>
+
+    </div>
 
     </div>
     <div id="footer">

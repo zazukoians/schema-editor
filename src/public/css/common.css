@@ -16,6 +16,15 @@
     background-color: #eee;
 }
 
+#currentResource {
+    padding: 10px;
+ 
+}
+
+#center-heading {
+    padding: 10px;
+   font-size: 2em;
+}
 
 button {
     color: white;

@@ -80,3 +80,16 @@ function getJsonForSparqlURL(pageURL, callback) {
    //  console.log("RESULTS = "+JSON.stringify(jsonResults));
      return jsonResults;
  }
+
+        function postData(data) {
+            $.ajax({
+                type: "POST",
+                url: SchemaEdit.config.sparqlUpdateEndpoint,
+                data: ({
+                    update: data
+                })
+            }).done(function () {
+            }).fail(function () {
+                alert("error"); // use error banner
+            });
+        }

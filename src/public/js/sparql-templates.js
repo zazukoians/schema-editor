@@ -75,6 +75,15 @@ WHERE { \n\
 } \n\
 ";
 
+var deleteResourceSparqlTemplate = commonPrefixes + " \n\
+WITH <~{graphURI}~> \n\
+DELETE {  \n\
+<~{resourceURI}~> ?p ?o . \n\
+}  \n\
+WHERE {  \n\
+<~{resourceURI}~>  ?p ?o  . \n\
+}";
+
 
 // ------- old foowiki queries -----------------------
 
