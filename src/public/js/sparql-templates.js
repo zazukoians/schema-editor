@@ -67,6 +67,14 @@ WHERE { \n\
 } \n\
 ";
 
+var getResourceSparqlTemplate = commonPrefixes + " \n\
+SELECT DISTINCT * \n\
+FROM NAMED <~{graphURI}~>  \n\
+WHERE { \n\
+<~{uri}~> ?p ?o; \n\
+} \n\
+";
+
 
 // ------- old foowiki queries -----------------------
 

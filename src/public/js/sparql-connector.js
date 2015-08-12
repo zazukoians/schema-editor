@@ -20,8 +20,7 @@ function getJsonForSparqlURL(pageURL, callback) {
          }
      }).done(function (xml) {
          var json = sparqlXMLtoJSON(xml);
-         console.log("JSON = "+JSON.stringify(json));
-  //       doneCallback(json, getCurrentPageURI());
+        // console.log("JSON = "+JSON.stringify(json));
          callback(json);
      })  .fail(function() {
     alert( "error" );
@@ -44,7 +43,7 @@ function getJsonForSparqlURL(pageURL, callback) {
      // maybe force to ISO-8859-1, also known as Latin-1 instead?
 
      var $xml = $(xmlString);
-     
+     console.log(xmlString);
      var variables = $xml.find("variable");
      
           if (variables.length == 0) {
@@ -67,16 +66,17 @@ function getJsonForSparqlURL(pageURL, callback) {
          var map = {};
          for (var i = 0; i < jsonVariables.length; i++) {
              var name = jsonVariables[i];
-             //     console.log("NAME=" + name);
+                console.log("NAME=" + name);
              $(this).find("binding[name='" + name + "']").each(function () {
                  //  entry[name] = $(this).text().trim();
-                 // console.log("entry[name]=" + entry[name]);
+                 // console.log("entry[name]=" + entry[name]);$( "div span:first-child" )
+            map["type"] = $(this).children().prop("tagName").toLowerCase();
                  map[name] = $(this).text().trim();
              });
          }
          jsonResults.push(map);
      });
      
-    // console.log("RESULTS = "+JSON.stringify(jsonResults));
+     console.log("RESULTS = "+JSON.stringify(jsonResults));
      return jsonResults;
  }
