@@ -1,9 +1,11 @@
 # adjust paths for your setup
 
-export FUSEKI_HOME=../../fuseki
-export FUSEKI_BASE=../../fuseki
+export FUSEKI_HOME=../../jena-fuseki1-1.3.0
+export FUSEKI_BASE=../../jena-fuseki1-1.3.0
 
-java -Xms2048M -Xmx2048M -Xss4m  -jar ../../fuseki/fuseki-server.jar --verbose --update --config schemaedit-config.ttl --pages /home/danny/fuseki-pages/pages --port=3333
+java -Xms2048M -Xmx2048M -Xss4m  -jar ../../jena-fuseki1-1.3.0/fuseki-server.jar --verbose --update --config schemaedit-config.ttl --port=3333
+
+# --pages ../src/public/
 
 # --pages ../jena-fuseki-1.0.0/pages
 

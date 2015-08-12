@@ -49,18 +49,27 @@ var SchemaEdit = (function () {
             return graphURI;
         },
 
-        listClasses: function (callback) {
-            var classes = [];
-            var getClassListSparql = sparqlTemplater(getClassListSparqlTemplate, {
-                "graphURI": SchemaEdit.getGraphURI()
+        listResourcesOfType: function (type, callback) {
+            var resources = [];
+            var getResourceListSparql = sparqlTemplater(getResourcesOfTypeSparqlTemplate, {
+                "graphURI": SchemaEdit.getGraphURI(),
+                "type": type
             });
-            var getClassesUrl = config.sparqlQueryEndpoint + encodeURIComponent(getClassListSparql) + "&output=xml";
-            
+            var getResourcesUrl = config.sparqlServerHost + config.sparqlQueryEndpoint + encodeURIComponent(getResourceListSparql) + "&output=xml";
+
             // getClassListSparqlTemplate
-   console.log("getClassesUrl = "+getClassesUrl);
-            var json = getJsonForSparqlURL(getClassesUrl, callback);
-            console.log("json ="+json);
-            return classes;
+            console.log("getClassesUrl = " + getResourcesUrl);
+            var json = getJsonForSparqlURL(getResourcesUrl, callback); // is in sparql-connector.js
+            console.log("json =" + json);
+            return resources;
+        },
+
+        listClasses: function (callback) {
+            return SchemaEdit.listResourcesOfType("rdfs:Class", callback);
+        },
+
+        listProperties: function (callback) {
+            return SchemaEdit.listResourcesOfType("rdf:Property", callback);
         },
 
         listPropertiesForClass: function (graphURI, classURI) {
@@ -73,10 +82,7 @@ var SchemaEdit = (function () {
             return classes;
         },
 
-        listProperties: function (graphURI) {
-            var properties = [];
-            return properties;
-        },
+
 
         /*
          * naive ntriples-based CONSTRUCT logging/diff for now sparqlLog.add

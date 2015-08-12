@@ -25,7 +25,7 @@
     <script src="js/api.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/sparql-templates.js"></script>
-     <script src="js/sparql-connector.js"></script>
+    <script src="js/sparql-connector.js"></script>
     <!--
         <script src="js/foowiki/config.js"></script>
     
@@ -44,7 +44,7 @@
             var uri = queryString["uri"];
             // console.log("URI="+uri);
             uri = encodeURI(uri);
-          //  getResource(uri, buildPage);
+            //  getResource(uri, buildPage);
 
             makeClassesList();
             makePropertiesList();
@@ -70,15 +70,36 @@
             //   return false;
             //});
             function makeClassesList() {
-                var callback = function(){ // populate
-                      for(var classObject in classList){
-                    $("classes").add(classObject.label);
+                var callback = function (json) {
+                    makeList(json, $("#classes"));
                 }
+                var classList = SchemaEdit.listClasses(callback);
+            };
+
+            function makePropertiesList() {
+                var callback = function (json) {
+                    makeList(json, $("#properties"));
                 }
-                  var classList = SchemaEdit.listClasses(callback);
-              
-                console.log("makeClassesList");
+                var propertiesList = SchemaEdit.listProperties(callback);
             }
+
+            function makeList(json, target) {
+                for (var i = 0; i < json.length; i++) {
+                    var uri = json[i]["uri"];
+                    var split = uri.split("/");
+                    var name = split[split.length - 1];
+                    var divElement = $("<div></div>");
+                    var split = window.location.href.split("?");
+                    var url = split[0] + "?uri=" + encodeURI(uri);
+                    var aElement = $("<a/>").attr("href", url);
+                    aElement.text(name);
+                    divElement.append(aElement);
+                    target.append(divElement);
+                }
+            }
+
+
+
         });
     </script>
     <script type="text/javascript" language="javascript">

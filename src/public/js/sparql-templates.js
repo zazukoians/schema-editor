@@ -32,6 +32,25 @@ PREFIX sioc: <http://rdfs.org/sioc/ns#>  \n\
 PREFIX wiki: <http://purl.org/stuff/wiki#>  \n\
 ";
 
+var getResourcesOfTypeSparqlTemplate = commonPrefixes + " \n\
+SELECT DISTINCT * \n\
+FROM NAMED <~{graphURI}~>  \n\
+WHERE { \n\
+?uri a ~{type}~ \n\
+} \n\
+ORDER BY ?uri \n\
+";
+
+var getPropertiesOfResource = commonPrefixes + " \n\
+SELECT DISTINCT * \n\
+FROM NAMED <~{graphURI}~>  \n\
+WHERE { \n\
+<~{subject}~> ?property ?object \n\
+} \n\
+ORDER BY ?p \n\
+";
+
+// redundant
 var getClassListSparqlTemplate = commonPrefixes + " \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
