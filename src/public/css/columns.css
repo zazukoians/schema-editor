@@ -1,63 +1,77 @@
-/* adapted from http://d.alistapart.com/holygrail/example_4.html */
+/* adapted from http://alistapart.com/article/holygrail */
 
-body {
-    margin: 0;
-    padding-left: 100px;
-    /* LC fullwidth */
-    padding-right: 100px; /* was 190 */
-    /* RC fullwidth + CC padding */
-    min-width: 200px;
-    /* LC fullwidth + CC padding */
-}
+/*** The Essential Code ***/
 
-#header,
-#footer {
-    margin-left: -100px;
-    /* LC fullwidth */
-    margin-right: -100px;
-    /* RC fullwidth + CC padding */
-    text-align: center;
-    padding: 0.3em 0;
-}
+		body {
+			margin: 0;
+			padding-left: 200px;    /* LC fullwidth */
+			padding-right: 190px;   /* RC fullwidth + CC padding */
+			min-width: 240px;       /* LC fullwidth + CC padding */
+		}
 
-.column {
-    position: relative;
-    float: left;
-}
+		#header, #footer {
+			margin-left: -200px;    /* LC fullwidth */
+			margin-right: -190px;   /* RC fullwidth + CC padding */
+		}
 
-#middle {
-    padding: 10px 10px; 
-    width: 100%;
-    /* was 100% */
-}
+		.column {
+			position: relative;
+			float: left;
+		}
 
-#left {
-    width: 250 px;
-    /* was 180 */
-    /* LC width */
-    padding: 0 10px;
-    /* LC padding */
-    right: 100px;
-    /* was 240 */
-    /* LC fullwidth + CC padding */
-    margin-left: -100%;
-}
+		#center {
+			padding: 0 20px;
+			width: 100%;
+		}
 
-#right {
-    width: 100px;
-    /* was 130 */
-    /* RC width */
-    padding: 0 10px;
-    /* RC padding */
-    margin-right: -100%;
-}
+		#left {
+			width: 180px;           /* LC width */
+			padding: 0 10px;        /* LC padding */
+			right: 240px;           /* LC fullwidth + CC padding */
+			margin-left: -100%;
+		}
 
-#footer {
-    clear: both;
-}
-/*** IE Fix ***/
+		#right {
+			width: 130px;           /* RC width */
+			padding: 0 10px;        /* RC padding */
+			margin-right: -100%;
+		}
 
-* html #left {
-    * left: 200px;
-    /* RC fullwidth */
-}
+		#footer {
+			clear: both;
+		}
+
+		/*** IE Fix ***/
+		* html #left {
+			left: 150px;            /* RC fullwidth */
+		}
+
+		/*** Just for Looks ***/
+
+		body {
+			background: #FFF;
+		}
+
+		#header, #footer {
+			font-size: large;
+			text-align: center;
+			padding: 0.3em 0;
+			background: #999;
+		}
+
+		#left {
+			background: #66F;
+		}
+
+		#center {
+			background: #DDD;
+		}
+
+		#right {
+			background: #F66;
+		}
+
+		.column {
+			padding-top: 1em;
+			text-align: justify;
+		}

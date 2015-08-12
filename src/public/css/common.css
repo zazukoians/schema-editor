@@ -1,4 +1,9 @@
-/* FooWiki Common CSS */
+
+#container {
+    font-family: "Lucida Console", Monaco, monospace;
+    border-right: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+}
 
 #header,
 #footer {
@@ -6,49 +11,11 @@
     background-color: darkgray;
 }
 
-#maintagscontainer {
-    width: 100%;
-}
-
-.editable,
-ul.tagit {
-    /* not working */
-    background-color: white;
-    border: 2px solid pink;
-}
-
 #left,
 #right {
-    background-color: lightgray;
-    padding: 20px;
+    background-color: #eee;
 }
 
-#newPage {
-    width: 180px;
-    border: 1px solid darkgray;
-    border-radius: 10px;
-    padding: 4px;
-      margin: 5px;
-}
-
-body {
-    background-color: lightgray;
-}
-
-h4 {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-}
-/*  $("#maintagscontainer").addClass("editable"); */
-
-#left ul,
-#right ul {
-    width: 150px;
-}
-
-li {
-    /*  width: 180 px; */
-}
 
 button {
     color: white;
@@ -59,193 +26,95 @@ button {
     border-radius: 5px;
 }
 
-.content {
-    background-color: white;
-    margin: 0px auto;
-    position: relative;
-    border-radius: 10px;
-    border: 1px solid darkgray;
-    padding: 10px;
+label { 
+    display:block; 
+    margin:8px; 
+    width: 450px; 
+    clear:right; 
+    overflow:auto; 
+}
+input, button, textarea, select {
+    width: 50%;
+    box-sizing:border-box; 
+    -moz-box-sizing:border-box
+}
+    /*
+label, input {
+  display:inline-block;
 }
 
-#recentChangesContainer,
-#searchContainer {
-    width: 100%;
-    /*   width:180px; */
-    /* Be VERY careful with this, breaks normal words wh_erever */
-    /* word-break: break-all; */
-    /* Non standard for webkit */
-    word-break: break-word;
-    border: 1px solid darkgray;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-#pagetitle {
-    display: block;
-    position: relative;
-    margin: 2px;
-    border-radius: 10px;
-    /*  width: 98%; */
-    background-color: #eef;
-    padding: 4px;
-    text-align: center;
-}
-
-#container {
-    /* width: 75%; */
-    margin: 0px auto;
-    padding: 1em 1em 0em 1em;
-    position: relative;
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    border-right: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-}
-
-.ui-button {
-    border-radius: 5px;
-}
-
-.ui-button .ui-button-text {
-    /*  padding: 12px !important; */
-    font-size: .72em !important;
-    padding: .1em .6em .2em;
-}
-
-#errorbox {
-    display: block;
-    position: absolute;
-    right: 10px;
-    margin: 2px;
-    border-radius: 10px;
-    width: 20%;
-    background-color: #f33;
-    padding: 4px;
-    text-align: center;
-    /*     font-size: 150%;
-    font-weight: bold; */
-}
-/*
-.tab {
-    display: block;
-    position: relative;
-    left: 10px;
-    padding: 4px;
-    margin: auto;
-    border-radius: 2px;
-    background-color: lightgray;
+label {
+    width: 50%;
 }
 */
 
-.center {
+.section {
+     display:block;
+}
+/* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
+
+.endpoints { 
+    vertical-align: top; 
+    height:auto !important; 
+}
+.full {
+    display:none; 
+    height:auto;
+    margin:0;
+    float: left;
+}
+.show {
+    display: none; 
+}
+.hide:target + .show {
+    display: inline; 
+}
+.hide:target {
+    display: none; 
+}
+.hide:target ~ .full {
+    display:inline; 
+}
+
+/*style the (+) and (-) */
+.hide, .show {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 20px;
+    color: #fff;
     text-align: center;
+    text-decoration: none;
+    background: #cccbbb;
+    opacity: .95;
+    margin-right: 0;
+    float: left;
+    margin-bottom: 25px;
 }
 
-.byline {
-    padding: 2em;
-    /*  font-weight: bold; */
-    color: gray;
+.hide:hover, .show:hover {
+    color: #eee;
+    text-shadow: 0 0 1px #666;
+    text-decoration: none;
+    box-shadow: 0 0 4px #222 inset;
+    opacity: 1;
+    margin-bottom: 25px;
 }
 
-#recentChanges {
-    padding-top: 1em;
-    margin-top: 1em;
+.full p{
+    height:auto;
+    margin:0;
 }
-
-#results,
-#recentChanges {
-    list-style-type: none;
-    /*  list-style-position:inside; */
-    margin: 10px 0px 0px 0px;
-    padding: 10px 0px 0px 0px;
-}
-
-#results li,
-#recentChanges li {
-    padding-top: 6px;
-}
-
-select {
-    float: right;
-    margin: 2px 0px 0px 0px;
-}
-
-table {
-    border: 1px solid lightgray;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-td,
-th {
-    border: 1px solid lightgray;
-    padding: 4px;
-}
-/* Form elements */
-
-form {
-    font-family: "Lucida Console", Monaco, monospace;
-    /*  border: 2px solid lightgray; */
-}
-
-fieldset {
-    border: 2px solid lightgray;
-    padding: 1em;
-}
-
-legend {
-    font-size: 150%;
-    font-weight: bold;
-}
-
-textarea {
-    display: block;
-    width: 100%;
+.minimal {
+    float: left;
     height: auto;
-    border: 2px solid pink;
-    font-size: 75%;
+    width: 90%;
+    line-height: 20px;
+    padding-left: 20px;
+    margin-bottom: 25px;
+    font-style: italic;
 }
 
-label {
-    text-align: left;
-    color: darkgray;
-}
-
-input {
-    border: 2px solid pink;
-    width: 75%;
-}
-
-pre {
-    "Courier New", Courier, monospace;
-}
-
-.missing {
-    color: #66FF66;
-}
-
-label {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-a:link {
-    text-decoration: none;
-}
-
-a:visited {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-a:active {
-    text-decoration: underline;
-}
 /* Spinner */
 
 .spinner {
