@@ -17,12 +17,11 @@
 }
 
 #currentResource {
-    padding: 10px;
- 
+ /*   padding: 10px; */
 }
 
 #center-heading {
-    padding: 10px;
+  /*  padding: 10px; */
    font-size: 2em;
 }
 
@@ -31,23 +30,23 @@ button {
     background-color: maroon;
     font-size: 1em;
     /*  padding: 10px; */
-    margin: 10px;
+ /*   margin: 10px; */
     border-radius: 5px;
 }
 
 .inline button {
-    // display:inline;
+    /* display:inline; */
 }
 
 label { 
-    display:block; 
-    margin:8px; 
-    width: 450px; 
+   /* display:block; */
+   /* margin:8px; */
+ /*   width: 450px; */
     clear:right; 
     overflow:auto; 
 }
 input, textarea, select {
-    width: 50%;
+   /* width: 50%; */
     box-sizing:border-box; 
     -moz-box-sizing:border-box
 }
@@ -62,7 +61,7 @@ label {
 */
 
 .section {
-     display:block;
+   /*  display:block; */
 }
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
 

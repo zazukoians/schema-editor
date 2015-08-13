@@ -1,77 +1,68 @@
-/* adapted from http://alistapart.com/article/holygrail */
+/* using CSS3 flex, see */
 
-/*** The Essential Code ***/
+html,
+body {
+    display: flex;
+    flex-direction: column;
+    /* list-style-type: none; */
+}
 
-		body {
-			margin: 0;
-			padding-left: 200px;    /* LC fullwidth */
-			padding-right: 190px;   /* RC fullwidth + CC padding */
-			min-width: 240px;       /* LC fullwidth + CC padding */
-		}
+header {
+}
 
-		#header, #footer {
-			margin-left: -200px;    /* LC fullwidth */
-			margin-right: -190px;   /* RC fullwidth + CC padding */
-		}
+main {
+    flex: 1;
+    display: block;
+    text-align: left;
+    font-weight: normal;
+}
 
-		.column {
-			position: relative;
-			float: left;
-		}
+.block {
+    display: block;
+    margin: 2em;
+    /*width: 40%; */
+    padding: 5px;
+    list-style-type: none;
+}
+/*
+.block p {
+    
+    float: left;
+}
+*/
 
-		#center {
-			padding: 0 20px;
-			width: 100%;
-		}
+.block ul {
+    display: block;
+    /* border: 1px solid #000; */
+    list-style-type: none;
+}
 
-		#left {
-			width: 180px;           /* LC width */
-			padding: 0 10px;        /* LC padding */
-			right: 240px;           /* LC fullwidth + CC padding */
-			margin-left: -100%;
-		}
+.block ul,
+.block li {
+    float: left;
+    margin: 0;
+    padding: 5px;
+}
 
-		#right {
-			width: 130px;           /* RC width */
-			padding: 0 10px;        /* RC padding */
-			margin-right: -100%;
-		}
+nav {
+    display: block;
+    order: -1;
+    /*  border: 1px solid #000; */
+}
 
-		#footer {
-			clear: both;
-		}
-
-		/*** IE Fix ***/
-		* html #left {
-			left: 150px;            /* RC fullwidth */
-		}
-
-		/*** Just for Looks ***/
-
-		body {
-			background: #FFF;
-		}
-
-		#header, #footer {
-			font-size: large;
-			text-align: center;
-			padding: 0.3em 0;
-			background: #999;
-		}
-
-		#left {
-			background: #66F;
-		}
-
-		#center {
-			background: #DDD;
-		}
-
-		#right {
-			background: #F66;
-		}
-
-		.column {
-			padding-top: 1em;
-			text-align: justify;
-		}
+@media (min-width: 768px) {
+    body {
+        flex-direction: row;
+        flex: 1;
+    }
+    
+container {
+        flex: 1;
+    }
+    
+nav,
+aside {
+        /* 12em is the width of the columns */
+        flex: 0 0 12em;
+    }
+}

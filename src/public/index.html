@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <title>Schema Editor</title>
 
-    <link rel="stylesheet" href="css/normalize.css" />
+    <!-- link rel="stylesheet" href="css/normalize.css" / -->
     <link rel="stylesheet" href="css/columns.css" />
 
-    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
 
     <script src="js/lib/marked.js"></script>
@@ -28,7 +28,7 @@
     <script src="js/sparql-templates.js"></script>
     <script src="js/sparql-connector.js"></script>
     <!--
-        <script src="js/foowiki/config.js"></script>
+    <script src="js/foowiki/config.js"></script>
     
     <script src="js/foowiki/html-templates.js"></script>
    
@@ -37,6 +37,7 @@
    
 -->
 
+    <!-- TODO move scripts to mostly external files -->
     <script type="text/javascript" language="javascript">
         $(function () {
 
@@ -47,20 +48,25 @@
             uri = encodeURI(uri);
 
             $("#currentResource").text(uri);
+            SchemaEdit.setCurrentResource(uri);
+            SchemaEdit.setupButtons();
 
             makeClassesList();
             makePropertiesList();
-            SchemaEdit.setupButtons();
+
 
             var uri = queryString["uri"];
 
-            SchemaEdit.setCurrentResource(uri);
 
-            if (uri) { // TODO need to check if this is working
+
+            if (uri) { // TODO need to check if this if() is working
                 // console.log("URI="+uri);
+
                 uri = encodeURI(uri);
+
                 var buildEditor = function (json) {
                     // console.log("json = " + JSON.stringify(json, null, 4));
+                    // return;
                     for (var i = 0; i < json.length; i++) {
                         var current = json[i];
                         var node = $("<div></div>");
@@ -68,16 +74,21 @@
                         property.attr("href", current["p"]);
                         node.append(property);
                         property.text(current["p"]);
-                        var deleteButton = $("<button>Delete</button>");
+                        var deleteButton = $("<button class='delete'>Delete</button>");
+                        var triple = "<" + SchemaEdit.getCurrentResource() + "> "; // subject
+                        triple += "<" + current["p"] + "> "; // predicate/property
+
+                        deleteButton.attr("data-triple", triple); // stick resource data in attribute
                         property.append(deleteButton);
 
                         node.append($("<br/>"));
 
-                        var value = $("<div>what?</div>");
+                        var value = $("<div>what default?</div>"); // needed for bnodes?
 
                         if (current.type == "literal") {
                             value = $("<input type='text' value='" + current["o"] + "'></input>");
                             console.log("IS LITERAL");
+                            triple += "\"\"\"" + current["o"] + "\"\"\" ."; // object
                         }
                         if (current.type == "uri") {
                             value = $("<a />");
@@ -96,6 +107,7 @@
                     }
                 }
                 SchemaEdit.getResource(uri, buildEditor);
+
             }
 
             /*
@@ -134,40 +146,52 @@
             }
 
             function makeList(json, target) {
+                var listElement = $("<ul class='block'/>");
+                target.append(listElement);
                 for (var i = 0; i < json.length; i++) {
                     var uri = json[i]["uri"];
                     var split = uri.split("/");
                     var name = split[split.length - 1];
-                    var divElement = $("<div></div>");
+                    var itemElement = $("<li></li>");
                     var split = window.location.href.split("?");
                     var url = split[0] + "?uri=" + encodeURI(uri);
                     var aElement = $("<a/>").attr("href", url);
-                    aElement.text(name);
-                    divElement.append(aElement);
-                    target.append(divElement);
+                    if (name.length > 5) {
+                        name = name.substring(0, 5); // TODO remove
+                        aElement.text(name);
+                        itemElement.append(aElement);
+                        listElement.append(itemElement);
+                    }
                 }
             }
-
-
-
         });
     </script>
+
     <script type="text/javascript" language="javascript">
     </script>
 
 </head>
 
 <body>
+    <header>
+        <hgroup>
+            <div class="heading">Schema Editor</div>
+            <strong>
+                Current Resource : <span id="currentResource"></span></strong>
+        </hgroup>
+    </header>
 
-    <div id="header">Schema Editor</div>
-    <div id="container">
+    <nav>
+        <h2>Classes</h2>
+        <div id="classes"></div>
+        <h2>Properties</h2>
+        <div id="properties"></div>
+    </nav>
 
-        <!-- *** Centre Column ***  -->
+    <main>
 
-        <div id="center" class="column">
-            Current Resource : <span id="currentResource"></span>
-        </div>
 
+        <!--
         <div class="endpoints">
             <a href="#hide1" class="hide" id="hide1">+</a>
             <a href="#show1" class="show" id="show1">-</a>
@@ -189,55 +213,40 @@
         </div>
         <br/>
         <hr />
+  
+-->
 
-        <div class="section">
-            <div id="currentResource"></div>
-        </div>
-        <div class="section">
-            <!-- form id="upload-form" enctype="multipart/form-data">
+
+        <!-- form id="upload-form" enctype="multipart/form-data">
             <input type="file" id="upload-file" name="upload" />
             <button type="submit" id="upload-button">Upload Turtle</button>
             </form -->
-            <h3>Upload RDF</h3>
-            <!-- TODO change this from config -->
-            <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
-                <!-- TODO move to config (bypass Fuseki) -->
-                <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
-                <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="">
-                <label for='graphName'>Graph</label>
-                <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
-                <br />
-                <input type="submit" value="Upload">
-            </form>
-            <h3>Export Turtle</h3>
-            <button id="turtle">Export</button>
+
+        <h3>Upload RDF</h3>
+        <!-- TODO change this from config -->
+        <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
+            <!-- TODO move to config (bypass Fuseki) -->
+            <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
+            <!-- TODO UNSET FILE NAME ?? -->
+            <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="">
+            <label for='graphName'>Graph</label>
+            <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
+            <br />
+            <input type="submit" value="Upload">
+        </form>
+        <h3>Export Turtle</h3>
+        <button id="turtle">Export</button>
         </div>
+    </main>
 
-    </div>
-
-    <!-- *** Left Column ***  -->
-    <div id="left" class="column">
-        <h2>Classes</h2>
-        <div id="classes"></div>
-        <h2>Properties</h2>
-        <div id="properties"></div>
-    </div>
-
-    <!-- *** Right Column ***  -->
-    <div id="right" class="column">
-
+    <aside>
         <h2>History</h2>
+    </aside>
 
-    </div>
+    <footer>
 
-    </div>
-    <div id="footer">
-        <em>useful link</em>
-    </div>
+    </footer>
 
-    <!-- div id="spinner" class="spinner"></div -->
-    <!-- /div -->
-    <div id="testImage" />
 </body>
 
 </html>

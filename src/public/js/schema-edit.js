@@ -5,7 +5,6 @@
 var SchemaEdit = (function () {
     "use strict";
 
-    // modify for SchemaEdit
     var config = {
 
         pagesBaseURI: "http://hyperdata.it/wiki/",
@@ -25,7 +24,7 @@ var SchemaEdit = (function () {
             currentResource = uri;
         },
 
-        getcurrentResource: function () {
+        getCurrentResource: function () {
             return currentResource;
         },
 
@@ -96,6 +95,12 @@ var SchemaEdit = (function () {
         },
 
         setupButtons: function () {
+            // DELETE buttons on schema-edit main page
+                        $(".delete").click(function () {
+               
+            });
+            
+            // EXPORT TURTLE buttons on schema-edit main page 
             $("#turtle").click(function () {
                 var query = "CONSTRUCT {?s ?p ?o } WHERE {?s ?p ?o}";
                 var turtleURL = config.sparqlServerHost + config.sparqlQueryEndpoint + encodeURIComponent(query) + "&output=text";
