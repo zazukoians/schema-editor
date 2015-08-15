@@ -5,20 +5,10 @@
     border-left: 1px solid lightgray;
 }
 
-#header,
-#footer {
-    color: lightgray;
-    background-color: darkgray;
-}
 
-#left,
-#right {
-    background-color: #eee;
-}
 
-#currentResource {
- /*   padding: 10px; */
-}
+
+
 
 #center-heading {
   /*  padding: 10px; */
@@ -38,16 +28,17 @@ button {
     /* display:inline; */
 }
 
-label { 
+label {
    /* display:block; */
    /* margin:8px; */
  /*   width: 450px; */
-    clear:right; 
-    overflow:auto; 
+    clear:right;
+    overflow:auto;
 }
+
 input, textarea, select {
    /* width: 50%; */
-    box-sizing:border-box; 
+    box-sizing:border-box;
     -moz-box-sizing:border-box
 }
     /*
@@ -60,32 +51,29 @@ label {
 }
 */
 
-.section {
-   /*  display:block; */
-}
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
 
-.endpoints { 
-    vertical-align: top; 
-    height:auto !important; 
+.endpoints {
+    vertical-align: top;
+    height:auto !important;
 }
 .full {
-    display:none; 
+    display:none;
     height:auto;
     margin:0;
     float: left;
 }
 .show {
-    display: none; 
+    display: none;
 }
 .hide:target + .show {
-    display: inline; 
+    display: inline;
 }
 .hide:target {
-    display: none; 
+    display: none;
 }
 .hide:target ~ .full {
-    display:inline; 
+    display:inline;
 }
 
 /*style the (+) and (-) */
@@ -149,7 +137,7 @@ label {
     from {
         -webkit-transform: rotate(0deg);
     }
-    
+
 to {
         -webkit-transform: rotate(359deg);
     }
@@ -159,7 +147,7 @@ to {
     from {
         -moz-transform: rotate(0deg);
     }
-    
+
 to {
         -moz-transform: rotate(359deg);
     }
@@ -169,7 +157,7 @@ to {
     from {
         -o-transform: rotate(0deg);
     }
-    
+
 to {
         -o-transform: rotate(359deg);
     }
@@ -179,7 +167,7 @@ to {
     from {
         transform: rotate(0deg);
     }
-    
+
 to {
         transform: rotate(359deg);
     }

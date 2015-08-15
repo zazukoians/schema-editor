@@ -10,12 +10,50 @@ body {
 header {
 }
 
+/* center column */
 main {
     flex: 1;
     display: block;
     text-align: left;
     font-weight: normal;
 }
+
+/* left column */
+nav {
+    display: block;
+    order: -1;
+    /*  border: 1px solid #000; */
+}
+
+/* right column */
+/*
+aside {
+
+}
+*/
+/* --- End Column Layout --- */
+
+
+
+/* --- Start "Themes" --- */
+nav,
+aside {
+    background-color: #lightgray;
+}
+
+
+header,
+footer {
+    color: darkgray;
+    background-color: lightgray;
+}
+
+
+/* --- End "Themes" --- */
+
+
+
+/* ------------------------------- */
 
 .block {
     display: block;
@@ -26,7 +64,7 @@ main {
 }
 /*
 .block p {
-    
+
     float: left;
 }
 */
@@ -44,22 +82,18 @@ main {
     padding: 5px;
 }
 
-nav {
-    display: block;
-    order: -1;
-    /*  border: 1px solid #000; */
-}
+
 
 @media (min-width: 768px) {
     body {
         flex-direction: row;
         flex: 1;
     }
-    
+
 container {
         flex: 1;
     }
-    
+
 nav,
 aside {
         /* 12em is the width of the columns */

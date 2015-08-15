@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="css/columns.css" />
 
     <link rel="stylesheet" href="css/common.css" />
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+
+    <link rel="stylesheet" href="css/jquery-ui.min.css" />
 
     <script src="js/lib/marked.js"></script>
 
@@ -17,7 +18,7 @@
     <script src="js/lib/hogan-3.0.2.js"></script>
 
     <script src="js/lib/jquery-1.10.2.js"></script>
-    <script src="js/lib/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/lib/jquery-ui.min.js"></script>
 
     <!-- date formatting -->
     <script src="js/lib/moment.js"></script>
@@ -29,12 +30,7 @@
     <script src="js/sparql-connector.js"></script>
     <!--
     <script src="js/foowiki/config.js"></script>
-    
-    <script src="js/foowiki/html-templates.js"></script>
-   
-    <script src="js/foowiki/core.js"></script>
-    <script src="js/foowiki/index.js"></script>
-   
+
 -->
 
     <!-- TODO move scripts to mostly external files -->
@@ -54,60 +50,13 @@
             makeClassesList();
             makePropertiesList();
 
-
             var uri = queryString["uri"];
-
-
 
             if (uri) { // TODO need to check if this if() is working
                 // console.log("URI="+uri);
-
                 uri = encodeURI(uri);
 
-                var buildEditor = function (json) {
-                    // console.log("json = " + JSON.stringify(json, null, 4));
-                    // return;
-                    for (var i = 0; i < json.length; i++) {
-                        var current = json[i];
-                        var node = $("<div></div>");
-                        var property = $("<a/>");
-                        property.attr("href", current["p"]);
-                        node.append(property);
-                        property.text(current["p"]);
-                        var deleteButton = $("<button class='delete'>Delete</button>");
-                        var triple = "<" + SchemaEdit.getCurrentResource() + "> "; // subject
-                        triple += "<" + current["p"] + "> "; // predicate/property
-
-                        deleteButton.attr("data-triple", triple); // stick resource data in attribute
-                        property.append(deleteButton);
-
-                        node.append($("<br/>"));
-
-                        var value = $("<div>what default?</div>"); // needed for bnodes?
-
-                        if (current.type == "literal") {
-                            value = $("<input type='text' value='" + current["o"] + "'></input>");
-                            console.log("IS LITERAL");
-                            triple += "\"\"\"" + current["o"] + "\"\"\" ."; // object
-                        }
-                        if (current.type == "uri") {
-                            value = $("<a />");
-                            value.attr("href", current["o"]);
-                            console.log("IS URI");
-                            node.append($("<button class='inline'>Change</button>"));
-                        }
-
-
-                        node.append(value);
-
-                        value.text(current["o"]);
-                        var update = $("<button>Update</button>");
-                        node.append(update);
-                        $("#currentResource").append("<br/><strong>Property</strong>").append(node);
-                    }
-                }
-                SchemaEdit.getResource(uri, buildEditor);
-
+                populateWithResource(uri);
             }
 
             /*
@@ -157,7 +106,7 @@
                     var url = split[0] + "?uri=" + encodeURI(uri);
                     var aElement = $("<a/>").attr("href", url);
                     if (name.length > 5) {
-                        name = name.substring(0, 5); // TODO remove
+                     //   name = name.substring(0, 5); // TODO remove
                         aElement.text(name);
                         itemElement.append(aElement);
                         listElement.append(itemElement);
@@ -180,7 +129,7 @@
                 Current Resource : <span id="currentResource"></span></strong>
         </hgroup>
     </header>
-
+<br/>
     <nav>
         <h2>Classes</h2>
         <div id="classes"></div>
@@ -213,7 +162,7 @@
         </div>
         <br/>
         <hr />
-  
+
 -->
 
 
