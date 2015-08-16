@@ -58,7 +58,7 @@ var buildEditor = function (json) {
 
         //var update = $("<button>Update</button>");
         //node.append(update);
-
+        node.append
         $("#currentResource").append("<br/><strong>Property</strong>").append(node);
     }
 }
@@ -82,12 +82,6 @@ var SchemaEdit = (function () {
     };
 
     var currentResource;
-
-
-
-
-
-
 
     // This is the public interface of the SchemaEditor module.
     var SchemaEdit = {
@@ -168,7 +162,6 @@ var SchemaEdit = (function () {
         setupButtons: function () {
             // DELETE buttons on schema-edit main page
                         $(".delete").click(function () {
-
             });
 
             // EXPORT TURTLE buttons on schema-edit main page
@@ -180,7 +173,6 @@ var SchemaEdit = (function () {
 
             $("#newPageButton").click(function () {
                 var newPageName = $("#newPageName").val();
-
                 window.location.href = window.location.href = config.serverRootPath + "edit.html?uri=" + config.graphURI + "/" + newPageName;
             });
 
@@ -202,9 +194,6 @@ var SchemaEdit = (function () {
             });
         },
 
-
-
-
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
             return config.sparqlServerHost + config.sparqlQueryEndpoint + encodeURIComponent(sparql);
@@ -218,10 +207,7 @@ var SchemaEdit = (function () {
             var sparql = sparqlTemplater(deleteResourceSparqlTemplate, map);
             console.log("SPARQL for delete = " + sparql);
             postData(sparql);
-
-
         }
-
 
         /*
          * naive ntriples-based CONSTRUCT logging/diff for now sparqlLog.add

@@ -1,5 +1,6 @@
 /* using CSS3 flex, see */
 
+
 html,
 body {
     display: flex;
@@ -7,37 +8,54 @@ body {
     /* list-style-type: none; */
 }
 
-header {
-}
-
-/* center column */
-main {
-    flex: 1;
-    display: block;
-    text-align: left;
-    font-weight: normal;
+.header {
 }
 
 /* left column */
-nav {
+.left {
+  /*
+   flex: 0 1 auto;
     display: block;
-    order: -1;
+    order: 1;
+    */
     /*  border: 1px solid #000; */
 }
 
-/* right column */
-/*
-aside {
-
+/* center column */
+.center {
+  /*
+flex: 0 1 auto;
+    order: 2;
+    display: block;
+    text-align: left;
+    font-weight: normal;
+    */
 }
-*/
+
+/* right column */
+
+.right {
+  /*
+flex: 0 1 auto;
+  display: block;
+  order: 2;
+  */
+}
+
 /* --- End Column Layout --- */
 
 
 
 /* --- Start "Themes" --- */
-nav,
-aside {
+
+html,
+body {
+    font-family: "Lucida Console", Monaco, monospace;
+    border-right: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+}
+
+.left, /right {
     background-color: #lightgray;
 }
 

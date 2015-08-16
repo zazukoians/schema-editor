@@ -1,40 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <title>Schema Editor</title>
+<meta name="generator" content=
+"HTML Tidy for HTML5 for Linux/x86 version 5.1.2">
+<meta charset="utf-8">
+<title>Schema Editor</title>
+<!-- link rel="stylesheet" href="css/normalize.css" / -->
+<link rel="stylesheet" href="css/columns.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/jquery-ui.min.css">
+<script src="js/lib/marked.js">
+</script><!-- mustache template compiler -->
 
-    <!-- link rel="stylesheet" href="css/normalize.css" / -->
-    <link rel="stylesheet" href="css/columns.css" />
+<script src="js/lib/hogan-3.0.2.js">
+</script>
+<script src="js/lib/jquery-1.10.2.js">
+</script>
+<script src="js/lib/jquery-ui.min.js">
+</script><!-- date formatting -->
 
-    <link rel="stylesheet" href="css/common.css" />
+<script src="js/lib/moment.js">
+</script><!-- Schema Editor Specific -->
 
-    <link rel="stylesheet" href="css/jquery-ui.min.css" />
-
-    <script src="js/lib/marked.js"></script>
-
-    <!-- mustache template compiler -->
-    <script src="js/lib/hogan-3.0.2.js"></script>
-
-    <script src="js/lib/jquery-1.10.2.js"></script>
-    <script src="js/lib/jquery-ui.min.js"></script>
-
-    <!-- date formatting -->
-    <script src="js/lib/moment.js"></script>
-
-    <!-- Schema Editor Specific -->
-    <script src="js/schema-edit.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/sparql-templates.js"></script>
-    <script src="js/sparql-connector.js"></script>
-    <!--
+<script src="js/schema-edit.js">
+</script>
+<script src="js/utils.js">
+</script>
+<script src="js/sparql-templates.js">
+</script>
+<script src="js/sparql-connector.js">
+</script><!--
     <script src="js/foowiki/config.js"></script>
 
 -->
+<!-- TODO refactor scripts to more appropriate files -->
 
-    <!-- TODO refactor scripts to more appropriate files -->
-    <script type="text/javascript" language="javascript">
+<script type="text/javascript" language="javascript">
         $(function () {
 
             //    setupErrorHandling();
@@ -101,7 +102,7 @@
                     var uri = json[i]["uri"];
                     var split = uri.split("/");
                     var name = split[split.length - 1];
-                    var itemElement = $("<li></li>");
+                    var itemElement = $("<li><\/li>");
                     var split = window.location.href.split("?");
                     var url = split[0] + "?uri=" + encodeURI(uri);
                     var aElement = $("<a/>").attr("href", url);
@@ -114,35 +115,25 @@
                 }
             }
         });
-    </script>
-
-    <script type="text/javascript" language="javascript">
-    </script>
-
+</script>
+<script type="text/javascript" language="javascript">
+</script>
 </head>
-
 <body>
-
-    <header>
-        <hgroup>
-            <div class="heading">Schema Editor</div>
-            <strong>
-                Current Resource : <span id="currentResource"></span>
-            </strong>
-        </hgroup>
-    </header>
-
-    <section class="left">
-        <h2>Classes</h2>
-        <div id="classes"></div>
-        <h2>Properties</h2>
-        <div id="properties"></div>
-    </section>
-
-    <section class="center">
-
-
-        <!--
+<header>
+<hgroup>
+<div class="heading">Schema Editor</div>
+<strong>Current Resource : <span id=
+"currentResource"></span></strong></hgroup>
+</header>
+<br>
+<nav>
+<h2>Classes</h2>
+<div id="classes"></div>
+<h2>Properties</h2>
+<div id="properties"></div>
+</nav>
+<main><!--
         <div class="endpoints">
             <a href="#hide1" class="hide" id="hide1">+</a>
             <a href="#show1" class="show" id="show1">-</a>
@@ -166,37 +157,25 @@
         <hr />
 
 -->
-
-
-        <!-- form id="upload-form" enctype="multipart/form-data">
+<!-- form id="upload-form" enctype="multipart/form-data">
             <input type="file" id="upload-file" name="upload" />
             <button type="submit" id="upload-button">Upload Turtle</button>
             </form -->
-
-        <h3>Upload RDF</h3>
-        <!-- TODO change this from config -->
-        <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
-            <!-- TODO move to config (bypass Fuseki) -->
-            <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
-            <!-- TODO UNSET FILE NAME ?? -->
-            <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="">
-            <label for='graphName'>Graph</label>
-            <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
-            <br />
-            <input type="submit" value="Upload">
-        </form>
-        <h3>Export Turtle</h3>
-        <button id="turtle">Export</button>
-    </section>
-
-    <section class="right">
-        <h2>History</h2>
-    </section>
-
-    <footer>
-<p>This is the footer</p>
-    </footer>
-
+<h3>Upload RDF</h3>
+<!-- TODO change this from config -->
+<form action="http://localhost:3333/schema-edit/upload" enctype=
+"multipart/form-data" method="post">
+<!-- TODO move to config (bypass Fuseki) -->
+<!-- onsubmit="window.location.href = 'index.html'; return false;" -->
+<!-- TODO UNSET FILE NAME ?? -->
+<input id="filename" type="file" name="UNSET FILE NAME" size="40"
+multiple> <label for='graphName'>Graph</label> <input name="graph"
+id="graphName" size="20" value="http://schema.org/terms/"><br>
+<input type="submit" value="Upload"></form>
+<h3>Export Turtle</h3>
+<button id="turtle">Export</button></main>
+<aside>
+<h2>History</h2>
+</aside>
 </body>
-
 </html>

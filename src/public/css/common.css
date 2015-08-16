@@ -1,14 +1,4 @@
 
-#container {
-    font-family: "Lucida Console", Monaco, monospace;
-    border-right: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-}
-
-
-
-
-
 
 #center-heading {
   /*  padding: 10px; */
@@ -17,7 +7,7 @@
 
 button {
     color: white;
-    background-color: maroon;
+    background-color: purple;
     font-size: 1em;
     /*  padding: 10px; */
  /*   margin: 10px; */

@@ -1,0 +1,64 @@
+#three-column-body {
+  display: flex;
+  flex-direction: column;
+}
+
+#three-column-nav {
+  order: -1;
+}
+
+#three-column-aside {
+  order: 1;
+}
+
+#three-column-content {
+  flex: 0;
+}
+
+#three-column-nav, .three-column-aside {
+  /* 12em is the width of the columns */
+  flex: 0 0 12em;
+}
+
+#three-column-nav {
+  /* put the nav on the left */
+  order: -1;
+}
+
+/* --- Start "Themes" --- */
+
+#three-column-body {
+font-family: "Lucida Console", Monaco, monospace;
+border-right: 1px solid lightgray;
+border-left: 1px solid lightgray;
+}
+
+#three-column-nav,
+#three-column-aside {
+    background-color: #lightgray;
+}
+
+
+header,
+footer {
+    color: darkgray;
+    background-color: lightgray;
+}
+
+
+/* --- End "Themes" --- */
+
+
+@media (min-width: 768px) {
+  .three-column-body {
+    flex-direction: row;
+    flex: 1;
+  }
+  .three-column-content {
+    flex: 1;
+  }
+  .three-column-nav, .three-column-ads {
+    /* 12em is the width of the columns */
+    flex: 0 0 12em;
+  }
+}
