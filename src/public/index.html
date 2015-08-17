@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <title>Schema Editor</title>
 
-    <!-- link rel="stylesheet" href="css/normalize.css" / -->
+<!-- cancel any browser-specifics -->
+    <link rel="stylesheet" href="css/normalize.css" />
+
     <link rel="stylesheet" href="css/columns.css" />
 
     <link rel="stylesheet" href="css/common.css" />
@@ -38,7 +40,7 @@
         $(function () {
 
             //    setupErrorHandling();
-            //  spinner();
+              spinner();
             var uri = queryString["uri"];
             // console.log("URI="+uri);
             uri = encodeURI(uri);
@@ -115,31 +117,27 @@
             }
         });
     </script>
-
-    <script type="text/javascript" language="javascript">
-    </script>
-
 </head>
 
 <body>
+<div class="columns">
 
-    <header>
-        <hgroup>
+    <p class="header">
+
             <div class="heading">Schema Editor</div>
             <strong>
                 Current Resource : <span id="currentResource"></span>
             </strong>
-        </hgroup>
-    </header>
+    </p>
 
-    <section class="left">
+    <div id="left">
         <h2>Classes</h2>
         <div id="classes"></div>
         <h2>Properties</h2>
         <div id="properties"></div>
-    </section>
+    </div>
 
-    <section class="center">
+    <div id="center">
 
 
         <!--
@@ -187,16 +185,18 @@
         </form>
         <h3>Export Turtle</h3>
         <button id="turtle">Export</button>
-    </section>
+    </div>
 
-    <section class="right">
+    <div id="right">
         <h2>History</h2>
-    </section>
+    </div>
 
     <footer>
 <p>This is the footer</p>
     </footer>
 
+</div>
+<div id="spinner" class="spinner"></div>
 </body>
 
 </html>
