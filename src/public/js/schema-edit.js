@@ -4,21 +4,6 @@
 
 
 
-function spinner() {
-  var $loading = $('#spinner').hide();
-  $.ajaxSetup({
-    beforeSend: function() {
-      $('#spinner').show();
-    },
-    complete: function() {
-      $('#spinner').hide();
-    },
-    success: function() {}
-  });
-};
-
-
-
 var SchemaEdit = (function() {
   "use strict";
 

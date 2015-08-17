@@ -44,6 +44,12 @@ label {
 
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
 
+#classes.header, #properties.header {
+
+text-align: center;
+font-size: 2em;
+}
+
 .endpoints {
     vertical-align: top;
     height:auto !important;
@@ -111,8 +117,16 @@ label {
 .spinner {
     height: 60px;
     width: 60px;
-    margin: 0px auto;
-    position: relative;
+    /*margin: 0px auto; */
+  /*  position: relative; */
+    position: absolute;
+    z-index: 5000; /*This is in foreground */
+    /*
+ display: block;
+  margin-left: 200;
+  margin-top: 200;
+*/
+
     -webkit-animation: rotation .6s infinite linear;
     -moz-animation: rotation .6s infinite linear;
     -o-animation: rotation .6s infinite linear;

@@ -5,16 +5,20 @@
     <meta charset="utf-8">
     <title>Schema Editor</title>
 
-<!-- cancel any browser-specifics -->
+<!-- a Reset CSS, to cancel any browser-specifics -->
     <link rel="stylesheet" href="css/normalize.css" />
 
+<!-- 3-column layout using CSS3 flexbox -->
     <link rel="stylesheet" href="css/columns.css" />
 
-<link rel="stylesheet" href="css/default-theme.css" />
+<!-- make 3-column layout pretty -->
+    <link rel="stylesheet" href="css/default-theme.css" />
 
-    <link rel="stylesheet" href="css/common.css" />
+<!-- specific to Schema Editor -->
+    <link rel="stylesheet" href="css/schema-edit.css" />
 
-    <link rel="stylesheet" href="css/jquery-ui.min.css" />
+<!-- UI components -->
+    <!-- link rel="stylesheet" href="css/jquery-ui.min.css" / -->
 
     <script src="js/lib/marked.js"></script>
 
@@ -72,8 +76,6 @@
             elem.offsetHeight; // no need to store this anywhere, the reference is enough
             elem.style.display = 'flex';
 
-
-
             /*
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());
@@ -110,7 +112,7 @@
             }
 
             function makeList(json, target) {
-                var listElement = $("<ul class='block'/>");
+                var listElement = $("<ul class='list-block'/>");
                 target.append(listElement);
                 for (var i = 0; i < json.length; i++) {
                     var uri = json[i]["uri"];

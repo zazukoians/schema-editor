@@ -16,14 +16,22 @@ body {
 }
 
 #center {
-    background-color: yellow;
+    background-color:lightyellow;
+    border: 1px solid #cccc33;
+    border-radius: 7pt;
+  /*  background: #dddd88; */
 }
 
+#header,
+#footer {
+  width: 100%;
+  border: 1px solid #eebb55;
+  border-radius: 7pt;
+  background: #ffeebb;
+}
 
-header,
-footer {
-    color: purple;
-    background-color: lightgray;
+#header {
+  text-align: center;
 }
 
 

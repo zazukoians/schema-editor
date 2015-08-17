@@ -1,4 +1,5 @@
-/* using CSS3 flex, see */
+/* using CSS3 flexbox */
+
 #wrapper {
    min-height: 800px;
    margin: 0px;
@@ -12,9 +13,7 @@
   #center {
    margin: 4px;
    padding: 5px;
-   border: 1px solid #cccc33;
-   border-radius: 7pt;
-   background: #dddd88;
+
    -webkit-flex: 3 1 60%;
            flex: 3 1 60%;
    -webkit-order: 2;
@@ -50,9 +49,7 @@
    margin: 4px;
    padding: 5px;
    min-height: 100px;
-   border: 1px solid #eebb55;
-   border-radius: 7pt;
-   background: #ffeebb;
+  
    }
 
   /* Too narrow to support three columns */
@@ -77,15 +74,9 @@
 
 /* --- End Column Layout --- */
 
-
-
-
-
-
-
 /* ------------------------------- */
 
-.block {
+.list-block {
     display: block;
     margin: 2em;
     /*width: 40%; */
@@ -93,32 +84,33 @@
     list-style-type: none;
 }
 /*
-.block p {
+.list-block p {
 
     float: left;
 }
 */
 
-.block ul {
+.list-block ul {
     display: block;
     /* border: 1px solid #000; */
     list-style-type: none;
 }
 
-.block ul,
-.block li {
+.list-block ul,
+.list-block li {
     float: left;
     margin: 0;
     padding: 5px;
 }
 
+/* TODO fix this */
 @media (min-width: 768px) {
     body {
         flex-direction: row;
         flex: 1;
     }
 
-container {
+.wrapper {
         flex: 1;
     }
 
