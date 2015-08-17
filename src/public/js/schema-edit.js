@@ -152,7 +152,6 @@ var SchemaEdit = (function() {
       return resources;
     },
 
-
     listClasses: function(callback) {
       return SchemaEdit.listResourcesOfType("rdfs:Class", callback);
     },

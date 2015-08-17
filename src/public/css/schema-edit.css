@@ -4,6 +4,10 @@
 .header {
   /*  padding: 10px; */
    font-size: 2em;
+   font-weight: bold;
+   display: block;
+   text-align: center;
+
 }
 
 button {
@@ -44,10 +48,15 @@ label {
 
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
 
-#classes.header, #properties.header {
-
+#classes, #properties {
+display: block;
 text-align: center;
-font-size: 2em;
+}
+
+.small {
+  font-size: 50%;
+  font-family: Tahoma, Geneva, sans-serif;
+  /* Tahoma, Geneva, sans-serif */
 }
 
 .endpoints {
@@ -112,19 +121,14 @@ font-size: 2em;
     font-style: italic;
 }
 
+/* as used for classes and properties */
 .list-block {
     display: block;
     margin: 2em;
     /*width: 40%; */
-    padding: 5px;
+    padding: 3px;
     list-style-type: none;
 }
-/*
-.list-block p {
-
-    float: left;
-}
-*/
 
 .list-block ul {
     display: block;
@@ -136,7 +140,7 @@ font-size: 2em;
 .list-block li {
     float: left;
     margin: 0;
-    padding: 5px;
+    padding: 2px;
 }
 
 
@@ -148,6 +152,11 @@ font-size: 2em;
     /*margin: 0px auto; */
   /*  position: relative; */
     position: absolute;
+    margin-top: 100px;
+    margin-left: auto;
+margin-right: auto;
+left: 0;
+right: 0;
     z-index: 5000; /*This is in foreground */
     /*
  display: block;

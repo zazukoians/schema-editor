@@ -6,6 +6,7 @@
  *     fit in one line.
  */
 
+
 var SparqlConnector = (function() {
   "use strict";
 

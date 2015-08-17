@@ -47,7 +47,7 @@
     <script type="text/javascript" language="javascript">
         $(function () {
 
-            //    setupErrorHandling();
+            //    setupErrorHandling(); // TODO is needed? maybe just a popup
               spinner();
             var uri = queryString["uri"];
             // console.log("URI="+uri);
@@ -149,10 +149,14 @@
 
 <div id="wrapper">
     <div id="left">
-        <h2>Classes</h2>
-        <div id="classes"></div>
-        <h2>Properties</h2>
-        <div id="properties"></div>
+<div class="list-block">
+        <h2 class="header">Classes</h2>
+          <div id="classes" class="small"></div>
+        </div>
+        <div class="list-block">
+        <h2 class="header">Properties</h2>
+          <div id="properties" class="small"></div>
+        </div>
     </div>
 
     <div id="center">
