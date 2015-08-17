@@ -31,11 +31,13 @@
     <!-- date formatting -->
     <script src="js/lib/moment.js"></script>
 
+<script src="js/sparql-connector.js"></script>
+
     <!-- Schema Editor Specific -->
     <script src="js/schema-edit.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/sparql-templates.js"></script>
-    <script src="js/sparql-connector.js"></script>
+
     <!--
     <script src="js/foowiki/config.js"></script>
 
@@ -55,7 +57,7 @@
             SchemaEdit.setCurrentResource(uri);
             SchemaEdit.setupButtons();
 
-            makeClassesList();
+            makeClassesList(); // TODO where are these? Below. Modularise.
             makePropertiesList();
 
             var uri = queryString["uri"];
@@ -99,19 +101,19 @@
             //});
             function makeClassesList() {
                 var callback = function (json) {
-                    makeList(json, $("#classes"));
+                    makeListBlock(json, $("#classes"));
                 }
                 var classList = SchemaEdit.listClasses(callback);
             };
 
             function makePropertiesList() {
                 var callback = function (json) {
-                    makeList(json, $("#properties"));
+                    makeListBlock(json, $("#properties"));
                 }
                 var propertiesList = SchemaEdit.listProperties(callback);
             }
 
-            function makeList(json, target) {
+            function makeListBlock(json, target) {
                 var listElement = $("<ul class='list-block'/>");
                 target.append(listElement);
                 for (var i = 0; i < json.length; i++) {

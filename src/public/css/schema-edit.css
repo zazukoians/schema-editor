@@ -1,4 +1,4 @@
-
+/* CSS Specific to Schema Editor */
 
 
 .header {
@@ -112,7 +112,35 @@ font-size: 2em;
     font-style: italic;
 }
 
-/* Spinner */
+.list-block {
+    display: block;
+    margin: 2em;
+    /*width: 40%; */
+    padding: 5px;
+    list-style-type: none;
+}
+/*
+.list-block p {
+
+    float: left;
+}
+*/
+
+.list-block ul {
+    display: block;
+    /* border: 1px solid #000; */
+    list-style-type: none;
+}
+
+.list-block ul,
+.list-block li {
+    float: left;
+    margin: 0;
+    padding: 5px;
+}
+
+
+/* Spinner TODO move to common.css ? */
 
 .spinner {
     height: 60px;

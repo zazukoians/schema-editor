@@ -88,7 +88,7 @@ var SchemaEdit = (function() {
           }
         }
         //  console.log("getResourceUrl = " + getResourceUrl);
-      getJsonForSparqlURL(getResourceUrl, buildEditor);
+      SparqlConnector.getJsonForSparqlURL(getResourceUrl, buildEditor);
       // getDataForURL(handleEntry, getPageUrl);
 
 
@@ -146,7 +146,8 @@ var SchemaEdit = (function() {
 
       // getClassListSparqlTemplate
       //  console.log("getClassesUrl = " + getResourcesUrl);
-      var json = getJsonForSparqlURL(getResourcesUrl, callback); // is in sparql-connector.js
+      var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
+        callback); // is in sparql-connector.js
       //    console.log("json =" + json);
       return resources;
     },
