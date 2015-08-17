@@ -54,8 +54,8 @@
             SparqlConnector.setCurrentResource(uri);
             SchemaEdit.setupButtons();
 
-            makeClassesList(); // TODO where are these? Below. Modularise.
-            makePropertiesList();
+            SchemaEdit.makeClassesList(); // TODO where are these? Below. Modularise.
+            SchemaEdit.makePropertiesList();
 
             var uri = queryString["uri"];
 
@@ -96,39 +96,7 @@
             //   window.location.href = window.location.href.replace("page.html", "edit.html");
             //   return false;
             //});
-            function makeClassesList() {
-                var callback = function (json) {
-                    makeListBlock(json, $("#classes"));
-                }
-                var classList = SparqlConnector.listClasses(callback);
-            };
 
-            function makePropertiesList() {
-                var callback = function (json) {
-                    makeListBlock(json, $("#properties"));
-                }
-                var propertiesList = SparqlConnector.listProperties(callback);
-            }
-
-            function makeListBlock(json, target) {
-                var listElement = $("<ul class='list-block'/>");
-                target.append(listElement);
-                for (var i = 0; i < json.length; i++) {
-                    var uri = json[i]["uri"];
-                    var split = uri.split("/");
-                    var name = split[split.length - 1];
-                    var itemElement = $("<li></li>");
-                    var split = window.location.href.split("?");
-                    var url = split[0] + "?uri=" + encodeURI(uri);
-                    var aElement = $("<a/>").attr("href", url);
-                    if (name.length > 5) {
-                     //   name = name.substring(0, 5); // TODO remove
-                        aElement.text(name);
-                        itemElement.append(aElement);
-                        listElement.append(itemElement);
-                    }
-                }
-            }
         });
     </script>
 </head>

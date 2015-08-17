@@ -1,5 +1,5 @@
 // TODO move into module below
-
+// TODO normalize naming SchemaEdit -> SchemaEditor
 /* see http://www.w3.org/TR/sparql11-update/ */
 
 
@@ -22,6 +22,41 @@ var SchemaEdit = (function() {
 
   // This is the public interface of the SchemaEditor module.
   var SchemaEdit = {
+
+    //   populateWithResource: function(uri, callback) {
+    makeClassesList: function() {
+      var callback = function(json) {
+        SchemaEdit.makeListBlock(json, $("#classes"));
+      }
+      var classList = SparqlConnector.listClasses(callback);
+    },
+
+    makePropertiesList: function() {
+      var callback = function(json) {
+        SchemaEdit.makeListBlock(json, $("#properties"));
+      }
+      var propertiesList = SparqlConnector.listProperties(callback);
+    },
+
+    makeListBlock: function(json, target) {
+      var listElement = $("<ul class='list-block'/>");
+      target.append(listElement);
+      for (var i = 0; i < json.length; i++) {
+        var uri = json[i]["uri"];
+        var split = uri.split("/");
+        var name = split[split.length - 1];
+        var itemElement = $("<li></li>");
+        var split = window.location.href.split("?");
+        var url = split[0] + "?uri=" + encodeURI(uri);
+        var aElement = $("<a/>").attr("href", url);
+        if (name.length > 5) {
+          //   name = name.substring(0, 5); // TODO remove
+          aElement.text(name);
+          itemElement.append(aElement);
+          listElement.append(itemElement);
+        }
+      }
+    },
 
     populateWithResource: function(uri, callback) { // buildEditor is callback
       //  console.log("getresource " + uri);
