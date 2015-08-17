@@ -79,36 +79,7 @@
 
 
 
-/* --- Start "Themes" --- */
 
-html,
-body {
-    font-family: "Lucida Console", Monaco, monospace;
-    border-right: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-}
-
-#left, #right {
-    background-color: lightgray;
-}
-
-#left {
-    font-size: 50%;
-}
-
-#center {
-    background-color: yellow;
-}
-
-
-header,
-footer {
-    color: purple;
-    background-color: lightgray;
-}
-
-
-/* --- End "Themes" --- */
 
 
 

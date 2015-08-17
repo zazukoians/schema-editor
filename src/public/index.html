@@ -10,6 +10,8 @@
 
     <link rel="stylesheet" href="css/columns.css" />
 
+<link rel="stylesheet" href="css/default-theme.css" />
+
     <link rel="stylesheet" href="css/common.css" />
 
     <link rel="stylesheet" href="css/jquery-ui.min.css" />
@@ -58,9 +60,13 @@
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
 
-                populateWithResource(uri); // in schema-edit.js
+                SchemaEdit.populateWithResource(uri); // in schema-edit.js
             }
 
+/* Forces refresh of columns
+ * fixes non-intuitive problem with post-Ajax redrawing
+ * TODO move to utils.js
+ */
             var elem = document.getElementById("wrapper");
             elem.style.display = 'none';
             elem.offsetHeight; // no need to store this anywhere, the reference is enough
@@ -127,7 +133,7 @@
 </head>
 
 <body>
-
+<div id="spinner" class="spinner"></div>
 
     <div id="header">
 
@@ -206,7 +212,7 @@
     </div>
 
 
-<div id="spinner" class="spinner"></div>
+
 </body>
 
 </html>
