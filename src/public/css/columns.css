@@ -1,5 +1,5 @@
 /* using CSS3 flex, see */
-#columns {
+#wrapper {
    min-height: 800px;
    margin: 0px;
    padding: 0px;
@@ -45,8 +45,8 @@
            order: 3;
    }
 
-  header, footer {
-   display: block;
+  #header, #footer {
+   display: inline-block;
    margin: 4px;
    padding: 5px;
    min-height: 100px;

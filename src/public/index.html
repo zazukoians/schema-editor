@@ -58,8 +58,15 @@
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
 
-                populateWithResource(uri);
+                populateWithResource(uri); // in schema-edit.js
             }
+
+            var elem = document.getElementById("wrapper");
+            elem.style.display = 'none';
+            elem.offsetHeight; // no need to store this anywhere, the reference is enough
+            elem.style.display = 'flex';
+
+
 
             /*
             $("#upload-button").click(function () {
@@ -120,16 +127,17 @@
 </head>
 
 <body>
-<div class="columns">
 
-    <p class="header">
 
-            <div class="heading">Schema Editor</div>
+    <div id="header">
+
+            <h2>Schema Editor</h2>
             <strong>
                 Current Resource : <span id="currentResource"></span>
             </strong>
-    </p>
+    </div>
 
+<div id="wrapper">
     <div id="left">
         <h2>Classes</h2>
         <div id="classes"></div>
@@ -139,6 +147,7 @@
 
     <div id="center">
 
+<div id="editor"></div>
 
         <!--
         <div class="endpoints">
@@ -191,11 +200,12 @@
         <h2>History</h2>
     </div>
 
-    <footer>
-<p>This is the footer</p>
-    </footer>
-
 </div>
+    <div id="footer">
+<p>This is the footer</p>
+    </div>
+
+
 <div id="spinner" class="spinner"></div>
 </body>
 

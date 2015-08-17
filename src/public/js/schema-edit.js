@@ -61,14 +61,18 @@ var populateWithResource = function(uri, callback) { // buildEditor is callback
         //var update = $("<button>Update</button>");
         //node.append(update);
         node.append
-        $("#currentResource").append("<br/><strong>Property</strong>").append(
+        $("#editor").append("<br/><strong>Property</strong>").append(
           node);
       }
     }
     //  console.log("getResourceUrl = " + getResourceUrl);
   getJsonForSparqlURL(getResourceUrl, buildEditor);
   // getDataForURL(handleEntry, getPageUrl);
+
+
 };
+
+
 
 function spinner() {
   var $loading = $('#spinner').hide();
