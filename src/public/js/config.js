@@ -1,34 +1,33 @@
-   /*
-    *    System constants (URLs/URIs/IRIs)
-    */
+/**
+ * Comment template.
+ * @param {string} foo This is a param with a description too long to fit in
+ *     one line.
+ * @return {number} This returns something that has a description too long to
+ *     fit in one line.
+ */
 
-   /**
-    * Comment template.
-    * @param {string} foo This is a param with a description too long to fit in
-    *     one line.
-    * @return {number} This returns something that has a description too long to
-    *     fit in one line.
-    */
-
-// recursive
-// find ./ -type f -readable -writable -exec sed -i "s/FooWiki.preformatFormats/FooWiki.FooWiki.preformatFormats/g" {} \;
+var Config = (function() {
+  "use strict";
 
 
-   var FooWiki = {
-       pagesBaseURI: "http://hyperdata.it/wiki/",
-       graphURI: "http://hyperdata.it/wiki",
+  // This is the public interface of the Module.
+  var Config = {
+    // publicFunction can be called externally
+    pagesBaseURI: "http://hyperdata.it/wiki/",
+    graphURI: "http://schema.org/terms/",
 
-       serverRootPath: "/foowiki/",
-       sparqlQueryEndpoint: "/foowiki/sparql?query=", // move ? part ??
-       sparqlUpdateEndpoint: "/foowiki/update",
+    sparqlServerHost: "http://localhost:3333",
+    serverRootPath: "/schema-edit/",
+    sparqlQueryEndpoint: "/schema-edit/sparql?query=", // move ? part ??
+    sparqlUpdateEndpoint: "/schema-edit/update"
 
-       runnableFormats: [
-       "http://purl.org/NET/mediatypes/application/javascript"
-   ],
+  };
 
-       preformatFormats: [
-       "http://purl.org/NET/mediatypes/application/javascript",
-           "http://purl.org/NET/mediatypes/text/html"
-   ]
+  // privateFunction is completely hidden
+  // from the outside.
+  function privateFunction() {
+    return "privateFunction cannot";
+  }
 
-   }
+  return Config;
+}());

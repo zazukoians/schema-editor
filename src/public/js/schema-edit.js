@@ -18,8 +18,6 @@ var SchemaEdit = (function() {
     sparqlUpdateEndpoint: "/schema-edit/update"
   };
 
-  var currentResource;
-
 
 
   // This is the public interface of the SchemaEditor module.
@@ -31,7 +29,7 @@ var SchemaEdit = (function() {
       // console.log("TYPE=" + type);
 
       var map = {
-        graphURI: SchemaEdit.getGraphURI(),
+        graphURI: SparqlConnector.getGraphURI(),
         uri: uri
       };
 
@@ -52,7 +50,8 @@ var SchemaEdit = (function() {
             node.append(property);
 
             var deleteButton = $("<button class='delete'>x</button>");
-            var triple = "<" + SchemaEdit.getCurrentResource() + "> "; // subject
+            var triple = "<" + SparqlConnector.getCurrentResource() +
+              "> "; // subject
             triple += "<" + current["p"] + "> "; // predicate/property
 
             deleteButton.attr("data-triple", triple); // stick resource data in attribute
@@ -94,81 +93,7 @@ var SchemaEdit = (function() {
 
     },
 
-    setCurrentResource: function(uri) {
-      currentResource = uri;
-    },
 
-    getCurrentResource: function() {
-      return currentResource;
-    },
-
-    getGraphURI: function() {
-      return config.graphURI;
-    },
-
-    setGraphURI: function(uri) {
-      config.graphURI = uri;
-      return config.graphURI;
-    },
-    // API, based on spec
-    // initial implementations based on foowiki Ajax - with templating
-
-    setQueryEndpoint: function(url) {
-      config.sparqlQueryEndpoint = url;
-      return getQueryEndpoint();
-    },
-
-    getQueryEndpoint: function() {
-      return config.sparqlQueryEndpoint
-    },
-
-    setUpdateEndpoint: function(url) {
-      return getUpdateEndpoint();
-    },
-
-    getUpdateEndpoint: function() {
-      return config.sparqlUpdateEndpoint
-    },
-
-    setEndpoint: function(graphURI) {
-      return graphURI;
-    },
-
-    listResourcesOfType: function(type, callback) {
-      var resources = [];
-      var getResourceListSparql = sparqlTemplater(
-        getResourcesOfTypeSparqlTemplate, {
-          "graphURI": SchemaEdit.getGraphURI(),
-          "type": type
-        });
-      var getResourcesUrl = config.sparqlServerHost + config.sparqlQueryEndpoint +
-        encodeURIComponent(getResourceListSparql) + "&output=xml";
-
-      // getClassListSparqlTemplate
-      //  console.log("getClassesUrl = " + getResourcesUrl);
-      var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
-        callback); // is in sparql-connector.js
-      //    console.log("json =" + json);
-      return resources;
-    },
-
-    listClasses: function(callback) {
-      return SchemaEdit.listResourcesOfType("rdfs:Class", callback);
-    },
-
-    listProperties: function(callback) {
-      return SchemaEdit.listResourcesOfType("rdf:Property", callback);
-    },
-
-    listPropertiesForClass: function(graphURI, classURI) {
-      var properties = [];
-      return properties;
-    },
-
-    listClassesForProperty: function(graphURI, propertyURI) {
-      var classes = [];
-      return classes;
-    },
 
     setupButtons: function() {
       // DELETE buttons on schema-edit main page

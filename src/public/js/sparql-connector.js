@@ -10,18 +10,91 @@
 var SparqlConnector = (function() {
   "use strict";
 
+  var currentResource = "http://example.org/dummy";
+
   // This is the public interface of the Module.
   var SparqlConnector = {
-    // publicFunction can be called externally
-    publicFunction: function() {
-      return "publicFunction can be invoked " + "externally but " +
-        privateFunction();
+    setCurrentResource: function(uri) {
+      currentResource = uri;
+    },
+
+    getCurrentResource: function() {
+      return currentResource;
+    },
+
+    getGraphURI: function() {
+      return Config.graphURI;
+    },
+
+    setGraphURI: function(uri) {
+      Config.graphURI = uri;
+      return Config.graphURI;
+    },
+    // API, based on spec
+    // initial implementations based on foowiki Ajax - with templating
+
+    setQueryEndpoint: function(url) {
+      Config.sparqlQueryEndpoint = url;
+      return getQueryEndpoint();
+    },
+
+    getQueryEndpoint: function() {
+      return Config.sparqlQueryEndpoint
+    },
+
+    setUpdateEndpoint: function(url) {
+      return getUpdateEndpoint();
+    },
+
+    getUpdateEndpoint: function() {
+      return Config.sparqlUpdateEndpoint
+    },
+
+    setEndpoint: function(graphURI) {
+      return graphURI;
+    },
+
+    listResourcesOfType: function(type, callback) {
+      var resources = [];
+      var getResourceListSparql = sparqlTemplater(
+        getResourcesOfTypeSparqlTemplate, {
+          "graphURI": SparqlConnector.getGraphURI(),
+          "type": type
+        });
+      var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+        encodeURIComponent(getResourceListSparql) + "&output=xml";
+
+      // getClassListSparqlTemplate
+      //  console.log("getClassesUrl = " + getResourcesUrl);
+      var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
+        callback); // is in sparql-connector.js
+      //    console.log("json =" + json);
+      return resources;
+    },
+
+    listClasses: function(callback) {
+      return SparqlConnector.listResourcesOfType("rdfs:Class", callback);
+    },
+
+    listProperties: function(callback) {
+      return SparqlConnector.listResourcesOfType("rdf:Property",
+        callback);
+    },
+
+    listPropertiesForClass: function(graphURI, classURI) {
+      var properties = [];
+      return properties;
+    },
+
+    listClassesForProperty: function(graphURI, propertyURI) {
+      var classes = [];
+      return classes;
     },
 
     postData: function(data) {
       $.ajax({
         type: "POST",
-        url: SchemaEdit.config.sparqlUpdateEndpoint,
+        url: Config.sparqlUpdateEndpoint,
         data: ({
           update: data
         })
