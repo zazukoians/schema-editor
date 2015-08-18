@@ -194,12 +194,12 @@ var SparqlConnector = (function () {
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             //  console.log("getClassesUrl = " + getResourcesUrl);
-            var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
-                callback); // is in sparql-connector.js
+            var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback); // is in sparql-connector.js
             //    console.log("json =" + json);
             return resources;
         },
-        deleteTurtle: function (turtle, callback) {
+
+        deleteTurtle: function (turtle, callback) { // see http://www.w3.org/TR/sparql11-update/#deleteData
             console.log("deleteTurtle turtle = " + turtle);
             var deleteTurtleSparql = sparqlTemplater(
                 deleteTurtleSparqlTemplate, {

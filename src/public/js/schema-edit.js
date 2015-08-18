@@ -168,6 +168,7 @@ var SchemaEdit = (function () {
                     var triple = $(this).attr("data-triple");
                     console.log("TRIPLE on delete = " + triple);
                     var callback = function () {
+                        location.reload(true);
                         console.log("callback called");
                     }
                     SparqlConnector.deleteTurtle(triple, callback);
