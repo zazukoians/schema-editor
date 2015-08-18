@@ -183,6 +183,47 @@ var SparqlConnector = (function () {
             });
         },
 
+        listResourcesOfType: function (type, callback) {
+            var resources = [];
+            var getResourceListSparql = sparqlTemplater(
+                getResourcesOfTypeSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "type": type
+                });
+            var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+                encodeURIComponent(getResourceListSparql) + "&output=xml";
+
+            //  console.log("getClassesUrl = " + getResourcesUrl);
+            var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
+                callback); // is in sparql-connector.js
+            //    console.log("json =" + json);
+            return resources;
+        },
+        deleteTurtle: function (turtle, callback) {
+            console.log("deleteTurtle turtle = " + turtle);
+            var deleteTurtleSparql = sparqlTemplater(
+                deleteTurtleSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "turtle": turtle
+                });
+            console.log("deleteTurtleSparql = " + deleteTurtleSparql);
+
+            $.ajax({
+                type: "POST",
+                url: Config.sparqlServerHost + Config.sparqlUpdateEndpoint,
+                data: ({
+                    update: deleteTurtleSparql
+                })
+            }).done(function (msg) {
+                alert("Delete Applied: " + msg);
+                callback();
+            }).fail(function (jqXHR, textStatus) {
+                alert("Error " + textStatus); // function( jqXHR, textStatus )
+            });
+
+            return false;
+        },
+
         getJsonForSparqlURL: function (pageURL, callback) {
             $.ajax({
                 url: pageURL,

@@ -20,7 +20,6 @@ var SchemaEdit = (function () {
         },
         */
 
-        //   populateWithResource: function(uri, callback) {
         makeClassesList: function () {
             var callback = function (json) {
                 SchemaEdit.makeListBlock(json, $("#classes"));
@@ -55,7 +54,7 @@ var SchemaEdit = (function () {
             }
         },
 
-        populateWithResource: function (uri, callback) { // buildEditor is callback
+        populateWithResource: function (uri) { //  callback??
             //  console.log("getresource " + uri);
             // var type = queryString["type"];
             // console.log("TYPE=" + type);
@@ -94,12 +93,11 @@ var SchemaEdit = (function () {
                         node.append(property);
 
                         var deleteButton = $("<button class='delete'>x</button>");
-                        var triple = "<" + SparqlConnector.getCurrentResource() +
-                            "> "; // subject
+                        var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
                         triple += "<" + p + "> "; // predicate/property
-
+                        // triple += ""
                         deleteButton.attr("title", "delete this property"); // tooltip
-                        deleteButton.attr("data-triple", triple); // stick resource data in attribute
+
                         property.after(deleteButton); // TWEAK was append
 
                         node.append($("<br/>"));
@@ -131,31 +129,55 @@ var SchemaEdit = (function () {
                             var changeButton = $("<button class='inline'>Change</button>");
 
                             changeButton.attr("title", "change this value"); // tooltip
-                            changeButton.attr("data-triple", triple); // stick resource data in attribute
+
+                            triple += " <" + o + "> ."; // object
+
+
                             node.append(changeButton);
                             value.text(uriText);
+                        }
+                        deleteButton.attr("data-triple", triple); // stick resource data in attribute
+                        if (changeButton) {
+                            changeButton.attr("data-triple", triple); // stick resource data in attribute
                         }
                         // console.log("triple setup = " + triple);
                         node.append(value);
 
-
-
                         //var update = $("<button>Update</button>");
                         //node.append(update);
-                        node.append
+                        // node.append wtf???
                         $("#editor").append("<br/><strong>Property</strong>").append(
                             node);
                     }
+                    // console.log("in buildEditor() -  $(''.delete '').size() = " + $(".delete").size());
+                    SchemaEdit.setupButtons();
                 }
                 //  console.log("getResourceUrl = " + getResourceUrl);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, buildEditor);
+
         },
 
         setupButtons: function () {
-            $(".delete").click(function () {
-                var triple = this.attr("data-triple");
-                console.log("TRIPLE on delete = " + triple);
+            console.log("Setting up buttons");
+            console.log("$(''.delete '').size() = " + $(".delete").size());
+            $(".delete").each(function (index) {
+                console.log("each .delete " + $(this));
+                console.log(index + ": " + $(this).text());
+                $(this).click(function () {
+                    // alert("Handler for .click() called.");
+                    var triple = $(this).attr("data-triple");
+                    console.log("TRIPLE on delete = " + triple);
+                    var callback = function () {
+                        console.log("callback called");
+                    }
+                    SparqlConnector.deleteTurtle(triple, callback);
+                    // history.add("before",currentState)
+                    // history.add("undo",sparql)
 
+
+                    // history.add("after",currentState)
+                    // history.add("item",undo button)
+                });
             });
 
             $(".change").click(function () {

@@ -101,6 +101,31 @@ WHERE {  \n\
 <~{resourceURI}~>  ?p ?o  . \n\
 }";
 
+/*
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+DELETE DATA {
+GRAPH <http://example/bookStore> {
+<http://example/book1>  dc:title  "Fundamentals of Compiler Desing"
+} } ;
+*/
+
+var deleteTurtleSparqlTemplate = commonPrefixes + " \n\
+		DELETE DATA { \n\
+			GRAPH <~{graphURI}~> { \n\
+				 ~{turtle}~ \n\
+			} \n\
+		}";
+
+/* maybe needed */
+var deleteTripleSparqlTemplate = commonPrefixes +
+	" \n\
+WITH <~{graphURI}~> \n\
+DELETE {  \n\
+<~{subject}~> <~{property}~> <~{object}~> . \n\
+}  \n\
+WHERE {  \n\
+<~{subject}~>  <~{property}~> <~{object}~>  . \n\
+}";
 
 // ------- old foowiki queries -----------------------
 

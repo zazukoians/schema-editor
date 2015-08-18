@@ -14,7 +14,7 @@ button {
     color: white;
     background-color: purple;
     font-size: 70%;
-    margin: 0px 0px 4px 0px;
+    margin: 0px 4px 4px 4px;
  /*   margin: 10px; */
     border-radius: 5px;
 
@@ -33,7 +33,7 @@ label {
 }
 
 input, textarea, select {
-    width: 80%;
+    width: 100%;
     box-sizing:border-box;
     -moz-box-sizing:border-box
 }

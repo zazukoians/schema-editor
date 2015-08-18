@@ -55,7 +55,7 @@
             $("#currentResource").text(uri);
             SparqlConnector.setCurrentResource(uri);
 
-            SchemaEdit.setupButtons();
+
 
             SchemaEdit.makeClassesList();
 
@@ -68,6 +68,8 @@
                 uri = encodeURI(uri);
                 SchemaEdit.populateWithResource(uri); // in schema-edit.js
             }
+
+             
 
 /* Forces refresh of columns
  * fixes non-intuitive problem with post-Ajax redrawing
