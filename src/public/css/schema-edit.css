@@ -32,7 +32,7 @@ label {
 }
 
 input, textarea, select {
-   /* width: 50%; */
+    width: 50%; 
     box-sizing:border-box;
     -moz-box-sizing:border-box
 }
@@ -60,9 +60,12 @@ text-align: center;
 }
 
 .endpoints {
+  display: inline;
     vertical-align: top;
+    text-align: left;
     height:auto !important;
 }
+
 .full {
     display:none;
     height:auto;
@@ -124,7 +127,7 @@ text-align: center;
 /* as used for classes and properties */
 .list-block {
     display: block;
-    margin: 2em;
+    margin: 2em 2em 0em 2em;
     /*width: 40%; */
     padding: 3px;
     list-style-type: none;

@@ -16,7 +16,8 @@
  *     fit in one line.
  */
 
-var commonPrefixes = " \n\
+var commonPrefixes =
+	" \n\
 PREFIX schema: <http://schema.org/> \n\
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n\
 PREFIX dc: <http://purl.org/dc/terms/> \n\
@@ -32,7 +33,18 @@ PREFIX sioc: <http://rdfs.org/sioc/ns#>  \n\
 PREFIX wiki: <http://purl.org/stuff/wiki#>  \n\
 ";
 
-var getResourcesOfTypeSparqlTemplate = commonPrefixes + " \n\
+var getAllProperties = commonPrefixes +
+	" \n\
+SELECT DISTINCT ?property \n\
+FROM NAMED <~{graphURI}~>  \n\
+WHERE { \n\
+?subject ?property ?object \n\
+} \n\
+ORDER BY ?property \n\
+";
+
+var getResourcesOfTypeSparqlTemplate = commonPrefixes +
+	" \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -41,7 +53,8 @@ WHERE { \n\
 ORDER BY ?uri \n\
 ";
 
-var getPropertiesOfResource = commonPrefixes + " \n\
+var getPropertiesOfResource = commonPrefixes +
+	" \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -51,7 +64,8 @@ ORDER BY ?p \n\
 ";
 
 // redundant
-var getClassListSparqlTemplate = commonPrefixes + " \n\
+var getClassListSparqlTemplate = commonPrefixes +
+	" \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -59,7 +73,8 @@ WHERE { \n\
 } \n\
 ";
 
-var getPropertyListSparqlTemplate = commonPrefixes + " \n\
+var getPropertyListSparqlTemplate = commonPrefixes +
+	" \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -67,7 +82,8 @@ WHERE { \n\
 } \n\
 ";
 
-var getResourceSparqlTemplate = commonPrefixes + " \n\
+var getResourceSparqlTemplate = commonPrefixes +
+	" \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -75,7 +91,8 @@ WHERE { \n\
 } \n\
 ";
 
-var deleteResourceSparqlTemplate = commonPrefixes + " \n\
+var deleteResourceSparqlTemplate = commonPrefixes +
+	" \n\
 WITH <~{graphURI}~> \n\
 DELETE {  \n\
 <~{resourceURI}~> ?p ?o . \n\
@@ -87,7 +104,8 @@ WHERE {  \n\
 
 // ------- old foowiki queries -----------------------
 
-var getListSparqlTemplate = commonPrefixes + " \n\
+var getListSparqlTemplate = commonPrefixes +
+	" \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -103,17 +121,20 @@ foaf:nick ?nick \n\
 } \n\
 ";
 
-var getPageListSparqlTemplate = getListSparqlTemplate + " \n\
+var getPageListSparqlTemplate = getListSparqlTemplate +
+	" \n\
 ORDER By ?title  \n\
 # LIMIT 10 \n\
 ";
 
-var getRecentChangesSparqlTemplate = getListSparqlTemplate+ " \n\
+var getRecentChangesSparqlTemplate = getListSparqlTemplate +
+	" \n\
 ORDER By DESC(?modified)  \n\
 LIMIT 15 \n\
 ";
 
-var getPageSparqlTemplate = commonPrefixes + "\n\
+var getPageSparqlTemplate = commonPrefixes +
+	"\n\
     SELECT DISTINCT * \n\
     FROM NAMED <~{graphURI}~>  \n\
     WHERE { \n\
@@ -132,7 +153,8 @@ var getPageSparqlTemplate = commonPrefixes + "\n\
 
 //      ?uri a ?type; \n\
 
-var getResourcesSparqlTemplate = commonPrefixes + "\n\
+var getResourcesSparqlTemplate = commonPrefixes +
+	"\n\
     SELECT DISTINCT * \n\
     FROM NAMED <~{graphURI}~>  \n\
     WHERE { \n\
@@ -150,13 +172,15 @@ OPTIONAL { \n\
 ORDER BY ?title \n\
 ";
 
-var getTurtleSparqlTemplate = commonPrefixes + "\n\
+var getTurtleSparqlTemplate = commonPrefixes +
+	"\n\
     CONSTRUCT { <~{uri}~>  ?p ?o } \n\
     FROM NAMED <~{graphURI}~>  \n\
     WHERE { <~{uri}~>  ?p ?o } \n\
 ";
 
-var getImageSparqlTemplate = commonPrefixes + "\n\
+var getImageSparqlTemplate = commonPrefixes +
+	"\n\
     SELECT DISTINCT * \n\
     FROM NAMED <~{graphURI}~>  \n\
     WHERE { \n\
@@ -165,7 +189,8 @@ var getImageSparqlTemplate = commonPrefixes + "\n\
 } \n\
 ";
 
-var postImageSparqlTemplate = commonPrefixes + "\n\
+var postImageSparqlTemplate = commonPrefixes +
+	"\n\
 WITH <~{graphURI}~> \n\
 DELETE { <~{imageURI}~>  ?p ?o }  \n\
 WHERE { <~{imageURI}~>  ?p ?o } \n\
@@ -181,7 +206,8 @@ GRAPH <~{graphURI}~> {  \n\
 
 // ?tag dc:topic ?topicURI .  \n\
 
-var getAllTagsSparqlTemplate = commonPrefixes + "\n\
+var getAllTagsSparqlTemplate = commonPrefixes +
+	"\n\
 SELECT DISTINCT ?topicLabel   \n\
  FROM NAMED <~{graphURI}~>  \n\
 WHERE {  \n\
@@ -190,7 +216,8 @@ WHERE {  \n\
 }  \n\
 ";
 
-var getTagsSparqlTemplate = commonPrefixes + "\n\
+var getTagsSparqlTemplate = commonPrefixes +
+	"\n\
 SELECT DISTINCT *  \n\
  FROM NAMED <~{graphURI}~>  \n\
 WHERE {  \n\
@@ -201,7 +228,8 @@ WHERE {  \n\
 ";
 
 
-var postPageSparqlTemplate = commonPrefixes + "\n\
+var postPageSparqlTemplate = commonPrefixes +
+	"\n\
 WITH <~{graphURI}~> \n\
 DELETE { <~{uri}~>  ?p ?o }  \n\
 WHERE { <~{uri}~>  ?p ?o } \n\
@@ -223,7 +251,8 @@ foaf:maker <~{maker}~> . \n\
 }";
 
 
-var postTagsSparqlTemplate = commonPrefixes + "\n\
+var postTagsSparqlTemplate = commonPrefixes +
+	"\n\
 INSERT DATA {  \n\
 GRAPH <~{graphURI}~> {  \n\
 \n\
@@ -235,7 +264,8 @@ GRAPH <~{graphURI}~> {  \n\
 } \n\
 }";
 
-var searchSparqlTemplate = commonPrefixes + "\n\
+var searchSparqlTemplate = commonPrefixes +
+	"\n\
 SELECT DISTINCT *  \n\
  FROM NAMED <~{graphURI}~>  \n\
  WHERE { \n\
@@ -261,7 +291,8 @@ foaf:nick ?nick \n\
 }";
 
 // could probably be tidier
-var deleteResourceSparqlTemplate = commonPrefixes + "\n\
+var deleteResourceSparqlTemplate = commonPrefixes +
+	"\n\
 WITH <~{graphURI}~> \n\
 DELETE {  \n\
 ?o sioc:topic ?topic . \n\

@@ -1,24 +1,16 @@
-// TODO move into module below
 // TODO normalize naming SchemaEdit -> SchemaEditor
-/* see http://www.w3.org/TR/sparql11-update/ */
 
-
-
+/**
+ * Comment template.
+ * @param {string} foo This is a param with a description too long to fit in
+ *     one line.
+ * @return {number} This returns something that has a description too long to
+ *     fit in one line.
+ *
+ * see also http://www.w3.org/TR/sparql11-update/
+ */
 var SchemaEdit = (function() {
   "use strict";
-
-  var config = {
-
-    pagesBaseURI: "http://hyperdata.it/wiki/",
-    graphURI: "http://schema.org/terms/",
-
-    sparqlServerHost: "http://localhost:3333",
-    serverRootPath: "/schema-edit/",
-    sparqlQueryEndpoint: "/schema-edit/sparql?query=", // move ? part ??
-    sparqlUpdateEndpoint: "/schema-edit/update"
-  };
-
-
 
   // This is the public interface of the SchemaEditor module.
   var SchemaEdit = {
@@ -90,26 +82,27 @@ var SchemaEdit = (function() {
             triple += "<" + current["p"] + "> "; // predicate/property
 
             deleteButton.attr("data-triple", triple); // stick resource data in attribute
-            property.append(deleteButton);
+            property.after(deleteButton); // TWEAK was append
 
             node.append($("<br/>"));
 
             var value = $("<div>what default?</div>"); // needed for bnodes?
 
             if (current.type == "literal") {
-              console.log("IS LITERAL");
-              value = $("<input type='text' value='" + current["o"] +
-                "'></input>");
+              // console.log("IS LITERAL");
+              //   value = $("<input type='text' value='" + current["o"] +"'></input>");
+              value = $("<textarea  rows='4' value='" + current["o"] +
+                "'></textarea>");
               triple += "\"\"\"" + current["o"] + "\"\"\" ."; // object
 
             }
             if (current.type == "uri") {
               value = $("<a />");
               value.attr("href", current["o"]);
-              console.log("IS URI");
+              // console.log("IS URI");
               node.append($("<button class='inline'>Change</button>"));
             }
-            console.log("triple = " + triple);
+            console.log("triple setup = " + triple);
             node.append(value);
 
             value.text(current["o"]);
@@ -123,29 +116,26 @@ var SchemaEdit = (function() {
         }
         //  console.log("getResourceUrl = " + getResourceUrl);
       SparqlConnector.getJsonForSparqlURL(getResourceUrl, buildEditor);
-      // getDataForURL(handleEntry, getPageUrl);
-
-
     },
 
-
-
     setupButtons: function() {
-      // DELETE buttons on schema-edit main page
-      $(".delete").click(function() {});
+      $(".delete").click(function() {
+        var triple = this.attr("data-triple");
+        console.log("TRIPLE on delete = " + triple);
 
-      // EXPORT TURTLE buttons on schema-edit main page
+      });
+
       $("#turtle").click(function() {
         var query = "CONSTRUCT {?s ?p ?o } WHERE {?s ?p ?o}";
-        var turtleURL = config.sparqlServerHost + config.sparqlQueryEndpoint +
+        var turtleURL = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
           encodeURIComponent(query) + "&output=text";
         location.href = turtleURL;
       });
 
       $("#newPageButton").click(function() {
         var newPageName = $("#newPageName").val();
-        window.location.href = window.location.href = config.serverRootPath +
-          "edit.html?uri=" + config.graphURI + "/" + newPageName;
+        window.location.href = window.location.href = Config.serverRootPath +
+          "edit.html?uri=" + Config.graphURI + "/" + newPageName;
       });
 
       // OLD
@@ -153,7 +143,7 @@ var SchemaEdit = (function() {
         var data = new FormData($("#upload-file").val());
         // console.log("DATA = " + data);
         $.ajax({
-          url: config.sparqlUpdateEndpoint,
+          url: Config.sparqlUpdateEndpoint,
           type: 'POST',
           data: ({
             update: data
@@ -168,7 +158,7 @@ var SchemaEdit = (function() {
 
     generateGetUrl: function(sparqlTemplate, map) {
       var sparql = sparqlTemplater(sparqlTemplate, map);
-      return config.sparqlServerHost + config.sparqlQueryEndpoint +
+      return Config.sparqlServerHost + Config.sparqlQueryEndpoint +
         encodeURIComponent(sparql);
     },
 

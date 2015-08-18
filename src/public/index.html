@@ -52,9 +52,11 @@
 
             $("#currentResource").text(uri);
             SparqlConnector.setCurrentResource(uri);
+
             SchemaEdit.setupButtons();
 
-            SchemaEdit.makeClassesList(); // TODO where are these? Below. Modularise.
+            SchemaEdit.makeClassesList();
+
             SchemaEdit.makePropertiesList();
 
             var uri = queryString["uri"];
@@ -62,7 +64,6 @@
             if (uri) { // TODO need to check if this if() is working
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
-
                 SchemaEdit.populateWithResource(uri); // in schema-edit.js
             }
 
@@ -110,6 +111,25 @@
             <strong>
                 Current Resource : <span id="currentResource"></span>
             </strong>
+            <div class="endpoints">
+                <a href="#hide1" class="hide" id="hide1">+</a>
+                <a href="#show1" class="show" id="show1">-</a>
+                <div class="minimal">Endpoint Settings</div>
+                <div class="full">
+                    <div>
+                        <label for="endpointHost">Endpoint Host</label>
+                        <input id="endpointHost" type='text' value=''></input>
+                    </div>
+                    <div>
+                        <label for="queryPath">Query Path</label>
+                        <input id='queryPath' type='text' value=''></input>
+                    </div>
+                    <div id="updatePath">
+                        <label for="updatePath">Update Path</label>
+                        <input id='updatePath' type='text' value=''></input>
+                    </div>
+                </div>
+            </div>
     </div>
 
 <div id="wrapper">
@@ -126,39 +146,11 @@
 
     <div id="center">
 
+
+<br/>
+<hr />
+
 <div id="editor"></div>
-
-        <!--
-        <div class="endpoints">
-            <a href="#hide1" class="hide" id="hide1">+</a>
-            <a href="#show1" class="show" id="show1">-</a>
-            <div class="minimal">Endpoint Settings</div>
-            <div class="full">
-                <div>
-                    <label for="endpointHost">Endpoint Host</label>
-                    <input id="endpointHost" type='text' value=''></input>
-                </div>
-                <div>
-                    <label for="queryPath">Query Path</label>
-                    <input id='queryPath' type='text' value=''></input>
-                </div>
-                <div id="updatePath">
-                    <label for="updatePath">Update Path</label>
-                    <input id='updatePath' type='text' value=''></input>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <hr />
-
--->
-
-
-        <!-- form id="upload-form" enctype="multipart/form-data">
-            <input type="file" id="upload-file" name="upload" />
-            <button type="submit" id="upload-button">Upload Turtle</button>
-            </form -->
-
         <h3>Upload RDF</h3>
         <!-- TODO change this from config -->
         <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
