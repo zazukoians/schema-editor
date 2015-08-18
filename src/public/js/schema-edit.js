@@ -1,13 +1,12 @@
 // TODO normalize naming SchemaEdit -> SchemaEditor
+// TODO use console.log()s for tests, then remove
 
 /**
- * Comment template.
+ * Comment template. TODO fill me in
  * @param {string} foo This is a param with a description too long to fit in
  *     one line.
  * @return {number} This returns something that has a description too long to
  *     fit in one line.
- *
- * see also http://www.w3.org/TR/sparql11-update/
  */
 var SchemaEdit = (function () {
     "use strict";
@@ -82,9 +81,8 @@ var SchemaEdit = (function () {
                         property.attr("href", p);
                         var pText = p;
 
-                        console.log("p = " + p);
-                        console.log("SparqlConnector.getPrefixedUri(p) = " +
-                            SparqlConnector.getPrefixedUri(p));
+                        // console.log("p = " + p);
+                        // console.log("SparqlConnector.getPrefixedUri(p) = " + SparqlConnector.getPrefixedUri(p));
 
 
                         // console.log("pNamespace = " + pNamespace);
@@ -100,6 +98,7 @@ var SchemaEdit = (function () {
                             "> "; // subject
                         triple += "<" + p + "> "; // predicate/property
 
+                        deleteButton.attr("title", "delete this property"); // tooltip
                         deleteButton.attr("data-triple", triple); // stick resource data in attribute
                         property.after(deleteButton); // TWEAK was append
 
@@ -108,6 +107,7 @@ var SchemaEdit = (function () {
                         var value = $("<div>what default?</div>"); // needed for bnodes?
 
                         var o = current["o"];
+
                         if (current.type == "literal") {
                             // console.log("IS LITERAL");
                             //   value = $("<input type='text' value='" + current["o"] +"'></input>");
@@ -115,24 +115,27 @@ var SchemaEdit = (function () {
                                 "'></textarea>");
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
                             value.text(o);
-
                         }
                         if (current.type == "uri") {
                             var uriText = o;
-                            console.log("o = " + o);
-                            console.log("SparqlConnector.getPrefixedUri(o) = " + SparqlConnector.getPrefixedUri(o));
+                            // console.log("o = " + o);
+                            // console.log("SparqlConnector.getPrefixedUri(o) = " + SparqlConnector.getPrefixedUri(o));
                             if (SparqlConnector.getPrefixedUri(o)) {
                                 uriText = SparqlConnector.getPrefixedUri(o);
                             }
-                            console.log("uriText = " + uriText);
+                            // console.log("uriText = " + uriText);
                             value = $("<a />");
 
                             value.attr("href", o);
                             // console.log("IS URI");
-                            node.append($("<button class='inline'>Change</button>"));
+                            var changeButton = $("<button class='inline'>Change</button>");
+
+                            changeButton.attr("title", "change this value"); // tooltip
+                            changeButton.attr("data-triple", triple); // stick resource data in attribute
+                            node.append(changeButton);
                             value.text(uriText);
                         }
-                        console.log("triple setup = " + triple);
+                        // console.log("triple setup = " + triple);
                         node.append(value);
 
 
@@ -152,6 +155,12 @@ var SchemaEdit = (function () {
             $(".delete").click(function () {
                 var triple = this.attr("data-triple");
                 console.log("TRIPLE on delete = " + triple);
+
+            });
+
+            $(".change").click(function () {
+                var triple = this.attr("data-triple");
+                console.log("TRIPLE on change = " + triple);
 
             });
 

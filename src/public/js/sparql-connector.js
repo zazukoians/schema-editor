@@ -1,5 +1,6 @@
+// TODO use console.log()s for tests, then remove
 /**
- * Comment template.
+ * Comment template. TODO fill me in
  * @param {string} foo This is a param with a description too long to fit in
  *     one line.
  * @return {number} This returns something that has a description too long to
@@ -70,7 +71,6 @@ var SparqlConnector = (function () {
             var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
-            // getClassListSparqlTemplate
             //  console.log("getClassesUrl = " + getResourcesUrl);
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
                 callback); // is in sparql-connector.js
@@ -102,11 +102,11 @@ var SparqlConnector = (function () {
             if (uriNamespaceIndex == -1) {
                 uriNamespaceIndex = uri.lastIndexOf("/");
             }
-            console.log("uriNamespaceIndex = " + uriNamespaceIndex);
+            // console.log("uriNamespaceIndex = " + uriNamespaceIndex);
 
             var uriNamespace = uri.substring(0, uriNamespaceIndex + 1); // TODO check length
             var name = uri.substring(uriNamespaceIndex + 1);
-            console.log("SparqlConnector.getPrefixForUri(uriNamespace) = " + SparqlConnector.getPrefixForUri(uriNamespace));
+            // console.log("SparqlConnector.getPrefixForUri(uriNamespace) = " + SparqlConnector.getPrefixForUri(uriNamespace));
             var prefixedUri = SparqlConnector.getPrefixForUri(uriNamespace) + ":" + name;
             return prefixedUri;
         },
@@ -164,7 +164,7 @@ var SparqlConnector = (function () {
       }];
             knownPrefixes = knownPrefixes.concat(known);
             knownPrefixes.sort();
-            console.log("knownPrefixes = " + JSON.stringify(knownPrefixes));
+            // console.log("knownPrefixes = " + JSON.stringify(knownPrefixes));
             return knownPrefixes;
         },
 
