@@ -15,6 +15,12 @@ var SchemaEdit = (function() {
   // This is the public interface of the SchemaEditor module.
   var SchemaEdit = {
 
+    /* may be needed
+    init: function() {
+      SparqlConnector.init();
+    },
+    */
+
     //   populateWithResource: function(uri, callback) {
     makeClassesList: function() {
       var callback = function(json) {
@@ -72,14 +78,37 @@ var SchemaEdit = (function() {
             var node = $("<div></div>");
 
             var property = $("<a/>");
-            property.attr("href", current["p"]);
-            property.text(current["p"]);
+            var p = current["p"];
+            property.attr("href", p);
+            var pText = p;
+
+            console.log("p = " + p);
+            console.log("SparqlConnector.getPrefixForUri(p) = " +
+              SparqlConnector.getPrefixForUri(p));
+
+            var pNamespaceIndex = p.indexOf("#");
+            if (pNamespaceIndex == -1) {
+              pNamespaceIndex = p.lastIndexOf("/");
+            }
+            console.log("pNamespaceIndex = " + pNamespaceIndex);
+
+            var pNamespace = p.substring(0, pNamespaceIndex + 1); // TODO check length
+            console.log("pNamespace = " + pNamespace);
+
+            if (SparqlConnector.getPrefixForUri(pNamespace)) {
+              console.log("getting prefix for uri = " + pNamespace);
+              var name = p.substring(pNamespaceIndex + 1);
+              pText = SparqlConnector.getPrefixForUri(pNamespace) + ":" +
+                name;
+              console.log("got prefix = " + pText);
+            }
+            property.text(pText);
             node.append(property);
 
             var deleteButton = $("<button class='delete'>x</button>");
             var triple = "<" + SparqlConnector.getCurrentResource() +
               "> "; // subject
-            triple += "<" + current["p"] + "> "; // predicate/property
+            triple += "<" + p + "> "; // predicate/property
 
             deleteButton.attr("data-triple", triple); // stick resource data in attribute
             property.after(deleteButton); // TWEAK was append

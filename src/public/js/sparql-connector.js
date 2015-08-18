@@ -8,188 +8,237 @@
  * see also http://www.w3.org/TR/sparql11-update/
  */
 var SparqlConnector = (function() {
-      "use strict";
+  "use strict";
 
-      var currentResource = "http://example.org/dummy";
-      var knownPrefixes = {};
+  var currentResource = "http://example.org/dummy";
+  var knownPrefixes = [];
 
-      // This is the public interface of the Module.
-      var SparqlConnector = {
-        setCurrentResource: function(uri) {
-          currentResource = uri;
-        },
+  // This is the public interface of the Module.
+  var SparqlConnector = {
 
-        getCurrentResource: function() {
-          return currentResource;
-        },
+    init: function() {
+      SparqlConnector.preloadKnownPrefixes();
+    },
 
-        getGraphURI: function() {
-          return Config.graphURI;
-        },
+    setCurrentResource: function(uri) {
+      currentResource = uri;
+    },
 
-        setGraphURI: function(uri) {
-          Config.graphURI = uri;
-          return Config.graphURI;
-        },
-        // API, based on spec
-        // initial implementations based on foowiki Ajax - with templating
+    getCurrentResource: function() {
+      return currentResource;
+    },
 
-        setQueryEndpoint: function(url) {
-          Config.sparqlQueryEndpoint = url;
-          return getQueryEndpoint();
-        },
+    getGraphURI: function() {
+      return Config.graphURI;
+    },
 
-        getQueryEndpoint: function() {
-          return Config.sparqlQueryEndpoint
-        },
+    setGraphURI: function(uri) {
+      Config.graphURI = uri;
+      return Config.graphURI;
+    },
+    // API, based on spec
+    // initial implementations based on foowiki Ajax - with templating
 
-        setUpdateEndpoint: function(url) {
-          return getUpdateEndpoint();
-        },
+    setQueryEndpoint: function(url) {
+      Config.sparqlQueryEndpoint = url;
+      return getQueryEndpoint();
+    },
 
-        getUpdateEndpoint: function() {
-          return Config.sparqlUpdateEndpoint
-        },
+    getQueryEndpoint: function() {
+      return Config.sparqlQueryEndpoint
+    },
 
-        setEndpoint: function(graphURI) {
-          return graphURI;
-        },
+    setUpdateEndpoint: function(url) {
+      return getUpdateEndpoint();
+    },
 
-        listResourcesOfType: function(type, callback) {
-          var resources = [];
-          var getResourceListSparql = sparqlTemplater(
-            getResourcesOfTypeSparqlTemplate, {
-              "graphURI": SparqlConnector.getGraphURI(),
-              "type": type
-            });
-          var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
-            encodeURIComponent(getResourceListSparql) + "&output=xml";
+    getUpdateEndpoint: function() {
+      return Config.sparqlUpdateEndpoint
+    },
 
-          // getClassListSparqlTemplate
-          //  console.log("getClassesUrl = " + getResourcesUrl);
-          var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
-            callback); // is in sparql-connector.js
-          //    console.log("json =" + json);
-          return resources;
-        },
+    setEndpoint: function(graphURI) {
+      return graphURI;
+    },
 
-        listClasses: function(callback) {
-          return SparqlConnector.listResourcesOfType("rdfs:Class", callback);
-        },
+    listResourcesOfType: function(type, callback) {
+      var resources = [];
+      var getResourceListSparql = sparqlTemplater(
+        getResourcesOfTypeSparqlTemplate, {
+          "graphURI": SparqlConnector.getGraphURI(),
+          "type": type
+        });
+      var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+        encodeURIComponent(getResourceListSparql) + "&output=xml";
 
-        listProperties: function(callback) {
-          return SparqlConnector.listResourcesOfType("rdf:Property",
-            callback);
-        },
+      // getClassListSparqlTemplate
+      //  console.log("getClassesUrl = " + getResourcesUrl);
+      var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
+        callback); // is in sparql-connector.js
+      //    console.log("json =" + json);
+      return resources;
+    },
 
-        listPropertiesForClass: function(graphURI, classURI) {
-          var properties = [];
-          return properties;
-        },
+    listClasses: function(callback) {
+      return SparqlConnector.listResourcesOfType("rdfs:Class", callback);
+    },
 
-        listClassesForProperty: function(graphURI, propertyURI) {
-          var classes = [];
-          return classes;
-        },
+    listProperties: function(callback) {
+      return SparqlConnector.listResourcesOfType("rdf:Property",
+        callback);
+    },
 
-        preloadKnownPrefixes: function() {
-          knownPrefixes =
-            PREFIX schema: < http: //schema.org/> \n\
-            PREFIX rdfs: < http: //www.w3.org/2000/01/rdf-schema#> \n\
-            PREFIX dc: < http: //purl.org/dc/terms/> \n\
-            PREFIX owl: < http: //www.w3.org/2002/07/owl#> \n\
-            PREFIX rdf: < http: //www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
-            PREFIX foaf: < http: //xmlns.com/foaf/0.1/> \n\
-            PREFIX dcat: < http: //www.w3.org/ns/dcat#> \n\
-            PREFIX void: < http: //rdfs.org/ns/void#> \n\
-            PREFIX bibo: < http: //purl.org/ontology/bibo/> \n\
-            \n\
-          PREFIX dctype: < http: //purl.org/dc/dcmitype/> \n\
-            PREFIX sioc: < http: //rdfs.org/sioc/ns#>  \n\
-            PREFIX wiki: < http: //purl.org/stuff/wiki#>  \n\
+    listPropertiesForClass: function(graphURI, classURI) {
+      var properties = [];
+      return properties;
+    },
 
-            /* connector low-level utilities */
-            postData: function(data) {
-              $.ajax({
-                type: "POST",
-                url: Config.sparqlUpdateEndpoint,
-                data: ({
-                  update: data
-                })
-              }).done(function() {}).fail(function() {
-                alert("error"); // use error banner
-              });
-            },
+    listClassesForProperty: function(graphURI, propertyURI) {
+      var classes = [];
+      return classes;
+    },
 
-            getJsonForSparqlURL: function(pageURL, callback) {
-              $.ajax({
-                url: pageURL,
-                accept: {
-                  xml: 'application/xml;charset=UTF-8',
-                  sparql: 'sparql-results+xml;charset=UTF-8'
-                },
-                headers: { // belt and braces
-                  'Accept': 'sparql-results+xml;charset=UTF-8'
-                    //   'Accept-Charset': 'UTF-8' unsafe
-                }
-              }).done(function(xml) {
-                var json = SparqlConnector.sparqlXMLtoJSON(xml);
-                // console.log("JSON = "+JSON.stringify(json));
-                callback(json);
-                // $(window).trigger('resize');
-              }).fail(function() {
-                alert("error");
-              });
-            },
+    getPrefixForUri: function(uri) {
+      var array = knownPrefixes;
 
-            sparqlXMLtoJSON: function(xml) {
-
-              var xmlString = (new XMLSerializer()).serializeToString(xml);
-
-              // workaround for wrong interpretation of charset
-              xmlString = xmlString.replace(/[^\u0000-\u007F]/g, '');
-              // maybe force to ISO-8859-1, also known as Latin-1 instead?
-
-              var $xml = $(xmlString);
-              // console.log(xmlString);
-              var variables = $xml.find("variable");
-
-              if (variables.length == 0) {
-                return false;
-              }
-              var jsonVariables = [];
-
-              variables.each(function() {
-                jsonVariables.push($(this).attr("name"));
-              });
-
-              var results = $xml.find("result");
-
-              if (results.length == 0) {
-                return false;
-              }
-              var jsonResults = [];
-
-              results.each(function() {
-                var map = {};
-                for (var i = 0; i < jsonVariables.length; i++) {
-                  var name = jsonVariables[i];
-                  // console.log("NAME=" + name);
-                  $(this).find("binding[name='" + name + "']").each(
-                    function() {
-                      //  entry[name] = $(this).text().trim();
-                      // console.log("entry[name]=" + entry[name]);$( "div span:first-child" )
-                      map["type"] = $(this).children().prop("tagName")
-                        .toLowerCase();
-                      map[name] = $(this).text().trim();
-                    });
-                }
-                jsonResults.push(map);
-              });
-
-              //  console.log("RESULTS = "+JSON.stringify(jsonResults));
-              return jsonResults;
-            }
+      for (var i = 0; i < array.length; i++) {
+        var prefix = array[i].prefix;
+        var knownUri = array[i].uri;
+        if (knownUri == uri) {
+          return prefix;
         }
-        return SparqlConnector;
-      }());
+      }
+      return null;
+    },
+
+    preloadKnownPrefixes: function() {
+      var known = [{
+        prefix: "schema",
+        uri: "http://schema.org/"
+      }, {
+        prefix: "rdfs",
+        uri: "http://www.w3.org/2000/01/rdf-schema#"
+      }, {
+        prefix: "dc",
+        uri: "http://purl.org/dc/terms/"
+      }, {
+        prefix: "owl",
+        uri: "http://www.w3.org/2002/07/owl#"
+      }, {
+        prefix: "rdf",
+        uri: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      }, {
+        prefix: "foaf",
+        uri: "http://xmlns.com/foaf/0.1/"
+      }, {
+        prefix: "dcat",
+        uri: "http://www.w3.org/ns/dcat#"
+      }, {
+        prefix: "void",
+        uri: "http://rdfs.org/ns/void#"
+      }, {
+        prefix: "bibo",
+        uri: "http://purl.org/ontology/bibo/"
+      }, {
+        prefix: "dctype",
+        uri: "http://purl.org/dc/dcmitype/"
+      }, {
+        prefix: "sioc",
+        uri: "http://rdfs.org/sioc/ns#"
+      }, {
+        prefix: "stuff",
+        uri: "http://purl.org/stuff/"
+      }];
+      knownPrefixes = knownPrefixes.concat(known);
+      knownPrefixes.sort();
+      console.log("knownPrefixes = " + JSON.stringify(knownPrefixes));
+      return knownPrefixes;
+    },
+
+    /* *** connector low-level utilities *** */
+
+    postData: function(data) {
+      $.ajax({
+        type: "POST",
+        url: Config.sparqlUpdateEndpoint,
+        data: ({
+          update: data
+        })
+      }).done(function() {}).fail(function(jqXHR, textStatus,
+        errorThrown) {
+        alert("Error " + textStatus);
+      });
+    },
+
+    getJsonForSparqlURL: function(pageURL, callback) {
+      $.ajax({
+        url: pageURL,
+        accept: {
+          xml: 'application/xml;charset=UTF-8',
+          sparql: 'sparql-results+xml;charset=UTF-8'
+        },
+        headers: { // belt and braces
+          'Accept': 'sparql-results+xml;charset=UTF-8'
+            //   'Accept-Charset': 'UTF-8' unsafe
+        }
+      }).done(function(xml) {
+        var json = SparqlConnector.sparqlXMLtoJSON(xml);
+        // console.log("JSON = "+JSON.stringify(json));
+        callback(json);
+        // $(window).trigger('resize');
+      }).fail(function() {
+        alert("error");
+      });
+    },
+
+    sparqlXMLtoJSON: function(xml) {
+
+      var xmlString = (new XMLSerializer()).serializeToString(xml);
+
+      // workaround for wrong interpretation of charset
+      xmlString = xmlString.replace(/[^\u0000-\u007F]/g, '');
+      // maybe force to ISO-8859-1, also known as Latin-1 instead?
+
+      var $xml = $(xmlString);
+      // console.log(xmlString);
+      var variables = $xml.find("variable");
+
+      if (variables.length == 0) {
+        return false;
+      }
+      var jsonVariables = [];
+
+      variables.each(function() {
+        jsonVariables.push($(this).attr("name"));
+      });
+
+      var results = $xml.find("result");
+
+      if (results.length == 0) {
+        return false;
+      }
+      var jsonResults = [];
+
+      results.each(function() {
+        var map = {};
+        for (var i = 0; i < jsonVariables.length; i++) {
+          var name = jsonVariables[i];
+          // console.log("NAME=" + name);
+          $(this).find("binding[name='" + name + "']").each(
+            function() {
+              //  entry[name] = $(this).text().trim();
+              // console.log("entry[name]=" + entry[name]);$( "div span:first-child" )
+              map["type"] = $(this).children().prop(
+                  "tagName")
+                .toLowerCase();
+              map[name] = $(this).text().trim();
+            });
+        }
+        jsonResults.push(map);
+      });
+
+      //  console.log("RESULTS = "+JSON.stringify(jsonResults));
+      return jsonResults;
+    }
+  }
+  return SparqlConnector;
+}());

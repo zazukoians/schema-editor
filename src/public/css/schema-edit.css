@@ -13,10 +13,11 @@
 button {
     color: white;
     background-color: purple;
-    font-size: 1em;
-    /*  padding: 10px; */
+    font-size: 70%;
+    margin: 0px 0px 4px 0px;
  /*   margin: 10px; */
     border-radius: 5px;
+
 }
 
 .inline button {
@@ -32,7 +33,7 @@ label {
 }
 
 input, textarea, select {
-    width: 50%; 
+    width: 50%;
     box-sizing:border-box;
     -moz-box-sizing:border-box
 }
