@@ -58,15 +58,14 @@ var SchemaEdit = (function () {
             //  console.log("getresource " + uri);
             // var type = queryString["type"];
             // console.log("TYPE=" + type);
+            SchemaEdit.makeAddProperty(uri);
 
             var map = {
                 graphURI: SparqlConnector.getGraphURI(),
                 uri: uri
             };
 
-            var getResourceUrl = SchemaEdit.generateGetUrl(
-                getResourceSparqlTemplate,
-                map);
+            var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var buildEditor = function (json) {
                     // console.log("json = " + JSON.stringify(json, null, 4));
@@ -158,11 +157,11 @@ var SchemaEdit = (function () {
         },
 
         setupButtons: function () {
-            console.log("Setting up buttons");
-            console.log("$(''.delete '').size() = " + $(".delete").size());
+            //console.log("Setting up buttons");
+            //console.log("$(''.delete '').size() = " + $(".delete").size());
             $(".delete").each(function (index) {
-                console.log("each .delete " + $(this));
-                console.log(index + ": " + $(this).text());
+                //console.log("each .delete " + $(this));
+                //console.log(index + ": " + $(this).text());
                 $(this).click(function () {
                     // alert("Handler for .click() called.");
                     var triple = $(this).attr("data-triple");
@@ -216,6 +215,48 @@ var SchemaEdit = (function () {
                 });
                 //    e.preventDefault();
             });
+        },
+
+        makeAddProperty: function (uri) {
+            var addPropertyButton = $("<button id='addProperty'>Add Property</button>");
+            $("#editor").prepend(addPropertyButton);
+            addPropertyButton.click(function () {
+
+            });
+            var chooser = SchemaEdit.makePropertyChooser(uri);
+
+        },
+
+        makePropertyChooser: function (uri) {
+            var map = {
+                graphURI: SparqlConnector.getGraphURI(),
+            };
+            var getAllPropertiesUrl = SchemaEdit.generateGetUrl(getPropertyListSparqlTemplate, map);
+            var callback = function (json) {
+                console.log("schema-edit.js PropertyChooser JSON = " + JSON.stringify(json));
+            };
+            SparqlConnector.getJsonForSparqlURL(getAllPropertiesUrl, callback);
+        },
+
+        makeAddClass: function (uri) {
+            var addPropertyButton = $("<button id='addClass'>Add Class</button>");
+            $("#editor").prepend(addClassButton);
+            addClassButton.click(function () {
+
+            });
+            var chooser = SchemaEdit.makePropertyChooser(uri);
+
+        },
+
+        makeClassChooser: function (uri) {
+            var map = {
+                graphURI: SparqlConnector.getGraphURI(),
+            };
+            var getAllClassesUrl = SchemaEdit.generateGetUrl(getClassListSparqlTemplate, map);
+            var callback = function (json) {
+                console.log("schema-edit.js ClassChooser JSON = " + JSON.stringify(json));
+            };
+            SparqlConnector.getJsonForSparqlURL(getAllclassesUrl, callback);
         },
 
         generateGetUrl: function (sparqlTemplate, map) {

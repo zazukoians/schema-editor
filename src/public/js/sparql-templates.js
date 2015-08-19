@@ -78,8 +78,9 @@ var getPropertyListSparqlTemplate = commonPrefixes +
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
-?uri a rdf:Property; \n\
+	?uri a rdf:Property; \n\
 } \n\
+ORDER BY ?uri \n\
 ";
 
 var getResourceSparqlTemplate = commonPrefixes +

@@ -69,7 +69,7 @@
                 SchemaEdit.populateWithResource(uri); // in schema-edit.js
             }
 
-             
+
 
 /* Forces refresh of columns
  * fixes non-intuitive problem with post-Ajax redrawing
@@ -152,16 +152,16 @@
 
 
 <br/>
-<hr />
 
 <div id="editor"></div>
+<hr />
         <h3>Upload RDF</h3>
         <!-- TODO change this from config -->
         <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
             <!-- TODO move to config (bypass Fuseki) -->
             <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
             <!-- TODO UNSET FILE NAME ?? -->
-            <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="">
+            <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
             <label for='graphName'>Graph</label>
             <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
             <br />
