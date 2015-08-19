@@ -219,6 +219,7 @@ var SchemaEdit = (function () {
 
         makeAddProperty: function (uri) {
             var addPropertyButton = $("<button id='addProperty'>Add Property</button>");
+            addPropertyButton.append($("<hr/>"));
             $("#editor").prepend(addPropertyButton);
             addPropertyButton.click(function () {
 

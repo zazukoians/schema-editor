@@ -61,27 +61,32 @@ text-align: center;
 }
 
 .endpoints {
-  display: inline;
+    display: block;
     vertical-align: top;
     text-align: left;
     height:auto !important;
 }
 
+/* collapsible chunks */
 .full {
     display:none;
     height:auto;
     margin:0;
     float: left;
 }
+
 .show {
     display: none;
 }
+
 .hide:target + .show {
     display: inline;
 }
+
 .hide:target {
     display: none;
 }
+
 .hide:target ~ .full {
     display:inline;
 }
@@ -115,6 +120,7 @@ text-align: center;
     height:auto;
     margin:0;
 }
+
 .minimal {
     float: left;
     height: auto;

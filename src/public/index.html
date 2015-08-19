@@ -47,7 +47,8 @@
             SparqlConnector.init();
 
             //    setupErrorHandling(); // TODO is needed? maybe just a popup
-              spinner();
+            spinner();
+
             var uri = queryString["uri"];
             // console.log("URI="+uri);
             uri = encodeURI(uri);
@@ -55,30 +56,16 @@
             $("#currentResource").text(uri);
             SparqlConnector.setCurrentResource(uri);
 
-
-
             SchemaEdit.makeClassesList();
-
             SchemaEdit.makePropertiesList();
 
             var uri = queryString["uri"];
-
             if (uri) { // TODO need to check if this if() is working
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
                 SchemaEdit.populateWithResource(uri); // in schema-edit.js
             }
-
-
-
-/* Forces refresh of columns
- * fixes non-intuitive problem with post-Ajax redrawing
- * TODO move to utils.js
- */
-            var elem = document.getElementById("wrapper");
-            elem.style.display = 'none';
-            elem.offsetHeight; // no need to store this anywhere, the reference is enough
-            elem.style.display = 'flex';
+            refresh(); // redraws flex columns
 
             /*
             $("#upload-button").click(function () {
@@ -149,7 +136,22 @@
     </div>
 
     <div id="center">
-
+<div class="add">
+    <a href="#hide2" class="hide" id="hide2">+</a>
+    <a href="#show2" class="show" id="show2">-</a>
+    <div class="minimal">Add Class/Property</div>
+    <div class="full">
+        <div>
+            <label for="newProperty">New Property</label>
+            <input id="newProperty" type='text' value=''></input>
+        </div>
+        <div>
+            <label for="newClass">New Class</label>
+            <input id='newClass' type='text' value=''></input>
+        </div>
+<div><em>TODO checkbox for inherit</em></div>
+    </div>
+</div>
 
 <br/>
 

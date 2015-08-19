@@ -7,28 +7,39 @@
  * @return {number} This returns something that has a description too long to
  *     fit in one line.
  */
+
+/* Forces refresh of columns
+ * fixes non-intuitive problem with post-Ajax redrawing
+ */
+function refresh() {
+    var elem = document.getElementById("wrapper");
+    elem.style.display = 'none';
+    elem.offsetHeight; // no need to store this anywhere, the reference is enough
+    elem.style.display = 'flex';
+}
+
 function spinner() {
-  var $loading = $('#spinner').hide();
-  $.ajaxSetup({
-    beforeSend: function() {
-      $('#spinner').show();
-    },
-    complete: function() {
-      $('#spinner').hide();
-    },
-    success: function() {}
-  });
+    var $loading = $('#spinner').hide();
+    $.ajaxSetup({
+        beforeSend: function () {
+            $('#spinner').show();
+        },
+        complete: function () {
+            $('#spinner').hide();
+        },
+        success: function () {}
+    });
 }
 
 // bit of a sledgehammer, but whatever works...
-Array.prototype.contains = function(obj) {
-  var i = this.length;
-  while (i--) {
-    if (this[i] == obj) {
-      return true;
+Array.prototype.contains = function (obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] == obj) {
+            return true;
+        }
     }
-  }
-  return false;
+    return false;
 }
 
 /**
@@ -40,19 +51,19 @@ Array.prototype.contains = function(obj) {
  */
 /* TODO is used? */
 function setupErrorHandling() {
-  $("#errorbox").hide();
-  $("#errorbox").click(function() {
-    // $("#errorbox").toggle(500);
     $("#errorbox").hide();
-  });
+    $("#errorbox").click(function () {
+        // $("#errorbox").toggle(500);
+        $("#errorbox").hide();
+    });
 
-  $.ajaxSetup({
-    error: function(x, status, error) {
-      $("#errorbox").text(status + ": " + error);
-      $("#errorbox").toggle(500);
-      // $("#errorbox").toggle(2000);
-    }
-  });
+    $.ajaxSetup({
+        error: function (x, status, error) {
+            $("#errorbox").text(status + ": " + error);
+            $("#errorbox").toggle(500);
+            // $("#errorbox").toggle(2000);
+        }
+    });
 }
 
 /**
@@ -63,11 +74,11 @@ function setupErrorHandling() {
  *     fit in one line.
  */
 function sparqlTemplater(raw, replacementMap, isWrite) {
-  if (isWrite && replacementMap["content"]) {
-    replacementMap["content"] = escapeLiterals(replacementMap["content"]);
+    if (isWrite && replacementMap["content"]) {
+        replacementMap["content"] = escapeLiterals(replacementMap["content"]);
 
-  }
-  return templater(raw, replacementMap);
+    }
+    return templater(raw, replacementMap);
 }
 
 /**
@@ -78,8 +89,8 @@ function sparqlTemplater(raw, replacementMap, isWrite) {
  *     fit in one line.
  */
 function unescapeLiterals(text) {
-  var data = text.replace(/&#34&#34&#34/g, '"""');
-  return data;
+    var data = text.replace(/&#34&#34&#34/g, '"""');
+    return data;
 }
 
 /**
@@ -90,7 +101,7 @@ function unescapeLiterals(text) {
  *     fit in one line.
  */
 function escapeLiterals(text) {
-  return text.replace(/"""/g, "&#34&#34&#34");
+    return text.replace(/"""/g, "&#34&#34&#34");
 }
 
 
@@ -102,26 +113,26 @@ function escapeLiterals(text) {
  *     fit in one line.
  */
 function templater(raw, replacementMap) {
-  var template = Hogan.compile(raw, {
-    delimiters: '~{ }~'
-  });
+    var template = Hogan.compile(raw, {
+        delimiters: '~{ }~'
+    });
 
-  var result = template.render(replacementMap);
-  return htmlUnescape(result);
+    var result = template.render(replacementMap);
+    return htmlUnescape(result);
 }
 
 /* parse URL */
-var queryString = (function(a) {
-  if (a == "") return {};
-  var b = {};
-  for (var i = 0; i < a.length; ++i) {
-    var p = a[i].split('=', 2);
-    if (p.length == 1)
-      b[p[0]] = "";
-    else
-      b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-  }
-  return b;
+var queryString = (function (a) {
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i) {
+        var p = a[i].split('=', 2);
+        if (p.length == 1)
+            b[p[0]] = "";
+        else
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
 })(window.location.search.substr(1).split('&'));
 
 /**
@@ -132,7 +143,7 @@ var queryString = (function(a) {
  *     fit in one line.
  */
 function getCurrentPageURI() {
-  return encodeURI(queryString["uri"]);
+    return encodeURI(queryString["uri"]);
 }
 
 /**
@@ -143,59 +154,59 @@ function getCurrentPageURI() {
  *     fit in one line.
  */
 function translateLinks(object) {
-  $('div.content  a', object).each(
-    function() {
-      var href = this.href;
-      console.log("HREF=" + href);
-      if (href.indexOf(FooWiki.serverRootPath) != -1) { // less than perfect, in-page links maybe involve FooWiki.pagesBaseURI
-        var hashPosition = href.indexOf("#");
-        if (hashPosition != -1) {
-          var anchor = href.substring(hashPosition); // "#Something"
-          anchor = anchor.trim().toLowerCase();
-          anchor = anchor.replace(/\s+/g, "-");
-          this.href = href.substring(0, hashPosition) + anchor;
+    $('div.content  a', object).each(
+        function () {
+            var href = this.href;
+            console.log("HREF=" + href);
+            if (href.indexOf(FooWiki.serverRootPath) != -1) { // less than perfect, in-page links maybe involve FooWiki.pagesBaseURI
+                var hashPosition = href.indexOf("#");
+                if (hashPosition != -1) {
+                    var anchor = href.substring(hashPosition); // "#Something"
+                    anchor = anchor.trim().toLowerCase();
+                    anchor = anchor.replace(/\s+/g, "-");
+                    this.href = href.substring(0, hashPosition) + anchor;
 
-          $(this).click(function() {
-            $('html, body').animate({
-              scrollTop: $(anchor).offset().top
-            }, 250); // milliseconds
-          });
-        } else {
-          // http://localhost:3030/foowiki/page.html?uri=http://hyperdata.it/wiki/Home%20Page
-          this.href = reviseHref(this);
+                    $(this).click(function () {
+                        $('html, body').animate({
+                            scrollTop: $(anchor).offset().top
+                        }, 250); // milliseconds
+                    });
+                } else {
+                    // http://localhost:3030/foowiki/page.html?uri=http://hyperdata.it/wiki/Home%20Page
+                    this.href = reviseHref(this);
+                }
+                return;
+            }
+        });
+
+    $("img", object).each(function () {
+        //  var split = window.location.href.split("/");
+        //    var path = split.slice(0, split.length - 1).join("/");
+        //     path = path + "/" + $(this).attr("src") + "&type=image";
+        // $(this).attr("src", path);
+
+
+        var path = FooWiki.pagesBaseURI + $(this).attr("src");
+        var me = this;
+        var setImgSrc = function (src) {
+            console.log("SRC=" + src);
+            $(me).attr("src", src);
         }
-        return;
-      }
+        getImage(path, setImgSrc);
     });
 
-  $("img", object).each(function() {
-    //  var split = window.location.href.split("/");
-    //    var path = split.slice(0, split.length - 1).join("/");
-    //     path = path + "/" + $(this).attr("src") + "&type=image";
-    // $(this).attr("src", path);
-
-
-    var path = FooWiki.pagesBaseURI + $(this).attr("src");
-    var me = this;
-    var setImgSrc = function(src) {
-      console.log("SRC=" + src);
-      $(me).attr("src", src);
-    }
-    getImage(path, setImgSrc);
-  });
-
-  // somethin similar for handlin img 404s
-  // 1unnamed.jpg =>
-  //  http://localhost:3030/foowiki/page.html?uri=http://hyperdata.it/wiki/1unnamed.jpg&type=image
-  /*
-            $('div.content  img', object).each(
-              function () {
-                  var src = $(this).attr("src");
-              //    console.log("this.src="+$(this).attr("src"));
-                  var newSrc = FooWiki.serverRootPath+"page.html?uri="+FooWiki.pagesBaseURI+src+"&type=image";
-                $(this).attr("src",newSrc);
-              });
-              */
+    // somethin similar for handlin img 404s
+    // 1unnamed.jpg =>
+    //  http://localhost:3030/foowiki/page.html?uri=http://hyperdata.it/wiki/1unnamed.jpg&type=image
+    /*
+              $('div.content  img', object).each(
+                function () {
+                    var src = $(this).attr("src");
+                //    console.log("this.src="+$(this).attr("src"));
+                    var newSrc = FooWiki.serverRootPath+"page.html?uri="+FooWiki.pagesBaseURI+src+"&type=image";
+                  $(this).attr("src",newSrc);
+                });
+                */
 }
 
 /**
@@ -206,42 +217,42 @@ function translateLinks(object) {
  *     fit in one line.
  */
 function reviseHref(aElement) {
-  var oldHref = aElement.href;
+    var oldHref = aElement.href;
 
-  //   if (!aElement.text && (location.href == aElement.href)) { // both blank, insert index link
-  //        aElement.text = "Home Page";
-  //   }
+    //   if (!aElement.text && (location.href == aElement.href)) { // both blank, insert index link
+    //        aElement.text = "Home Page";
+    //   }
 
-  var linkText = aElement.text;
-  //    console.log("OFFSITEx"+linkText);
-  if (linkText) {
-    //   console.log("OFFSITEx"+linkText);
-    if (aElement.href.indexOf(FooWiki.serverRootPath) == -1) { // off site, less than perfect BROKEN
-      //      console.log("OFFSITE");
-      $(aElement).append(aElement.href); // use link as label
-      return;
+    var linkText = aElement.text;
+    //    console.log("OFFSITEx"+linkText);
+    if (linkText) {
+        //   console.log("OFFSITEx"+linkText);
+        if (aElement.href.indexOf(FooWiki.serverRootPath) == -1) { // off site, less than perfect BROKEN
+            //      console.log("OFFSITE");
+            $(aElement).append(aElement.href); // use link as label
+            return;
+        }
+        if (location.href == oldHref) { // link href was blank
+            var before = window.location.protocol + "//" + window.location.hostname +
+                ":" + window.location.port + FooWiki.serverRootPath + "page.html?uri=" +
+                FooWiki.pagesBaseURI;
+            return oldHref.substring(0, before.length) + linkText;
+        } else {
+            var localRef = oldHref.substring(oldHref.indexOf(FooWiki.serverRootPath) +
+                FooWiki.serverRootPath.length);
+            return FooWiki.serverRootPath + "page.html?uri=" + FooWiki.pagesBaseURI +
+                localRef;
+        }
     }
-    if (location.href == oldHref) { // link href was blank
-      var before = window.location.protocol + "//" + window.location.hostname +
-        ":" + window.location.port + FooWiki.serverRootPath + "page.html?uri=" +
-        FooWiki.pagesBaseURI;
-      return oldHref.substring(0, before.length) + linkText;
-    } else {
-      var localRef = oldHref.substring(oldHref.indexOf(FooWiki.serverRootPath) +
-        FooWiki.serverRootPath.length);
-      return FooWiki.serverRootPath + "page.html?uri=" + FooWiki.pagesBaseURI +
-        localRef;
-    }
-  }
-  includeContent(aElement);
-  return;
+    includeContent(aElement);
+    return;
 
 
 }
 
 function redirectTo(target) {
-  window.location.href = target;
-  return false;
+    window.location.href = target;
+    return false;
 }
 
 
@@ -254,30 +265,30 @@ function redirectTo(target) {
  */
 function includeContent(aElement) {
 
-  var oldHref = aElement.href;
-  var localRef = oldHref.substring(oldHref.indexOf(FooWiki.serverRootPath) +
-    FooWiki.serverRootPath.length);
-  //   var uri = FooWiki.serverRootPath + "page.html?uri=" + FooWiki.pagesBaseURI + localRef;
-  var uri = FooWiki.pagesBaseURI + localRef;
+    var oldHref = aElement.href;
+    var localRef = oldHref.substring(oldHref.indexOf(FooWiki.serverRootPath) +
+        FooWiki.serverRootPath.length);
+    //   var uri = FooWiki.serverRootPath + "page.html?uri=" + FooWiki.pagesBaseURI + localRef;
+    var uri = FooWiki.pagesBaseURI + localRef;
 
 
-  //  $(aElement).append("filler");
-  console.log("REF=" + aElement.href);
+    //  $(aElement).append("filler");
+    console.log("REF=" + aElement.href);
 
-  var handler = function(pageMap, entryJSON) { // entryHandler(pageMap, entryJSON);
-    //        console.log("pageMap=" + JSON.stringify(pageMap));
-    //        console.log("CONTEN=" + JSON.stringify(entryJSON));
-    if (entryJSON && entryJSON[0] && entryJSON[0]["content"]) {
-      var content = formatContent(entryJSON[0]["content"]);
-    } else {
-      content = "<em>**undefined link**</em>";
+    var handler = function (pageMap, entryJSON) { // entryHandler(pageMap, entryJSON);
+        //        console.log("pageMap=" + JSON.stringify(pageMap));
+        //        console.log("CONTEN=" + JSON.stringify(entryJSON));
+        if (entryJSON && entryJSON[0] && entryJSON[0]["content"]) {
+            var content = formatContent(entryJSON[0]["content"]);
+        } else {
+            content = "<em>**undefined link**</em>";
+        }
+
+        $(aElement).replaceWith(content);
     }
 
-    $(aElement).replaceWith(content);
-  }
-
-  console.log("uri=" + uri);
-  getResource(uri, handler);
+    console.log("uri=" + uri);
+    getResource(uri, handler);
 
 }
 
@@ -291,20 +302,20 @@ function includeContent(aElement) {
 // little workaround for odd marked.js behaviour, at least in part due to marked.js line 793 regex
 // if the header is a link, the id ends up as "-like-this-like-this-"
 function fixHeaderIDs() {
-  $(
-    ".content h1, .content h2, .content h3, .content h4, .content h5, .content h6"
-  ).each(function() {
-    var id = $(this).attr("id");
-    if (id) {
-      var length = id.length;
-      if (id[0] == "-" && id[length - 1] == "-") {
-        //      console.log("need to fix");
-        id = id.substring(1, length / 2);
-        $(this).attr("id", id);
-      }
-      //    console.log("ID = " + id);
-    }
-  });
+    $(
+        ".content h1, .content h2, .content h3, .content h4, .content h5, .content h6"
+    ).each(function () {
+        var id = $(this).attr("id");
+        if (id) {
+            var length = id.length;
+            if (id[0] == "-" && id[length - 1] == "-") {
+                //      console.log("need to fix");
+                id = id.substring(1, length / 2);
+                $(this).attr("id", id);
+            }
+            //    console.log("ID = " + id);
+        }
+    });
 }
 
 /**
@@ -315,11 +326,11 @@ function fixHeaderIDs() {
  *     fit in one line.
  */
 function escapeXml(markup) {
-  markup = markup.replace(/&/g, "&amp;");
-  markup = markup.replace(/</g, "&lt;");
-  markup = markup.replace(/>/g, "&gt;");
-  //  markup = escapeLiterals(markup);
-  return markup;
+    markup = markup.replace(/&/g, "&amp;");
+    markup = markup.replace(/</g, "&lt;");
+    markup = markup.replace(/>/g, "&gt;");
+    //  markup = escapeLiterals(markup);
+    return markup;
 }
 
 /**
@@ -330,7 +341,7 @@ function escapeXml(markup) {
  *     fit in one line.
  */
 function escapeRegExp(string) {
-  return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
 
 /**
@@ -341,7 +352,7 @@ function escapeRegExp(string) {
  *     fit in one line.
  */
 function replaceAll(string, find, replace) {
-  return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+    return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
 /**
@@ -352,14 +363,14 @@ function replaceAll(string, find, replace) {
  *     fit in one line.
  */
 function tweakBlockquotes(content) {
-  var blockquoteSplit = content.split("```");
-  if (blockquoteSplit.length > 1) {
-    for (var i = 1; i < blockquoteSplit.length; i = i + 2) {
-      //    console.log("X=" + blockquoteSplit[i]);
-      blockquoteSplit[i] = hUnescape(blockquoteSplit[i]);
+    var blockquoteSplit = content.split("```");
+    if (blockquoteSplit.length > 1) {
+        for (var i = 1; i < blockquoteSplit.length; i = i + 2) {
+            //    console.log("X=" + blockquoteSplit[i]);
+            blockquoteSplit[i] = hUnescape(blockquoteSplit[i]);
+        }
     }
-  }
-  return blockquoteSplit.join("```");
+    return blockquoteSplit.join("```");
 }
 
 /**
@@ -371,12 +382,12 @@ function tweakBlockquotes(content) {
  */
 function htmlUnescape(value) {
 
-  value = value.replace(/&lt;/g, "<");
-  value = value.replace(/&gt;/g, ">");
-  value = value.replace(/&quot;/g, "\"");
-  value = value.replace(/&amp;/g, "&");
+    value = value.replace(/&lt;/g, "<");
+    value = value.replace(/&gt;/g, ">");
+    value = value.replace(/&quot;/g, "\"");
+    value = value.replace(/&amp;/g, "&");
 
-  return value;
+    return value;
 }
 
 /**
@@ -388,7 +399,7 @@ function htmlUnescape(value) {
  */
 function hUnescape(value) {
 
-  var d = $("<div>");
-  d.html(value);
-  return d.text();
+    var d = $("<div>");
+    d.html(value);
+    return d.text();
 }
