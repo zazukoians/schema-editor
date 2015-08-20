@@ -49,14 +49,20 @@ label {
 
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
 
-#classes, #properties {
-display: block;
-text-align: center;
-}
-
 .list-container {
     display: block;
+    width: 100px;
 }
+
+.propertyBlock {
+    width: 100px;
+}
+
+#classes, #properties {
+    display: block;
+    text-align: center;
+}
+
 
 .small {
   font-size: 50%;
@@ -66,16 +72,23 @@ text-align: center;
 
 .endpoints {
     display: block;
+    width: 10px;
     vertical-align: top;
     text-align: left;
     height:auto !important;
+
+    /*
+    box-shadow: 0 0 4px #222 inset;
+    background-color: lightgray;
+    border-radius: 5px;
+    */
 }
 
 /* collapsible chunks */
 .full {
     display:none;
     height:auto;
-    margin:0;
+    margin:0px 0px 20px 20px;
     float: left;
 }
 

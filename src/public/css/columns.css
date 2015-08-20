@@ -12,6 +12,11 @@
    }
 
   #center {
+      /*
+      flex-direction:         column;
+      -webkit-flex-wrap: wrap; 
+  flex-wrap:         wrap;
+  */
    margin: 4px;
    padding: 5px;
 

@@ -148,8 +148,9 @@ var SchemaEdit = (function () {
                         //var update = $("<button>Update</button>");
                         //node.append(update);
                         // node.append wtf???
-                        $("#editor").append("<br/><strong>Property</strong>").append(
-                            node);
+                        var propertyBlock = $("<p class='propertyBlock'/>");
+                        propertyBlock.append("<hr/><strong>Property</strong>").append(node);
+                        $("#editor").append(propertyBlock);
                     }
                     // console.log("in buildEditor() -  $(''.delete '').size() = " + $(".delete").size());
                     SchemaEdit.setupButtons();
