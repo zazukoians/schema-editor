@@ -79,9 +79,12 @@ SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
 	?uri a rdf:Property; \n\
+	OPTIONAL { \n\
+		?uri rdfs:range ?range \n\
+	} \n\
 } \n\
-ORDER BY ?uri \n\
-";
+\n\
+ORDER BY ?uri";
 
 var getResourceSparqlTemplate = commonPrefixes +
 	" \n\

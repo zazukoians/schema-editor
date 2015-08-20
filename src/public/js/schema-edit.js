@@ -35,8 +35,13 @@ var SchemaEdit = (function () {
         },
 
         makeListBlock: function (json, target) {
+            // nest the list-block inside a <div> container
+            var listContainer = $("<div class='list-container'></div>");
             var listElement = $("<ul class='list-block'/>");
-            target.append(listElement);
+            listContainer.append(listElement);
+            // add it wherever required
+            target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
+
             for (var i = 0; i < json.length; i++) {
                 var uri = json[i]["uri"];
                 var split = uri.split("/");
@@ -99,8 +104,6 @@ var SchemaEdit = (function () {
 
                         property.after(deleteButton); // TWEAK was append
 
-                        node.append($("<br/>"));
-
                         var value = $("<div>what default?</div>"); // needed for bnodes?
 
                         var o = current["o"];
@@ -108,10 +111,10 @@ var SchemaEdit = (function () {
                         if (current.type == "literal") {
                             // console.log("IS LITERAL");
                             //   value = $("<input type='text' value='" + current["o"] +"'></input>");
-                            value = $("<textarea  rows='4' value='" + o +
-                                "'></textarea>");
+                            value = $("<textarea  rows='4' value='" + o + "'></textarea>");
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
                             value.text(o);
+                            value.add(SchemaEdit.makeUpdateButton());
                         }
                         if (current.type == "uri") {
                             var uriText = o;
@@ -154,6 +157,12 @@ var SchemaEdit = (function () {
                 //  console.log("getResourceUrl = " + getResourceUrl);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, buildEditor);
 
+        },
+
+        makeUpdateButton: function () {
+            var updateButton = $("<button></button>");
+            updateButton.attr("title", "update this literal value"); // tooltip
+            return updateButton;
         },
 
         setupButtons: function () {
@@ -218,10 +227,18 @@ var SchemaEdit = (function () {
         },
 
         makeAddProperty: function (uri) {
-            var addPropertyButton = $("<button id='addProperty'>Add Property</button>");
-            addPropertyButton.append($("<hr/>"));
-            $("#editor").prepend(addPropertyButton);
-            addPropertyButton.click(function () {
+            var updatePropertyButton = $("<button id='updateProperty'>Add this property</button>");
+            updatePropertyButton.append($("<hr/>"));
+            var updateClassButton = $("<button id='updateClass'>Add this class</button>");
+            updateClassButton.append($("<hr/>"));
+            // $("#editor").prepend(addPropertyButton);
+            $("#newProperty").append(updatePropertyButton);
+            $("#newClass").append(updateClassButton);
+            // $("#newProperty") is <input>
+            updatePropertyButton.click(function () {
+
+            });
+            updateClassButton.click(function () {
 
             });
             var chooser = SchemaEdit.makePropertyChooser(uri);

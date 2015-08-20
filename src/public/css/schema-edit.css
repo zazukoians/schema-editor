@@ -54,6 +54,10 @@ display: block;
 text-align: center;
 }
 
+.list-container {
+    display: block;
+}
+
 .small {
   font-size: 50%;
   font-family: Tahoma, Geneva, sans-serif;
