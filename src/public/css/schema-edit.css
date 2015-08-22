@@ -1,13 +1,11 @@
 /* CSS Specific to Schema Editor */
 
-
 .header {
   /*  padding: 10px; */
    font-size: 2em;
    font-weight: bold;
    display: block;
    text-align: center;
-
 }
 
 button {
@@ -51,11 +49,16 @@ label {
 
 .list-container {
     display: block;
-    width: 100px;
+/*    width: 200px; */
 }
 
 .propertyBlock {
-    width: 100px;
+    display: block;
+     width: 400px;
+}
+
+.propertyItem {
+    text-align: none;
 }
 
 #classes, #properties {
@@ -72,7 +75,7 @@ label {
 
 .endpoints {
     display: block;
-    width: 10px;
+/*    width: 200px; */
     vertical-align: top;
     text-align: left;
     height:auto !important;

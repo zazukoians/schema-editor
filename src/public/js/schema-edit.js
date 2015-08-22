@@ -73,11 +73,12 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var buildEditor = function (json) {
+
                     // console.log("json = " + JSON.stringify(json, null, 4));
                     // return;
                     for (var i = 0; i < json.length; i++) {
                         var current = json[i];
-                        var node = $("<div></div>");
+                        var node = $("<div class='propertyItem'></div>");
 
                         var property = $("<a/>");
                         var p = current["p"];
@@ -96,7 +97,7 @@ var SchemaEdit = (function () {
                         property.text(pText);
                         node.append(property);
 
-                        var deleteButton = $("<button class='delete'>x</button>");
+                        var deleteButton = $("<button class='delete'>Delete</button>");
                         var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
                         triple += "<" + p + "> "; // predicate/property
                         // triple += ""
@@ -108,15 +109,18 @@ var SchemaEdit = (function () {
 
                         var o = current["o"];
 
-                        if (current.type == "literal") {
+                        if (current.type == "literal") { // as returned from SPARQL
                             // console.log("IS LITERAL");
                             //   value = $("<input type='text' value='" + current["o"] +"'></input>");
-                            value = $("<textarea  rows='4' value='" + o + "'></textarea>");
+                            // value = $("<textarea  rows='4' value='" + o + "'></textarea>");
+
+                            value = $("<div id='literalEditor' contenteditable='true' title='click to edit'>" + o + "</div>");
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
                             value.text(o);
-                            value.add(SchemaEdit.makeUpdateButton());
+                            value.append(SchemaEdit.makeUpdateButton());
                         }
-                        if (current.type == "uri") {
+
+                        if (current.type == "uri") { // as returned from SPARQL
                             var uriText = o;
                             // console.log("o = " + o);
                             // console.log("SparqlConnector.getPrefixedUri(o) = " + SparqlConnector.getPrefixedUri(o));
@@ -134,15 +138,17 @@ var SchemaEdit = (function () {
 
                             triple += " <" + o + "> ."; // object
 
-
                             node.append(changeButton);
+
                             value.text(uriText);
                         }
                         deleteButton.attr("data-triple", triple); // stick resource data in attribute
+                        deleteButton.append("<br/>");
                         if (changeButton) {
                             changeButton.attr("data-triple", triple); // stick resource data in attribute
                         }
                         // console.log("triple setup = " + triple);
+
                         node.append(value);
 
                         //var update = $("<button>Update</button>");
@@ -161,8 +167,11 @@ var SchemaEdit = (function () {
         },
 
         makeUpdateButton: function () {
-            var updateButton = $("<button></button>");
+            var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
+            updateButton.click(function () {
+                alert("clicked");
+            });
             return updateButton;
         },
 

@@ -1,0 +1,167 @@
+
+  body {
+    font-family: Verdana;
+    font-size: 11px;
+  }
+
+  h2 {
+    margin-bottom: 0;
+  }
+
+  small {
+    display: block;
+    margin-top: 40px;
+    font-size: 9px;
+  }
+
+  small,
+  small a {
+    color: #666;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  #toolbar [data-wysihtml5-action] {
+    float: right;
+  }
+
+  #toolbar,
+  textarea {
+    width: 920px;
+    padding: 5px;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    height: 280px;
+    border: 2px solid green;
+    font-family: Verdana;
+    font-size: 11px;
+  }
+
+  textarea:focus {
+    color: black;
+    border: 2px solid black;
+  }
+
+  .wysihtml5-command-active {
+    font-weight: bold;
+  }
+
+  [data-wysihtml5-dialog] {
+    margin: 5px 0 0;
+    padding: 5px;
+    border: 1px solid #666;
+  }
+
+
+
+  a[data-wysihtml5-command-value="red"] {
+    color: red;
+  }
+
+  a[data-wysihtml5-command-value="green"] {
+    color: green;
+  }
+
+  a[data-wysihtml5-command-value="blue"] {
+    color: blue;
+  }
+
+  .wysihtml5-editor, .wysihtml5-editor table td, .wysihtml5-editor table th {
+    outline: 1px dotted #abc;
+
+  }
+
+  code {
+    background: #ddd;
+    padding: 10px;
+    white-space: pre;
+    display: block;
+    margin: 1em 0;
+  }
+
+  .toolbar {
+    display: block;
+    border-radius: 3px;
+    border: 1px solid #fff;
+    margin-bottom: 9px;
+    line-height: 1em;
+  }
+  .toolbar a {
+    display: inline-block;
+    height: 1.5em;
+    border-radius: 3px;
+    font-size: 9px;
+    line-height: 1.5em;
+    text-decoration: none;
+    background: #e1e1e1;
+    border: 1px solid #ddd;
+    padding: 0 0.2em;
+    margin: 1px 0;
+  }
+  .toolbar a.wysihtml5-command-active {
+    background: #222;
+    color: white;
+  }
+  .toolbar .block {
+    padding: 1px 1px;
+    display: inline-block;
+    background: #eee;
+    border-radius: 3px;
+    margin: 0px 1px 1px 0;
+  }
+
+  div[data-wysihtml5-dialog="createTable"] {
+    position: absolute;
+    background: white;
+  }
+
+  div[data-wysihtml5-dialog="createTable"] td {
+    width: 10px; height: 5px;
+    border: 1px solid #666;
+  }
+
+  .wysihtml5-editor table td.wysiwyg-tmp-selected-cell, .wysihtml5-editor table th.wysiwyg-tmp-selected-cell {
+    outline: 2px solid green;
+  }
+
+  .editor-container-tag {
+    padding: 5px 10px;
+    position: absolute;
+    color: white;
+    background: rgba(0,0,0,0.8);
+    width: 100px;
+    margin-left: -50px;
+    -webkit-transition: 0.1s left, 0.1s top;
+  }
+
+  .wrap {
+    max-width: 700px;
+    margin: 40px;
+  }
+
+  .editable .wysihtml5-uneditable-container {
+    outline: 1px dotted gray;
+    position: relative;
+  }
+  .editable .wysihtml5-uneditable-container-right {
+    float: right;
+    width: 50%;
+    margin-left: 2em;
+    margin-bottom: 1em;
+  }
+
+  .editable .wysihtml5-uneditable-container-left {
+    float: left;
+    width: 50%;
+    margin-right: 2em;
+    margin-bottom: 1em;
+  }
