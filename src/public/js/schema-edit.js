@@ -97,11 +97,13 @@ var SchemaEdit = (function () {
                         property.text(pText);
                         node.append(property);
 
-                        var deleteButton = $("<button class='delete'>Delete</button>");
+                        var deleteButton = SchemaEdit.makeDeleteButton();
+
+
                         var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
                         triple += "<" + p + "> "; // predicate/property
                         // triple += ""
-                        deleteButton.attr("title", "delete this property"); // tooltip
+
 
                         property.after(deleteButton); // TWEAK was append
 
@@ -143,7 +145,8 @@ var SchemaEdit = (function () {
                             value.text(uriText);
                         }
                         deleteButton.attr("data-triple", triple); // stick resource data in attribute
-                        deleteButton.append("<br/>");
+
+
                         if (changeButton) {
                             changeButton.attr("data-triple", triple); // stick resource data in attribute
                         }
@@ -173,6 +176,13 @@ var SchemaEdit = (function () {
                 alert("clicked");
             });
             return updateButton;
+        },
+
+        makeDeleteButton: function () {
+            var deleteButton = $("<button class='delete'>Delete</button>");
+            deleteButton.attr("title", "delete this property"); // tooltip
+            deleteButton.append("<br/>");
+            return deleteButton;
         },
 
         setupButtons: function () {
