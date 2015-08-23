@@ -11,7 +11,7 @@ docs/project is project schedule, likely to change frequently.
 
 The aim is to have installation all done by an npm install command, but last minute changes have put this on hold (until the CORS issue below is resolved).
 
-First, create a directory for this project called SchemaEditor. 
+First, create a directory for this project called SchemaEditor.
 
 Open a terminal and cd into this directory, then do:
 
@@ -23,14 +23,16 @@ Next, you should install Fuseki :
 
 ### Installing Fuseki
 
-In the short term, it will be necessary to use the Fuseki1-1.3.0 release rather than the latest Fuseki2 version. A breaking change has been introduced there in that CORS is now blocked via the Apache Shiro-based security. For now the workaround is to use an earlier version (migration forwards should be trivial).
+~~In the short term, it will be necessary to use the Fuseki1-1.3.0 release rather than the latest Fuseki2 version. A breaking change has been introduced there in that CORS is now blocked via the Apache Shiro-based security. For now the workaround is to use an earlier version (migration forwards should be trivial).
 
 So -
 
-Download 
+Download
 http://mirrors.muzzy.it/apache/jena/binaries/jena-fuseki1-1.3.0-distribution.tar.gz
 
-Extract this into SchemaEditor/jena-fuseki1-1.3.0
+Extract this into SchemaEditor/jena-fuseki1-1.3.0~~
+
+Now ok to follow instructions for Fuseki2, for CORS issue there's a fix at : https://gist.github.com/danja/e8ecbf7e51f7a2616122
 
 ### Running Fuseki
 
@@ -60,11 +62,3 @@ http://localhost:8888/
 should reveal the Schema Editor app.
 
 You may wish to start by uploading repo/data/schema.org.ttl
-
-
-
-
-
-
-
-

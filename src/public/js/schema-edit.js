@@ -173,7 +173,8 @@ var SchemaEdit = (function () {
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             updateButton.click(function () {
-                alert("clicked");
+                var newContent = updateButton.parent().filter(":first");
+                alert("clicked " + newContent);
             });
             return updateButton;
         },
