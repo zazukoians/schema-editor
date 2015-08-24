@@ -130,29 +130,20 @@ var SchemaEdit = (function () {
 
                             value.attr("href", o);
                             // console.log("IS URI");
-                            var changeButton = $("<button class='inline'>Change</button>");
+                            var changePredicateButton = $("<button class='inline'>Change</button>");
 
-                            changeButton.attr("title", "change this value"); // tooltip
+                            changePredicateButton.attr("title", "change this value"); // tooltip
 
                             triple += " <" + o + "> ."; // object
 
-                            node.append(changeButton);
+                            changePredicateButton.attr("data-triple", triple); // stick resource data in attribute
+                            node.append(changePredicateButton);
 
                             value.text(uriText);
                         }
                         deleteButton.attr("data-triple", triple); // stick resource data in attribute
-
-
-                        if (changeButton) {
-                            changeButton.attr("data-triple", triple); // stick resource data in attribute
-                        }
-                        // console.log("triple setup = " + triple);
-
                         node.append(value);
 
-                        //var update = $("<button>Update</button>");
-                        //node.append(update);
-                        // node.append wtf???
                         var propertyBlock = $("<p class='propertyBlock'/>");
                         propertyBlock.append("<hr/><strong>Property</strong>").append(node);
                         $("#editor").append(propertyBlock);
@@ -222,7 +213,7 @@ var SchemaEdit = (function () {
                 //console.log("each .delete " + $(this));
                 //console.log(index + ": " + $(this).text());
                 $(this).click(function () {
-                    alert("Handler for .click() called.");
+                    //    alert("Handler for .click() called.");
                     var triple = $(this).attr("data-triple");
                     // console.log("TRIPLE on delete = " + triple);
                     var callback = function (msg) {
@@ -245,10 +236,31 @@ var SchemaEdit = (function () {
                 });
             });
 
-            $(".change").click(function () {
-                var triple = this.attr("data-triple");
-                console.log("TRIPLE on change = " + triple);
+            $(".change").each(function (index) {
+                //console.log("each .delete " + $(this));
+                //console.log(index + ": " + $(this).text());
+                $(this).click(function () {
+                    alert("Handler for .click() called.");
+                    var triple = $(this).attr("data-triple");
+                    // console.log("TRIPLE on delete = " + triple);
+                    var callback = function (msg) {
 
+                        $("#dialog").html(msg);
+                        $("#dialog").dialog({
+                            close: function (event, ui) {
+                                location.reload(true);
+                            }
+                        });
+                        //    console.log("callback called");
+                    }
+                    SparqlConnector.changeTurtle(triple, callback);
+                    // history.add("before",currentState)
+                    // history.add("undo",sparql)
+
+
+                    // history.add("after",currentState)
+                    // history.add("item",undo button)
+                });
             });
 
             $("#turtle").click(function () {

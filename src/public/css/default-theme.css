@@ -7,10 +7,14 @@ body {
     border-left: 1px solid lightgray;
 }
 
-.ui-dialog-content, .ui-widget-content {
+#dialog {
     display: none;
+}
+
+.ui-dialog-content, .ui-widget-content {
+/*    display: none; */
     background-color: white;
-    border: 1px solid black;
+    border: 1px solid lightgray;
     border-radius: 7pt;
 }
 

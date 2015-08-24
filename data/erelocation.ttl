@@ -1,0 +1,137 @@
+@base <https://gont.ch/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org>
+
+# id, range integer
+# name: skos-label
+# synonyme: skos alt-label
+# aktion p und d übernehmen, mit klasse Aktion als object
+# rechtliche Grundlage: legalBasisDescription (range literal), legalBasis (range: Gesetz/verorrdnung -> "Norm"/ lkif:"Legal_Source", URI? web URI oder data)
+
+<GovernmentService> a rdfs:Class, owl:Class;
+   skos:prefLabel "Government Service"@en;
+   skos:prefLabel "Behörden Leistung"@de;
+   skos:altLabel "Öffentliche Leistung"@de;
+   rdfs:comment "TODO: check relation to schema:Service and GovernmentService";
+   rdfs:comment "Defined as 'Leistung' in eCH-177 vocabulary, specified in ECH-73.".
+
+
+# Service catalog related classes and properties
+
+<ServiceCatalogEntry> a rdfs:Class, owl:Class;
+   skos:prefLabel "Service Cat-alog Entry"@en;
+   skos:prefLabel "Eintrag Leistungsinventar"@de;
+   skos:definition "Eine Leistung gemäss eCH-0070";
+   rdfs:subClassOf [
+      a owl:Restrictions;
+      owl:onProperty dcterms:title;
+      owl:minCardinality 1
+   ].
+
+
+<serviceCatalogEntry> a rdf:Property ;
+    skos:prefLabel "Action (production)"@en ;
+    skos:prefLabel "Aktion (Produktion)"@de ;
+    skos:definition "Points to the kind of service of the subject pointing to a Service Catalgo Entry"@de;
+    rdfs:domain <GovernmentService> ;
+    rdfs:range <ServiceCatalogEntry> .
+
+<serviceProvider> a rdf:Property ;
+    skos:prefLabel "Service Provider"@en ;
+    skos:prefLabel "Leistungerbringer"@de ;
+    skos:prefLabel "Furnitur da prestaziuns"@rm ;
+    skos:definition "Points to the provider of the subject, usually a GovernmentOrganization"@de;
+    rdfs:domain <GovernmentService> ;
+    rdfs:range schema:Organization .
+
+<actionP> a rdf:Property ;
+    skos:prefLabel "Action (distribution)"@en ;
+    skos:prefLabel "Aktion (Vertrieb)"@de ;
+    skos:definition "Points to the verb denoting the action of procuring the service."@de;
+    rdfs:domain <ServiceCatalogEntry> ;
+    rdfs:range xsd:string .
+
+<actionD> a rdf:Property ;
+    skos:prefLabel "Action (production)"@en ;
+    skos:prefLabel "Aktion (Produktion)"@de ;
+    skos:definition "Points to the verb denoting the action of rendering the service."@de;
+    rdfs:domain <ServiceCatalogEntry> ;
+    rdfs:range xsd:string .
+
+<serviceResultDescription> a rdf:Property ; #And what name for the result document/product IRI? "product"? "serviceProduct", "resultDocument"- or rename this to serviceResultDescription?
+    skos:prefLabel "Service Result"@en ;
+    skos:prefLabel "Ergebnis der Leistung"@de ;
+    skos:definition "Points to a literal describing the results of the service, e.g. 'Decision on construction permit'."@de;
+    rdfs:domain <ServiceCatalogEntry> ;
+    rdfs:range xsd:string .
+
+<serviceDescription> a rdf:Property ;
+    skos:prefLabel "Service Description"@en ;
+    skos:prefLabel "Beschreibung der Leistung"@de ;
+    skos:definition "Points to a literal providing a short description of the service."@de;
+    rdfs:domain <ServiceCatalogEntry> ;
+    rdfs:range xsd:string .
+
+<descriptor> a rdf:Property ;
+    skos:prefLabel "Descriptor"@en ;
+    skos:prefLabel "Deskriptor"@de ;
+    skos:definition "Points to a a term describing the subject."@de;
+    rdfs:domain <ServiceCatalogEntry> ; #probably more generic
+    rdfs:range xsd:string.
+
+<abbreviation> a rdf:Property ;
+    skos:prefLabel "Abbreviation"@en ;
+    skos:prefLabel "Kürzel"@de ;
+    skos:altLabel "Kurzform"@de;
+    skos:definition "Points to the (official) abbreviated name of the subject."@de;
+    rdfs:range xsd:string;
+    rdfs:comment "eCH-0186 introduces 'Behördenkürzel', generalized here".
+
+<territorialCommunityAssociation> a rdf:Property ;
+    skos:prefLabel "Association with Territorial Community"@en ;
+    skos:prefLabel "Zugehörigkeit zu Gebietskörperschaft"@en ;
+    skos:definition "Points to the territotial community (e.g. commune or canton) to which the subject is associated. In most cases a government organization is associated to only one territrial community, but there are exceptions, e.g. 'Lufthygieneamt beider Basel'.";
+    rdfs:range <TerritorialCommunity> ;
+    rdfs:domain <GovernmentOrganization>.
+
+
+<fee> a rdf:Property;
+    skos:prefLabel "Fee"@en;
+    skos:prefLabel "Gebühr"@de;
+    skos:definition "Eine Abgabe, die für das Erbringen einer Leistung oder für die mit der Leistung verbundene Nutzniessung eines Geschäftsobjekts erhoben wird ."@de;
+    rdfs:comment "Defined in eCH-177 vocabulary";
+    rdfs:domain <GovernmentService> ;
+    rdfs:range xsd:decimal .
+
+
+<Address> a rdf:Class, owl:Class;
+    skos:prefLabel "Address"@en;
+    skos:prefLabel "Adresse"@de;
+    skos:definition "Kanalspezifische Identifikation eines Absenders oder Empfängers bei der Übermittlung von Informationen"@de;
+    rdfs:comment "Defined in eCH-177 vocabulary".
+
+<Function> a rdf:Class, owl:Class;
+    skos:prefLabel "Function"@en;
+    skos:prefLabel "Aufgabe"@de;
+    skos:altLabel "Öffentliche Funktion"@de;
+    skos:altLabel "Verwaltungsaufgabe"@de;
+    skos:altLabel "Behördliche Funktion"@de;
+    skos:definition "Eine durch gesetzliche Vorschrift einer Behörde übertragene, mittels Leistungen erfüllte staatliche Funktion."@de;
+    rdfs:comment "Defined in eCH-177 vocabulary".
+
+<GovernmentOrganization> a rdf:Class, owl:Class;
+    skos:prefLabel "GovernmentOrganization"@en;
+    skos:prefLabel "Behörde"@de;
+    skos:definition "Organ des Staates (Bund, Kanton) oder eines selbständigen Verwaltungs­trägers (Bezirk, Gemeinde), das Aufgaben der öffentlichen Verwaltung des Staates oder Verwaltungsträgers wahrnimmt und diesen im zugewiesenen Zuständig­keitsbereich nach Aussen vertritt."@de;
+    rdfs:subClassOf schema:GovernmentOrganization;
+    rdfs:comment "Defined in eCH-177 vocabulary, specified in eCH-0186. IRI of the resource is the Agency Identification ('Behördenidentifikator') requred by eCH-0186.";
+    rdfs:subClassOf [
+       a owl:Restrictions;
+       owl:onProperty schema:name;
+       owl:minCardinality 1
+    ].

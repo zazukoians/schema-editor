@@ -18,18 +18,24 @@
 
 var commonPrefixes =
 	" \n\
-PREFIX schema: <http://schema.org/> \n\
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n\
-PREFIX dc: <http://purl.org/dc/terms/> \n\
-PREFIX owl: <http://www.w3.org/2002/07/owl#> \n\
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n\
+PREFIX owl: <http://www.w3.org/2002/07/owl#> \n\
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n\
+PREFIX vann: <http://purl.org/vocab/vann/> \n\
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> \n\
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#> \n\
+PREFIX schema: <http://schema.org/> \n\
+# nb. prefer dcterms over dcelements \n\
+PREFIX dc: <http://purl.org/dc/elements/1.1/> \n\
+PREFIX dcterms: <http://purl.org/dc/terms/> \n\
 PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n\
 PREFIX dcat: <http://www.w3.org/ns/dcat#> \n\
 PREFIX void: <http://rdfs.org/ns/void#> \n\
 PREFIX bibo: <http://purl.org/ontology/bibo/> \n\
 PREFIX dctype: <http://purl.org/dc/dcmitype/> \n\
 PREFIX sioc: <http://rdfs.org/sioc/ns#>  \n\
-PREFIX wiki: <http://purl.org/stuff/wiki#>  \n\
+PREFIX stuff: <http://purl.org/stuff#>  \n\
 \n\
 ";
 

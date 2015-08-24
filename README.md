@@ -61,4 +61,22 @@ http://localhost:8888/
 
 should reveal the Schema Editor app.
 
-You may wish to start by uploading repo/data/schema.org.ttl
+~~ You may wish to start by uploading repo/data/schema.org.ttl ~~
+
+Ok, loading mailed ontology, schema.ttl, renamed to reto-schema1.ttl
+
+point browser at http://localhost:3333/
+
+click on [add data]
+
+Destination graph name = http://data.admin.ch/def/hgv/
+
+Add file(s) - navigate to repo/data, select reto-schema1.ttl
+
+in repo/public/js/config.js
+
+edit to :
+
+graphURI: "http://data.admin.ch/def/hgv/",
+
+point browser at http://localhost:8888/ (refresh if necessary)

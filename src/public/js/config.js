@@ -6,28 +6,28 @@
  *     fit in one line.
  */
 
-var Config = (function() {
-  "use strict";
+var Config = (function () {
+    "use strict";
 
 
-  // This is the public interface of the Module.
-  var Config = {
-    // publicFunction can be called externally
-    pagesBaseURI: "http://hyperdata.it/wiki/",
-    graphURI: "http://schema.org/terms/",
+    // This is the public interface of the Module.
+    var Config = {
+        // publicFunction can be called externally
+        pagesBaseURI: "http://hyperdata.it/wiki/",
+        graphURI: "http://data.admin.ch/def/hgv/",
 
-    sparqlServerHost: "http://localhost:3333",
-    serverRootPath: "/schema-edit/",
-    sparqlQueryEndpoint: "/schema-edit/sparql?query=", // move ? part ??
-    sparqlUpdateEndpoint: "/schema-edit/update"
+        sparqlServerHost: "http://localhost:3333",
+        serverRootPath: "/schema-edit/",
+        sparqlQueryEndpoint: "/schema-edit/sparql?query=", // move ? part ??
+        sparqlUpdateEndpoint: "/schema-edit/update"
 
-  };
+    };
 
-  // privateFunction is completely hidden
-  // from the outside.
-  function privateFunction() {
-    return "privateFunction cannot";
-  }
+    // privateFunction is completely hidden
+    // from the outside.
+    function privateFunction() {
+        return "privateFunction cannot";
+    }
 
-  return Config;
+    return Config;
 }());
