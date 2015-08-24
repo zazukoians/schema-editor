@@ -87,8 +87,6 @@ var SchemaEdit = (function () {
 
                         // console.log("p = " + p);
                         // console.log("SparqlConnector.getPrefixedUri(p) = " + SparqlConnector.getPrefixedUri(p));
-
-
                         // console.log("pNamespace = " + pNamespace);
 
                         if (SparqlConnector.getPrefixedUri(p)) {
@@ -99,13 +97,11 @@ var SchemaEdit = (function () {
 
                         var deleteButton = SchemaEdit.makeDeleteButton();
 
-
                         var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
                         triple += "<" + p + "> "; // predicate/property
                         // triple += ""
 
-
-                        property.after(deleteButton); // TWEAK was append
+                        property.after(deleteButton);
 
                         var value = $("<div>what default?</div>"); // needed for bnodes?
 
@@ -119,7 +115,7 @@ var SchemaEdit = (function () {
                             value = $("<div id='literalEditor' contenteditable='true' title='click to edit'>" + o + "</div>");
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
                             value.text(o);
-                            value.append(SchemaEdit.makeUpdateButton());
+                            value.append(SchemaEdit.makeUpdateButton(uri, p, o));
                         }
 
                         if (current.type == "uri") { // as returned from SPARQL
@@ -169,12 +165,28 @@ var SchemaEdit = (function () {
 
         },
 
-        makeUpdateButton: function () {
+        makeUpdateButton: function (subject, predicate, object) {
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
+            var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
+            updateButton.attr("data-triple", tripleAttribute); // stick resource data in attribute
+
             updateButton.click(function () {
-                var newContent = updateButton.parent().filter(":first");
-                alert("clicked " + newContent);
+                var newContent = updateButton.parent().html();
+                newContent = newContent.replace(/<button.+button>/g, ""); // TODO get button placed better, remove this
+                alert(newContent);
+                // var timestamp = ?????
+                // historyBefore("update"+timestamp)
+                // historyAfter("update"+timestamp)
+                // history.add("before",currentState)
+                // history.add("undo",sparql)
+                // history.add("after",currentState)
+                // history.add("item",undo button)
+                var callback = function () {
+                    location.reload(true);
+                    console.log("callback called");
+                }
+                SparqlConnector.updateTriple(subject, predicate, object, callback);
             });
             return updateButton;
         },
@@ -184,6 +196,16 @@ var SchemaEdit = (function () {
             deleteButton.attr("title", "delete this property"); // tooltip
             deleteButton.append("<br/>");
             return deleteButton;
+        },
+
+        makeTripleAttribute: function (subject, predicate, object, isLiteral) {
+            var triple = "<" + subject + "> <" + predicate + "> ";
+            if (isLiteral) {
+                triple += "\"\"\"" + object + "\"\"\" .";
+            } else {
+                triple += " <" + object + "> .";
+            }
+            return triple;
         },
 
         setupButtons: function () {
@@ -229,7 +251,6 @@ var SchemaEdit = (function () {
                     "edit.html?uri=" + Config.graphURI + "/" + newPageName;
             });
 
-            // OLD
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());
                 // console.log("DATA = " + data);

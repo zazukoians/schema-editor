@@ -27,15 +27,14 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n\
 PREFIX dcat: <http://www.w3.org/ns/dcat#> \n\
 PREFIX void: <http://rdfs.org/ns/void#> \n\
 PREFIX bibo: <http://purl.org/ontology/bibo/> \n\
-	 \n\
 PREFIX dctype: <http://purl.org/dc/dcmitype/> \n\
 PREFIX sioc: <http://rdfs.org/sioc/ns#>  \n\
 PREFIX wiki: <http://purl.org/stuff/wiki#>  \n\
+\n\
 ";
 
 var getAllProperties = commonPrefixes +
-	" \n\
-SELECT DISTINCT ?property \n\
+	"SELECT DISTINCT ?property \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
 ?subject ?property ?object \n\
@@ -119,6 +118,17 @@ var deleteTurtleSparqlTemplate = commonPrefixes + " \n\
 				 ~{turtle}~ \n\
 			} \n\
 		}";
+
+var updateTripleSparqlTemplate = commonPrefixes +
+	"WITH <~{graphURI}~> \n\
+	DELETE { <~{subject}~> <~{predicate}~> ?object }  \n\
+	WHERE {  \n\
+	<~{subject}~>  <~{predicate}~> ?object  . \n\
+	INSERT DATA {  \n\
+		GRAPH <~{graphURI}~> {  \n\
+			<~{subject}~>  <~{predicate}~> \"\"\"~{object}~\"\"\"  . \n\
+}\n\
+}";
 
 /* maybe needed */
 var deleteTripleSparqlTemplate = commonPrefixes +

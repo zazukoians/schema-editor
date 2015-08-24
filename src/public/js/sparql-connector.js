@@ -194,9 +194,25 @@ var SparqlConnector = (function () {
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             //  console.log("getClassesUrl = " + getResourcesUrl);
-            var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback); // is in sparql-connector.js
+            var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
             //    console.log("json =" + json);
             return resources;
+        },
+
+        updateTriple: function (subject, predicate, object, callback) {
+            var updateTripleSparql = sparqlTemplater(
+                updateTripleSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "subject": subject,
+                    "predicate": predicate,
+                    "object": object
+                });
+            console.log("updateTripleSparql = \n" + updateTripleSparql);
+
+            var updateTripleUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+                encodeURIComponent(updateTripleSparql) + "&output=xml";
+            var json = SparqlConnector.getJsonForSparqlURL(updateTripleUrl, callback);
+            return json;
         },
 
         deleteTurtle: function (turtle, callback) { // see http://www.w3.org/TR/sparql11-update/#deleteData
