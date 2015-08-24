@@ -1,10 +1,17 @@
-/* Styling for 3-column - columns.css */
+/* Styling for 3-column - columns.css and modal dialog */
 
 html,
 body {
     font-family: "Lucida Console", Monaco, monospace;
     border-right: 1px solid lightgray;
     border-left: 1px solid lightgray;
+}
+
+.ui-dialog-content, .ui-widget-content {
+    display: none;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 7pt;
 }
 
 #left, #right {

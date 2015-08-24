@@ -216,11 +216,7 @@ var SparqlConnector = (function () {
             //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
             //    encodeURIComponent(updateTripleSparql) + "&output=xml";
             // var json = SparqlConnector.getJsonForSparqlURL(updateTripleUrl, callback);
-            var localCallback = function (msg) {
-                alert("Update Applied: " + msg);
-                callback(msg);
-            };
-            SparqlConnector.postData(updateTripleSparql, localCallback);
+            SparqlConnector.postData(updateTripleSparql, callback);
             return false;
         },
 
@@ -233,32 +229,10 @@ var SparqlConnector = (function () {
                 });
             console.log("deleteTurtleSparql = " + deleteTurtleSparql);
 
-            var localCallback = function (msg) {
-                alert("Delete Applied: " + msg);
-                callback(msg);
-            };
-            SparqlConnector.postData(deleteTurtleSparql, localCallback);
+            SparqlConnector.postData(deleteTurtleSparql, callback);
             return false;
         },
 
-        /*
-                doUpdateAjax: function (data, callback) {
-                    $.ajax({
-                        type: "POST",
-                        url: Config.sparqlServerHost + Config.sparqlUpdateEndpoint,
-                        data: ({
-                            update: data
-                        })
-                    }).done(function (msg) {
-                        if (callback) {
-                            callback(msg);
-                        }
-                    }).fail(function (jqXHR, textStatus) {
-                        alert("Error " + textStatus); // function( jqXHR, textStatus )
-                    });
-
-                },
-        */
         getJsonForSparqlURL: function (pageURL, callback) {
             $.ajax({
                 url: pageURL,
@@ -275,8 +249,8 @@ var SparqlConnector = (function () {
                 // console.log("JSON = "+JSON.stringify(json));
                 callback(json);
                 // $(window).trigger('resize');
-            }).fail(function () {
-                alert("error");
+            }).fail(function (msg) {
+                alert("error " + msg);
             });
         },
 

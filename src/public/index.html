@@ -8,6 +8,8 @@
 <!-- a Reset CSS, to cancel any browser-specifics -->
     <link rel="stylesheet" href="css/normalize.css" />
 
+    <!-- link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css" -->
+
 <!-- 3-column layout using CSS3 flexbox -->
     <link rel="stylesheet" href="css/columns.css" />
 
@@ -17,9 +19,7 @@
 <!-- specific to Schema Editor -->
     <link rel="stylesheet" href="css/schema-edit.css" />
 
-<!-- UI components -->
-    <!-- link rel="stylesheet" href="css/jquery-ui.min.css" / -->
-
+<!-- markdown processor -->
     <script src="js/lib/marked.js"></script>
 
     <!-- mustache template compiler -->
@@ -32,9 +32,10 @@
     <!-- date formatting -->
     <script src="js/lib/moment.js"></script>
 
+<!-- TODO return to these
 <script src="js/lib/wysihtml5x-toolbar.js"></script>
-<!-- wysihtml5 parser rules -->
 <script src="js/lib/advanced_and_extended.js"></script>
+-->
 
 <!-- local scripts -->
     <script src="js/config.js"></script>
@@ -48,12 +49,8 @@
     <!-- TODO refactor scripts to more appropriate files -->
     <script type="text/javascript" language="javascript">
         $(function () {
-            // SchemaEdit.init();
             SparqlConnector.init();
-
-            //    setupErrorHandling(); // TODO is needed? maybe just a popup
             spinner();
-
             var uri = queryString["uri"];
             // console.log("URI="+uri);
             uri = encodeURI(uri);
@@ -71,34 +68,13 @@
                 SchemaEdit.populateWithResource(uri); // in schema-edit.js
             }
             refresh(); // redraws flex columns
-
-            /*
-            $("#upload-button").click(function () {
-                var data = new FormData($("#upload-file").val());
-                console.log("DATA = " + data);
-                $.ajax({
-                    url: config.sparqlUpdateEndpoint,
-                    type: 'POST',
-                    data: ({
-                        update: data
-                    }),
-                    //    contentType: "application/sparql-update",
-                    processData: false,
-                    contentType: false
-                });
-                //    e.preventDefault();
-            });
-*/
-            //$('#editButton').click(function () {
-            //   window.location.href = window.location.href.replace("page.html", "edit.html");
-            //   return false;
-            //});
-
         });
     </script>
 </head>
 
 <body>
+<div id="dialog">popup/alert dialog</div>
+
 <div id="spinner" class="spinner"></div>
 
     <div id="header">

@@ -174,7 +174,8 @@ var SchemaEdit = (function () {
             updateButton.click(function () {
                 var newContent = updateButton.parent().html();
                 newContent = newContent.replace(/<button.+button>/g, ""); // TODO get button placed better, remove this
-                alert(newContent);
+                // alert(newContent);
+
                 // var timestamp = ?????
                 // historyBefore("update"+timestamp)
                 // historyAfter("update"+timestamp)
@@ -183,7 +184,13 @@ var SchemaEdit = (function () {
                 // history.add("after",currentState)
                 // history.add("item",undo button)
                 var callback = function () {
-                    location.reload(true);
+                    $("#dialog").html(newContent);
+                    $("#dialog").dialog({
+                        close: function (event, ui) {
+                            location.reload(true);
+                        }
+                    });
+
                     console.log("callback called");
                 }
                 SparqlConnector.updateTriple(subject, predicate, newContent, callback);
@@ -215,12 +222,18 @@ var SchemaEdit = (function () {
                 //console.log("each .delete " + $(this));
                 //console.log(index + ": " + $(this).text());
                 $(this).click(function () {
-                    // alert("Handler for .click() called.");
+                    alert("Handler for .click() called.");
                     var triple = $(this).attr("data-triple");
-                    console.log("TRIPLE on delete = " + triple);
-                    var callback = function () {
-                        location.reload(true);
-                        console.log("callback called");
+                    // console.log("TRIPLE on delete = " + triple);
+                    var callback = function (msg) {
+
+                        $("#dialog").html(msg);
+                        $("#dialog").dialog({
+                            close: function (event, ui) {
+                                location.reload(true);
+                            }
+                        });
+                        //    console.log("callback called");
                     }
                     SparqlConnector.deleteTurtle(triple, callback);
                     // history.add("before",currentState)
@@ -293,7 +306,7 @@ var SchemaEdit = (function () {
             };
             var getAllPropertiesUrl = SchemaEdit.generateGetUrl(getPropertyListSparqlTemplate, map);
             var callback = function (json) {
-                console.log("schema-edit.js PropertyChooser JSON = " + JSON.stringify(json));
+                // console.log("schema-edit.js PropertyChooser JSON = " + JSON.stringify(json));
             };
             SparqlConnector.getJsonForSparqlURL(getAllPropertiesUrl, callback);
         },
