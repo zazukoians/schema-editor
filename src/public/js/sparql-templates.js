@@ -124,6 +124,7 @@ var updateTripleSparqlTemplate = commonPrefixes +
 	DELETE { <~{subject}~> <~{predicate}~> ?object }  \n\
 	WHERE {  \n\
 	<~{subject}~>  <~{predicate}~> ?object  . \n\
+	}; \n\
 	INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
 			<~{subject}~>  <~{predicate}~> \"\"\"~{object}~\"\"\"  . \n\

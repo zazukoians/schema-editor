@@ -186,7 +186,7 @@ var SchemaEdit = (function () {
                     location.reload(true);
                     console.log("callback called");
                 }
-                SparqlConnector.updateTriple(subject, predicate, object, callback);
+                SparqlConnector.updateTriple(subject, predicate, newContent, callback);
             });
             return updateButton;
         },

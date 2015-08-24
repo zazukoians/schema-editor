@@ -169,15 +169,19 @@ var SparqlConnector = (function () {
         },
 
         /* *** connector low-level utilities *** */
-
-        postData: function (data) {
+        // TODO is duplicated below, delete one
+        postData: function (data, callback) {
             $.ajax({
                 type: "POST",
-                url: Config.sparqlUpdateEndpoint,
+                url: Config.sparqlServerHost + Config.sparqlUpdateEndpoint,
                 data: ({
                     update: data
                 })
-            }).done(function () {}).fail(function (jqXHR, textStatus,
+            }).done(function (msg) {
+                if (callback) {
+                    callback(msg);
+                }
+            }).fail(function (jqXHR, textStatus,
                 errorThrown) {
                 alert("Error " + textStatus);
             });
@@ -209,10 +213,15 @@ var SparqlConnector = (function () {
                 });
             console.log("updateTripleSparql = \n" + updateTripleSparql);
 
-            var updateTripleUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
-                encodeURIComponent(updateTripleSparql) + "&output=xml";
-            var json = SparqlConnector.getJsonForSparqlURL(updateTripleUrl, callback);
-            return json;
+            //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
+            //    encodeURIComponent(updateTripleSparql) + "&output=xml";
+            // var json = SparqlConnector.getJsonForSparqlURL(updateTripleUrl, callback);
+            var localCallback = function (msg) {
+                alert("Update Applied: " + msg);
+                callback(msg);
+            };
+            SparqlConnector.postData(updateTripleSparql, localCallback);
+            return false;
         },
 
         deleteTurtle: function (turtle, callback) { // see http://www.w3.org/TR/sparql11-update/#deleteData
@@ -224,22 +233,32 @@ var SparqlConnector = (function () {
                 });
             console.log("deleteTurtleSparql = " + deleteTurtleSparql);
 
-            $.ajax({
-                type: "POST",
-                url: Config.sparqlServerHost + Config.sparqlUpdateEndpoint,
-                data: ({
-                    update: deleteTurtleSparql
-                })
-            }).done(function (msg) {
+            var localCallback = function (msg) {
                 alert("Delete Applied: " + msg);
-                callback();
-            }).fail(function (jqXHR, textStatus) {
-                alert("Error " + textStatus); // function( jqXHR, textStatus )
-            });
-
+                callback(msg);
+            };
+            SparqlConnector.postData(deleteTurtleSparql, localCallback);
             return false;
         },
 
+        /*
+                doUpdateAjax: function (data, callback) {
+                    $.ajax({
+                        type: "POST",
+                        url: Config.sparqlServerHost + Config.sparqlUpdateEndpoint,
+                        data: ({
+                            update: data
+                        })
+                    }).done(function (msg) {
+                        if (callback) {
+                            callback(msg);
+                        }
+                    }).fail(function (jqXHR, textStatus) {
+                        alert("Error " + textStatus); // function( jqXHR, textStatus )
+                    });
+
+                },
+        */
         getJsonForSparqlURL: function (pageURL, callback) {
             $.ajax({
                 url: pageURL,
