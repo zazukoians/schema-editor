@@ -29,6 +29,7 @@
     <script src="js/lib/jquery-1.10.2.js"></script>
     <script src="lib/jquery-ui/jquery-ui.js"></script>
 
+    <script src="js/combobox.js"></script>
     <!-- date formatting -->
     <script src="js/lib/moment.js"></script>
 
@@ -90,7 +91,7 @@
             <br/>
                 <a href="#hide1" class="hide" id="hide1">+</a>
                 <a href="#show1" class="show" id="show1">-</a>
-                <div class="minimal">Endpoint Settings</div>
+                <div class="minimal">Endpoint Settings <em>(in config.js)</em></div>
                 <div class="full">
                     <div>
                         <label for="endpointHost">Endpoint Host</label>
@@ -114,6 +115,7 @@
         <h2 class="header">Classes</h2>
           <div id="classes" class="small"></div>
         </div>
+
         <div class="list-block">
         <h2 class="header">Properties</h2>
           <div id="properties" class="small"></div>
@@ -177,6 +179,35 @@
     <input value="it" class="language-radio" type="radio" id="language-it" name="language"><label for="language-it"><span></span>it</label>
     </form>
   </div>
+
+  <div id="propertySelector">
+  <label>Your preferred programming language: </label>
+  <select id="combobox">
+    <option value="">Select one...</option>
+    <option value="ActionScript">ActionScript</option>
+    <option value="AppleScript">AppleScript</option>
+    <option value="Asp">Asp</option>
+    <option value="BASIC">BASIC</option>
+    <option value="C">C</option>
+    <option value="C++">C++</option>
+    <option value="Clojure">Clojure</option>
+    <option value="COBOL">COBOL</option>
+    <option value="ColdFusion">ColdFusion</option>
+    <option value="Erlang">Erlang</option>
+    <option value="Fortran">Fortran</option>
+    <option value="Groovy">Groovy</option>
+    <option value="Haskell">Haskell</option>
+    <option value="Java">Java</option>
+    <option value="JavaScript">JavaScript</option>
+    <option value="Lisp">Lisp</option>
+    <option value="Perl">Perl</option>
+    <option value="PHP">PHP</option>
+    <option value="Python">Python</option>
+    <option value="Ruby">Ruby</option>
+    <option value="Scala">Scala</option>
+    <option value="Scheme">Scheme</option>
+  </select>
+</div>
 
 </body>
 

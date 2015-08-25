@@ -1,8 +1,6 @@
 /* CSS Specific to Schema Editor */
 
 .header {
-  /*  padding: 10px; */
-   font-size: 2em;
    font-weight: bold;
    display: block;
    text-align: center;
@@ -34,23 +32,6 @@ display: none;
     display: none;
 }
 
-/*
-input[type="radio"] {
-    display:none;
-}
-input[type="radio"] + label span {
-    display:inline-block;
-    width:19px;
-    height:19px;
-    margin:-1px 4px 0 0;
-    vertical-align:middle;
-    cursor:pointer;
-}
-input[type="radio"]:checked + label span {
-
-}
-*/
-
 label {
    /* display:block; */
    /* margin:8px; */
@@ -64,15 +45,6 @@ input, textarea, select {
     box-sizing:border-box;
     -moz-box-sizing:border-box
 }
-    /*
-label, input {
-  display:inline-block;
-}
-
-label {
-    width: 50%;
-}
-*/
 
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
 
@@ -97,7 +69,7 @@ label {
 
 
 .small {
-  font-size: 50%;
+  font-size: 75%;
   font-family: Tahoma, Geneva, sans-serif;
   /* Tahoma, Geneva, sans-serif */
 }
@@ -184,14 +156,11 @@ label {
 .list-block {
     display: block;
     margin: 2em 2em 0em 2em;
-    /*width: 40%; */
-    padding: 3px;
     list-style-type: none;
 }
 
 .list-block ul {
     display: block;
-    /* border: 1px solid #000; */
     list-style-type: none;
 }
 

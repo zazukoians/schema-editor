@@ -16,9 +16,11 @@ var SchemaEdit = (function () {
 
         init: function () {
             $("#endpointHost").val(Config.sparqlServerHost);
+
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
             $("#queryPath").val(Config.sparqlQueryEndpoint);
 
+            $( "#combobox" ).combobox();
         },
 
         makeClassesList: function () {
@@ -120,7 +122,7 @@ var SchemaEdit = (function () {
                             }
                             value.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
                             console.log("value = \n" + value.html());
-                            value.append(SchemaEdit.makeUpdateButton(uri, p, o));
+                            value.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
                         }
 
                         if (current.type == "uri") { // as returned from SPARQL
@@ -160,7 +162,6 @@ var SchemaEdit = (function () {
 
         makeLanguageButton: function (subject, predicate, object, language) {
 
-
             var languageButton = $("<button class='language'></button>");
             languageButton.text(language);
 
@@ -183,7 +184,7 @@ var SchemaEdit = (function () {
 
                         }
                     });
-console.log("lang = "+language);
+                    // console.log("lang = "+language);
                     $(this).dialog("close");
                     SparqlConnector.updateTriple(subject, predicate, object, language, callback);
                     location.reload(true);
@@ -210,7 +211,7 @@ console.log("lang = "+language);
             return languageButton;
         },
 
-        makeUpdateButton: function (subject, predicate, object) {
+        makeUpdateButton: function (subject, predicate, object, language) {
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
@@ -238,7 +239,7 @@ console.log("lang = "+language);
 
                     console.log("callback called");
                 }
-                SparqlConnector.updateTriple(subject, predicate, newContent, callback);
+                SparqlConnector.updateTriple(subject, predicate, newContent, language, callback);
             });
             return updateButton;
         },
