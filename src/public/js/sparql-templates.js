@@ -68,7 +68,7 @@ WHERE { \n\
 ORDER BY ?p \n\
 ";
 
-// redundant
+// redundant - using getResourceSparqlTemplate??
 var getClassListSparqlTemplate = commonPrefixes +
 	" \n\
 SELECT DISTINCT * \n\
@@ -78,6 +78,7 @@ WHERE { \n\
 } \n\
 ";
 
+// redundant - using getResourceSparqlTemplate??
 var getPropertyListSparqlTemplate = commonPrefixes +
 	" \n\
 SELECT DISTINCT * \n\
@@ -93,10 +94,11 @@ ORDER BY ?uri";
 
 var getResourceSparqlTemplate = commonPrefixes +
 	" \n\
-SELECT DISTINCT * \n\
+SELECT DISTINCT ?p ?o ?language \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
 <~{uri}~> ?p ?o; \n\
+BIND (lang(?o) AS ?language) \n\
 } \n\
 ";
 
@@ -133,7 +135,7 @@ var updateTripleSparqlTemplate = commonPrefixes +
 	}; \n\
 	INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
-			<~{subject}~>  <~{predicate}~> \"\"\"~{object}~\"\"\"  . \n\
+			<~{subject}~>  <~{predicate}~> \"\"\"~{object}~\"\"\"@~{language}~  . \n\
 }\n\
 }";
 

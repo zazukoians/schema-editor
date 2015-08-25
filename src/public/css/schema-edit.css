@@ -1,7 +1,5 @@
 /* CSS Specific to Schema Editor */
 
-
-
 .header {
   /*  padding: 10px; */
    font-size: 2em;
@@ -20,9 +18,38 @@ button {
 
 }
 
+.show {
+/*    display: block; */
+}
+
 .inline button {
     /* display:inline; */
 }
+
+#dialog {
+display: none;
+}
+
+#language-radio {
+    display: none;
+}
+
+/*
+input[type="radio"] {
+    display:none;
+}
+input[type="radio"] + label span {
+    display:inline-block;
+    width:19px;
+    height:19px;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+}
+input[type="radio"]:checked + label span {
+
+}
+*/
 
 label {
    /* display:block; */

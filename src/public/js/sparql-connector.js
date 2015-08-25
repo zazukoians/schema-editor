@@ -37,9 +37,8 @@ var SparqlConnector = (function () {
             Config.graphURI = uri;
             return Config.graphURI;
         },
-        // API, based on spec
-        // initial implementations based on foowiki Ajax - with templating
 
+        // API, based on spec
         setQueryEndpoint: function (url) {
             Config.sparqlQueryEndpoint = url;
             return getQueryEndpoint();
@@ -68,13 +67,13 @@ var SparqlConnector = (function () {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "type": type
                 });
+
             var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
-            //  console.log("getClassesUrl = " + getResourcesUrl);
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
-                callback); // is in sparql-connector.js
-            //    console.log("json =" + json);
+                callback);
+
             return resources;
         },
 
@@ -203,13 +202,17 @@ var SparqlConnector = (function () {
             return resources;
         },
 
-        updateTriple: function (subject, predicate, object, callback) {
+        updateTriple: function (subject, predicate, object, language, callback) {
+            if (!language || language == "") { // sensible default
+                language = "en";
+            }
             var updateTripleSparql = sparqlTemplater(
                 updateTripleSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "subject": subject,
                     "predicate": predicate,
-                    "object": object
+                    "object": object,
+                    "language": language
                 });
             console.log("updateTripleSparql = \n" + updateTripleSparql);
 

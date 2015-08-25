@@ -14,11 +14,12 @@ var SchemaEdit = (function () {
     // This is the public interface of the SchemaEditor module.
     var SchemaEdit = {
 
-        /* may be needed
-        init: function() {
-          SparqlConnector.init();
+        init: function () {
+            $("#endpointHost").val(Config.sparqlServerHost);
+            $("#updatePath").val(Config.sparqlUpdateEndpoint);
+            $("#queryPath").val(Config.sparqlQueryEndpoint);
+
         },
-        */
 
         makeClassesList: function () {
             var callback = function (json) {
@@ -107,29 +108,30 @@ var SchemaEdit = (function () {
 
                         var o = current["o"];
 
-                        if (current.type == "literal") { // as returned from SPARQL
-                            // console.log("IS LITERAL");
-                            //   value = $("<input type='text' value='" + current["o"] +"'></input>");
-                            // value = $("<textarea  rows='4' value='" + o + "'></textarea>");
 
+                        if (current.type == "literal") { // as returned from SPARQL
                             value = $("<div id='literalEditor' contenteditable='true' title='click to edit'>" + o + "</div>");
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
                             value.text(o);
+                            var language = current["language"];
+                            console.log("language = " + language);
+                            if(!language || language == ""){
+                                language = "en";
+                            }
+                            value.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
+                            console.log("value = \n" + value.html());
                             value.append(SchemaEdit.makeUpdateButton(uri, p, o));
                         }
 
                         if (current.type == "uri") { // as returned from SPARQL
                             var uriText = o;
-                            // console.log("o = " + o);
-                            // console.log("SparqlConnector.getPrefixedUri(o) = " + SparqlConnector.getPrefixedUri(o));
                             if (SparqlConnector.getPrefixedUri(o)) {
                                 uriText = SparqlConnector.getPrefixedUri(o);
                             }
-                            // console.log("uriText = " + uriText);
                             value = $("<a />");
 
                             value.attr("href", o);
-                            // console.log("IS URI");
+
                             var changePredicateButton = $("<button class='inline'>Change</button>");
 
                             changePredicateButton.attr("title", "change this value"); // tooltip
@@ -154,6 +156,58 @@ var SchemaEdit = (function () {
                 //  console.log("getResourceUrl = " + getResourceUrl);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, buildEditor);
 
+        },
+
+        makeLanguageButton: function (subject, predicate, object, language) {
+
+
+            var languageButton = $("<button class='language'></button>");
+            languageButton.text(language);
+
+            languageButton.click(function () {
+                //    alert("Handler for .click() called.");
+                var languageChoices = $("#language-radio").html();
+                var dialog = $("#dialog");
+                // dialog.buttonset(); // jQueryUI
+                dialog.addClass("show");
+                dialog.html(languageChoices);
+                var updateHandler = function () {
+                    //    var language = $("input[name=radioName]:checked");
+                    var language;
+
+                    $('.language-radio').each(function () {
+                        if (this.type == 'radio' && this.checked) {
+                            console.log("here " + this.name + " = " + $(this).val() + " = " + $(this).attr("id") + " = " + $(
+                                this).text());
+                                language = $(this).val()
+
+                        }
+                    });
+console.log("lang = "+language);
+                    $(this).dialog("close");
+                    SparqlConnector.updateTriple(subject, predicate, object, language, callback);
+                    location.reload(true);
+                };
+                dialog.dialog({
+                    resizable: false,
+                    modal: true,
+                    buttons: {
+                        "Update Value": updateHandler,
+                        Cancel: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+                // console.log("TRIPLE on delete = " + triple);
+                var callback = function (msg) {
+
+
+                        //    console.log("callback called");
+                    }
+                    //    SparqlConnector.deleteTurtle(triple, callback);
+            });
+
+            return languageButton;
         },
 
         makeUpdateButton: function (subject, predicate, object) {

@@ -9,7 +9,6 @@
 var Config = (function () {
     "use strict";
 
-
     // This is the public interface of the Module.
     var Config = {
         // publicFunction can be called externally
@@ -17,17 +16,9 @@ var Config = (function () {
         graphURI: "http://data.admin.ch/def/hgv/",
 
         sparqlServerHost: "http://localhost:3333",
-        serverRootPath: "/schema-edit/",
-        sparqlQueryEndpoint: "/schema-edit/sparql?query=", // move ? part ??
+
+        sparqlQueryEndpoint: "/schema-edit/sparql?query=",
         sparqlUpdateEndpoint: "/schema-edit/update"
-
     };
-
-    // privateFunction is completely hidden
-    // from the outside.
-    function privateFunction() {
-        return "privateFunction cannot";
-    }
-
     return Config;
 }());

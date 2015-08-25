@@ -8,7 +8,7 @@
 <!-- a Reset CSS, to cancel any browser-specifics -->
     <link rel="stylesheet" href="css/normalize.css" />
 
-    <!-- link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css" -->
+    <!-- link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css" / -->
 
 <!-- 3-column layout using CSS3 flexbox -->
     <link rel="stylesheet" href="css/columns.css" />
@@ -49,6 +49,7 @@
     <!-- TODO refactor scripts to more appropriate files -->
     <script type="text/javascript" language="javascript">
         $(function () {
+            SchemaEdit.init();
             SparqlConnector.init();
             spinner();
             var uri = queryString["uri"];
@@ -97,11 +98,11 @@
                     </div>
                     <div>
                         <label for="queryPath">Query Path</label>
-                        <input id='queryPath' type='text' value=''></input>
+                        <input id="queryPath" type="text" value=""></input>
                     </div>
-                    <div id="updatePath">
+                    <div>
                         <label for="updatePath">Update Path</label>
-                        <input id='updatePath' type='text' value=''></input>
+                        <input id="updatePath" type="text" value=""></input>
                     </div>
                 </div>
             </div>
@@ -168,6 +169,14 @@
 <p>This is the footer</p>
     </div>
 
+
+  <div id="language-radio">
+  <form id="language-form">
+    <input value="en" class="language-radio" type="radio" id="language-en" name="language" checked="checked"><label for="language-en"><span></span>en</label>
+    <input value="de" class="language-radio" type="radio" id="language-de" name="language"><label for="language-de"><span></span>de</label>
+    <input value="it" class="language-radio" type="radio" id="language-it" name="language"><label for="language-it"><span></span>it</label>
+    </form>
+  </div>
 
 </body>
 
