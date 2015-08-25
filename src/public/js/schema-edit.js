@@ -19,8 +19,12 @@ var SchemaEdit = (function () {
 
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
             $("#queryPath").val(Config.sparqlQueryEndpoint);
+            $("#propertySelector").combobox();
+        },
 
-            $( "#combobox" ).combobox();
+        populatePropertiesCombobox: function () {
+            var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
+
         },
 
         makeClassesList: function () {
@@ -372,8 +376,19 @@ var SchemaEdit = (function () {
                 graphURI: SparqlConnector.getGraphURI(),
             };
             var getAllPropertiesUrl = SchemaEdit.generateGetUrl(getPropertyListSparqlTemplate, map);
-            var callback = function (json) {
-                // console.log("schema-edit.js PropertyChooser JSON = " + JSON.stringify(json));
+            var callback = function (propertiesArray) {
+                // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
+                for(var i=0;i<propertiesArray.length;i++) {
+                    var property = propertiesArray[i]["uri"];
+                    console.log("property : "+property);
+                    //     <option value="ActionScript">ActionScript</option>
+                    var option = $("<option class='propertychoice'></option>");
+                    option.attr("value", property);
+
+                    option.text(property);
+                    var last = $(".propertyChoice").last();
+                    last.after(option);
+                }
             };
             SparqlConnector.getJsonForSparqlURL(getAllPropertiesUrl, callback);
         },
