@@ -2,18 +2,20 @@
 // TODO use console.log()s for tests, then remove
 
 /**
- * Comment template. TODO fill me in
- * @param {string} foo This is a param with a description too long to fit in
- *     one line.
- * @return {number} This returns something that has a description too long to
- *     fit in one line.
+ * The SchemaEdit module
+ * Provides UI for SchemaEditor
  */
 var SchemaEdit = (function () {
     "use strict";
 
-    // This is the public interface of the SchemaEditor module.
+    /**
+     * This is the public interface of the SchemaEdit module.
+     */
     var SchemaEdit = {
 
+/**
+ * Initialises SchemaEdit UI
+ */
         init: function () {
             $("#endpointHost").val(Config.sparqlServerHost);
 
@@ -22,11 +24,21 @@ var SchemaEdit = (function () {
             $("#propertySelector").combobox();
         },
 
+/**
+ * Loads list of properties from SPARQL store into combo box(es)
+ */
         populatePropertiesCombobox: function () {
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
 
         },
 
+/**
+ * Comment template. TODO fill me in
+ * @param {string} foo This is a param with a description too long to fit in
+ *     one line.
+ * @return {number} This returns something that has a description too long to
+ *     fit in one line.
+ */
         makeClassesList: function () {
             var callback = function (json) {
                 SchemaEdit.makeListBlock(json, $("#classes"));
@@ -38,7 +50,7 @@ var SchemaEdit = (function () {
             var callback = function (json) {
                 SchemaEdit.makeListBlock(json, $("#properties"));
             }
-            var propertiesList = SparqlConnector.listProperties(callback);
+            var propertiesList = SparqlConnector.listProperties(callback); // TODO refactor, as used above
         },
 
         makeListBlock: function (json, target) {
@@ -67,9 +79,7 @@ var SchemaEdit = (function () {
         },
 
         populateWithResource: function (uri) { //  callback??
-            //  console.log("getresource " + uri);
-            // var type = queryString["type"];
-            // console.log("TYPE=" + type);
+
             SchemaEdit.makeAddProperty(uri);
 
             var map = {
@@ -113,7 +123,6 @@ var SchemaEdit = (function () {
                         var value = $("<div>what default?</div>"); // needed for bnodes?
 
                         var o = current["o"];
-
 
                         if (current.type == "literal") { // as returned from SPARQL
                             value = $("<div id='literalEditor' contenteditable='true' title='click to edit'>" + o + "</div>");
@@ -203,19 +212,15 @@ var SchemaEdit = (function () {
                         }
                     }
                 });
-                // console.log("TRIPLE on delete = " + triple);
                 var callback = function (msg) {
-
-
                         //    console.log("callback called");
                     }
-                    //    SparqlConnector.deleteTurtle(triple, callback);
             });
-
             return languageButton;
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {
+            
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
@@ -368,7 +373,6 @@ var SchemaEdit = (function () {
 
             });
             var chooser = SchemaEdit.makePropertyChooser(uri);
-
         },
 
         makePropertyChooser: function (uri) {
