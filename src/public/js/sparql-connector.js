@@ -94,8 +94,7 @@ var SparqlConnector = (function () {
         },
 
         listProperties: function (callback) {
-            return SparqlConnector.listResourcesOfType("rdf:Property",
-                callback);
+            return SparqlConnector.listResourcesOfType("rdf:Property", callback);
         },
 
         listPropertiesForClass: function (graphURI, classURI) {

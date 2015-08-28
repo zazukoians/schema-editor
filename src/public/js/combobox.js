@@ -1,9 +1,9 @@
-/* based on the on at https://jqueryui.com/autocomplete/#combobox */
+/* based on the one at https://jqueryui.com/autocomplete/#combobox */
 
-    $.widget( "custom.combobox", {
+    $.widget( "schemaedit.combobox", {
       _create: function() {
         this.wrapper = $( "<span>" )
-          .addClass( "custom-combobox" )
+          .addClass( "schemaedit-combobox" )
           .insertAfter( this.element );
 
         this.element.hide();
@@ -19,7 +19,7 @@
           .appendTo( this.wrapper )
           .val( value )
           .attr( "title", "" )
-          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+          .addClass( "schemaedit-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
           .autocomplete({
             delay: 0,
             minLength: 0,
@@ -57,7 +57,7 @@
             text: false
           })
           .removeClass( "ui-corner-all" )
-          .addClass( "custom-combobox-toggle ui-corner-right" )
+          .addClass( "schemaedit-combobox-toggle ui-corner-right" )
           .mousedown(function() {
             wasOpen = input.autocomplete( "widget" ).is( ":visible" );
           })

@@ -21,15 +21,68 @@ var SchemaEdit = (function () {
 
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
             $("#queryPath").val(Config.sparqlQueryEndpoint);
-            $("#propertySelector").combobox();
+            // $("#propertyChooser").combobox();
+            SchemaEdit.populatePropertiesCombobox();
+            SchemaEdit.populateClassesCombobox();
         },
 
 /**
  * Loads list of properties from SPARQL store into combo box(es)
  */
         populatePropertiesCombobox: function () {
+            var callback = function (json) {
+                // SchemaEdit.makeListBlock(json, $("#properties"));
+            }
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
+            var chooser = SchemaEdit.makeChooser("rdf:Property");
+            chooser.appendTo($("#propertyChooser"));
+            chooser.combobox();
 
+            $("#addPropertyButton").click(function(){
+
+                var property = $("#propertyChooser").find("input").val();
+                alert(property);
+            })
+        },
+
+        populateClassesCombobox: function () {
+            var callback = function (json) {
+                // SchemaEdit.makeListBlock(json, $("#properties"));
+            }
+            var classesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
+            var chooser = SchemaEdit.makeChooser("rdfs:Class");
+            chooser.appendTo($("#classChooser"));
+            chooser.combobox();
+        },
+
+        makeChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
+
+            console.log("type = "+type);
+            var choices = $("<select></select>");
+                var map = {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "type": type
+                };
+
+                var getTypesUrl = SchemaEdit.generateGetUrl(getResourcesOfTypeSparqlTemplate, map);
+                var callback = function (typesArray) {
+        // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
+                    for(var i=0;i<typesArray.length;i++) {
+                        var type = typesArray[i]["uri"];
+                        console.log("type : "+type);
+            //     <option value="ActionScript">ActionScript</option>
+                        var option = $("<option class='choice'></option>");
+                        option.attr("value", type);
+
+                        option.text(type);
+                    // var last = $(".typeChoice").last();
+                    // last.after(option);
+                        choices.append(option);
+                        console.log("choices =\n"+choices.html());
+                    }
+                };
+            SparqlConnector.getJsonForSparqlURL(getTypesUrl, callback);
+            return choices;
         },
 
 /**
@@ -129,12 +182,12 @@ var SchemaEdit = (function () {
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
                             value.text(o);
                             var language = current["language"];
-                            console.log("language = " + language);
+                            // console.log("language = " + language);
                             if(!language || language == ""){
                                 language = "en";
                             }
                             value.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
-                            console.log("value = \n" + value.html());
+                            // console.log("value = \n" + value.html());
                             value.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
                         }
 
@@ -369,10 +422,10 @@ var SchemaEdit = (function () {
             updateClassButton.click(function () {
 
             });
-            var chooser = SchemaEdit.makePropertyChooser(uri);
+            // var chooser = SchemaEdit.makeChooser("rdf:Property");
         },
 
-        makePropertyChooser: function (uri) {
+        makePropertyChooser: function () {
             var map = {
                 graphURI: SparqlConnector.getGraphURI(),
             };
@@ -400,20 +453,11 @@ var SchemaEdit = (function () {
             addClassButton.click(function () {
 
             });
-            var chooser = SchemaEdit.makePropertyChooser(uri);
+            var chooser = SchemaEdit.makeClassChooser(uri);
 
         },
 
-        makeClassChooser: function (uri) {
-            var map = {
-                graphURI: SparqlConnector.getGraphURI(),
-            };
-            var getAllClassesUrl = SchemaEdit.generateGetUrl(getClassListSparqlTemplate, map);
-            var callback = function (json) {
-                console.log("schema-edit.js ClassChooser JSON = " + JSON.stringify(json));
-            };
-            SparqlConnector.getJsonForSparqlURL(getAllclassesUrl, callback);
-        },
+
 
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);

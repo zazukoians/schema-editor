@@ -77,14 +77,6 @@
 <body>
 <div id="dialog">popup/alert dialog</div>
 
-<div class="ui-widget">
-<select id="propertySelector">
-  <option value="" class="propertyChoice">Select one...</option>
-  <option value="ActionScript" class="propertyChoice">ActionScript</option>
-  <option value="AppleScript" class="propertyChoice">AppleScript</option>
-</select>
-</div>
-
 <div id="spinner" class="spinner"></div>
 
     <div id="header">
@@ -137,15 +129,18 @@
     <a href="#show2" class="show" id="show2">-</a>
     <div class="minimal">Add Class/Property</div>
     <div class="full">
-        <div>
-            <label for="newProperty">New Property</label>
-            <input id="newProperty" type='text' value=''></input>
+        <div id="propertyChooser">
+            <div class="propertyLabel">Property</div>
+            <button id="addPropertyButton">Add Property</button>
         </div>
-        <div>
-            <label for="newClass">New Class</label>
-            <input id='newClass' type='text' value=''></input>
-        </div>
+
+<div id="classChooser">
+    <div class="classLabel">Class</div>
+    <button id="addClassButton">Add Class</button>
+</div>
+
 <div><em>TODO checkbox for inherit</em></div>
+<div><em>TODO add prefix/URI mapping</em></div>
     </div>
     <br/>
 </div>
@@ -179,7 +174,6 @@
 <p>This is the footer</p>
     </div>
 
-
   <div id="language-radio">
   <form id="language-form">
     <input value="en" class="language-radio" type="radio" id="language-en" name="language" checked="checked"><label for="language-en"><span></span>en</label>
@@ -187,9 +181,6 @@
     <input value="it" class="language-radio" type="radio" id="language-it" name="language"><label for="language-it"><span></span>it</label>
     </form>
   </div>
-
-
-
 
 </body>
 

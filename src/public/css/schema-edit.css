@@ -55,7 +55,7 @@ input, textarea, select {
 
 .propertyBlock {
     display: block;
-     width: 400px;
+/*     width: 400px; */
 }
 
 .propertyItem {
