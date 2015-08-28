@@ -60,6 +60,18 @@ var SparqlConnector = (function () {
             return graphURI;
         },
 
+        getTurtleUrl: function (type, callback) {
+            var resources = [];
+            var getTurtleSparql = sparqlTemplater(constructGraph, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                });
+
+            var getTurtleUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+                encodeURIComponent(getTurtleSparql) + "&output=text";
+
+            return getTurtleUrl;
+        },
+
         listResourcesOfType: function (type, callback) {
             var resources = [];
             var getResourceListSparql = sparqlTemplater(

@@ -39,6 +39,9 @@ PREFIX stuff: <http://purl.org/stuff#>  \n\
 \n\
 ";
 
+var constructGraph = commonPrefixes +
+"CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <~{graphURI}~> { ?s ?p ?o } . }";
+
 var getAllProperties = commonPrefixes +
 	"SELECT DISTINCT ?property \n\
 FROM NAMED <~{graphURI}~>  \n\

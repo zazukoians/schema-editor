@@ -220,7 +220,7 @@ var SchemaEdit = (function () {
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {
-            
+
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
@@ -328,10 +328,7 @@ var SchemaEdit = (function () {
             });
 
             $("#turtle").click(function () {
-                var query = "CONSTRUCT {?s ?p ?o } WHERE {?s ?p ?o}";
-                var turtleURL = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
-                    encodeURIComponent(query) + "&output=text";
-                location.href = turtleURL;
+                location.href = SparqlConnector.getTurtleUrl();
             });
 
             $("#newPageButton").click(function () {
