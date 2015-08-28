@@ -106,7 +106,7 @@ var SchemaEdit = (function () {
                         // console.log("SparqlConnector.getPrefixedUri(p) = " + SparqlConnector.getPrefixedUri(p));
                         // console.log("pNamespace = " + pNamespace);
 
-                        if (SparqlConnector.getPrefixedUri(p)) {
+                        if (SparqlConnector.getPrefixedUri(p) != null) {
                             pText = SparqlConnector.getPrefixedUri(p);
                         }
                         property.text(pText);

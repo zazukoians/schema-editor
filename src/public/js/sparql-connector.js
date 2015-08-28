@@ -117,9 +117,11 @@ var SparqlConnector = (function () {
 
             var uriNamespace = uri.substring(0, uriNamespaceIndex + 1); // TODO check length
             var name = uri.substring(uriNamespaceIndex + 1);
-            // console.log("SparqlConnector.getPrefixForUri(uriNamespace) = " + SparqlConnector.getPrefixForUri(uriNamespace));
-            var prefixedUri = SparqlConnector.getPrefixForUri(uriNamespace) + ":" + name;
-            return prefixedUri;
+            var prefix = SparqlConnector.getPrefixForUri(uriNamespace);
+            if(prefix) {
+                return prefix + ":" + name;
+            }
+            return null;
         },
 
         getPrefixForUri: function (uri) {
