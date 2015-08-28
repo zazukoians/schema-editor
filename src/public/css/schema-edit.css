@@ -55,7 +55,7 @@ input, textarea, select {
 
 .propertyBlock {
     display: block;
-/*     width: 400px; */
+     width: 100%; /* 400px */
 }
 
 .propertyItem {
@@ -90,6 +90,7 @@ input, textarea, select {
 
 /* collapsible chunks */
 .full {
+    width: 100%;
     display:none;
     height:auto;
     margin:0px 0px 20px 20px;
@@ -101,7 +102,8 @@ input, textarea, select {
 }
 
 .hide:target + .show {
-    display: inline;
+    /* display: inline; */
+    display: block;
 }
 
 .hide:target {
