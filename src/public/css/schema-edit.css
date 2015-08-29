@@ -67,6 +67,9 @@ input, textarea, select {
     text-align: center;
 }
 
+#propertyChooser {
+  width: 50%;
+}
 
 .small {
   font-size: 75%;

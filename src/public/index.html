@@ -2,183 +2,199 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Schema Editor</title>
+  <meta charset="utf-8">
+  <title>Schema Editor</title>
 
-<!-- a Reset CSS, to cancel any browser-specifics -->
-    <link rel="stylesheet" href="css/normalize.css" />
+  <!-- a Reset CSS, to cancel any browser-specifics -->
+  <link rel="stylesheet" href="css/normalize.css" />
 
-    <!-- link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css" / -->
+  <!-- link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css" / -->
 
-<!-- 3-column layout using CSS3 flexbox -->
-    <link rel="stylesheet" href="css/columns.css" />
+  <!-- 3-column layout using CSS3 flexbox -->
+  <link rel="stylesheet" href="css/columns.css" />
 
-<!-- make 3-column layout pretty -->
-    <link rel="stylesheet" href="css/default-theme.css" />
+  <!-- make 3-column layout pretty -->
+  <link rel="stylesheet" href="css/default-theme.css" />
 
-<!-- specific to Schema Editor -->
-    <link rel="stylesheet" href="css/schema-edit.css" />
+  <!-- specific to Schema Editor -->
+  <link rel="stylesheet" href="css/schema-edit.css" />
 
-<!-- markdown processor -->
-    <script src="js/lib/marked.js"></script>
+  <!-- markdown processor -->
+  <script src="js/lib/marked.js"></script>
 
-    <!-- mustache template compiler -->
-    <script src="js/lib/hogan-3.0.2.js"></script>
+  <!-- mustache template compiler -->
+  <script src="js/lib/hogan-3.0.2.js"></script>
 
-    <!-- jQuery + jQueryUI -->
-    <script src="js/lib/jquery-1.10.2.js"></script>
-    <script src="lib/jquery-ui/jquery-ui.js"></script>
+  <!-- jQuery + jQueryUI -->
+  <script src="js/lib/jquery-1.10.2.js"></script>
+  <script src="lib/jquery-ui/jquery-ui.js"></script>
 
-    <script src="js/combobox.js"></script>
-    <!-- date formatting -->
-    <script src="js/lib/moment.js"></script>
+  <script src="js/combobox.js"></script>
+  <!-- date formatting -->
+  <script src="js/lib/moment.js"></script>
 
-<!-- TODO return to these
+  <!-- TODO return to these
 <script src="js/lib/wysihtml5x-toolbar.js"></script>
 <script src="js/lib/advanced_and_extended.js"></script>
 -->
 
-<!-- local scripts -->
-    <script src="js/config.js"></script>
-    <script src="js/sparql-connector.js"></script>
+  <!-- local scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/sparql-connector.js"></script>
 
-    <!-- Schema Editor Specific -->
-    <script src="js/schema-edit.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/sparql-templates.js"></script>
+  <!-- Schema Editor Specific -->
+  <script src="js/schema-edit.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/sparql-templates.js"></script>
 
-    <!-- TODO refactor scripts to more appropriate files -->
-    <script type="text/javascript" language="javascript">
-        $(function () {
-            SchemaEdit.init();
-            SparqlConnector.init();
-            spinner();
-            var uri = queryString["uri"];
-            // console.log("URI="+uri);
-            uri = encodeURI(uri);
+  <!-- TODO refactor scripts to more appropriate files -->
+  <script type="text/javascript" language="javascript">
+    $(function() {
+      SchemaEdit.init();
+      SparqlConnector.init();
+      spinner();
+      var uri = queryString["uri"];
+      // console.log("URI="+uri);
+      uri = encodeURI(uri);
 
-            $("#currentResource").text(uri);
-            SparqlConnector.setCurrentResource(uri);
+      $("#currentResource").text(uri);
+      SparqlConnector.setCurrentResource(uri);
 
-            SchemaEdit.makeClassesList();
-            SchemaEdit.makePropertiesList();
+      SchemaEdit.makeClassesList();
+      SchemaEdit.makePropertiesList();
 
-            var uri = queryString["uri"];
-            if (uri) { // TODO need to check if this if() is working
-                // console.log("URI="+uri);
-                uri = encodeURI(uri);
-                SchemaEdit.populateWithResource(uri); // in schema-edit.js
-            }
-            refresh(); // redraws flex columns
-        });
-    </script>
+      var uri = queryString["uri"];
+      if (uri) { // TODO need to check if this if() is working
+        // console.log("URI="+uri);
+        uri = encodeURI(uri);
+        SchemaEdit.populateWithResource(uri); // in schema-edit.js
+      }
+      refresh(); // redraws flex columns
+    });
+  </script>
 </head>
 
 <body>
-<div id="dialog">popup/alert dialog</div>
+  <div id="dialog">popup/alert dialog</div>
 
-<div id="spinner" class="spinner"></div>
+  <div id="spinner" class="spinner"></div>
 
-    <div id="header">
+  <div id="header">
 
-            <h2>Schema Editor</h2>
-            <strong>
-                Current Resource : <span id="currentResource"></span>
-            </strong>
+    <h2>Schema Editor</h2>
+    <strong>
+      Current Resource :
+      <span id="currentResource"></span>
+    </strong>
 
-            <div class="endpoints">
-            <a href="http://localhost:3333">SPARQL Server</a> <!-- TODO use Config.sparqlServerHost -->
-            <br/>
-                <a href="#hide1" class="hide" id="hide1">+</a>
-                <a href="#show1" class="show" id="show1">-</a>
-                <div class="minimal">Endpoint Settings <em>(in config.js)</em></div>
-                <div class="full">
-                    <div>
-                        <label for="endpointHost">Endpoint Host</label>
-                        <input id="endpointHost" type='text' value=''></input>
-                    </div>
-                    <div>
-                        <label for="queryPath">Query Path</label>
-                        <input id="queryPath" type="text" value=""></input>
-                    </div>
-                    <div>
-                        <label for="updatePath">Update Path</label>
-                        <input id="updatePath" type="text" value=""></input>
-                    </div>
-                </div>
-            </div>
+    <div class="endpoints">
+      <a href="http://localhost:3333">SPARQL Server</a>
+      <!-- TODO use Config.sparqlServerHost -->
+      <br/>
+      <a href="#hide1" class="hide" id="hide1">+</a>
+      <a href="#show1" class="show" id="show1">-</a>
+      <div class="minimal">Endpoint Settings
+        <em>(in config.js)</em>
+      </div>
+      <div class="full">
+        <div>
+          <label for="endpointHost">Endpoint Host</label>
+          <input id="endpointHost" type='text' value=''></input>
+        </div>
+        <div>
+          <label for="queryPath">Query Path</label>
+          <input id="queryPath" type="text" value=""></input>
+        </div>
+        <div>
+          <label for="updatePath">Update Path</label>
+          <input id="updatePath" type="text" value=""></input>
+        </div>
+      </div>
     </div>
+  </div>
 
-<div id="wrapper">
+  <div id="wrapper">
     <div id="left">
-<div class="list-block">
+      <div class="list-block">
         <h2 class="header">Classes</h2>
-          <div id="classes" class="small"></div>
-        </div>
+        <div id="classes" class="small"></div>
+      </div>
 
-        <div class="list-block">
+      <div class="list-block">
         <h2 class="header">Properties</h2>
-          <div id="properties" class="small"></div>
-        </div>
+        <div id="properties" class="small"></div>
+      </div>
     </div>
 
     <div id="center">
 
-<div class="add">
-    <a href="#hide2" class="hide" id="hide2">+</a>
-    <a href="#show2" class="show" id="show2">-</a>
-    <div class="minimal">Add Class/Property</div>
-    <div class="full">
-        <div id="propertyChooser">
-            <div class="propertyLabel">Property</div>
-            <button id="addPropertyButton">Add Property</button>
+      <div class="add">
+        <a href="#hide2" class="hide" id="hide2">+</a>
+        <a href="#show2" class="show" id="show2">-</a>
+        <div class="minimal">Add Class/Property</div>
+        <div class="full">
+          <div class="ui-widget">
+            <div id="propertyChooser">
+              <div class="propertyLabel">Property</div>
+              <button id="addPropertyButton">Add Property</button>
+            </div>
+          </div>
+          <div class="ui-widget">
+            <div id="classChooser">
+              <div class="classLabel">Class</div>
+              <button id="addClassButton">Add Class</button>
+            </div>
+          </div>
+          <div>
+            <em>TODO checkbox for inherit</em>
+          </div>
+          <div>
+            <em>TODO add prefix/URI mapping</em>
+          </div>
         </div>
+        <br/>
+      </div>
 
-<div id="classChooser">
-    <div class="classLabel">Class</div>
-    <button id="addClassButton">Add Class</button>
-</div>
+      <br/>
 
-<div><em>TODO checkbox for inherit</em></div>
-<div><em>TODO add prefix/URI mapping</em></div>
-    </div>
-    <br/>
-</div>
-
-<br/>
-
-<div id="editor"></div>
-<hr />
-        <h3>Upload RDF</h3>
-        <!-- TODO change this from config -->
-        <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
-            <!-- TODO move to config (bypass Fuseki) -->
-            <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
-            <!-- TODO UNSET FILE NAME ?? -->
-            <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
-            <label for='graphName'>Graph</label>
-            <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
-            <br />
-            <input type="submit" value="Upload">
-        </form>
-        <h3>Export Turtle</h3>
-        <button id="turtle">Export</button>
+      <div id="editor"></div>
+      <hr />
+      <h3>Upload RDF</h3>
+      <!-- TODO change this from config -->
+      <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
+        <!-- TODO move to config (bypass Fuseki) -->
+        <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
+        <!-- TODO UNSET FILE NAME ?? -->
+        <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
+        <label for='graphName'>Graph</label>
+        <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
+        <br />
+        <input type="submit" value="Upload">
+      </form>
+      <h3>Export Turtle</h3>
+      <button id="turtle">Export</button>
     </div>
 
     <div id="right">
-        <h2>History</h2>
+      <h2>History</h2>
     </div>
 
-</div>
-    <div id="footer">
-<p>This is the footer</p>
-    </div>
+  </div>
+  <div id="footer">
+    <p>This is the footer</p>
+  </div>
 
   <div id="language-radio">
-  <form id="language-form">
-    <input value="en" class="language-radio" type="radio" id="language-en" name="language" checked="checked"><label for="language-en"><span></span>en</label>
-    <input value="de" class="language-radio" type="radio" id="language-de" name="language"><label for="language-de"><span></span>de</label>
-    <input value="it" class="language-radio" type="radio" id="language-it" name="language"><label for="language-it"><span></span>it</label>
+    <form id="language-form">
+      <input value="en" class="language-radio" type="radio" id="language-en" name="language" checked="checked">
+      <label for="language-en">
+        <span></span>en</label>
+      <input value="de" class="language-radio" type="radio" id="language-de" name="language">
+      <label for="language-de">
+        <span></span>de</label>
+      <input value="it" class="language-radio" type="radio" id="language-it" name="language">
+      <label for="language-it">
+        <span></span>it</label>
     </form>
   </div>
 
