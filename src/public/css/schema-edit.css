@@ -1,74 +1,76 @@
 /* CSS Specific to Schema Editor */
 
 .header {
-   font-weight: bold;
-   display: block;
-   text-align: center;
+  font-weight: bold;
+  display: block;
+  text-align: center;
 }
 
 button {
-    color: white;
-    background-color: purple;
-    font-size: 70%;
-    margin: 0px 4px 4px 4px;
- /*   margin: 10px; */
-    border-radius: 5px;
-
+  color: white;
+  background-color: purple;
+  font-size: 70%;
+  margin: 0px 4px 4px 4px;
+  /*   margin: 10px; */
+  border-radius: 5px;
 }
 
 .show {
-/*    display: block; */
+  /*    display: block; */
 }
 
 .inline button {
-    /* display:inline; */
+  /* display:inline; */
 }
 
 #dialog {
-display: none;
+  display: none;
 }
 
 #language-radio {
-    display: none;
+  display: none;
 }
 
 label {
-   /* display:block; */
-   /* margin:8px; */
- /*   width: 450px; */
-    clear:right;
-    overflow:auto;
+  /* display:block; */
+  /* margin:8px; */
+  /*   width: 450px; */
+  clear: right;
+  overflow: auto;
 }
 
 input, textarea, select {
-    width: 100%;
-    box-sizing:border-box;
-    -moz-box-sizing:border-box
+  width: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box
 }
 
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
 
 .list-container {
-    display: block;
-/*    width: 200px; */
+  display: block;
+  /*    width: 200px; */
 }
 
 .propertyBlock {
-    display: block;
-     width: 100%; /* 400px */
+  display: block;
+  width: 100%;
+  /* 400px */
 }
 
 .propertyItem {
-    text-align: none;
+  text-align: none;
 }
 
 #classes, #properties {
-    display: block;
-    text-align: center;
+  display: block;
+  text-align: center;
 }
 
-#propertyChooser {
+#propertyChooser, #classChooser {
   width: 50%;
+  display: block;
+  margin: 10px;
 }
 
 .small {
@@ -78,172 +80,172 @@ input, textarea, select {
 }
 
 .endpoints {
-    display: block;
-/*    width: 200px; */
-    vertical-align: top;
-    text-align: left;
-    height:auto !important;
-
-    /*
+  display: block;
+  /*    width: 200px; */
+  vertical-align: top;
+  text-align: left;
+  height: auto !important;
+  /*
     box-shadow: 0 0 4px #222 inset;
     background-color: lightgray;
     border-radius: 5px;
     */
 }
 
+
 /* collapsible chunks */
+
 .full {
-    width: 100%;
-    display:none;
-    height:auto;
-    margin:0px 0px 20px 20px;
-    float: left;
+  width: 100%;
+  display: none;
+  height: auto;
+  margin: 0px 0px 20px 20px;
+  float: left;
 }
 
 .show {
-    display: none;
+  display: none;
 }
 
 .hide:target + .show {
-    /* display: inline; */
-    display: block;
+  /* display: inline; */
+  display: block;
 }
 
 .hide:target {
-    display: none;
+  display: none;
 }
 
 .hide:target ~ .full {
-    display:inline;
+  display: inline;
 }
 
+
 /*style the (+) and (-) */
+
 .hide, .show {
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    font-size: 20px;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    background: #cccbbb;
-    opacity: .95;
-    margin-right: 0;
-    float: left;
-    margin-bottom: 25px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background: #cccbbb;
+  opacity: .95;
+  margin-right: 0;
+  float: left;
+  margin-bottom: 25px;
 }
 
 .hide:hover, .show:hover {
-    color: #eee;
-    text-shadow: 0 0 1px #666;
-    text-decoration: none;
-    box-shadow: 0 0 4px #222 inset;
-    opacity: 1;
-    margin-bottom: 25px;
+  color: #eee;
+  text-shadow: 0 0 1px #666;
+  text-decoration: none;
+  box-shadow: 0 0 4px #222 inset;
+  opacity: 1;
+  margin-bottom: 25px;
 }
 
-.full p{
-    height:auto;
-    margin:0;
+.full p {
+  height: auto;
+  margin: 0;
 }
 
 .minimal {
-    float: left;
-    height: auto;
-    width: 90%;
-    line-height: 20px;
-    padding-left: 20px;
-    margin-bottom: 25px;
-    font-style: italic;
+  float: left;
+  height: auto;
+  width: 90%;
+  line-height: 20px;
+  padding-left: 20px;
+  margin-bottom: 25px;
+  font-style: italic;
 }
 
+
 /* as used for classes and properties */
+
 .list-block {
-    display: block;
-    margin: 2em 2em 0em 2em;
-    list-style-type: none;
+  display: block;
+  margin: 2em 2em 0em 2em;
+  list-style-type: none;
 }
 
 .list-block ul {
-    display: block;
-    list-style-type: none;
+  display: block;
+  list-style-type: none;
 }
 
-.list-block ul,
-.list-block li {
-    float: left;
-    margin: 0;
-    padding: 2px;
+.list-block ul, .list-block li {
+  float: left;
+  margin: 0;
+  padding: 2px;
 }
 
 
 /* Spinner TODO move to common.css ? */
 
 .spinner {
-    height: 60px;
-    width: 60px;
-    /*margin: 0px auto; */
+  height: 60px;
+  width: 60px;
+  /*margin: 0px auto; */
   /*  position: relative; */
-    position: absolute;
-    margin-top: 100px;
-    margin-left: auto;
-margin-right: auto;
-left: 0;
-right: 0;
-    z-index: 5000; /*This is in foreground */
-    /*
+  position: absolute;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  z-index: 5000;
+  /*This is in foreground */
+  /*
  display: block;
   margin-left: 200;
   margin-top: 200;
 */
-
-    -webkit-animation: rotation .6s infinite linear;
-    -moz-animation: rotation .6s infinite linear;
-    -o-animation: rotation .6s infinite linear;
-    animation: rotation .6s infinite linear;
-    border-left: 6px solid rgba(0, 174, 239, .15);
-    border-right: 6px solid rgba(0, 174, 239, .15);
-    border-bottom: 6px solid rgba(0, 174, 239, .15);
-    border-top: 6px solid rgba(0, 174, 239, .8);
-    border-radius: 100%;
+  -webkit-animation: rotation .6s infinite linear;
+  -moz-animation: rotation .6s infinite linear;
+  -o-animation: rotation .6s infinite linear;
+  animation: rotation .6s infinite linear;
+  border-left: 6px solid rgba(0, 174, 239, .15);
+  border-right: 6px solid rgba(0, 174, 239, .15);
+  border-bottom: 6px solid rgba(0, 174, 239, .15);
+  border-top: 6px solid rgba(0, 174, 239, .8);
+  border-radius: 100%;
 }
 
 @-webkit-keyframes rotation {
-    from {
-        -webkit-transform: rotate(0deg);
-    }
-
-to {
-        -webkit-transform: rotate(359deg);
-    }
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
 }
 
 @-moz-keyframes rotation {
-    from {
-        -moz-transform: rotate(0deg);
-    }
-
-to {
-        -moz-transform: rotate(359deg);
-    }
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(359deg);
+  }
 }
 
 @-o-keyframes rotation {
-    from {
-        -o-transform: rotate(0deg);
-    }
-
-to {
-        -o-transform: rotate(359deg);
-    }
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(359deg);
+  }
 }
 
 @keyframes rotation {
-    from {
-        transform: rotate(0deg);
-    }
-
-to {
-        transform: rotate(359deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
