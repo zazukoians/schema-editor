@@ -22,128 +22,6 @@ var SchemaEdit = (function () {
           //  SchemaEdit.populateClassesCombobox(); // adds anything?
         },
 
-        /**
-         * Loads list of properties from SPARQL store into combo box(es)
-         */
-        populatePropertiesCombobox: function () {
-            var callback = function (json) {
-                // SchemaEdit.makeListBlock(json, $("#properties"));
-            }
-            var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
-            var chooser = SchemaEdit.makeChooser("rdf:Property");
-            chooser.appendTo($("#propertyChooser"));
-            chooser.combobox();
-            $("#addPropertyButton").click(function () {
-                var subject = SparqlConnector.getCurrentResource();
-                var predicate = $("#propertyChooser").find("input").val();
-                var object = "dummy object";
-                var language = "en";
-                var callback = function () {
-                    refresh();
-                };
-                alert(predicate);
-                SparqlConnector.updateTriple(subject, predicate, object, language, callback);
-
-            });
-        },
-
-        populateClassesCombobox: function () {
-          var callback = function (json) {
-              // SchemaEdit.makeListBlock(json, $("#properties"));
-          }
-          var classedList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
-          var chooser = SchemaEdit.makeChooser("rdfs:Class");
-          chooser.appendTo($("#classChooser"));
-          chooser.combobox();
-          $("#addClassButton").click(function () {
-              var subject = SparqlConnector.getCurrentResource();
-              var predicate = $("#classChooser").find("input").val();
-              var object = "dummy object";
-              var language = "en";
-              var callback = function () {
-                  refresh();
-              };
-            //  alert(predicate);
-              SparqlConnector.updateTriple(subject, predicate, object, language, callback);
-
-          });
-        },
-
-        makeChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
-            // console.log("type = " + type);
-            var choices = $("<select></select>");
-            var map = {
-                "graphURI": SparqlConnector.getGraphURI(),
-                "type": type
-            };
-
-            var getTypesUrl = SchemaEdit.generateGetUrl(getResourcesOfTypeSparqlTemplate, map);
-            var callback = function (typesArray) {
-                // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
-                for(var i = 0; i < typesArray.length; i++) {
-                    var type = typesArray[i]["uri"];
-                    // console.log("type : " + type);
-                    //     <option value="ActionScript">ActionScript</option>
-                    var option = $("<option class='choice'></option>");
-                    option.attr("value", type);
-                    option.text(type);
-                    // var last = $(".typeChoice").last();
-                    // last.after(option);
-                    choices.append(option);
-                    // console.log("choices =\n" + choices.html());
-                }
-            };
-            SparqlConnector.getJsonForSparqlURL(getTypesUrl, callback);
-            return choices;
-        },
-
-        /**
-         * Comment template. TODO fill me in
-         * @param {string} foo This is a param with a description too long to fit in
-         *     one line.
-         * @return {number} This returns something that has a description too long to
-         *     fit in one line.
-         */
-        makeClassesList: function () {
-            var callback = function (json) {
-                SchemaEdit.makeListBlock(json, $("#classes"));
-            }
-            var classList = SparqlConnector.listClasses(callback);
-        },
-
-        makePropertiesList: function () {
-            var callback = function (json) {
-                SchemaEdit.makeListBlock(json, $("#properties"));
-            }
-            var propertiesList = SparqlConnector.listProperties(callback); // TODO refactor, as used above
-        },
-
-        makeListBlock: function (json, target) {
-            // nest the list-block inside a <div> container
-            var listContainer = $("<div class='list-container'></div>");
-            var listElement = $("<ul class='list-block'/>");
-
-            listContainer.append(listElement);
-            // add it wherever required
-            target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
-
-            for(var i = 0; i < json.length; i++) {
-                var uri = json[i]["uri"];
-                var split = uri.split("/");
-                var name = split[split.length - 1];
-                var itemElement = $("<li></li>");
-                var split = window.location.href.split("?");
-                var url = split[0] + "?uri=" + encodeURI(uri);
-                var aElement = $("<a/>").attr("href", url);
-                if(name.length > 5) {
-                    //   name = name.substring(0, 5); // TODO remove
-                    aElement.text(name);
-                    itemElement.append(aElement);
-                    listElement.append(itemElement);
-                }
-            }
-        },
-
         populateWithResource: function (uri) { //  callback??
             SchemaEdit.makeAddProperty(uri);
 
@@ -215,6 +93,130 @@ var SchemaEdit = (function () {
                 }
                 //  console.log("getResourceUrl = " + getResourceUrl);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
+        },
+
+        /**
+         * Loads list of properties from SPARQL store into combo box(es)
+         */
+        populatePropertiesCombobox: function () {
+            var callback = function (json) {
+                // SchemaEdit.makeListBlock(json, $("#properties"));
+            }
+            var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
+            var chooser = SchemaEdit.makeChooser("rdf:Property");
+            chooser.appendTo($("#propertyChooser"));
+            chooser.combobox();
+            $("#addPropertyButton").click(function () {
+                var subject = SparqlConnector.getCurrentResource();
+                var predicate = $("#propertyChooser").find("input").val();
+                var object = "dummy object";
+                var language = "en";
+                var callback = function () {
+                    refresh();
+                };
+                alert(predicate);
+                SparqlConnector.updateTriple(subject, predicate, object, language, callback);
+
+            });
+        },
+
+// is needed?
+        populateClassesCombobox: function () {
+          var callback = function (json) {
+              // SchemaEdit.makeListBlock(json, $("#properties"));
+          }
+          var classedList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
+          var chooser = SchemaEdit.makeChooser("rdfs:Class");
+          chooser.appendTo($("#classChooser"));
+          chooser.combobox();
+          $("#addClassButton").click(function () {
+              var subject = SparqlConnector.getCurrentResource();
+              var predicate = $("#classChooser").find("input").val();
+              var object = "dummy object";
+              var language = "en";
+              var callback = function () {
+                  refresh();
+              };
+            //  alert(predicate);
+              SparqlConnector.updateTriple(subject, predicate, object, language, callback);
+
+          });
+        },
+
+        makeChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
+            // console.log("type = " + type);
+            var choices = $("<select></select>");
+            var map = {
+                "graphURI": SparqlConnector.getGraphURI(),
+                "type": type
+            };
+
+            var getTypesUrl = SchemaEdit.generateGetUrl(getResourcesOfTypeSparqlTemplate, map);
+            var callback = function (typesArray) {
+                // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
+                for(var i = 0; i < typesArray.length; i++) {
+                    var type = typesArray[i]["uri"];
+                    // console.log("type : " + type);
+                    //     <option value="ActionScript">ActionScript</option>
+                    var option = $("<option class='choice'></option>");
+                    option.attr("value", type);
+                    option.text(type);
+                    // var last = $(".typeChoice").last();
+                    // last.after(option);
+                    choices.append(option);
+                    // console.log("choices =\n" + choices.html());
+                }
+            };
+            SparqlConnector.getJsonForSparqlURL(getTypesUrl, callback);
+            return choices;
+        },
+
+// is needed?
+        makeClassesList: function () {
+            var callback = function (json) {
+                SchemaEdit.makeListBlock(json, $("#classes"));
+            }
+            var classList = SparqlConnector.listClasses(callback);
+        },
+
+        /**
+         * Comment template. TODO fill me in
+         * @param {string} foo This is a param with a description too long to fit in
+         *     one line.
+         * @return {number} This returns something that has a description too long to
+         *     fit in one line.
+         */
+        makePropertiesList: function () {
+            var callback = function (json) {
+                SchemaEdit.makeListBlock(json, $("#properties"));
+            }
+            var propertiesList = SparqlConnector.listProperties(callback); // TODO refactor, as used above
+        },
+
+        makeListBlock: function (json, target) {
+            // nest the list-block inside a <div> container
+            var listContainer = $("<div class='list-container'></div>");
+            var listElement = $("<ul class='list-block'/>");
+
+            listContainer.append(listElement);
+            // add it wherever required
+            target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
+
+            for(var i = 0; i < json.length; i++) {
+                var uri = json[i]["uri"];
+                var split = uri.split("/");
+                var name = split[split.length - 1];
+                var itemElement = $("<li></li>");
+                var split = window.location.href.split("?");
+                var url = split[0] + "?uri=" + encodeURI(uri);
+                var aElement = $("<a/>").attr("href", url);
+                if(name.length > 5) {
+                    //   name = name.substring(0, 5); // TODO remove
+                    aElement.text(name);
+                    itemElement.append(aElement);
+                    listElement.append(itemElement);
+                }
+            }
         },
 
         makeLanguageButton: function (subject, predicate, object, language) {
@@ -307,7 +309,7 @@ var SchemaEdit = (function () {
             return triple;
         },
 
-        setupButtons: function () {
+        setupButtons: function () { // TODO refactor - move local to buttons?
             //console.log("Setting up buttons");
             //console.log("$(''.delete '').size() = " + $(".delete").size());
             $(".delete").each(function (index) {
@@ -402,6 +404,7 @@ var SchemaEdit = (function () {
             });
             // var chooser = SchemaEdit.makeChooser("rdf:Property");
         },
+
         makePropertyChooser: function () {
             var map = {
                 graphURI: SparqlConnector.getGraphURI(),
@@ -432,6 +435,7 @@ var SchemaEdit = (function () {
 
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
+            console.log("generateGetUrl sparql = "+sparql);
             return Config.sparqlServerHost + Config.sparqlQueryEndpoint + encodeURIComponent(sparql);
         },
 
@@ -450,10 +454,5 @@ var SchemaEdit = (function () {
              */
     };
 
-    // privateFunction is completely hidden
-    // from the outside.
-    function privateFunction() {
-        return "privateFunction cannot";
-    }
     return SchemaEdit;
 }());

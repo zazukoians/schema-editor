@@ -72,6 +72,14 @@ var SparqlConnector = (function () {
             return getTurtleUrl;
         },
 
+        listClasses: function (callback) {
+            return SparqlConnector.listResourcesOfType("rdfs:Class", callback);
+        },
+
+        listProperties: function (callback) {
+            return SparqlConnector.listResourcesOfType("rdf:Property", callback);
+        },
+
         listResourcesOfType: function (type, callback) {
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
@@ -87,14 +95,6 @@ var SparqlConnector = (function () {
                 callback);
 
             return resources;
-        },
-
-        listClasses: function (callback) {
-            return SparqlConnector.listResourcesOfType("rdfs:Class", callback);
-        },
-
-        listProperties: function (callback) {
-            return SparqlConnector.listResourcesOfType("rdf:Property", callback);
         },
 
         listPropertiesForClass: function (graphURI, classURI) {

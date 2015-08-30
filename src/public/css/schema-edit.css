@@ -45,6 +45,7 @@ input, textarea, select {
   -moz-box-sizing: border-box
 }
 
+
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
 
 .list-container {
@@ -82,7 +83,7 @@ input, textarea, select {
 .endpoints {
   display: block;
   /*    width: 200px; */
-/*  text-align: left; */
+  /*  text-align: left; */
   height: auto !important;
   /*
     box-shadow: 0 0 4px #222 inset;
