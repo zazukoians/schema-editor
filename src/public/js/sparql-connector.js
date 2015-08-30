@@ -63,8 +63,8 @@ var SparqlConnector = (function () {
         getTurtleUrl: function (type, callback) {
             var resources = [];
             var getTurtleSparql = sparqlTemplater(constructGraph, {
-                    "graphURI": SparqlConnector.getGraphURI(),
-                });
+                "graphURI": SparqlConnector.getGraphURI(),
+            });
 
             var getTurtleUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getTurtleSparql) + "&output=text";
@@ -109,7 +109,7 @@ var SparqlConnector = (function () {
 
         getPrefixedUri: function (uri) {
             var uriNamespaceIndex = uri.indexOf("#");
-            if (uriNamespaceIndex == -1) {
+            if(uriNamespaceIndex == -1) {
                 uriNamespaceIndex = uri.lastIndexOf("/");
             }
             // console.log("uriNamespaceIndex = " + uriNamespaceIndex);
@@ -126,10 +126,10 @@ var SparqlConnector = (function () {
         getPrefixForUri: function (uri) {
             var array = knownPrefixes;
 
-            for (var i = 0; i < array.length; i++) {
+            for(var i = 0; i < array.length; i++) {
                 var prefix = array[i].prefix;
                 var knownUri = array[i].uri;
-                if (knownUri == uri) {
+                if(knownUri == uri) {
                     return prefix;
                 }
             }
@@ -140,40 +140,40 @@ var SparqlConnector = (function () {
             var known = [{
                 prefix: "schema",
                 uri: "http://schema.org/"
-      }, {
+            }, {
                 prefix: "rdfs",
                 uri: "http://www.w3.org/2000/01/rdf-schema#"
-      }, {
+            }, {
                 prefix: "dc",
                 uri: "http://purl.org/dc/terms/"
-      }, {
+            }, {
                 prefix: "owl",
                 uri: "http://www.w3.org/2002/07/owl#"
-      }, {
+            }, {
                 prefix: "rdf",
                 uri: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-      }, {
+            }, {
                 prefix: "foaf",
                 uri: "http://xmlns.com/foaf/0.1/"
-      }, {
+            }, {
                 prefix: "dcat",
                 uri: "http://www.w3.org/ns/dcat#"
-      }, {
+            }, {
                 prefix: "void",
                 uri: "http://rdfs.org/ns/void#"
-      }, {
+            }, {
                 prefix: "bibo",
                 uri: "http://purl.org/ontology/bibo/"
-      }, {
+            }, {
                 prefix: "dctype",
                 uri: "http://purl.org/dc/dcmitype/"
-      }, {
+            }, {
                 prefix: "sioc",
                 uri: "http://rdfs.org/sioc/ns#"
-      }, {
+            }, {
                 prefix: "stuff",
                 uri: "http://purl.org/stuff/"
-      }];
+            }];
             knownPrefixes = knownPrefixes.concat(known);
             knownPrefixes.sort();
             // console.log("knownPrefixes = " + JSON.stringify(knownPrefixes));
@@ -190,7 +190,7 @@ var SparqlConnector = (function () {
                     update: data
                 })
             }).done(function (msg) {
-                if (callback) {
+                if(callback) {
                     callback(msg);
                 }
             }).fail(function (jqXHR, textStatus,
@@ -216,7 +216,7 @@ var SparqlConnector = (function () {
         },
 
         updateTriple: function (subject, predicate, object, language, callback) {
-            if (!language || language == "") { // sensible default
+            if(!language || language == "") { // sensible default
                 language = "en";
             }
             var updateTripleSparql = sparqlTemplater(
@@ -282,7 +282,7 @@ var SparqlConnector = (function () {
             // console.log(xmlString);
             var variables = $xml.find("variable");
 
-            if (variables.length == 0) {
+            if(variables.length == 0) {
                 return false;
             }
             var jsonVariables = [];
@@ -293,14 +293,14 @@ var SparqlConnector = (function () {
 
             var results = $xml.find("result");
 
-            if (results.length == 0) {
+            if(results.length == 0) {
                 return false;
             }
             var jsonResults = [];
 
             results.each(function () {
                 var map = {};
-                for (var i = 0; i < jsonVariables.length; i++) {
+                for(var i = 0; i < jsonVariables.length; i++) {
                     var name = jsonVariables[i];
                     // console.log("NAME=" + name);
                     $(this).find("binding[name='" + name + "']").each(

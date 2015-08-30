@@ -87,30 +87,7 @@
       <span id="currentResource"></span>
     </strong>
 
-    <div class="endpoints">
-      <a href="http://localhost:3333">SPARQL Server</a>
-      <!-- TODO use Config.sparqlServerHost -->
-      <br/>
-      <a href="#hide1" class="hide" id="hide1">+</a>
-      <a href="#show1" class="show" id="show1">-</a>
-      <div class="minimal">Endpoint Settings
-        <em>(in config.js)</em>
-      </div>
-      <div class="full">
-        <div>
-          <label for="endpointHost">Endpoint Host</label>
-          <input id="endpointHost" type='text' value=''></input>
-        </div>
-        <div>
-          <label for="queryPath">Query Path</label>
-          <input id="queryPath" type="text" value=""></input>
-        </div>
-        <div>
-          <label for="updatePath">Update Path</label>
-          <input id="updatePath" type="text" value=""></input>
-        </div>
-      </div>
-    </div>
+
   </div>
 
   <div id="wrapper">
@@ -128,40 +105,25 @@
 
     <div id="center">
 
-      <div class="add">
-        <a href="#hide2" class="hide" id="hide2">+</a>
-        <a href="#show2" class="show" id="show2">-</a>
-        <div class="minimal">Add Class/Property</div>
-        <div class="full">
-
-          <div class="ui-widget">
-            <div id="propertyChooser">
-              <div class="propertyLabel">Property</div>
-            </div>
-            <button id="addPropertyButton">Add Property</button>
-          </div>
-
-          <div class="ui-widget">
-            <div id="classChooser">
-              <div class="classLabel">Class</div>
-            </div>
-            <button id="addClassButton">Add Class</button>
-          </div>
-
-          <div>
-            <em>TODO checkbox for inherit</em>
-          </div>
-          <div>
-            <em>TODO add prefix/URI mapping</em>
-          </div>
-        </div>
-        <br/>
-      </div>
-
-      <br/>
-
       <div id="editor"></div>
       <hr />
+
+      <div class="ui-widget">
+        <div id="propertyChooser">
+          <div class="propertyLabel">Add Property</div>
+        </div>
+        <input class="propertyValue" title="">Value</input>
+        <button id="addPropertyButton">Add Property</button>
+      </div>
+
+      <div>
+        <em>TODO checkbox for inherit</em>
+      </div>
+      <div>
+        <em>TODO add prefix/URI mapping</em>
+      </div>
+      <hr/>
+
       <h3>Upload RDF</h3>
       <!-- TODO change this from config -->
       <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
@@ -176,15 +138,38 @@
       </form>
       <h3>Export Turtle</h3>
       <button id="turtle">Export</button>
-    </div>
 
+
+      <hr/>
+
+      <div class="endpoints">
+        <a href="http://localhost:3333">SPARQL Server</a>
+        <!-- TODO use Config.sparqlServerHost -->
+
+        Endpoint Settings
+        <em>(in config.js)</em>
+        <div>
+          <label for="endpointHost">Endpoint Host</label>
+          <input id="endpointHost" type='text' value=''></input>
+        </div>
+        <div>
+          <label for="queryPath">Query Path</label>
+          <input id="queryPath" type="text" value=""></input>
+        </div>
+        <div>
+          <label for="updatePath">Update Path</label>
+          <input id="updatePath" type="text" value=""></input>
+        </div>
+      </div>
+    </div>
+    
     <div id="right">
       <h2>History</h2>
     </div>
 
   </div>
   <div id="footer">
-    <p>This is the footer</p>
+
   </div>
 
   <div id="language-radio">

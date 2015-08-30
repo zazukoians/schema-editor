@@ -82,8 +82,7 @@ input, textarea, select {
 .endpoints {
   display: block;
   /*    width: 200px; */
-  vertical-align: top;
-  text-align: left;
+/*  text-align: left; */
   height: auto !important;
   /*
     box-shadow: 0 0 4px #222 inset;
