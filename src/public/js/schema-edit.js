@@ -19,7 +19,7 @@ var SchemaEdit = (function () {
             $("#queryPath").val(Config.sparqlQueryEndpoint);
 
             SchemaEdit.populatePropertiesCombobox();
-          //  SchemaEdit.populateClassesCombobox(); // adds anything?
+            //  SchemaEdit.populateClassesCombobox(); // adds anything?
         },
 
         populateWithResource: function (uri) { //  callback??
@@ -48,6 +48,7 @@ var SchemaEdit = (function () {
                         }
                         property.text(pText);
                         node.append(property);
+                        
                         var deleteButton = SchemaEdit.makeDeleteButton();
                         var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
                         triple += "<" + p + "> "; // predicate/property
@@ -56,12 +57,18 @@ var SchemaEdit = (function () {
                         var value = $("<div>what default?</div>"); // needed for bnodes?
                         var o = current["o"];
                         if(current.type == "literal") { // as returned from SPARQL
-                            value = $("<div id='literalEditor' contenteditable='true' title='click to edit'>" + o + "</div>");
-                            triple += "\"\"\"" + o + "\"\"\" ."; // object
-                            value.text(o);
                             var language = current["language"];
                             // console.log("language = " + language);
+
+                            value = $("<div id='literalEditor' contenteditable='true' title='click to edit'>" + o + "</div>");
                             if(!language || language == "") {
+                                triple += "\"\"\"" + o + "\"\"\" ."; // object
+                            } else {
+                                triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
+                            }
+                            value.text(o);
+
+                            if(!language || language == "") { // sensible default
                                 language = "en";
                             }
                             value.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
@@ -88,7 +95,7 @@ var SchemaEdit = (function () {
                         propertyBlock.append("<hr/><strong>Property</strong>").append(node);
                         $("#editor").append(propertyBlock);
                     }
-                    // console.log("in buildEditor() -  $(''.delete '').size() = " + $(".delete").size());
+
                     SchemaEdit.setupButtons();
                 }
                 //  console.log("getResourceUrl = " + getResourceUrl);
@@ -120,27 +127,27 @@ var SchemaEdit = (function () {
             });
         },
 
-// is needed?
+        // is needed?
         populateClassesCombobox: function () {
-          var callback = function (json) {
-              // SchemaEdit.makeListBlock(json, $("#properties"));
-          }
-          var classedList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
-          var chooser = SchemaEdit.makeChooser("rdfs:Class");
-          chooser.appendTo($("#classChooser"));
-          chooser.combobox();
-          $("#addClassButton").click(function () {
-              var subject = SparqlConnector.getCurrentResource();
-              var predicate = $("#classChooser").find("input").val();
-              var object = "dummy object";
-              var language = "en";
-              var callback = function () {
-                  refresh();
-              };
-            //  alert(predicate);
-              SparqlConnector.updateTriple(subject, predicate, object, language, callback);
+            var callback = function (json) {
+                // SchemaEdit.makeListBlock(json, $("#properties"));
+            }
+            var classedList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
+            var chooser = SchemaEdit.makeChooser("rdfs:Class");
+            chooser.appendTo($("#classChooser"));
+            chooser.combobox();
+            $("#addClassButton").click(function () {
+                var subject = SparqlConnector.getCurrentResource();
+                var predicate = $("#classChooser").find("input").val();
+                var object = "dummy object";
+                var language = "en";
+                var callback = function () {
+                    refresh();
+                };
+                //  alert(predicate);
+                SparqlConnector.updateTriple(subject, predicate, object, language, callback);
 
-          });
+            });
         },
 
         makeChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
@@ -171,7 +178,7 @@ var SchemaEdit = (function () {
             return choices;
         },
 
-// is needed?
+        // is needed?
         makeClassesList: function () {
             var callback = function (json) {
                 SchemaEdit.makeListBlock(json, $("#classes"));
@@ -296,6 +303,25 @@ var SchemaEdit = (function () {
             var deleteButton = $("<button class='delete'>Delete</button>");
             deleteButton.attr("title", "delete this property"); // tooltip
             deleteButton.append("<br/>");
+            deleteButton.click(function () {
+                //    alert("Handler for .click() called.");
+                var triple = deleteButton.attr("data-triple");
+                // console.log("TRIPLE on delete = " + triple);
+                var callback = function (msg) {
+                    $("#dialog").html(msg);
+                    $("#dialog").dialog({
+                        close: function (event, ui) {
+                            location.reload(true);
+                        }
+                    });
+                    //    console.log("callback called");
+                }
+                SparqlConnector.deleteTurtle(triple, callback);
+                // history.add("before",currentState)
+                // history.add("undo",sparql)
+                // history.add("after",currentState)
+                // history.add("item",undo button)
+            });
             return deleteButton;
         },
 
@@ -310,32 +336,31 @@ var SchemaEdit = (function () {
         },
 
         setupButtons: function () { // TODO refactor - move local to buttons?
-            //console.log("Setting up buttons");
-            //console.log("$(''.delete '').size() = " + $(".delete").size());
-            $(".delete").each(function (index) {
-                //console.log("each .delete " + $(this));
-                //console.log(index + ": " + $(this).text());
-                $(this).click(function () {
-                    //    alert("Handler for .click() called.");
-                    var triple = $(this).attr("data-triple");
-                    // console.log("TRIPLE on delete = " + triple);
-                    var callback = function (msg) {
-                        $("#dialog").html(msg);
-                        $("#dialog").dialog({
-                            close: function (event, ui) {
-                                location.reload(true);
-                            }
+            /*
+                        $(".delete").each(function (index) {
+                            //console.log("each .delete " + $(this));
+                            //console.log(index + ": " + $(this).text());
+                            $(this).click(function () {
+                                //    alert("Handler for .click() called.");
+                                var triple = $(this).attr("data-triple");
+                                // console.log("TRIPLE on delete = " + triple);
+                                var callback = function (msg) {
+                                    $("#dialog").html(msg);
+                                    $("#dialog").dialog({
+                                        close: function (event, ui) {
+                                            location.reload(true);
+                                        }
+                                    });
+                                    //    console.log("callback called");
+                                }
+                                SparqlConnector.deleteTurtle(triple, callback);
+                                // history.add("before",currentState)
+                                // history.add("undo",sparql)
+                                // history.add("after",currentState)
+                                // history.add("item",undo button)
+                            });
                         });
-                        //    console.log("callback called");
-                    }
-                    SparqlConnector.deleteTurtle(triple, callback);
-                    // history.add("before",currentState)
-                    // history.add("undo",sparql)
-                    // history.add("after",currentState)
-                    // history.add("item",undo button)
-                });
-            });
-
+            */
             $(".change").each(function (index) {
                 //console.log("each .delete " + $(this));
                 //console.log(index + ": " + $(this).text());
@@ -435,7 +460,7 @@ var SchemaEdit = (function () {
 
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
-            console.log("generateGetUrl sparql = "+sparql);
+            console.log("generateGetUrl sparql = " + sparql);
             return Config.sparqlServerHost + Config.sparqlQueryEndpoint + encodeURIComponent(sparql);
         },
 
