@@ -48,7 +48,7 @@ var SchemaEdit = (function () {
                         }
                         property.text(pText);
                         node.append(property);
-                        
+
                         var deleteButton = SchemaEdit.makeDeleteButton();
                         var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
                         triple += "<" + p + "> "; // predicate/property
@@ -82,11 +82,9 @@ var SchemaEdit = (function () {
                             }
                             value = $("<a />");
                             value.attr("href", o);
-                            var changePredicateButton = $("<button class='inline'>Change</button>");
-                            changePredicateButton.attr("title", "change this value"); // tooltip
                             triple += " <" + o + "> ."; // object
-                            changePredicateButton.attr("data-triple", triple); // stick resource data in attribute
-                            node.append(changePredicateButton);
+                            node.append(SchemaEdit.makeChangePredicateButton(triple));
+
                             value.text(uriText);
                         }
                         deleteButton.attr("data-triple", triple); // stick resource data in attribute
@@ -325,6 +323,34 @@ var SchemaEdit = (function () {
             return deleteButton;
         },
 
+        makeChangePredicateButton: function (triple) {
+            var changePredicateButton = $("<button class='inline'>Change</button>");
+            changePredicateButton.attr("title", "change this value"); // tooltip
+
+            changePredicateButton.attr("data-triple", triple); // stick resource data in attribute
+
+            changePredicateButton.click(function () {
+                alert("Handler for .click() called.");
+                var triple = changePredicateButton.attr("data-triple");
+                // console.log("TRIPLE on delete = " + triple);
+                var callback = function (msg) {
+                    $("#dialog").html(msg);
+                    $("#dialog").dialog({
+                        close: function (event, ui) {
+                            location.reload(true);
+                        }
+                    });
+                    //    console.log("callback called");
+                }
+                SparqlConnector.updateTriple(triple, callback);
+                // history.add("before",currentState)
+                // history.add("undo",sparql)
+                // history.add("after",currentState)
+                // history.add("item",undo button)
+            });
+            return changePredicateButton;
+        },
+
         makeTripleAttribute: function (subject, predicate, object, isLiteral) {
             var triple = "<" + subject + "> <" + predicate + "> ";
             if(isLiteral) {
@@ -364,6 +390,7 @@ var SchemaEdit = (function () {
             $(".change").each(function (index) {
                 //console.log("each .delete " + $(this));
                 //console.log(index + ": " + $(this).text());
+                /*
                 $(this).click(function () {
                     alert("Handler for .click() called.");
                     var triple = $(this).attr("data-triple");
@@ -383,6 +410,7 @@ var SchemaEdit = (function () {
                     // history.add("after",currentState)
                     // history.add("item",undo button)
                 });
+                */
             });
 
             $("#turtle").click(function () {
