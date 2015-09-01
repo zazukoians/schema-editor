@@ -6,7 +6,7 @@
   text-align: center;
 }
 
-button {
+button, .button {
   color: white;
   background-color: purple;
   font-size: 70%;
@@ -32,6 +32,9 @@ button {
 }
 
 label {
+  display: inline-block;
+  width: 200px;
+  text-align: right;
   /* display:block; */
   /* margin:8px; */
   /*   width: 450px; */
@@ -40,7 +43,7 @@ label {
 }
 
 input, textarea, select {
-  width: 100%;
+  width: 75%;;
   box-sizing: border-box;
   -moz-box-sizing: border-box
 }

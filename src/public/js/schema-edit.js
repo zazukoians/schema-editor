@@ -40,9 +40,7 @@ var SchemaEdit = (function () {
                         var p = current["p"];
                         property.attr("href", p);
                         var pText = p;
-                        // console.log("p = " + p);
-                        // console.log("SparqlConnector.getPrefixedUri(p) = " + SparqlConnector.getPrefixedUri(p));
-                        // console.log("pNamespace = " + pNamespace);
+
                         if(SparqlConnector.getPrefixedUri(p) != null) {
                             pText = SparqlConnector.getPrefixedUri(p);
                         }
@@ -53,7 +51,7 @@ var SchemaEdit = (function () {
                         var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
                         triple += "<" + p + "> "; // predicate/property
                         // triple += ""
-                        property.after(deleteButton);
+                      //  property.after(deleteButton);
                         var value = $("<div>what default?</div>"); // needed for bnodes?
                         var o = current["o"];
                         if(current.type == "literal") { // as returned from SPARQL
@@ -83,20 +81,25 @@ var SchemaEdit = (function () {
                             value = $("<a />");
                             value.attr("href", o);
                             triple += " <" + o + "> ."; // object
-                            node.append(SchemaEdit.makeChangePredicateButton(triple));
+
+                          /* functionality is already available via Add Property/ Delete
+                           * leaving here for now during evaluation
+                           */
+                          //  node.append(SchemaEdit.makeChangePredicateButton(triple));
 
                             value.text(uriText);
                         }
                         deleteButton.attr("data-triple", triple); // stick resource data in attribute
                         node.append(value);
+                      //  property.after(deleteButton);
+                      node.append(deleteButton);
                         var propertyBlock = $("<p class='propertyBlock'/>");
-                        propertyBlock.append("<hr/><strong>Property</strong>").append(node);
+                        propertyBlock.append("<strong>Property</strong>").append(node);
+                        propertyBlock.append("<hr/>");
                         $("#editor").append(propertyBlock);
                     }
-
                     SchemaEdit.setupButtons();
                 }
-                //  console.log("getResourceUrl = " + getResourceUrl);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
 
@@ -121,7 +124,6 @@ var SchemaEdit = (function () {
                 };
                 alert(predicate);
                 SparqlConnector.updateTriple(subject, predicate, object, language, callback);
-
             });
         },
 
@@ -144,7 +146,6 @@ var SchemaEdit = (function () {
                 };
                 //  alert(predicate);
                 SparqlConnector.updateTriple(subject, predicate, object, language, callback);
-
             });
         },
 
@@ -204,7 +205,6 @@ var SchemaEdit = (function () {
             var listElement = $("<ul class='list-block'/>");
 
             listContainer.append(listElement);
-            // add it wherever required
             target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
 
             for(var i = 0; i < json.length; i++) {
@@ -235,7 +235,6 @@ var SchemaEdit = (function () {
                 dialog.addClass("show");
                 dialog.html(languageChoices);
                 var updateHandler = function () {
-                    //    var language = $("input[name=radioName]:checked");
                     var language;
                     $('.language-radio').each(function () {
                         if(this.type == 'radio' && this.checked) {
@@ -312,7 +311,6 @@ var SchemaEdit = (function () {
                             location.reload(true);
                         }
                     });
-                    //    console.log("callback called");
                 }
                 SparqlConnector.deleteTurtle(triple, callback);
                 // history.add("before",currentState)
@@ -323,6 +321,9 @@ var SchemaEdit = (function () {
             return deleteButton;
         },
 
+        /* functionality is already available via Add Property/ Delete
+         * leaving here for now during evaluation
+         */
         makeChangePredicateButton: function (triple) {
             var changePredicateButton = $("<button class='inline'>Change</button>");
             changePredicateButton.attr("title", "change this value"); // tooltip
@@ -330,7 +331,7 @@ var SchemaEdit = (function () {
             changePredicateButton.attr("data-triple", triple); // stick resource data in attribute
 
             changePredicateButton.click(function () {
-                alert("Handler for .click() called.");
+                // alert("Handler for .click() called.");
                 var triple = changePredicateButton.attr("data-triple");
                 // console.log("TRIPLE on delete = " + triple);
                 var callback = function (msg) {
@@ -340,8 +341,7 @@ var SchemaEdit = (function () {
                             location.reload(true);
                         }
                     });
-                    //    console.log("callback called");
-                }
+                };
                 SparqlConnector.updateTriple(triple, callback);
                 // history.add("before",currentState)
                 // history.add("undo",sparql)
@@ -362,56 +362,6 @@ var SchemaEdit = (function () {
         },
 
         setupButtons: function () { // TODO refactor - move local to buttons?
-            /*
-                        $(".delete").each(function (index) {
-                            //console.log("each .delete " + $(this));
-                            //console.log(index + ": " + $(this).text());
-                            $(this).click(function () {
-                                //    alert("Handler for .click() called.");
-                                var triple = $(this).attr("data-triple");
-                                // console.log("TRIPLE on delete = " + triple);
-                                var callback = function (msg) {
-                                    $("#dialog").html(msg);
-                                    $("#dialog").dialog({
-                                        close: function (event, ui) {
-                                            location.reload(true);
-                                        }
-                                    });
-                                    //    console.log("callback called");
-                                }
-                                SparqlConnector.deleteTurtle(triple, callback);
-                                // history.add("before",currentState)
-                                // history.add("undo",sparql)
-                                // history.add("after",currentState)
-                                // history.add("item",undo button)
-                            });
-                        });
-            */
-            $(".change").each(function (index) {
-                //console.log("each .delete " + $(this));
-                //console.log(index + ": " + $(this).text());
-                /*
-                $(this).click(function () {
-                    alert("Handler for .click() called.");
-                    var triple = $(this).attr("data-triple");
-                    // console.log("TRIPLE on delete = " + triple);
-                    var callback = function (msg) {
-                        $("#dialog").html(msg);
-                        $("#dialog").dialog({
-                            close: function (event, ui) {
-                                location.reload(true);
-                            }
-                        });
-                        //    console.log("callback called");
-                    }
-                    SparqlConnector.changeTurtle(triple, callback);
-                    // history.add("before",currentState)
-                    // history.add("undo",sparql)
-                    // history.add("after",currentState)
-                    // history.add("item",undo button)
-                });
-                */
-            });
 
             $("#turtle").click(function () {
                 location.href = SparqlConnector.getTurtleUrl();
@@ -425,14 +375,12 @@ var SchemaEdit = (function () {
 
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());
-                // console.log("DATA = " + data);
                 $.ajax({
                     url: Config.sparqlUpdateEndpoint,
                     type: 'POST',
                     data: ({
                         update: data
                     }),
-                    //    contentType: "application/sparql-update",
                     processData: false,
                     contentType: false
                 });
@@ -442,10 +390,9 @@ var SchemaEdit = (function () {
 
         makeAddProperty: function (uri) {
             var updatePropertyButton = $("<button id='updateProperty'>Add this property</button>");
-            updatePropertyButton.append($("<hr/>"));
+            // updatePropertyButton.append($("<hr/>"));
             var updateClassButton = $("<button id='updateClass'>Add this class</button>");
-            updateClassButton.append($("<hr/>"));
-            // $("#editor").prepend(addPropertyButton);
+          //  updateClassButton.append($("<hr/>"));
             $("#newProperty").append(updatePropertyButton);
             $("#newClass").append(updateClassButton);
             // $("#newProperty") is <input>
@@ -453,9 +400,7 @@ var SchemaEdit = (function () {
 
             });
             updateClassButton.click(function () {
-
             });
-            // var chooser = SchemaEdit.makeChooser("rdf:Property");
         },
 
         makePropertyChooser: function () {
