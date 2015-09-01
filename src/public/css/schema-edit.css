@@ -75,6 +75,7 @@ input, textarea, select {
 
 /* TODO tweak */
 .propertyItem .literalObject {
+  height:auto;
   background-color: white;
   border: 1px solid black;
   border-radius: 3px;
