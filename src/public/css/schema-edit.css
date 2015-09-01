@@ -43,7 +43,8 @@ label {
 }
 
 input, textarea, select {
-  width: 75%;;
+  width: 75%;
+  ;
   box-sizing: border-box;
   -moz-box-sizing: border-box
 }
@@ -63,7 +64,21 @@ input, textarea, select {
 }
 
 .propertyItem {
-  text-align: none;
+  /* text-align: none; */
+  display: block;
+}
+
+.propertyItem .predicate, .propertyItem .uriObject {
+  display: inline;
+  padding: 10px;
+}
+
+/* TODO tweak */
+.propertyItem .literalObject {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 2px 2px 0px 5px;
 }
 
 #classes, #properties {

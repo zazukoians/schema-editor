@@ -45,7 +45,9 @@ var SchemaEdit = (function () {
                             pText = SparqlConnector.getPrefixedUri(p);
                         }
                         property.text(pText);
-                        node.append(property);
+                        var propertyWrapper = $("<div class='predicate'></div>");
+                        propertyWrapper.append(property);
+                        node.append(propertyWrapper);
 
                         var deleteButton = SchemaEdit.makeDeleteButton();
                         var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
@@ -57,29 +59,34 @@ var SchemaEdit = (function () {
                         if(current.type == "literal") { // as returned from SPARQL
                             var language = current["language"];
                             // console.log("language = " + language);
-
-                            value = $("<div id='literalEditor' contenteditable='true' title='click to edit'>" + o + "</div>");
+                            var valueWrapper = $("<div class='literalObject' contenteditable='true' title='click to edit'>"+o+"</div>");
+                            value = $("<span>"+o+"</span>");
+                            value.text(o);
                             if(!language || language == "") {
                                 triple += "\"\"\"" + o + "\"\"\" ."; // object
                             } else {
                                 triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
                             }
-                            value.text(o);
 
                             if(!language || language == "") { // sensible default
                                 language = "en";
                             }
-                            value.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
+                            valueWrapper.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
                             // console.log("value = \n" + value.html());
-                            value.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
+                            valueWrapper.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
                         }
                         if(current.type == "uri") { // as returned from SPARQL
                             var uriText = o;
                             if(SparqlConnector.getPrefixedUri(o)) {
                                 uriText = SparqlConnector.getPrefixedUri(o);
                             }
+                            // value = $("<a />");
+
                             value = $("<a />");
                             value.attr("href", o);
+                            var valueWrapper = $("<div class='uriObject' title='click to view target'></div>");
+                            valueWrapper.append(value);
+
                             triple += " <" + o + "> ."; // object
 
                           /* functionality is already available via Add Property/ Delete
@@ -90,7 +97,7 @@ var SchemaEdit = (function () {
                             value.text(uriText);
                         }
                         deleteButton.attr("data-triple", triple); // stick resource data in attribute
-                        node.append(value);
+                        node.append(valueWrapper);
                       //  property.after(deleteButton);
                       node.append(deleteButton);
                         var propertyBlock = $("<p class='propertyBlock'/>");
