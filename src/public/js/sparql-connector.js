@@ -80,7 +80,7 @@ var SparqlConnector = (function () {
             return SparqlConnector.listResourcesOfType("rdf:Property", callback);
         },
 
-        listResourcesOfType: function (type, callback) {
+        listResourcesOfType: function (type, callback) {  // TODO appears broken, duplicated below - is used?
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourcesOfTypeSparqlTemplate, {
@@ -94,6 +94,46 @@ var SparqlConnector = (function () {
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
                 callback);
 
+            return resources;
+        },
+
+        listResources: function (callback) {
+            var resources = [];
+            var getResourceListSparql = sparqlTemplater(
+                getResourceListSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI()
+                });
+            console.log("getResourceListSparql = \n" + getResourceListSparql);
+            var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+                encodeURIComponent(getResourceListSparql) + "&output=xml";
+
+            var extractResources = function(json) {
+              var resources = [];
+              // console.log("listResources json =" + JSON.stringify(json, false, 4));
+              for(var i = 0; i < json.length; i++) {
+                  var subject = json[i]["subject"];
+                  resources.push(subject);
+              //    console.log("subject = " + subject);
+              }
+              callback(resources);
+            }
+            //  console.log("getClassesUrl = " + getResourcesUrl);
+            SparqlConnector.getJsonForSparqlURL(getResourcesUrl, extractResources);
+        },
+
+        listResourcesOfType: function (type, callback) { // TODO appears broken - is used?
+            var resources = [];
+            var getResourceListSparql = sparqlTemplater(
+                getResourcesOfTypeSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "type": type
+                });
+            var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+                encodeURIComponent(getResourceListSparql) + "&output=xml";
+
+            //  console.log("getClassesUrl = " + getResourcesUrl);
+            var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
+            //    console.log("json =" + json);
             return resources;
         },
 
@@ -199,21 +239,7 @@ var SparqlConnector = (function () {
             });
         },
 
-        listResourcesOfType: function (type, callback) {
-            var resources = [];
-            var getResourceListSparql = sparqlTemplater(
-                getResourcesOfTypeSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
-                    "type": type
-                });
-            var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
-                encodeURIComponent(getResourceListSparql) + "&output=xml";
 
-            //  console.log("getClassesUrl = " + getResourcesUrl);
-            var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
-            //    console.log("json =" + json);
-            return resources;
-        },
 
         updateTriple: function (subject, predicate, object, language, callback) {
             if(!language || language == "") { // sensible default

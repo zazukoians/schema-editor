@@ -19,6 +19,7 @@ var SchemaEdit = (function () {
             $("#queryPath").val(Config.sparqlQueryEndpoint);
 
             SchemaEdit.populatePropertiesCombobox();
+            SchemaEdit.populateResourcesCombobox();
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
         },
 
@@ -74,8 +75,6 @@ var SchemaEdit = (function () {
                         if(!language || language == "") { // sensible default
                             language = "en";
                         } // TODO best approach? see above
-
-
                     }
                     if(current.type == "uri") { // as returned from SPARQL
                         var uriText = o;
@@ -122,12 +121,34 @@ var SchemaEdit = (function () {
         /**
          * Loads list of properties from SPARQL store into combo box(es)
          */
+        populateResourcesCombobox: function () {
+            var callback = function (json) {
+              console.log("populateResourcesCombobox json = \n"+JSON.stringify(json, false, 4));
+              var chooser = SchemaEdit.makeChooser(json);
+              chooser.appendTo($("#resourceChooser"));
+              chooser.combobox();
+              $("#chooseResourceButton").click(function () {
+                  var subject = SparqlConnector.getCurrentResource();
+                  var predicate = $("#propertyChooser").find("input").val();
+                  var object = "dummy object";
+                  var language = "en";
+                  var callback = function () {
+                      refresh();
+                  };
+              });;
+            }
+            SparqlConnector.listResources(callback);
+        },
+
+        /**
+         * Loads list of properties from SPARQL store into combo box(es)
+         */
         populatePropertiesCombobox: function () {
             var callback = function (json) {
                 // SchemaEdit.makeListBlock(json, $("#properties"));
             }
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
-            var chooser = SchemaEdit.makeChooser("rdf:Property");
+            var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
             chooser.appendTo($("#propertyChooser"));
             chooser.combobox();
             $("#addPropertyButton").click(function () {
@@ -149,7 +170,7 @@ var SchemaEdit = (function () {
                 // SchemaEdit.makeListBlock(json, $("#properties"));
             }
             var classedList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
-            var chooser = SchemaEdit.makeChooser("rdfs:Class");
+            var chooser = SchemaEdit.makeTypedChooser("rdfs:Class");
             chooser.appendTo($("#classChooser"));
             chooser.combobox();
             $("#addClassButton").click(function () {
@@ -165,7 +186,26 @@ var SchemaEdit = (function () {
             });
         },
 
-        makeChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
+        makeChooser: function (valueList) {
+            // console.log("type = " + type);
+            var choices = $("<select></select>");
+
+                for(var i = 0; i < valueList.length; i++) {
+                    var listItem = valueList[i];
+                    // console.log("type : " + type);
+                    //     <option value="ActionScript">ActionScript</option>
+                    var option = $("<option class='choice'></option>");
+                    option.attr("value", listItem);
+                    option.text(listItem);
+                    // var last = $(".typeChoice").last();
+                    // last.after(option);
+                    choices.append(option);
+                    // console.log("choices =\n" + choices.html());
+                }
+            return choices;
+        },
+
+        makeTypedChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
             // console.log("type = " + type);
             var choices = $("<select></select>");
             var map = {
@@ -452,7 +492,7 @@ var SchemaEdit = (function () {
 
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
-            console.log("generateGetUrl sparql = " + sparql);
+          //  console.log("generateGetUrl sparql = " + sparql);
             return Config.sparqlServerHost + Config.sparqlQueryEndpoint + encodeURIComponent(sparql);
         },
 

@@ -31,9 +31,13 @@ button, .button {
   display: none;
 }
 
+#endpointSettings {
+  padding: 10px;
+}
+
 label {
   display: inline-block;
-  width: 200px;
+  width: 20%;
   text-align: right;
   /* display:block; */
   /* margin:8px; */
@@ -43,8 +47,7 @@ label {
 }
 
 input, textarea, select {
-  width: 75%;
-  ;
+  width: 70%;
   box-sizing: border-box;
   -moz-box-sizing: border-box
 }

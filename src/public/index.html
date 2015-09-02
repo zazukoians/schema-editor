@@ -84,6 +84,7 @@
     <strong>
       Current Resource :
       <span id="currentResource"></span>
+      <span id="resourceChooser"></span>
     </strong>
   </div>
 
@@ -126,7 +127,7 @@
         <!-- TODO move to config (bypass Fuseki) -->
         <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
         <!-- TODO UNSET FILE NAME ?? -->
-        <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple=""/>
+        <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
         <label for='graphName'>Graph</label>
         <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
         <br />
@@ -140,10 +141,12 @@
       <div class="endpoints">
         <a href="http://localhost:3333">SPARQL Server</a>
         <!-- TODO use Config.sparqlServerHost -->
-
-        Endpoint Settings
+        <br/>
+        <br/>
+        <strong>Endpoint Settings</strong>
         <em>(in config.js)</em>
-        <div>
+        <br/>
+        <div id="endpointSettings">
           <label for="endpointHost">Endpoint Host</label>
           <input id="endpointHost" type='text' value=''></input>
         </div>
