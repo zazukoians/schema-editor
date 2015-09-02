@@ -1,12 +1,17 @@
-/* based on the one at https://jqueryui.com/autocomplete/#combobox */
+/* extended version of the one at https://jqueryui.com/autocomplete/#combobox */
 
 $.widget("schemaedit.combobox", {
+
+    setInputId: function (id) {
+        this.input.attr("id", id);
+    },
+
     _create: function () {
         this.wrapper = $("<span>")
             .addClass("schemaedit-combobox")
             .insertAfter(this.element);
 
-        this.element.hide(); 
+        this.element.hide();
         this._createAutocomplete();
         this._createShowAllButton();
     },
@@ -19,7 +24,7 @@ $.widget("schemaedit.combobox", {
             .appendTo(this.wrapper)
             .val(value)
             .attr("title", "")
-            .addClass("schemaedit-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
+          //  .addClass("schemaedit-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
             .autocomplete({
                 delay: 0,
                 minLength: 0,

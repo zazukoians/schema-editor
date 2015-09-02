@@ -16,6 +16,12 @@ function refresh() {
     elem.style.display = 'none';
     elem.offsetHeight; // no need to store this anywhere, the reference is enough
     elem.style.display = 'flex';
+    refreshResourceInput();
+}
+
+function refreshResourceInput() {
+    var resourceInput = $("#resource");
+    resourceInput.attr('size', resourceInput.val().length);
 }
 
 function spinner() {
@@ -34,8 +40,8 @@ function spinner() {
 // bit of a sledgehammer, but whatever works...
 Array.prototype.contains = function (obj) {
     var i = this.length;
-    while (i--) {
-        if (this[i] == obj) {
+    while(i--) {
+        if(this[i] == obj) {
             return true;
         }
     }
@@ -74,7 +80,7 @@ function setupErrorHandling() {
  *     fit in one line.
  */
 function sparqlTemplater(raw, replacementMap, isWrite) {
-    if (isWrite && replacementMap["content"]) {
+    if(isWrite && replacementMap["content"]) {
         replacementMap["content"] = escapeLiterals(replacementMap["content"]);
 
     }
@@ -123,11 +129,11 @@ function templater(raw, replacementMap) {
 
 /* parse URL */
 var queryString = (function (a) {
-    if (a == "") return {};
+    if(a == "") return {};
     var b = {};
-    for (var i = 0; i < a.length; ++i) {
+    for(var i = 0; i < a.length; ++i) {
         var p = a[i].split('=', 2);
-        if (p.length == 1)
+        if(p.length == 1)
             b[p[0]] = "";
         else
             b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
@@ -158,9 +164,9 @@ function translateLinks(object) {
         function () {
             var href = this.href;
             console.log("HREF=" + href);
-            if (href.indexOf(FooWiki.serverRootPath) != -1) { // less than perfect, in-page links maybe involve FooWiki.pagesBaseURI
+            if(href.indexOf(FooWiki.serverRootPath) != -1) { // less than perfect, in-page links maybe involve FooWiki.pagesBaseURI
                 var hashPosition = href.indexOf("#");
-                if (hashPosition != -1) {
+                if(hashPosition != -1) {
                     var anchor = href.substring(hashPosition); // "#Something"
                     anchor = anchor.trim().toLowerCase();
                     anchor = anchor.replace(/\s+/g, "-");
@@ -225,14 +231,14 @@ function reviseHref(aElement) {
 
     var linkText = aElement.text;
     //    console.log("OFFSITEx"+linkText);
-    if (linkText) {
+    if(linkText) {
         //   console.log("OFFSITEx"+linkText);
-        if (aElement.href.indexOf(FooWiki.serverRootPath) == -1) { // off site, less than perfect BROKEN
+        if(aElement.href.indexOf(FooWiki.serverRootPath) == -1) { // off site, less than perfect BROKEN
             //      console.log("OFFSITE");
             $(aElement).append(aElement.href); // use link as label
             return;
         }
-        if (location.href == oldHref) { // link href was blank
+        if(location.href == oldHref) { // link href was blank
             var before = window.location.protocol + "//" + window.location.hostname +
                 ":" + window.location.port + FooWiki.serverRootPath + "page.html?uri=" +
                 FooWiki.pagesBaseURI;
@@ -278,7 +284,7 @@ function includeContent(aElement) {
     var handler = function (pageMap, entryJSON) { // entryHandler(pageMap, entryJSON);
         //        console.log("pageMap=" + JSON.stringify(pageMap));
         //        console.log("CONTEN=" + JSON.stringify(entryJSON));
-        if (entryJSON && entryJSON[0] && entryJSON[0]["content"]) {
+        if(entryJSON && entryJSON[0] && entryJSON[0]["content"]) {
             var content = formatContent(entryJSON[0]["content"]);
         } else {
             content = "<em>**undefined link**</em>";
@@ -306,9 +312,9 @@ function fixHeaderIDs() {
         ".content h1, .content h2, .content h3, .content h4, .content h5, .content h6"
     ).each(function () {
         var id = $(this).attr("id");
-        if (id) {
+        if(id) {
             var length = id.length;
-            if (id[0] == "-" && id[length - 1] == "-") {
+            if(id[0] == "-" && id[length - 1] == "-") {
                 //      console.log("need to fix");
                 id = id.substring(1, length / 2);
                 $(this).attr("id", id);
@@ -364,8 +370,8 @@ function replaceAll(string, find, replace) {
  */
 function tweakBlockquotes(content) {
     var blockquoteSplit = content.split("```");
-    if (blockquoteSplit.length > 1) {
-        for (var i = 1; i < blockquoteSplit.length; i = i + 2) {
+    if(blockquoteSplit.length > 1) {
+        for(var i = 1; i < blockquoteSplit.length; i = i + 2) {
             //    console.log("X=" + blockquoteSplit[i]);
             blockquoteSplit[i] = hUnescape(blockquoteSplit[i]);
         }

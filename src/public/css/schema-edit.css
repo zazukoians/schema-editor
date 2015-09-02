@@ -15,6 +15,10 @@ button, .button {
   border-radius: 5px;
 }
 
+#resource {
+  width: 25em;
+}
+
 .show {
   /*    display: block; */
 }
@@ -47,7 +51,7 @@ label {
 }
 
 input, textarea, select {
-  width: 70%;
+/*  width: 70%; */
   box-sizing: border-box;
   -moz-box-sizing: border-box
 }
@@ -76,9 +80,11 @@ input, textarea, select {
   padding: 10px;
 }
 
+
 /* TODO tweak */
+
 .propertyItem .literalObject {
-  height:auto;
+  height: auto;
   background-color: white;
   border: 1px solid black;
   border-radius: 3px;

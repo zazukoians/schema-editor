@@ -23,6 +23,10 @@ var SchemaEdit = (function () {
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
         },
 
+        setCurrentResource: function (uri) {
+            SparqlConnector.setCurrentResource(uri);
+        },
+
         populateWithResource: function (uri) { //  callback??
             SchemaEdit.makeAddProperty(uri);
 
@@ -34,7 +38,7 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
-              // console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
+                // console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem'></div>");
@@ -84,7 +88,7 @@ var SchemaEdit = (function () {
 
                         value = $("<a />");
                         value.attr("href", o);
-                        var value = $("<div class='uriObject' title='click to view target'><a href=''"+o+"'>"+uriText+"</a></div>");
+                        var value = $("<div class='uriObject' title='click to view target'><a href=''" + o + "'>" + uriText + "</a></div>");
 
                         triple += " <" + o + "> ."; // object
 
@@ -94,7 +98,7 @@ var SchemaEdit = (function () {
                          */
                         //  propertyItem.append(SchemaEdit.makeChangePredicateButton(triple));
 
-                    //    value.text(uriText);
+                        //    value.text(uriText);
 
                     }
                     deleteButton.attr("data-triple", triple); // stick resource data in attribute
@@ -102,13 +106,13 @@ var SchemaEdit = (function () {
                     var propertyBlock = $("<p class='propertyBlock'/>");
                     propertyBlock.append("<strong>Property</strong>").append(propertyItem);
                     propertyItem.append(value);
-                    if(current.type == "literal") {  // TODO refactor
-                    propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
-                    propertyItem.append($("<br/>"));
-                    // console.log("value = \n" + value.html());
-                    propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
-                    //  property.after(deleteButton);
-                  }
+                    if(current.type == "literal") { // TODO refactor
+                        propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
+                        propertyItem.append($("<br/>"));
+                        // console.log("value = \n" + value.html());
+                        propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
+                        //  property.after(deleteButton);
+                    }
                     propertyItem.append(deleteButton);
                     propertyBlock.append("<hr/>");
                     $("#editor").append(propertyBlock);
@@ -123,20 +127,22 @@ var SchemaEdit = (function () {
          */
         populateResourcesCombobox: function () {
             var callback = function (json) {
-              console.log("populateResourcesCombobox json = \n"+JSON.stringify(json, false, 4));
-              var chooser = SchemaEdit.makeChooser(json);
-              chooser.appendTo($("#resourceChooser"));
-              chooser.combobox();
-              $("#chooseResourceButton").click(function () {
-                  var subject = SparqlConnector.getCurrentResource();
-                  var predicate = $("#propertyChooser").find("input").val();
-                  var object = "dummy object";
-                  var language = "en";
-                  var callback = function () {
-                      refresh();
-                  };
-              });;
-            }
+                console.log("populateResourcesCombobox json = \n" + JSON.stringify(json, false, 4));
+                var chooser = SchemaEdit.makeChooser(json);
+                chooser.appendTo($("#resourceChooser"));
+                var combobox = chooser.combobox();
+                combobox.combobox("setInputId", "resource");
+                $("#chooseResourceButton").click(function () {
+                    // SparqlConnector.setCurrentResource();
+
+                    var newResource = $("#resource").val();
+                    alert(newResource);
+                    SchemaEdit.setCurrentResource(newResource);
+                    refresh();
+                    var split = window.location.href.split("?");
+                    window.location.href = split[0] + "?uri=" + encodeURI(newResource);
+                });
+            };
             SparqlConnector.listResources(callback);
         },
 
@@ -159,7 +165,7 @@ var SchemaEdit = (function () {
                 var callback = function () {
                     refresh();
                 };
-                alert("predicate = "+predicate);
+                alert("predicate = " + predicate);
                 SparqlConnector.updateTriple(subject, predicate, object, language, callback);
             });
         },
@@ -190,18 +196,18 @@ var SchemaEdit = (function () {
             // console.log("type = " + type);
             var choices = $("<select></select>");
 
-                for(var i = 0; i < valueList.length; i++) {
-                    var listItem = valueList[i];
-                    // console.log("type : " + type);
-                    //     <option value="ActionScript">ActionScript</option>
-                    var option = $("<option class='choice'></option>");
-                    option.attr("value", listItem);
-                    option.text(listItem);
-                    // var last = $(".typeChoice").last();
-                    // last.after(option);
-                    choices.append(option);
-                    // console.log("choices =\n" + choices.html());
-                }
+            for(var i = 0; i < valueList.length; i++) {
+                var listItem = valueList[i];
+                // console.log("type : " + type);
+                //     <option value="ActionScript">ActionScript</option>
+                var option = $("<option class='choice'></option>");
+                option.attr("value", listItem);
+                option.text(listItem);
+                // var last = $(".typeChoice").last();
+                // last.after(option);
+                choices.append(option);
+                // console.log("choices =\n" + choices.html());
+            }
             return choices;
         },
 
@@ -323,7 +329,7 @@ var SchemaEdit = (function () {
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {
-          console.log("makeUpdateButton object = "+object);
+            console.log("makeUpdateButton object = " + object);
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
@@ -357,7 +363,7 @@ var SchemaEdit = (function () {
         makeDeleteButton: function () {
             var deleteButton = $("<button class='delete'>Delete</button>");
             deleteButton.attr("title", "delete this property"); // tooltip
-          //  deleteButton.append("<br/>");
+            //  deleteButton.append("<br/>");
             deleteButton.click(function () {
                 //    alert("Handler for .click() called.");
                 var triple = deleteButton.attr("data-triple");
@@ -492,7 +498,7 @@ var SchemaEdit = (function () {
 
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
-          //  console.log("generateGetUrl sparql = " + sparql);
+            //  console.log("generateGetUrl sparql = " + sparql);
             return Config.sparqlServerHost + Config.sparqlQueryEndpoint + encodeURIComponent(sparql);
         },
 

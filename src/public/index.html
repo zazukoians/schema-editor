@@ -58,8 +58,8 @@
       uri = encodeURI(uri);
 
       $("#currentResource").text(uri);
-      SparqlConnector.setCurrentResource(uri);
 
+      SchemaEdit.setCurrentResource(uri);
       SchemaEdit.makeClassesList();
       SchemaEdit.makePropertiesList();
 
@@ -84,8 +84,13 @@
     <strong>
       Current Resource :
       <span id="currentResource"></span>
-      <span id="resourceChooser"></span>
     </strong>
+
+    <div id="currentR">
+      <span id="resourceChooser"></span>
+      <button id="chooseResourceButton">Change</button>
+    </div>
+
   </div>
 
   <div id="wrapper">
