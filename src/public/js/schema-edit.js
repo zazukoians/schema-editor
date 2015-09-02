@@ -33,18 +33,20 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
+              console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem'></div>");
                     var property = $("<a/>");
                     var p = current["p"];
                     property.attr("href", p);
-                    var pText = p;
 
+                    var pText = p;
                     if(SparqlConnector.getPrefixedUri(p) != null) {
                         pText = SparqlConnector.getPrefixedUri(p);
                     }
                     property.text(pText);
+
                     var propertyWrapper = $("<div class='predicate'></div>");
                     propertyWrapper.append(property);
                     propertyItem.append(propertyWrapper);
@@ -59,9 +61,10 @@ var SchemaEdit = (function () {
                     if(current.type == "literal") { // as returned from SPARQL
                         var language = current["language"];
                         // console.log("language = " + language);
-                        var valueWrapper = $("<div class='literalObject' contenteditable='true' title='click to edit'>" + o + "</div>");
-                        value = $("<span>" + o + "</span>");
-                        value.text(o);
+                        var value = $("<div class='literalObject' contenteditable='true' title='click to edit'>" + o + "</div>");
+
+                        // valueWrapper.append(value);
+                        // value.text(o);
                         if(!language || language == "") {
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
                         } else {
@@ -70,7 +73,7 @@ var SchemaEdit = (function () {
 
                         if(!language || language == "") { // sensible default
                             language = "en";
-                        } // TODO tidy, see above
+                        } // TODO best approach? see above
                         propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
                         // console.log("value = \n" + value.html());
                         propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
@@ -83,8 +86,7 @@ var SchemaEdit = (function () {
 
                         value = $("<a />");
                         value.attr("href", o);
-                        var valueWrapper = $("<div class='uriObject' title='click to view target'></div>");
-                        valueWrapper.append(value);
+                        var value = $("<div class='uriObject' title='click to view target'><a href=''"+o+"'>"+uriText+"</a></div>");
 
                         triple += " <" + o + "> ."; // object
 
@@ -94,16 +96,14 @@ var SchemaEdit = (function () {
                          */
                         //  propertyItem.append(SchemaEdit.makeChangePredicateButton(triple));
 
-                        value.text(uriText);
+                    //    value.text(uriText);
 
                     }
                     deleteButton.attr("data-triple", triple); // stick resource data in attribute
 
                     var propertyBlock = $("<p class='propertyBlock'/>");
                     propertyBlock.append("<strong>Property</strong>").append(propertyItem);
-                    propertyItem.append(valueWrapper);
-
-
+                    propertyItem.append(value);
                     //  property.after(deleteButton);
                     propertyItem.append(deleteButton);
                     propertyBlock.append("<hr/>");
@@ -133,7 +133,7 @@ var SchemaEdit = (function () {
                 var callback = function () {
                     refresh();
                 };
-                alert(predicate);
+                alert("predicate = "+predicate);
                 SparqlConnector.updateTriple(subject, predicate, object, language, callback);
             });
         },
@@ -278,14 +278,16 @@ var SchemaEdit = (function () {
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {
+          console.log("makeUpdateButton object = "+object);
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
             updateButton.attr("data-triple", tripleAttribute); // stick resource data in attribute
             updateButton.click(function () {
-                var newContent = updateButton.parent().html();
-                newContent = newContent.replace(/<button.+button>/g, ""); // TODO get button placed better, remove this
-                // alert(newContent);
+
+                var newContent = updateButton.parent().find(".literalObject").text();
+
+                // newContent = newContent.replace(/<button.+button>/g, ""); // TODO get button placed better, remove this
                 // var timestamp = ?????
                 // historyBefore("update"+timestamp)
                 // historyAfter("update"+timestamp)
