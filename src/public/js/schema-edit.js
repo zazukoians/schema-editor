@@ -33,7 +33,7 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
-              console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
+              // console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem'></div>");
@@ -74,9 +74,8 @@ var SchemaEdit = (function () {
                         if(!language || language == "") { // sensible default
                             language = "en";
                         } // TODO best approach? see above
-                        propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
-                        // console.log("value = \n" + value.html());
-                        propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
+
+
                     }
                     if(current.type == "uri") { // as returned from SPARQL
                         var uriText = o;
@@ -104,7 +103,13 @@ var SchemaEdit = (function () {
                     var propertyBlock = $("<p class='propertyBlock'/>");
                     propertyBlock.append("<strong>Property</strong>").append(propertyItem);
                     propertyItem.append(value);
+                    if(current.type == "literal") {  // TODO refactor
+                    propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
+                    propertyItem.append($("<br/>"));
+                    // console.log("value = \n" + value.html());
+                    propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
                     //  property.after(deleteButton);
+                  }
                     propertyItem.append(deleteButton);
                     propertyBlock.append("<hr/>");
                     $("#editor").append(propertyBlock);
