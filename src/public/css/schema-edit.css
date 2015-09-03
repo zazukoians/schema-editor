@@ -59,6 +59,28 @@ label, #propertyLabel {
   overflow: auto;
 }
 
+#newVocabBlock {
+  display: none;
+}
+#newVocabBlock input {
+  display: inline-block;
+ float: left;
+ width:50%;
+}
+
+#newVocabBlock label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    padding: 10px;
+    text-align: right;
+}
+
+#graphName {
+  width: 75%;
+}
+
 input, textarea, select {
 /*  width: 70%; */
   box-sizing: border-box;
@@ -89,9 +111,7 @@ input, textarea, select {
   padding: 10px;
 }
 
-
 /* TODO tweak */
-
 .propertyItem .literalObject {
   height: auto;
   background-color: white;

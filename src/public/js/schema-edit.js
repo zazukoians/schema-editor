@@ -18,10 +18,32 @@ var SchemaEdit = (function () {
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
             $("#queryPath").val(Config.sparqlQueryEndpoint);
 
+            SchemaEdit.addClassHandler();
             SchemaEdit.populatePropertiesCombobox();
             SchemaEdit.populateResourcesCombobox($("#resourceChooser"), "resource");
             SchemaEdit.populateResourcesCombobox($("#propertyUriValue"), "uriValue");
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
+        },
+
+        makeNewVocabBlock: function () {
+            $("#newVocabBlock").show();
+            $("#currentResourceBlock").hide();
+            $("#newVocabButton").click(function () {
+              var name = $("#vocabName").val();
+                var namespace = $("#vocabNamespace").val();
+                var prefix = $("#vocabPrefix").val();
+                var graph = $("#vocabGraph").val();
+                SparqlConnector.createNewVocab(name, namespace, prefix, graph);
+            });
+        },
+
+        addClassHandler: function () {
+            var button = $("#addClassButton");
+            button.click(function () {
+                var name = $("#className").val();
+                var label = $("#classLabel").val();
+                SparqlConnector.addClass(name, label);
+            });
         },
 
         setCurrentResource: function (uri) {
@@ -169,7 +191,7 @@ var SchemaEdit = (function () {
                 var isLiteral = true;
                 if(!object || object == "") {
                     object = $("#uriValue").val();
-                    alert("OBJECT = "+object);
+                    alert("OBJECT = " + object);
                     isLiteral = false;
                 }
                 var language = "en";
@@ -450,11 +472,13 @@ var SchemaEdit = (function () {
                 location.href = SparqlConnector.getTurtleUrl();
             });
 
-            $("#newPageButton").click(function () {
-                var newPageName = $("#newPageName").val();
-                window.location.href = window.location.href = Config.serverRootPath + "edit.html?uri=" + Config.graphURI + "/" +
-                    newPageName;
-            });
+            /* was from foowiki?
+                        $("#newPageButton").click(function () {
+                            var newPageName = $("#newPageName").val();
+                            window.location.href = window.location.href = Config.serverRootPath + "edit.html?uri=" + Config.graphURI + "/" +
+                                newPageName;
+                        });
+            */
 
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());

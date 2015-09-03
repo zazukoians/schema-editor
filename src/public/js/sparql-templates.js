@@ -147,6 +147,30 @@ var updateLiteralTripleSparqlTemplate = commonPrefixes +
 }\n\
 }";
 
+var addClassSparqlTemplate = commonPrefixes +
+"INSERT DATA {  \n\
+		GRAPH <~{graphURI}~> {  \n\
+			<~{name}~>  a rdfs:Class ; \n\
+      rdfs:label \"\"\"~{label}~\"\"\" \n\
+} \n\
+}";
+
+var createVocabSparqlTemplate = commonPrefixes +
+"INSERT DATA {  \n\
+		GRAPH <~{graphURI}~> {  \n\
+			<~{namespace}~>  a owl:Ontology; \n\
+      rdfs:label \"\"\"~{name}~\"\"\" \n\
+} \n\
+}";
+
+var createDummyClassSparqlTemplate = commonPrefixes +	
+"INSERT DATA {  \n\
+		GRAPH <~{graphURI}~> {  \n\
+			<~{namespace}~Dummy>  a rdfs:Class; \n\
+      rdfs:label \"\"\"Dummy\"\"\" \n\
+} \n\
+}";
+
 var updateUriTripleSparqlTemplate = commonPrefixes +
     " \n\
   WITH <~{graphURI}~> \n\

@@ -35,6 +35,7 @@ var SparqlConnector = (function () {
 
         setGraphURI: function (uri) {
             Config.graphURI = uri;
+            alert("New Graph URI = " + Config.graphURI);
             return Config.graphURI;
         },
 
@@ -80,7 +81,7 @@ var SparqlConnector = (function () {
             return SparqlConnector.listResourcesOfType("rdf:Property", callback);
         },
 
-        listResourcesOfType: function (type, callback) {  // TODO appears broken, duplicated below - is used?
+        listResourcesOfType: function (type, callback) { // TODO appears broken, duplicated below - is used?
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourcesOfTypeSparqlTemplate, {
@@ -103,21 +104,21 @@ var SparqlConnector = (function () {
                 getResourceListSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI()
                 });
-            console.log("getResourceListSparql = \n" + getResourceListSparql);
+            //  console.log("getResourceListSparql = \n" + getResourceListSparql);
             var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
-            var extractResources = function(json) {
-              var resources = [];
-              // console.log("listResources json =" + JSON.stringify(json, false, 4));
-              for(var i = 0; i < json.length; i++) {
-                  var subject = json[i]["subject"];
-                  resources.push(subject);
-              //    console.log("subject = " + subject);
-              }
-              callback(resources);
-            }
-            //  console.log("getClassesUrl = " + getResourcesUrl);
+            var extractResources = function (json) {
+                    var resources = [];
+                    // console.log("listResources json =" + JSON.stringify(json, false, 4));
+                    for(var i = 0; i < json.length; i++) {
+                        var subject = json[i]["subject"];
+                        resources.push(subject);
+                        //    console.log("subject = " + subject);
+                    }
+                    callback(resources);
+                }
+                //  console.log("getClassesUrl = " + getResourcesUrl);
             SparqlConnector.getJsonForSparqlURL(getResourcesUrl, extractResources);
         },
 
@@ -220,6 +221,42 @@ var SparqlConnector = (function () {
             return knownPrefixes;
         },
 
+        createNewVocab: function (name, namespace, prefix, graph) {
+            SparqlConnector.setGraphURI(graph);
+            // Config.graphURI = graph;
+            var createVocabSparql = sparqlTemplater(
+                createVocabSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "namespace": namespace,
+                    "name": name
+                });
+            var callback = function (msg) {
+                alert(msg);
+            }
+            SparqlConnector.postData(createVocabSparql, callback);
+
+            var createDummyClassSparql = sparqlTemplater(
+                createDummyClassSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "namespace": namespace
+                });
+            var callback = function (msg) {
+                alert(msg);
+                var dummy = "http://purl.org/stuff/hyperdata/Dummy";
+                var split = window.location.href.split("?");
+                window.location.href = split[0] + "?uri=" + encodeURI(dummy);
+            }
+            SparqlConnector.postData(createDummyClassSparql, callback);
+        },
+
+        addClass: function (name, label) {
+            var addClassSparql = sparqlTemplater(
+                addClassSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "name": name,
+                    "label": label
+                });
+        },
         /* *** connector low-level utilities *** */
         // TODO is duplicated below, delete one
         postData: function (data, callback) {

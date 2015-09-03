@@ -55,7 +55,13 @@
       spinner();
       var uri = queryString["uri"];
       // console.log("URI="+uri);
+      if (!uri || uri == "") {
+        alert("undefined");
+        SchemaEdit.makeNewVocabBlock();
+        return;
+      }
       uri = encodeURI(uri);
+
 
       $("#currentResource").text(uri);
       $("#resource").text(uri);
@@ -82,15 +88,32 @@
 
   <div id="header">
     <h2>Schema Editor</h2>
-    <strong>
-      Current Resource :
-      <span id="currentResource"></span>
-    </strong>
-    <div id="currentR">
-      <span id="resourceChooser"></span>
-      <button id="chooseResourceButton">Change</button>
+
+    <div id="newVocabBlock">
+      <a href="#uploadRDF">Upload RDF</a>
+      <h4>Create New Vocab</h4>
+      <label for="vocabName">Name</label>
+      <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
+      <label for="vocabNamespace">Namespace</label>
+      <input id="vocabNamespace" type="text" name="vocabNamespace" title="namespace of vocab" />
+      <label for="vocabPrefix">Prefix</label>
+      <input id="vocabPrefix" type="text" name="vocabPrefix" title="vocab preferred prefix" />
+      <label for="vocabGraph">New Graph</label>
+      <input id="vocabGraph" type="text" name="vocabGraph" title="graph in which to store new vocab" />
+
+      <button id="newVocabButton">Create Vocab</button>
     </div>
 
+    <div id="currentResourceBlock">
+      <strong>
+        Current Resource :
+        <span id="currentResource"></span>
+      </strong>
+      <div id="currentR">
+        <span id="resourceChooser"></span>
+        <button id="chooseResourceButton">Change</button>
+      </div>
+    </div>
   </div>
 
   <div id="wrapper">
@@ -110,7 +133,21 @@
 
       <div id="editor"></div>
 
-      <div> <!-- class="ui-widget" -->
+      <hr/>
+
+      <div id="addClass">
+        <h4>Add Class</h4>
+        <label for="className">Class Name</label>
+        <input id="className" title="enter text" />
+        <label for="classLabel">rdfs:label</label>
+        <input id="classLabel" title="enter label text" />
+        <button id="addClassButton">Add Class</button>
+      </div>
+
+      <hr/>
+
+      <div id="addPropertyBlock"><!-- class="ui-widget" -->
+        <h4>Add Property</h4>
         <div id="propertyChooser">
           <!-- label for="addProperty">Add Property</label -->
         </div>
@@ -118,7 +155,7 @@
         <input id="propertyLiteralValue" title="enter text (leave blank for URI value)" />
 
         <div id="propertyUriValue">
-        <label for="uriValue">URI Value</label>
+          <label for="uriValue">URI Value</label>
         </div>
 
         <button id="addPropertyButton">Add Property</button>
@@ -132,17 +169,22 @@
       </div>
       <hr/>
 
+      <a name="uploadRDF" />
       <h3>Upload RDF</h3>
       <!-- TODO change this from config -->
       <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
         <!-- TODO move to config (bypass Fuseki) -->
         <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
         <!-- TODO UNSET FILE NAME ?? -->
-        <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
-        <label for='graphName'>Graph</label>
-        <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
-        <br />
-        <input type="submit" value="Upload" class='button' />
+        <div id="upload">
+          <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
+          <br/>
+          <br/>
+          <label for='graphName'>Graph</label>
+          <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
+          <br />
+          <input type="submit" value="Upload" class='button' />
+        </div>
       </form>
       <h3>Export Turtle</h3>
       <button id="turtle">Export</button>
