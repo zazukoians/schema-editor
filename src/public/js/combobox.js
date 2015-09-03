@@ -61,8 +61,8 @@ $.widget("schemaedit.combobox", {
                 },
                 text: false
             })
-            .removeClass("ui-corner-all")
-            .addClass("schemaedit-combobox-toggle ui-corner-right")
+        //    .removeClass("ui-corner-all")
+        //    .addClass("schemaedit-combobox-toggle ui-corner-right")
             .mousedown(function () {
                 wasOpen = input.autocomplete("widget").is(":visible");
             })
@@ -116,6 +116,8 @@ $.widget("schemaedit.combobox", {
         }
 
         // Remove invalid value
+        // disabled - allow any URI
+        /*
         this.input
             .val("")
             .attr("title", value + " didn't match any item")
@@ -125,6 +127,7 @@ $.widget("schemaedit.combobox", {
             this.input.tooltip("close").attr("title", "");
         }, 2500);
         this.input.autocomplete("instance").term = "";
+        */
     },
 
     _destroy: function () {

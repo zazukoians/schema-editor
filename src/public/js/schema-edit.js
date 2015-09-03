@@ -19,7 +19,8 @@ var SchemaEdit = (function () {
             $("#queryPath").val(Config.sparqlQueryEndpoint);
 
             SchemaEdit.populatePropertiesCombobox();
-            SchemaEdit.populateResourcesCombobox();
+            SchemaEdit.populateResourcesCombobox($("#resourceChooser"), "resource");
+            SchemaEdit.populateResourcesCombobox($("#propertyUriValue"), "uriValue");
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
         },
 
@@ -125,26 +126,26 @@ var SchemaEdit = (function () {
         /**
          * Loads list of properties from SPARQL store into combo box(es)
          */
-        populateResourcesCombobox: function () {
+        populateResourcesCombobox: function (target, id) {
             var callback = function (json) {
-                console.log("populateResourcesCombobox json = \n" + JSON.stringify(json, false, 4));
+                // console.log("populateResourcesCombobox json = \n" + JSON.stringify(json, false, 4));
                 var chooser = SchemaEdit.makeChooser(json);
-                chooser.appendTo($("#resourceChooser"));
+                chooser.appendTo(target);
                 var combobox = chooser.combobox();
-                combobox.combobox("setInputId", "resource");
+                combobox.combobox("setInputId", id);
                 $("#chooseResourceButton").click(function () {
-                    // SparqlConnector.setCurrentResource();
-
                     var newResource = $("#resource").val();
-                    alert(newResource);
-                    SchemaEdit.setCurrentResource(newResource);
-                    refresh();
+                    // SchemaEdit.setCurrentResource(newResource);
+
+                    // move to new page
                     var split = window.location.href.split("?");
                     window.location.href = split[0] + "?uri=" + encodeURI(newResource);
                 });
             };
             SparqlConnector.listResources(callback);
         },
+
+        //  populatePropertyUriValueCombobox:
 
         /**
          * Loads list of properties from SPARQL store into combo box(es)
@@ -155,18 +156,34 @@ var SchemaEdit = (function () {
             }
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
             var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
+            $("#propertyChooser").append($("<label for='addProperty'>Add Property</label>"));
             chooser.appendTo($("#propertyChooser"));
-            chooser.combobox();
+
+            var combobox = chooser.combobox();
+            combobox.combobox("setInputId", "addProperty");
+
             $("#addPropertyButton").click(function () {
                 var subject = SparqlConnector.getCurrentResource();
                 var predicate = $("#propertyChooser").find("input").val();
-                var object = "dummy object";
+                var object = $("#propertyLiteralValue").val();
+                var isLiteral = true;
+                if(!object || object == "") {
+                    object = $("#uriValue").val();
+                    alert("OBJECT = "+object);
+                    isLiteral = false;
+                }
                 var language = "en";
-                var callback = function () {
-                    refresh();
+                var callback = function (msg) {
+                    alert(msg);
+                    window.location.reload();
                 };
-                alert("predicate = " + predicate);
-                SparqlConnector.updateTriple(subject, predicate, object, language, callback);
+                // alert("predicate = " + predicate);
+                if(isLiteral) {
+                    SparqlConnector.updateLiteralTriple(subject, predicate, object, language, callback);
+                } else {
+                    SparqlConnector.updateUriTriple(subject, predicate, object, language, callback);
+                }
+
             });
         },
 

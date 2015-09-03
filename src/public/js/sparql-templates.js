@@ -134,7 +134,7 @@ var deleteTurtleSparqlTemplate = commonPrefixes + " \n\
 			} \n\
 		}";
 
-var updateTripleSparqlTemplate = commonPrefixes +
+var updateLiteralTripleSparqlTemplate = commonPrefixes +
     " \n\
   WITH <~{graphURI}~> \n\
 	DELETE { <~{subject}~> <~{predicate}~> ?object }  \n\
@@ -144,6 +144,19 @@ var updateTripleSparqlTemplate = commonPrefixes +
 	INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
 			<~{subject}~>  <~{predicate}~> \"\"\"~{object}~\"\"\"@~{language}~  . \n\
+}\n\
+}";
+
+var updateUriTripleSparqlTemplate = commonPrefixes +
+    " \n\
+  WITH <~{graphURI}~> \n\
+	DELETE { <~{subject}~> <~{predicate}~> ?object }  \n\
+	WHERE {  \n\
+	<~{subject}~>  <~{predicate}~> ?object  . \n\
+	}; \n\
+	INSERT DATA {  \n\
+		GRAPH <~{graphURI}~> {  \n\
+			<~{subject}~>  <~{predicate}~> <~{object}~>  . \n\
 }\n\
 }";
 

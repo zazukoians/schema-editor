@@ -19,6 +19,14 @@ button, .button {
   width: 25em;
 }
 
+#currentResource {
+  padding: 10px;
+}
+
+#currentR {
+  padding: 10px;
+}
+
 .show {
   /*    display: block; */
 }
@@ -39,7 +47,8 @@ button, .button {
   padding: 10px;
 }
 
-label {
+/* , .ui-widget */
+label, #propertyLabel {
   display: inline-block;
   width: 20%;
   text-align: right;

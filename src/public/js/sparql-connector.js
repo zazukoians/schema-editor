@@ -239,21 +239,40 @@ var SparqlConnector = (function () {
             });
         },
 
-
-
-        updateTriple: function (subject, predicate, object, language, callback) {
+        updateLiteralTriple: function (subject, predicate, object, language, callback) {
             if(!language || language == "") { // sensible default
                 language = "en";
             }
             var updateTripleSparql = sparqlTemplater(
-                updateTripleSparqlTemplate, {
+                updateLiteralTripleSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "subject": subject,
                     "predicate": predicate,
                     "object": object,
                     "language": language
                 });
-            console.log("updateTripleSparql = \n" + updateTripleSparql);
+            console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
+
+            //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
+            //    encodeURIComponent(updateTripleSparql) + "&output=xml";
+            // var json = SparqlConnector.getJsonForSparqlURL(updateTripleUrl, callback);
+            SparqlConnector.postData(updateTripleSparql, callback);
+            return false;
+        },
+
+        updateUriTriple: function (subject, predicate, object, language, callback) {
+            if(!language || language == "") { // sensible default
+                language = "en";
+            }
+            var updateTripleSparql = sparqlTemplater(
+                updateUriTripleSparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "subject": subject,
+                    "predicate": predicate,
+                    "object": object,
+                    "language": language
+                });
+            console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
 
             //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
             //    encodeURIComponent(updateTripleSparql) + "&output=xml";

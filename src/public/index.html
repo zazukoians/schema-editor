@@ -58,6 +58,7 @@
       uri = encodeURI(uri);
 
       $("#currentResource").text(uri);
+      $("#resource").text(uri);
 
       SchemaEdit.setCurrentResource(uri);
       SchemaEdit.makeClassesList();
@@ -85,7 +86,6 @@
       Current Resource :
       <span id="currentResource"></span>
     </strong>
-
     <div id="currentR">
       <span id="resourceChooser"></span>
       <button id="chooseResourceButton">Change</button>
@@ -110,11 +110,17 @@
 
       <div id="editor"></div>
 
-      <div class="ui-widget">
+      <div> <!-- class="ui-widget" -->
         <div id="propertyChooser">
-          <div class="propertyLabel">Add Property</div>
+          <!-- label for="addProperty">Add Property</label -->
         </div>
-        <input class="propertyValue" title="">Value</input>
+        <label for="propertyLiteralValue">Literal Value</label>
+        <input id="propertyLiteralValue" title="enter text (leave blank for URI value)" />
+
+        <div id="propertyUriValue">
+        <label for="uriValue">URI Value</label>
+        </div>
+
         <button id="addPropertyButton">Add Property</button>
       </div>
 
