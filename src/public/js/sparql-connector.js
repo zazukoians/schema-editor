@@ -30,13 +30,16 @@ var SparqlConnector = (function () {
         },
 
         getGraphURI: function () {
-            return Config.graphURI;
+            return queryString["graph"];
+            // return Config.graphURI;
         },
 
-        setGraphURI: function (uri) {
+        setGraphURI: function (graphURI) {
+            var uri = queryString["uri"];
+            var split = window.location.href.split("?");
             Config.graphURI = uri;
-            alert("New Graph URI = " + Config.graphURI);
-            return Config.graphURI;
+            window.location.href = split[0] + "?uri=" + uri + "&graph=" + encodeURI(graphURI);
+            return graphURI;
         },
 
         // API, based on spec
@@ -81,7 +84,9 @@ var SparqlConnector = (function () {
             return SparqlConnector.listResourcesOfType("rdf:Property", callback);
         },
 
+/*
         listResourcesOfType: function (type, callback) { // TODO appears broken, duplicated below - is used?
+          alert("listResourcesOfType1: function (type, callback)");
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourcesOfTypeSparqlTemplate, {
@@ -97,7 +102,7 @@ var SparqlConnector = (function () {
 
             return resources;
         },
-
+*/
         listResources: function (callback) {
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
@@ -122,20 +127,40 @@ var SparqlConnector = (function () {
             SparqlConnector.getJsonForSparqlURL(getResourcesUrl, extractResources);
         },
 
-        listResourcesOfType: function (type, callback) { // TODO appears broken - is used?
+        listResourcesOfType: function (type, callback) {
+          // alert("listResourcesOfType2: function (type, callback)");
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourcesOfTypeSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "type": type
                 });
+                console.log("getResourceListSparql = \n"+getResourceListSparql);
             var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             //  console.log("getClassesUrl = " + getResourcesUrl);
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
             //    console.log("json =" + json);
-            return resources;
+          //  return resources;
+        },
+
+        /* produces a list of graphs available in the store */
+        listGraphs: function (callback) {
+            var graphs = [];
+            var makeList = function (json) {
+                var graphURIs = [];
+                for(var i = 0; i < json.length; i++) {
+                    graphURIs.push(json[i]["graph"]);
+                }
+                //  console.log("graphs = \n"+JSON.stringify(graphURIs,false,4));
+                callback(graphURIs);
+            }
+            var getGraphListUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+                encodeURIComponent(listGraphsSparqlTemplate) + "&output=xml";
+
+            //  console.log("getClassesUrl = " + getResourcesUrl);
+            SparqlConnector.getJsonForSparqlURL(getGraphListUrl, makeList);
         },
 
         listPropertiesForClass: function (graphURI, classURI) {
@@ -244,7 +269,9 @@ var SparqlConnector = (function () {
                 alert(msg);
                 var dummy = "http://purl.org/stuff/hyperdata/Dummy";
                 var split = window.location.href.split("?");
-                window.location.href = split[0] + "?uri=" + encodeURI(dummy);
+
+                // console.log("queryKey.uri = "+queryKey.uri);
+                window.location.href = split[0] + "?uri=" + encodeURI(dummy) + "&graph=" + encodeURI(Config.graphURI);
             }
             SparqlConnector.postData(createDummyClassSparql, callback);
         },

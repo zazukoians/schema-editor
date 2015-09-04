@@ -21,7 +21,9 @@ function refresh() {
 
 function refreshResourceInput() {
     var resourceInput = $("#resource");
-    resourceInput.attr('size', resourceInput.val().length);
+    if(resourceInput.val()) { // may not be defined
+        resourceInput.attr('size', resourceInput.val().length);
+    }
 }
 
 function spinner() {

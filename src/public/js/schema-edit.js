@@ -18,6 +18,7 @@ var SchemaEdit = (function () {
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
             $("#queryPath").val(Config.sparqlQueryEndpoint);
 
+            SchemaEdit.makeGraphChooser();
             SchemaEdit.addClassHandler();
             SchemaEdit.populatePropertiesCombobox();
             SchemaEdit.populateResourcesCombobox($("#resourceChooser"), "resource");
@@ -29,7 +30,7 @@ var SchemaEdit = (function () {
             $("#newVocabBlock").show();
             $("#currentResourceBlock").hide();
             $("#newVocabButton").click(function () {
-              var name = $("#vocabName").val();
+                var name = $("#vocabName").val();
                 var namespace = $("#vocabNamespace").val();
                 var prefix = $("#vocabPrefix").val();
                 var graph = $("#vocabGraph").val();
@@ -157,11 +158,11 @@ var SchemaEdit = (function () {
                 combobox.combobox("setInputId", id);
                 $("#chooseResourceButton").click(function () {
                     var newResource = $("#resource").val();
-                    // SchemaEdit.setCurrentResource(newResource);
 
-                    // move to new page
+                    // relocate to new page
+                    // can use queryString somehow?
                     var split = window.location.href.split("?");
-                    window.location.href = split[0] + "?uri=" + encodeURI(newResource);
+                    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
                 });
             };
             SparqlConnector.listResources(callback);
@@ -191,7 +192,6 @@ var SchemaEdit = (function () {
                 var isLiteral = true;
                 if(!object || object == "") {
                     object = $("#uriValue").val();
-                    alert("OBJECT = " + object);
                     isLiteral = false;
                 }
                 var language = "en";
@@ -199,8 +199,7 @@ var SchemaEdit = (function () {
                     alert(msg);
                     window.location.reload();
                 };
-                // alert("predicate = " + predicate);
-                if(isLiteral) {
+                if(isLiteral) { // TODO refactor
                     SparqlConnector.updateLiteralTriple(subject, predicate, object, language, callback);
                 } else {
                     SparqlConnector.updateUriTriple(subject, predicate, object, language, callback);
@@ -226,9 +225,28 @@ var SchemaEdit = (function () {
                 var callback = function () {
                     refresh();
                 };
-                //  alert(predicate);
                 SparqlConnector.updateTriple(subject, predicate, object, language, callback);
             });
+        },
+
+        makeGraphChooser: function () {
+            var populateChooser = function (graphList) {
+                var chooser = SchemaEdit.makeChooser(graphList);
+                $("#graphChooser").append(chooser);
+                var combobox = chooser.combobox();
+                combobox.combobox("setInputId", "graph");
+
+                $("#graphChooserButton").click(function () {
+                    var newGraph = $("#graph").val();
+                    Config.graphURI = newGraph;
+
+                    var split = window.location.href.split("?");
+                    //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
+                    window.location.href = split[0] + "?graph=" + encodeURI(Config.graphURI);
+                    alert("clicked " + Config.graphURI);
+                });
+            };
+            SparqlConnector.listGraphs(populateChooser);
         },
 
         makeChooser: function (valueList) {
@@ -278,9 +296,9 @@ var SchemaEdit = (function () {
             return choices;
         },
 
-        // NOT USED
         makeClassesList: function () {
             var callback = function (json) {
+              console.log("JSON = "+JSON.stringify(json,false,4));
                 SchemaEdit.makeListBlock(json, $("#classes"));
             }
             var classList = SparqlConnector.listClasses(callback);
@@ -314,14 +332,14 @@ var SchemaEdit = (function () {
                 var name = split[split.length - 1];
                 var itemElement = $("<li></li>");
                 var split = window.location.href.split("?");
-                var url = split[0] + "?uri=" + encodeURI(uri);
+                var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(SparqlConnector.getGraphURI());
                 var aElement = $("<a/>").attr("href", url);
-                if(name.length > 5) {
+              //  if(name.length > 5) {
                     //   name = name.substring(0, 5); // TODO remove
                     aElement.text(name);
                     itemElement.append(aElement);
                     listElement.append(itemElement);
-                }
+            //    }
             }
         },
 
@@ -329,7 +347,6 @@ var SchemaEdit = (function () {
             var languageButton = $("<button class='language'></button>");
             languageButton.text(language);
             languageButton.click(function () {
-                //    alert("Handler for .click() called.");
                 var languageChoices = $("#language-radio").html();
                 var dialog = $("#dialog");
                 // dialog.buttonset(); // jQueryUI
@@ -404,7 +421,6 @@ var SchemaEdit = (function () {
             deleteButton.attr("title", "delete this property"); // tooltip
             //  deleteButton.append("<br/>");
             deleteButton.click(function () {
-                //    alert("Handler for .click() called.");
                 var triple = deleteButton.attr("data-triple");
                 // console.log("TRIPLE on delete = " + triple);
                 var callback = function (msg) {
@@ -436,7 +452,6 @@ var SchemaEdit = (function () {
             changePredicateButton.attr("data-triple", triple); // stick resource data in attribute
 
             changePredicateButton.click(function () {
-                // alert("Handler for .click() called.");
                 var triple = changePredicateButton.attr("data-triple");
                 // console.log("TRIPLE on delete = " + triple);
                 var callback = function (msg) {

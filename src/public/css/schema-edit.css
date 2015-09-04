@@ -15,7 +15,7 @@ button, .button {
   border-radius: 5px;
 }
 
-#resource {
+#resource, #graph {
   width: 25em;
 }
 

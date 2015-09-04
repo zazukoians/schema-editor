@@ -53,15 +53,18 @@
       SchemaEdit.init();
       SparqlConnector.init();
       spinner();
+
+      var graph = queryString["graph"];
+      $("#graph").html(graph);
+      console.log("GRAPH=" + graph);
+
       var uri = queryString["uri"];
-      // console.log("URI="+uri);
-      if (!uri || uri == "") {
-        alert("undefined");
+      if ((!uri || uri == "") && (!graph || graph == "")) {
+        // alert("undefined");
         SchemaEdit.makeNewVocabBlock();
         return;
       }
       uri = encodeURI(uri);
-
 
       $("#currentResource").text(uri);
       $("#resource").text(uri);
@@ -74,8 +77,9 @@
       if (uri) { // TODO need to check if this if() is working
         // console.log("URI="+uri);
         uri = encodeURI(uri);
-        SchemaEdit.populateWithResource(uri); // in schema-edit.js
+        SchemaEdit.populateWithResource(uri);
       }
+
       refresh(); // redraws flex columns
     });
   </script>
@@ -102,6 +106,14 @@
       <input id="vocabGraph" type="text" name="vocabGraph" title="graph in which to store new vocab" />
 
       <button id="newVocabButton">Create Vocab</button>
+    </div>
+
+    <div id="currentGraphBlock">
+      <strong>Current Graph :</strong>
+      <div id="currentGraph">
+        <span id="graphChooser"></span>
+        <button id="graphChooserButton">Change</button>
+      </div>
     </div>
 
     <div id="currentResourceBlock">
@@ -146,7 +158,8 @@
 
       <hr/>
 
-      <div id="addPropertyBlock"><!-- class="ui-widget" -->
+      <div id="addPropertyBlock">
+        <!-- class="ui-widget" -->
         <h4>Add Property</h4>
         <div id="propertyChooser">
           <!-- label for="addProperty">Add Property</label -->

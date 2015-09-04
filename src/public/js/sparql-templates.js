@@ -44,6 +44,11 @@ PREFIX stuff: <http://purl.org/stuff#>  \n\
 var constructGraph = commonPrefixes +
     "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <~{graphURI}~> { ?s ?p ?o } . }";
 
+var listGraphsSparqlTemplate =
+    "SELECT DISTINCT ?graph { \n\
+    GRAPH ?graph { ?s ?p ?o . } \n\
+}";
+
 var getAllProperties = commonPrefixes +
     "SELECT DISTINCT ?property \n\
 FROM NAMED <~{graphURI}~>  \n\
@@ -107,7 +112,8 @@ BIND (lang(?o) AS ?language) \n\
 } \n\
 ";
 
-var getResourceListSparqlTemplate = "\n\
+var getResourceListSparqlTemplate =
+    "\n\
 # from getResourceListSparqlTemplate \n\
 SELECT DISTINCT ?subject \n\
 FROM NAMED <~{graphURI}~>  \n\
@@ -148,7 +154,7 @@ var updateLiteralTripleSparqlTemplate = commonPrefixes +
 }";
 
 var addClassSparqlTemplate = commonPrefixes +
-"INSERT DATA {  \n\
+    "INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
 			<~{name}~>  a rdfs:Class ; \n\
       rdfs:label \"\"\"~{label}~\"\"\" \n\
@@ -156,15 +162,15 @@ var addClassSparqlTemplate = commonPrefixes +
 }";
 
 var createVocabSparqlTemplate = commonPrefixes +
-"INSERT DATA {  \n\
+    "INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
 			<~{namespace}~>  a owl:Ontology; \n\
       rdfs:label \"\"\"~{name}~\"\"\" \n\
 } \n\
 }";
 
-var createDummyClassSparqlTemplate = commonPrefixes +	
-"INSERT DATA {  \n\
+var createDummyClassSparqlTemplate = commonPrefixes +
+    "INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
 			<~{namespace}~Dummy>  a rdfs:Class; \n\
       rdfs:label \"\"\"Dummy\"\"\" \n\
