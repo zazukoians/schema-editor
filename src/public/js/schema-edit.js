@@ -24,6 +24,10 @@ var SchemaEdit = (function () {
             SchemaEdit.populateResourcesCombobox($("#resourceChooser"), "resource");
             SchemaEdit.populateResourcesCombobox($("#propertyUriValue"), "uriValue");
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
+
+  var graph = parseUri (window.location.href).queryKey.graph;
+  // queryString["graph"];
+
         },
 
         makeNewVocabBlock: function () {
@@ -62,6 +66,8 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
+
+
                 // console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
@@ -164,6 +170,10 @@ var SchemaEdit = (function () {
                     var split = window.location.href.split("?");
                     window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
                 });
+                var graph = parseUri(window.location.href).queryKey.graph;
+                $("#graph").val(graph);
+                var uri = parseUri(window.location.href).queryKey.uri;
+                $("#resource").val(uri);
             };
             SparqlConnector.listResources(callback);
         },
@@ -298,7 +308,7 @@ var SchemaEdit = (function () {
 
         makeClassesList: function () {
             var callback = function (json) {
-              console.log("JSON = "+JSON.stringify(json,false,4));
+            //  console.log("JSON = "+JSON.stringify(json,false,4));
                 SchemaEdit.makeListBlock(json, $("#classes"));
             }
             var classList = SparqlConnector.listClasses(callback);

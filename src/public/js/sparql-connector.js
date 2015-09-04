@@ -135,7 +135,7 @@ var SparqlConnector = (function () {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "type": type
                 });
-                console.log("getResourceListSparql = \n"+getResourceListSparql);
+                // console.log("getResourceListSparql = \n"+getResourceListSparql);
             var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
@@ -315,7 +315,7 @@ var SparqlConnector = (function () {
                     "object": object,
                     "language": language
                 });
-            console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
+            // console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
 
             //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
             //    encodeURIComponent(updateTripleSparql) + "&output=xml";
@@ -336,7 +336,7 @@ var SparqlConnector = (function () {
                     "object": object,
                     "language": language
                 });
-            console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
+            // console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
 
             //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
             //    encodeURIComponent(updateTripleSparql) + "&output=xml";
@@ -346,13 +346,13 @@ var SparqlConnector = (function () {
         },
 
         deleteTurtle: function (turtle, callback) { // see http://www.w3.org/TR/sparql11-update/#deleteData
-            console.log("deleteTurtle turtle = " + turtle);
+            // console.log("deleteTurtle turtle = " + turtle);
             var deleteTurtleSparql = sparqlTemplater(
                 deleteTurtleSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "turtle": turtle
                 });
-            console.log("deleteTurtleSparql = " + deleteTurtleSparql);
+            // console.log("deleteTurtleSparql = " + deleteTurtleSparql);
 
             SparqlConnector.postData(deleteTurtleSparql, callback);
             return false;

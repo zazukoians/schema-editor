@@ -55,8 +55,7 @@
       spinner();
 
       var graph = queryString["graph"];
-      $("#graph").html(graph);
-      console.log("GRAPH=" + graph);
+
 
       var uri = queryString["uri"];
       if ((!uri || uri == "") && (!graph || graph == "")) {
@@ -81,6 +80,7 @@
       }
 
       refresh(); // redraws flex columns
+
     });
   </script>
 </head>
@@ -119,7 +119,7 @@
     <div id="currentResourceBlock">
       <strong>
         Current Resource :
-        <span id="currentResource"></span>
+        <!-- span id="currentResource"></span -->
       </strong>
       <div id="currentR">
         <span id="resourceChooser"></span>
