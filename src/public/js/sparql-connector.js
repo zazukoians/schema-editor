@@ -84,25 +84,25 @@ var SparqlConnector = (function () {
             return SparqlConnector.listResourcesOfType("rdf:Property", callback);
         },
 
-/*
-        listResourcesOfType: function (type, callback) { // TODO appears broken, duplicated below - is used?
-          alert("listResourcesOfType1: function (type, callback)");
-            var resources = [];
-            var getResourceListSparql = sparqlTemplater(
-                getResourcesOfTypeSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
-                    "type": type
-                });
+        /*
+                listResourcesOfType: function (type, callback) { // TODO appears broken, duplicated below - is used?
+                  alert("listResourcesOfType1: function (type, callback)");
+                    var resources = [];
+                    var getResourceListSparql = sparqlTemplater(
+                        getResourcesOfTypeSparqlTemplate, {
+                            "graphURI": SparqlConnector.getGraphURI(),
+                            "type": type
+                        });
 
-            var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
-                encodeURIComponent(getResourceListSparql) + "&output=xml";
+                    var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
+                        encodeURIComponent(getResourceListSparql) + "&output=xml";
 
-            var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
-                callback);
+                    var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
+                        callback);
 
-            return resources;
-        },
-*/
+                    return resources;
+                },
+        */
         listResources: function (callback) {
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
@@ -128,21 +128,21 @@ var SparqlConnector = (function () {
         },
 
         listResourcesOfType: function (type, callback) {
-          // alert("listResourcesOfType2: function (type, callback)");
+            // alert("listResourcesOfType2: function (type, callback)");
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourcesOfTypeSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "type": type
                 });
-                // console.log("getResourceListSparql = \n"+getResourceListSparql);
+            console.log("getResourceListSparql = \n" + getResourceListSparql);
             var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             //  console.log("getClassesUrl = " + getResourcesUrl);
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
             //    console.log("json =" + json);
-          //  return resources;
+            //  return resources;
         },
 
         /* produces a list of graphs available in the store */
@@ -276,34 +276,30 @@ var SparqlConnector = (function () {
             SparqlConnector.postData(createDummyClassSparql, callback);
         },
 
-        addClass: function (name, label) {
+        addClass: function (namespace, name, label, callback) {
             var addClassSparql = sparqlTemplater(
                 addClassSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
+                    "namespace": namespace,
                     "name": name,
                     "label": label
                 });
-              //  console.log("addClass SPARQL = \n"+addClassSparql);
-                var callback = function (msg) {
-                    alert(msg);
-                    refresh();
-                }
-                SparqlConnector.postData(addClassSparql, callback);
+            //  console.log("addClass SPARQL = \n"+addClassSparql);
+
+            SparqlConnector.postData(addClassSparql, callback);
         },
 
-        addProperty: function (name, label) {
+        addProperty: function (namespace, name, label, callback) {
             var addPropertySparql = sparqlTemplater(
                 addPropertySparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
+                    "namespace": namespace,
                     "name": name,
                     "label": label
                 });
-                console.log("addProperty SPARQL = \n"+addPropertySparql);
-                var callback = function (msg) {
-                    alert(msg);
-                    refresh();
-                }
-                SparqlConnector.postData(addPropertySparql, callback);
+            console.log("addProperty SPARQL = \n" + addPropertySparql);
+
+            SparqlConnector.postData(addPropertySparql, callback);
         },
 
         /* *** connector low-level utilities *** */
