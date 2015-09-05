@@ -413,6 +413,7 @@ function hUnescape(value) {
 }
 
 // from http://blog.stevenlevithan.com/archives/parseuri
+// see also : https://web.archive.org/web/20140312145937/http://stevenlevithan.com/demo/parseuri/js
 // parseUri 1.2.2
 // (c) Steven Levithan <stevenlevithan.com>
 // MIT License

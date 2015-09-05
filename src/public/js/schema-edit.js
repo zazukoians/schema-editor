@@ -162,18 +162,20 @@ var SchemaEdit = (function () {
                 chooser.appendTo(target);
                 var combobox = chooser.combobox();
                 combobox.combobox("setInputId", id);
+                var graph = parseUri(window.location.href).queryKey.graph;
+                $("#graph").val(graph);
+                var uri = parseUri(window.location.href).queryKey.uri;
+                $("#resource").val(uri);
+
                 $("#chooseResourceButton").click(function () {
                     var newResource = $("#resource").val();
 
                     // relocate to new page
                     // can use queryString somehow?
                     var split = window.location.href.split("?");
-                    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
+                    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" +  graph;
                 });
-                var graph = parseUri(window.location.href).queryKey.graph;
-                $("#graph").val(graph);
-                var uri = parseUri(window.location.href).queryKey.uri;
-                $("#resource").val(uri);
+
             };
             SparqlConnector.listResources(callback);
         },
