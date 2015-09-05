@@ -58,7 +58,7 @@ var SchemaEdit = (function () {
         },
 
         populateWithResource: function (uri) { //  callback??
-            SchemaEdit.makeAddProperty(uri);
+            SchemaEdit.makeAddPropertyValue(uri);
 
             var map = {
                 graphURI: SparqlConnector.getGraphURI(),
@@ -189,13 +189,13 @@ var SchemaEdit = (function () {
             }
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
             var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
-            $("#propertyChooser").append($("<label for='addProperty'>Add Property</label>"));
+            $("#propertyChooser").append($("<label for='addPropertyValue'>Add Property Value</label>"));
             chooser.appendTo($("#propertyChooser"));
 
             var combobox = chooser.combobox();
-            combobox.combobox("setInputId", "addProperty");
+            combobox.combobox("setInputId", "addPropertyValue");
 
-            $("#addPropertyButton").click(function () {
+            $("#addPropertyValueButton").click(function () {
                 var subject = SparqlConnector.getCurrentResource();
                 var predicate = $("#propertyChooser").find("input").val();
                 var object = $("#propertyLiteralValue").val();
@@ -519,7 +519,7 @@ var SchemaEdit = (function () {
             });
         },
 
-        makeAddProperty: function (uri) {
+        makeAddPropertyValue: function (uri) {
             var updatePropertyButton = $("<button id='updateProperty'>Add this property</button>");
             // updatePropertyButton.append($("<hr/>"));
             var updateClassButton = $("<button id='updateClass'>Add this class</button>");
