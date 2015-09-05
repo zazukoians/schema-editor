@@ -283,12 +283,27 @@ var SparqlConnector = (function () {
                     "name": name,
                     "label": label
                 });
-                console.log("addClass SPARQL = \n"+addClassSparql);
+              //  console.log("addClass SPARQL = \n"+addClassSparql);
                 var callback = function (msg) {
                     alert(msg);
                     refresh();
                 }
                 SparqlConnector.postData(addClassSparql, callback);
+        },
+
+        addProperty: function (name, label) {
+            var addPropertySparql = sparqlTemplater(
+                addPropertySparqlTemplate, {
+                    "graphURI": SparqlConnector.getGraphURI(),
+                    "name": name,
+                    "label": label
+                });
+                console.log("addProperty SPARQL = \n"+addPropertySparql);
+                var callback = function (msg) {
+                    alert(msg);
+                    refresh();
+                }
+                SparqlConnector.postData(addPropertySparql, callback);
         },
 
         /* *** connector low-level utilities *** */

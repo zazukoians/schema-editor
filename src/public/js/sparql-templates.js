@@ -161,6 +161,14 @@ var addClassSparqlTemplate = commonPrefixes +
 } \n\
 }";
 
+var addPropertySparqlTemplate = commonPrefixes +
+    "INSERT DATA {  \n\
+		GRAPH <~{graphURI}~> {  \n\
+			<~{namespace}~~{name}~>  a rdf:Property ; \n\
+      rdfs:label \"\"\"~{label}~\"\"\" \n\
+} \n\
+}";
+
 var createVocabSparqlTemplate = commonPrefixes +
     "INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\

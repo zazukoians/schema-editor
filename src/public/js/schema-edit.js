@@ -20,6 +20,8 @@ var SchemaEdit = (function () {
 
             SchemaEdit.makeGraphChooser();
             SchemaEdit.addClassHandler();
+            SchemaEdit.addPropertyHandler();
+            
             SchemaEdit.populatePropertiesCombobox();
             SchemaEdit.populateResourcesCombobox($("#resourceChooser"), "resource");
             SchemaEdit.populateResourcesCombobox($("#propertyUriValue"), "uriValue");
@@ -48,8 +50,19 @@ var SchemaEdit = (function () {
               var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#className").val();
                 var label = $("#classLabel").val();
-                alert("name = "+name+" label = "+label);
+              //  alert("name = "+name+" label = "+label);
                 SparqlConnector.addClass(namespace, name, label);
+            });
+        },
+
+        addPropertyHandler: function () {
+            var button = $("#addPropertyButton");
+            button.click(function () {
+              var namespace = parseUri(window.location.href).queryKey.graph;
+                var name = $("#propertyName").val();
+                var label = $("#propertyLabel").val();
+                alert("name = "+name+" label = "+label);
+                SparqlConnector.addProperty(namespace, name, label);
             });
         },
 
