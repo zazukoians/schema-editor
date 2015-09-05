@@ -156,7 +156,7 @@ var updateLiteralTripleSparqlTemplate = commonPrefixes +
 var addClassSparqlTemplate = commonPrefixes +
     "INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
-			<~{name}~>  a rdfs:Class ; \n\
+			<~{namespace}~~{name}~>  a rdfs:Class ; \n\
       rdfs:label \"\"\"~{label}~\"\"\" \n\
 } \n\
 }";

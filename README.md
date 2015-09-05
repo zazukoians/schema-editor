@@ -80,3 +80,7 @@ edit to :
 graphURI: "http://data.admin.ch/def/hgv/",
 
 point browser at http://localhost:8888/ (refresh if necessary)
+
+### Conventions
+
+* The namespace of the vocab in question is used as the graph name within the SPARQL store

@@ -283,7 +283,14 @@ var SparqlConnector = (function () {
                     "name": name,
                     "label": label
                 });
+                console.log("addClass SPARQL = \n"+addClassSparql);
+                var callback = function (msg) {
+                    alert(msg);
+                    refresh();
+                }
+                SparqlConnector.postData(addClassSparql, callback);
         },
+
         /* *** connector low-level utilities *** */
         // TODO is duplicated below, delete one
         postData: function (data, callback) {

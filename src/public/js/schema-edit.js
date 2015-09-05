@@ -45,9 +45,11 @@ var SchemaEdit = (function () {
         addClassHandler: function () {
             var button = $("#addClassButton");
             button.click(function () {
+              var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#className").val();
                 var label = $("#classLabel").val();
-                SparqlConnector.addClass(name, label);
+                alert("name = "+name+" label = "+label);
+                SparqlConnector.addClass(namespace, name, label);
             });
         },
 
@@ -66,8 +68,6 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
-
-
                 // console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
@@ -180,8 +180,6 @@ var SchemaEdit = (function () {
             SparqlConnector.listResources(callback);
         },
 
-        //  populatePropertyUriValueCombobox:
-
         /**
          * Loads list of properties from SPARQL store into combo box(es)
          */
@@ -255,7 +253,6 @@ var SchemaEdit = (function () {
                     var split = window.location.href.split("?");
                     //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
                     window.location.href = split[0] + "?graph=" + encodeURI(Config.graphURI);
-                    alert("clicked " + Config.graphURI);
                 });
             };
             SparqlConnector.listGraphs(populateChooser);
