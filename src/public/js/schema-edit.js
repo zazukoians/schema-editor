@@ -217,7 +217,7 @@ var SchemaEdit = (function () {
             }
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
             var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
-            $("#propertyChooser").append($("<label for='addPropertyValue'>Add Property Value</label>"));
+            $("#propertyChooser").append($("<label for='addPropertyValue'>For Property :</label>"));
             chooser.appendTo($("#propertyChooser"));
 
             var combobox = chooser.combobox();

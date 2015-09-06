@@ -61,6 +61,8 @@ var addClassSparqlTemplate = commonPrefixes +
           ~{#comment}~ \n\
               rdfs:comment \"\"\"~{comment}~\"\"\" ; \n\
           ~{/comment}~ \n\
+\n\
+          rdfs:isDefinedBy <~{namespace}~> \n\
     } \n\
     }";
 
@@ -84,10 +86,12 @@ var addPropertySparqlTemplate = commonPrefixes +
           ~{#range}~ \n\
               rdfs:subPropertyOf ~{range}~ ; \n\
           ~{/range}~ \n\
-    \n\
-        ~{#comment}~ \n\
+\n\
+          ~{#comment}~ \n\
             rdfs:comment \"\"\"~{comment}~\"\"\" ; \n\
           ~{/comment}~  \n\
+\n\
+          rdfs:isDefinedBy <~{namespace}~> \n\
     } \n\
     }";
 
