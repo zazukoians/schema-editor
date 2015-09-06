@@ -80,11 +80,11 @@ var addPropertySparqlTemplate = commonPrefixes +
           ~{/subPropertyOf}~  \n\
 \n\
           ~{#domain}~ \n\
-              rdfs:domain ~{domain}~ ; \n\
+              rdfs:domain <~{namespace}~~{domain}~> ; \n\
           ~{/domain}~  \n\
 \n\
           ~{#range}~ \n\
-              rdfs:subPropertyOf ~{range}~ ; \n\
+              rdfs:range <~{namespace}~~{range}~> ; \n\
           ~{/range}~ \n\
 \n\
           ~{#comment}~ \n\
@@ -203,8 +203,6 @@ var updateLiteralTripleSparqlTemplate = commonPrefixes +
 			<~{subject}~>  <~{predicate}~> \"\"\"~{object}~\"\"\"@~{language}~  . \n\
 }\n\
 }";
-
-
 
 var createVocabSparqlTemplate = commonPrefixes +
     "INSERT DATA {  \n\
