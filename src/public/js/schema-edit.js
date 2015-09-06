@@ -50,12 +50,14 @@ var SchemaEdit = (function () {
               var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#className").val();
                 var label = $("#classLabel").val();
+                var subClassOf = $("#subClassOf").val();
+                var comment = $("#classComment").val();
               //  alert("name = "+name+" label = "+label);
               var callback = function (msg) {
                   alert(msg);
                   window.location.reload();
               }
-                SparqlConnector.addClass(namespace, name, label, callback);
+                SparqlConnector.addClass(namespace, name, label, subClassOf, comment, callback);
             });
         },
 
@@ -65,12 +67,16 @@ var SchemaEdit = (function () {
               var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#propertyName").val();
                 var label = $("#propertyLabel").val();
+                var domain = $("#domain").val();
+                var range = $("#range").val();
+                var subPropertyOf = $("#subPropertyOf").val();
+                var comment = $("#classComment").val();
           //      alert("name = "+name+" label = "+label);
           var callback = function (msg) {
               alert(msg);
               window.location.reload();
           }
-                SparqlConnector.addProperty(namespace, name, label, callback);
+                SparqlConnector.addProperty(namespace, name, label, domain, range, subPropertyOf, comment, callback);
                 window.location.reload();
             });
         },

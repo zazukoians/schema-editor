@@ -5,6 +5,7 @@
  * format is variant of Mustache
  * using ~{ }~ instead of {{ }}
  * (to avoid clashes in SPARQL, ease of reading)
+ * see http://mustache.github.io/mustache.5.html
  *
  * templating engine is Hogan
  * http://twitter.github.io/hogan.js/
@@ -43,6 +44,52 @@ PREFIX stuff: <http://purl.org/stuff#>  \n\
 
 var constructGraph = commonPrefixes +
     "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <~{graphURI}~> { ?s ?p ?o } . }";
+
+var addClassSparqlTemplate = commonPrefixes +
+    "INSERT DATA {  \n\
+    		GRAPH <~{graphURI}~> {  \n\
+    			<~{namespace}~~{name}~>  a rdfs:Class ; \n\
+      \n\
+          ~{#label}~ \n\
+              rdfs:label \"\"\"~{label}~\"\"\" \n\
+          ~{/label}~ ; \n\
+\n\
+          ~{#subClassOf}~ \n\
+              rdfs:subClassOf ~{subClassOf}~ \n\
+          ~{/subClassOf}~ ; \n\
+\n\
+          ~{#comment}~ \n\
+              rdfs:comment \"\"\"~{comment}~\"\"\" \n\
+          ~{/comment}~ ; \n\
+    } \n\
+    }";
+
+var addPropertySparqlTemplate = commonPrefixes +
+    "INSERT DATA {  \n\
+    		GRAPH <~{graphURI}~> {  \n\
+    			<~{namespace}~~{name}~>  a rdf:Property ; \n\
+          \n\
+              ~{#label}~ \n\
+              rdfs:label \"\"\"~{label}~\"\"\" \n\
+                        ~{/label}~ ; \n\
+\n\
+          ~{#subPropertyOf}~ \n\
+              rdfs:subPropertyOf ~{subPropertyOf}~ \n\
+          ~{/subPropertyOf}~ ; \n\
+\n\
+          ~{#domain}~ \n\
+              rdfs:domain ~{domain}~ \n\
+          ~{/domain}~ ; \n\
+\n\
+          ~{#range}~ \n\
+              rdfs:subPropertyOf ~{range}~ \n\
+          ~{/range}~ ; \n\
+    \n\
+        ~{#comment}~ \n\
+            rdfs:comment \"\"\"~{comment}~\"\"\" \n\
+          ~{/comment}~ ; \n\
+    } \n\
+    }";
 
 var listGraphsSparqlTemplate =
     "SELECT DISTINCT ?graph { \n\
@@ -153,21 +200,7 @@ var updateLiteralTripleSparqlTemplate = commonPrefixes +
 }\n\
 }";
 
-var addClassSparqlTemplate = commonPrefixes +
-    "INSERT DATA {  \n\
-		GRAPH <~{graphURI}~> {  \n\
-			<~{namespace}~~{name}~>  a rdfs:Class ; \n\
-      rdfs:label \"\"\"~{label}~\"\"\" \n\
-} \n\
-}";
 
-var addPropertySparqlTemplate = commonPrefixes +
-    "INSERT DATA {  \n\
-		GRAPH <~{graphURI}~> {  \n\
-			<~{namespace}~~{name}~>  a rdf:Property ; \n\
-      rdfs:label \"\"\"~{label}~\"\"\" \n\
-} \n\
-}";
 
 var createVocabSparqlTemplate = commonPrefixes +
     "INSERT DATA {  \n\

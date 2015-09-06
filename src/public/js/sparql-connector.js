@@ -276,26 +276,32 @@ var SparqlConnector = (function () {
             SparqlConnector.postData(createDummyClassSparql, callback);
         },
 
-        addClass: function (namespace, name, label, callback) {
+        addClass: function (namespace, name, label, subClassOf, comment, callback) {
             var addClassSparql = sparqlTemplater(
                 addClassSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "namespace": namespace,
                     "name": name,
-                    "label": label
+                    "label": label,
+                    "subClassOf": subClassOf,
+                    "comment": comment
                 });
             //  console.log("addClass SPARQL = \n"+addClassSparql);
 
             SparqlConnector.postData(addClassSparql, callback);
         },
 
-        addProperty: function (namespace, name, label, callback) {
+        addProperty: function(namespace, name, label, domain, range, subPropertyOf, comment, callback) {
             var addPropertySparql = sparqlTemplater(
                 addPropertySparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "namespace": namespace,
                     "name": name,
-                    "label": label
+                    "label": label,
+                    "domain": domain,
+                    "range": range,
+                    "subPropertyOf": subPropertyOf,
+                    "comment": comment
                 });
             console.log("addProperty SPARQL = \n" + addPropertySparql);
 
