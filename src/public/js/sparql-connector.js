@@ -135,7 +135,7 @@ var SparqlConnector = (function () {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "type": type
                 });
-            console.log("getResourceListSparql = \n" + getResourceListSparql);
+            // console.log("getResourceListSparql = \n" + getResourceListSparql);
             var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
@@ -286,7 +286,7 @@ var SparqlConnector = (function () {
                     "subClassOf": subClassOf,
                     "comment": comment
                 });
-            //  console.log("addClass SPARQL = \n"+addClassSparql);
+             console.log("addClass SPARQL = \n"+addClassSparql);
 
             SparqlConnector.postData(addClassSparql, callback);
         },

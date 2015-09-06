@@ -27,8 +27,8 @@ var SchemaEdit = (function () {
             SchemaEdit.populateResourcesCombobox($("#propertyUriValue"), "uriValue");
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
 
-  var graph = parseUri (window.location.href).queryKey.graph;
-  // queryString["graph"];
+            var graph = parseUri(window.location.href).queryKey.graph;
+            // queryString["graph"];
 
         },
 
@@ -47,16 +47,16 @@ var SchemaEdit = (function () {
         addClassHandler: function () {
             var button = $("#addClassButton");
             button.click(function () {
-              var namespace = parseUri(window.location.href).queryKey.graph;
+                var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#className").val();
                 var label = $("#classLabel").val();
                 var subClassOf = $("#subClassOf").val();
                 var comment = $("#classComment").val();
-              //  alert("name = "+name+" label = "+label);
-              var callback = function (msg) {
-                  alert(msg);
-                  window.location.reload();
-              }
+                //  alert("name = "+name+" label = "+label);
+                var callback = function (msg) {
+                    alert(msg);
+                    window.location.reload();
+                }
                 SparqlConnector.addClass(namespace, name, label, subClassOf, comment, callback);
             });
         },
@@ -64,18 +64,18 @@ var SchemaEdit = (function () {
         addPropertyHandler: function () {
             var button = $("#addPropertyButton");
             button.click(function () {
-              var namespace = parseUri(window.location.href).queryKey.graph;
+                var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#propertyName").val();
                 var label = $("#propertyLabel").val();
                 var domain = $("#domain").val();
                 var range = $("#range").val();
                 var subPropertyOf = $("#subPropertyOf").val();
                 var comment = $("#classComment").val();
-          //      alert("name = "+name+" label = "+label);
-          var callback = function (msg) {
-              alert(msg);
-              window.location.reload();
-          }
+                //      alert("name = "+name+" label = "+label);
+                var callback = function (msg) {
+                    alert(msg);
+                    window.location.reload();
+                }
                 SparqlConnector.addProperty(namespace, name, label, domain, range, subPropertyOf, comment, callback);
                 window.location.reload();
             });
@@ -201,7 +201,7 @@ var SchemaEdit = (function () {
                     // relocate to new page
                     // can use queryString somehow?
                     var split = window.location.href.split("?");
-                    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" +  graph;
+                    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + graph;
                 });
 
             };
@@ -335,7 +335,7 @@ var SchemaEdit = (function () {
 
         makeClassesList: function () {
             var callback = function (json) {
-            //  console.log("JSON = "+JSON.stringify(json,false,4));
+                //  console.log("JSON = "+JSON.stringify(json,false,4));
                 SchemaEdit.makeListBlock(json, $("#classes"));
             }
             var classList = SparqlConnector.listClasses(callback);
@@ -371,12 +371,12 @@ var SchemaEdit = (function () {
                 var split = window.location.href.split("?");
                 var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(SparqlConnector.getGraphURI());
                 var aElement = $("<a/>").attr("href", url);
-              //  if(name.length > 5) {
-                    //   name = name.substring(0, 5); // TODO remove
-                    aElement.text(name);
-                    itemElement.append(aElement);
-                    listElement.append(itemElement);
-            //    }
+                //  if(name.length > 5) {
+                //   name = name.substring(0, 5); // TODO remove
+                aElement.text(name);
+                itemElement.append(aElement);
+                listElement.append(itemElement);
+                //    }
             }
         },
 
@@ -393,10 +393,10 @@ var SchemaEdit = (function () {
                     var language;
                     $('.language-radio').each(function () {
                         if(this.type == 'radio' && this.checked) {
-                            console.log("here " + this.name + " = " + $(this).val() + " = " + $(this).attr("id") +
-                                " = " +
-                                $(this).text());
-                            language = $(this).val()
+                        //    console.log("here " + this.name + " = " + $(this).val() + " = " + $(this).attr("id") +
+                        //        " = " +
+                          //      $(this).text());
+                            language = $(this).val();
                         }
                     });
                     // console.log("lang = "+language);
@@ -422,7 +422,7 @@ var SchemaEdit = (function () {
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {
-            console.log("makeUpdateButton object = " + object);
+          //  console.log("makeUpdateButton object = " + object);
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
@@ -570,7 +570,7 @@ var SchemaEdit = (function () {
                 // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
                 for(var i = 0; i < propertiesArray.length; i++) {
                     var property = propertiesArray[i]["uri"];
-                    console.log("property : " + property);
+                    //console.log("property : " + property);
                     //     <option value="ActionScript">ActionScript</option>
                     var option = $("<option class='propertychoice'></option>");
                     option.attr("value", property);
@@ -601,7 +601,7 @@ var SchemaEdit = (function () {
                     "resourceURI": resourceURI
                 };
                 var sparql = sparqlTemplater(deleteResourceSparqlTemplate, map);
-                console.log("SPARQL for delete = " + sparql);
+              //  console.log("SPARQL for delete = " + sparql);
                 postData(sparql);
             }
             /*

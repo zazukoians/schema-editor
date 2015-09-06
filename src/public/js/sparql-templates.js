@@ -51,16 +51,16 @@ var addClassSparqlTemplate = commonPrefixes +
     			<~{namespace}~~{name}~>  a rdfs:Class ; \n\
       \n\
           ~{#label}~ \n\
-              rdfs:label \"\"\"~{label}~\"\"\" \n\
-          ~{/label}~ ; \n\
+              rdfs:label \"\"\"~{label}~\"\"\" ; \n\
+          ~{/label}~  \n\
 \n\
           ~{#subClassOf}~ \n\
-              rdfs:subClassOf ~{subClassOf}~ \n\
-          ~{/subClassOf}~ ; \n\
+              rdfs:subClassOf <~{namespace}~~{subClassOf}~> ; \n\
+          ~{/subClassOf}~  \n\
 \n\
           ~{#comment}~ \n\
-              rdfs:comment \"\"\"~{comment}~\"\"\" \n\
-          ~{/comment}~ ; \n\
+              rdfs:comment \"\"\"~{comment}~\"\"\" ; \n\
+          ~{/comment}~ \n\
     } \n\
     }";
 
@@ -69,25 +69,25 @@ var addPropertySparqlTemplate = commonPrefixes +
     		GRAPH <~{graphURI}~> {  \n\
     			<~{namespace}~~{name}~>  a rdf:Property ; \n\
           \n\
-              ~{#label}~ \n\
+          ~{#label}~ \n\
               rdfs:label \"\"\"~{label}~\"\"\" \n\
-                        ~{/label}~ ; \n\
+          ~{/label}~ ; \n\
 \n\
           ~{#subPropertyOf}~ \n\
-              rdfs:subPropertyOf ~{subPropertyOf}~ \n\
-          ~{/subPropertyOf}~ ; \n\
+              rdfs:subPropertyOf <~{namespace}~~{subPropertyOf}~> ; \n\
+          ~{/subPropertyOf}~  \n\
 \n\
           ~{#domain}~ \n\
-              rdfs:domain ~{domain}~ \n\
-          ~{/domain}~ ; \n\
+              rdfs:domain ~{domain}~ ; \n\
+          ~{/domain}~  \n\
 \n\
           ~{#range}~ \n\
-              rdfs:subPropertyOf ~{range}~ \n\
-          ~{/range}~ ; \n\
+              rdfs:subPropertyOf ~{range}~ ; \n\
+          ~{/range}~ \n\
     \n\
         ~{#comment}~ \n\
-            rdfs:comment \"\"\"~{comment}~\"\"\" \n\
-          ~{/comment}~ ; \n\
+            rdfs:comment \"\"\"~{comment}~\"\"\" ; \n\
+          ~{/comment}~  \n\
     } \n\
     }";
 
