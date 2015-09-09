@@ -1,25 +1,29 @@
 {
 	"name": "schema-editor",
-	"version": "0.1.0",
-	"description": "in-browser RDF Schema editor",
+	"version": "0.1",
+	"description": "In-browser RDF Schema editor",
 	"main": "schema-edit.js",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/webr3/rdf-interfaces.git"
+		"url": "git://github.com/danja/tbd..."
 	},
 	"keywords": [
 		"RDF Interfaces"
 	],
-	"author": "webr3",
-	"license": "Public domain",
+	"author": "danja",
+	"license": "Apache 2.0",
 	  "dependencies": {
 		    "connect": "~3.3",
 		    "serve-static": "~1.9",
 		    "morgan": "~1.6"
 		  },
+			"scripts": {
+	 "preinstall": "bin/install-fuseki.sh",
+	 "start": "bin/start.sh"
+	 },
 	"bugs": {
-		"url": "https://github.com/webr3/rdf-interfaces/issues"
+		"url": "https://github.com/danja/tbd..."
 	},
-	"homepage": "https://github.com/webr3/rdf-interfaces",
+	"homepage": "https://github.com/danja/tbd...",
 	"readmeFilename": "README.md"
 }
