@@ -25,7 +25,16 @@ npm install
 
 npm start
 
+*note* if server is already running, will get an error.
+Can use :
+sudo netstat -nlp | grep 8888
+(or grep node, but take care...)
+and kill the result.
+
+Finally:
 point browser at localhost:8888
+
+
 
 
 ----
