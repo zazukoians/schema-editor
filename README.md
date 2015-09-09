@@ -19,7 +19,13 @@ cd SE
 git clone git@zazuko.plan.io:zazuko-ontology-editor.git
 
 cd zazuko-ontology-editor
+chmod 755 bin/*
 
+npm install
+
+npm start
+
+point browser at localhost:8888
 
 
 ----
