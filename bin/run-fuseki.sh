@@ -1,9 +1,9 @@
 # adjust paths for your setup
 
-export FUSEKI_HOME=../fuseki
-export FUSEKI_BASE=../fuseki
+export FUSEKI_HOME=../../fuseki
+export FUSEKI_BASE=../../fuseki
 
-java -Xms2048M -Xmx2048M -Xss4m  -jar ../fuseki/fuseki-server.jar --verbose --update --config ../data/schemaedit-config.ttl --port=3333
+java -Xms2048M -Xmx2048M -Xss4m  -jar ../../fuseki/fuseki-server.jar --verbose --update --config ../data/schemaedit-config.ttl --port=3333
 
 # --pages ../src/public/
 
