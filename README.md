@@ -1,6 +1,29 @@
 # Schema Editor
 *working title*
 
+## Revising docs for npm-based install
+
+*https://zazuko.plan.io/projects/ontology-editor/repository*
+
+prerequisites : node + npm
+
+mine:
+node --version
+v0.10.28
+
+npm --version
+1.4.9
+
+mkdir ~/home/SE
+cd SE
+git clone git@zazuko.plan.io:zazuko-ontology-editor.git
+
+cd zazuko-ontology-editor
+
+
+
+----
+
 A non-critical aim is to provide danbri with something he can use for editing the schema.org vocabulary, the project title chosen with this in mind.
 
 foowiki dir is old code that contains recyclable Ajax bits. Likely to be deleted very soon.

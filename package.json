@@ -1,8 +1,8 @@
 {
 	"name": "schema-editor",
-	"version": "0.1",
-	"description": "In-browser RDF Schema editor",
-	"main": "schema-edit.js",
+	"version": "1.0.0-alpha",
+	"description": "In-Browser RDF Schema editor",
+	"main": "start/server.js",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/danja/tbd..."
