@@ -390,7 +390,9 @@ var SparqlConnector = (function () {
                     sparql: 'sparql-results+xml;charset=UTF-8'
                 },
                 headers: { // belt and braces
+                  /*
                     'Accept': 'sparql-results+xml;charset=UTF-8'
+                    */
                         //   'Accept-Charset': 'UTF-8' unsafe
                 }
             }).done(function (xml) {
