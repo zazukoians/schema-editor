@@ -35,10 +35,11 @@ var SparqlConnector = (function () {
         },
 
         setGraphURI: function (graphURI) {
-            var uri = queryString["uri"];
-            var split = window.location.href.split("?");
-            Config.graphURI = uri;
-            window.location.href = split[0] + "?uri=" + uri + "&graph=" + encodeURI(graphURI);
+          console.log("setGraphURI graphURI="+graphURI);
+            //var uri = queryString["uri"];
+            //var split = window.location.href.split("?");
+            Config.graphURI = graphURI;
+          //  window.location.href = split[0] + "?uri=" + uri + "&graph=" + // //encodeURI(graphURI);
             return graphURI;
         },
 
@@ -247,6 +248,7 @@ var SparqlConnector = (function () {
         },
 
         createNewVocab: function (name, namespace, prefix, graph) {
+          console.log("createNewVocab graph="+graph);
             SparqlConnector.setGraphURI(graph);
             // Config.graphURI = graph;
             var createVocabSparql = sparqlTemplater(
