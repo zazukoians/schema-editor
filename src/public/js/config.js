@@ -9,16 +9,22 @@
 var Config = (function () {
     "use strict";
 
+//http://sandbox.fusepool.info:8181/sparql/select
+// http://localhost:3333
+// ttp://sandbox.fusepool.info:8181/sparql/update
     // This is the public interface of the Module.
+
     var Config = {
         // publicFunction can be called externally
         pagesBaseURI: "http://hyperdata.it/wiki/",
         graphURI: "http://data.admin.ch/def/hgv/",
 
-        sparqlServerHost: "http://localhost:3333",
+        sparqlServerHost: "http://sandbox.fusepool.info:8181",
 
-        sparqlQueryEndpoint: "/schema-edit/sparql?query=",
-        sparqlUpdateEndpoint: "/schema-edit/update"
+        sparqlQueryEndpoint: "/sparql/select?query=",
+        sparqlUpdateEndpoint: "/sparql/update"
+//        sparqlQueryEndpoint: "/schema-edit/sparql?query=",
+//        sparqlUpdateEndpoint: "/schema-edit/update"
     };
     return Config;
 }());

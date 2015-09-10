@@ -242,15 +242,15 @@
       <div class="endpoints">
         <a href="http://localhost:3333">SPARQL Server</a>
         <!-- TODO use Config.sparqlServerHost -->
-        <br/>
+        <div id="serverUrlBlock">
+          <label for="serverUrl">Endpoint Host</label>
+          <input id="serverUrl" type='text' value=''></input>
+        </div>
         <br/>
         <strong>Endpoint Settings</strong>
         <em>(in config.js)</em>
         <br/>
-        <div id="endpointSettings">
-          <label for="endpointHost">Endpoint Host</label>
-          <input id="endpointHost" type='text' value=''></input>
-        </div>
+
         <div>
           <label for="queryPath">Query Path</label>
           <input id="queryPath" type="text" value=""></input>
@@ -259,6 +259,7 @@
           <label for="updatePath">Update Path</label>
           <input id="updatePath" type="text" value=""></input>
         </div>
+        <button id="endpointButton">Set New Values</button>
       </div>
     </div>
 

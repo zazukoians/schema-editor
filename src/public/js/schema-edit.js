@@ -15,8 +15,10 @@ var SchemaEdit = (function () {
          */
         init: function () {
             $("#endpointHost").val(Config.sparqlServerHost);
+            $("#endpointLink").attr("href",Config.sparqlServerHost);
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
             $("#queryPath").val(Config.sparqlQueryEndpoint);
+
 
             SchemaEdit.makeGraphChooser();
             SchemaEdit.addClassHandler();
