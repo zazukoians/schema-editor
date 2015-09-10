@@ -220,7 +220,7 @@
       <a name="uploadRDF" />
       <h3>Upload RDF</h3>
       <!-- TODO change this from config -->
-      <form action="http://localhost:3333/schema-edit/upload" enctype="multipart/form-data" method="post">
+      <form action="http://sandbox.fusepool.info:8181/sparql/update" enctype="multipart/form-data" method="post">
         <!-- TODO move to config (bypass Fuseki) -->
         <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
         <!-- TODO UNSET FILE NAME ?? -->
@@ -240,7 +240,7 @@
       <hr/>
 
       <div class="endpoints">
-        <a href="http://localhost:3333">SPARQL Server</a>
+        <a href="htp://sandbox.fusepool.info:8181/sparql">SPARQL Server</a>
         <!-- TODO use Config.sparqlServerHost -->
         <div id="serverUrlBlock">
           <label for="serverUrl">Endpoint Host</label>
