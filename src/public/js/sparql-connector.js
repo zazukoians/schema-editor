@@ -35,11 +35,11 @@ var SparqlConnector = (function () {
         },
 
         setGraphURI: function (graphURI) {
-          console.log("setGraphURI graphURI="+graphURI);
+            console.log("setGraphURI graphURI=" + graphURI);
             //var uri = queryString["uri"];
             //var split = window.location.href.split("?");
             Config.graphURI = graphURI;
-          //  window.location.href = split[0] + "?uri=" + uri + "&graph=" + // //encodeURI(graphURI);
+            //  window.location.href = split[0] + "?uri=" + uri + "&graph=" + // //encodeURI(graphURI);
             return graphURI;
         },
 
@@ -164,6 +164,25 @@ var SparqlConnector = (function () {
             SparqlConnector.getJsonForSparqlURL(getGraphListUrl, makeList);
         },
 
+        uploadTurtle: function (graphURI, data, callback) {
+            console.log("uploadTurtle");
+
+            var uploadTurtleSparql = sparqlTemplater(
+                uploadTurtleSparqlTemplate, {
+                    "graphURI": graphURI,
+                    "data": data
+                });
+            console.log("uploadTurtleSparql : " + uploadTurtleSparql);
+            // console.log("graphURI : "+graphURI);
+            // console.log("data : "+data);
+            var callback = function (msg) {
+                SparqlConnector.setGraphURI(graphURI);
+                alert("graphURI = " + graphURI);
+                refresh();
+            }
+            SparqlConnector.postData(uploadTurtleSparql, callback);
+        },
+
         listPropertiesForClass: function (graphURI, classURI) {
             var properties = [];
             return properties;
@@ -248,7 +267,7 @@ var SparqlConnector = (function () {
         },
 
         createNewVocab: function (name, namespace, prefix, graph) {
-          console.log("createNewVocab graph="+graph);
+            console.log("createNewVocab graph=" + graph);
             SparqlConnector.setGraphURI(graph);
             // Config.graphURI = graph;
             var createVocabSparql = sparqlTemplater(
@@ -288,12 +307,12 @@ var SparqlConnector = (function () {
                     "subClassOf": subClassOf,
                     "comment": comment
                 });
-             console.log("addClass SPARQL = \n"+addClassSparql);
+            console.log("addClass SPARQL = \n" + addClassSparql);
 
             SparqlConnector.postData(addClassSparql, callback);
         },
 
-        addProperty: function(namespace, name, label, domain, range, subPropertyOf, comment, callback) {
+        addProperty: function (namespace, name, label, domain, range, subPropertyOf, comment, callback) {
             var addPropertySparql = sparqlTemplater(
                 addPropertySparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
@@ -310,9 +329,11 @@ var SparqlConnector = (function () {
             SparqlConnector.postData(addPropertySparql, callback);
         },
 
+
         /* *** connector low-level utilities *** */
-        // TODO is duplicated below, delete one
+        // TODO is duplicated below, delete one PS duplicated where???
         postData: function (data, callback) {
+            // alert("postData called");
             $.ajax({
                 type: "POST",
                 url: Config.sparqlServerHost + Config.sparqlUpdateEndpoint,
@@ -320,6 +341,8 @@ var SparqlConnector = (function () {
                     update: data
                 })
             }).done(function (msg) {
+              //  alert("postData called msg=" + msg);
+
                 if(callback) {
                     callback(msg);
                 }
@@ -385,6 +408,7 @@ var SparqlConnector = (function () {
         },
 
         getJsonForSparqlURL: function (pageURL, callback) {
+            // alert("getJsonForSparqlURL called ");
             $.ajax({
                 url: pageURL,
                 accept: {
@@ -392,12 +416,13 @@ var SparqlConnector = (function () {
                     sparql: 'sparql-results+xml;charset=UTF-8'
                 },
                 headers: { // belt and braces
-                  /*
-                    'Accept': 'sparql-results+xml;charset=UTF-8'
-                    */
-                        //   'Accept-Charset': 'UTF-8' unsafe
+                    /*
+                      'Accept': 'sparql-results+xml;charset=UTF-8'
+                      */
+                    //   'Accept-Charset': 'UTF-8' unsafe
                 }
             }).done(function (xml) {
+                // alert("getJsonForSparqlURL called xml="+xml);
                 var json = SparqlConnector.sparqlXMLtoJSON(xml);
                 // console.log("JSON = "+JSON.stringify(json));
                 callback(json);

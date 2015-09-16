@@ -95,6 +95,8 @@ var addPropertySparqlTemplate = commonPrefixes +
     } \n\
     }";
 
+var uploadTurtleSparqlTemplate = "INSERT DATA { GRAPH <~{graphURI}~> { ~{data}~ } }";
+
 var listGraphsSparqlTemplate =
     "SELECT DISTINCT ?graph { \n\
     GRAPH ?graph { ?s ?p ?o . } \n\

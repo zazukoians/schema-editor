@@ -19,6 +19,8 @@
   <!-- specific to Schema Editor -->
   <link rel="stylesheet" href="css/schema-edit.css" />
 
+  <!-- *** Javascript *** -->
+
   <!-- markdown processor -->
   <script src="js/lib/marked.js"></script>
 
@@ -28,6 +30,10 @@
   <!-- jQuery + jQueryUI -->
   <script src="js/lib/jquery-1.10.2.js"></script>
   <script src="lib/jquery-ui/jquery-ui.js"></script>
+
+  <script src="lib/upload/js/vendor/jquery.ui.widget.js"></script>
+  <script src="lib/upload/js/jquery.iframe-transport.js"></script>
+  <script src="lib/upload/js/jquery.fileupload.js"></script>
 
   <script src="js/combobox.js"></script>
   <!-- date formatting -->
@@ -129,7 +135,8 @@
   </div>
 
   <div id="wrapper">
-    <div id="left">
+
+    <div id="left"><!--*** Left Panel *** -->
       <div class="list-block">
         <h2 class="header">Classes</h2>
         <div id="classes" class="small"></div>
@@ -141,7 +148,7 @@
       </div>
     </div>
 
-    <div id="center">
+    <div id="center"><!--*** Center Panel *** -->
 
       <div id="editor"></div>
 
@@ -220,20 +227,24 @@
       <a name="uploadRDF" />
       <h3>Upload RDF</h3>
       <!-- TODO change this from config -->
-      <form action="http://sandbox.fusepool.info:8181/sparql/update" enctype="multipart/form-data" method="post">
-        <!-- TODO move to config (bypass Fuseki) -->
-        <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
-        <!-- TODO UNSET FILE NAME ?? -->
-        <div id="upload">
-          <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
-          <br/>
-          <br/>
-          <label for='graphName'>Graph</label>
-          <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
-          <br />
-          <input type="submit" value="Upload" class='button' />
-        </div>
+      <!-- form action="http://sandbox.fusepool.info:8181/sparql/update" enctype="multipart/form-data" method="post" -->
+      <!-- TODO move to config (bypass Fuseki) -->
+      <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
+      <!-- TODO UNSET FILE NAME ?? -->
+      <form id="upload" enctype="text/turtle" method="post">
+        <input id="uploadFilename" type="file" name="uploadFilename" size="40" multiple="true" />
+        <br/>
+        <br/>
+        <label for='graphName'>Graph</label>
+        <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
+        <br />
+        <!-- input type="submit" value="Upload" class='button' / -->
+        <!-- button id="uploadGraph">Upload</button -->
+        <input id="uploadGraph" type="submit" form="upload"/>
       </form>
+
+      <hr/>
+
       <h3>Export Turtle</h3>
       <button id="turtle">Export</button>
 
@@ -263,7 +274,7 @@
       </div>
     </div>
 
-    <div id="right">
+    <div id="right"><!--*** Right Panel *** -->
       <h2>History</h2>
     </div>
 

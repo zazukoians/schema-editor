@@ -15,7 +15,7 @@ var SchemaEdit = (function () {
          */
         init: function () {
             $("#endpointHost").val(Config.sparqlServerHost);
-            $("#endpointLink").attr("href",Config.sparqlServerHost);
+            $("#endpointLink").attr("href", Config.sparqlServerHost);
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
             $("#queryPath").val(Config.sparqlQueryEndpoint);
 
@@ -29,7 +29,12 @@ var SchemaEdit = (function () {
             SchemaEdit.populateResourcesCombobox($("#propertyUriValue"), "uriValue");
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
 
+            SchemaEdit.makeUploadGraphButton();
+
+
+
             var graph = parseUri(window.location.href).queryKey.graph;
+
             // queryString["graph"];
 
         },
@@ -395,9 +400,9 @@ var SchemaEdit = (function () {
                     var language;
                     $('.language-radio').each(function () {
                         if(this.type == 'radio' && this.checked) {
-                        //    console.log("here " + this.name + " = " + $(this).val() + " = " + $(this).attr("id") +
-                        //        " = " +
-                          //      $(this).text());
+                            //    console.log("here " + this.name + " = " + $(this).val() + " = " + $(this).attr("id") +
+                            //        " = " +
+                            //      $(this).text());
                             language = $(this).val();
                         }
                     });
@@ -424,7 +429,7 @@ var SchemaEdit = (function () {
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {
-          //  console.log("makeUpdateButton object = " + object);
+            //  console.log("makeUpdateButton object = " + object);
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
@@ -510,6 +515,36 @@ var SchemaEdit = (function () {
             return changePredicateButton;
         },
 
+        /* Isn't jQuery but works well enough for now */
+        makeUploadGraphButton: function () {
+            function readMultipleFiles(evt) {
+                //Retrieve all the files from the FileList object
+                var files = evt.target.files;
+
+                if(files) {
+                    for(var i = 0, f; f = files[i]; i++) {
+                        var r = new FileReader();
+                        r.onload = (function (f) {
+                            return function (e) {
+                                var turtle = e.target.result;
+
+                                var callback = function(msg) {
+                                  alert(msg);
+                                }
+                                var graphURI = $("#graphName").val();
+                                SparqlConnector.uploadTurtle(graphURI, turtle, callback);
+                            };
+                        })(f);
+
+                        r.readAsText(f);
+                    }
+                } else {
+                    alert("Failed to load files");
+                }
+            }
+            document.getElementById('uploadFilename').addEventListener('change', readMultipleFiles, false);
+        },
+
         makeTripleAttribute: function (subject, predicate, object, isLiteral) {
             var triple = "<" + subject + "> <" + predicate + "> ";
             if(isLiteral) {
@@ -520,11 +555,27 @@ var SchemaEdit = (function () {
             return triple;
         },
 
+        /*
+        <div id="upload">
+          <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
+          <br/>
+          <br/>
+          <label for='graphName'>Graph</label>
+          <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
+          <br />
+          <!-- input type="submit" value="Upload" class='button' / -->
+          <button id="uploadGraph">Upload</button>
+        </div>
+        */
         setupButtons: function () { // TODO refactor - move local to buttons?
 
-            $("#turtle").click(function () {
+            $("#turtle").click(function () { // is used?
                 location.href = SparqlConnector.getTurtleUrl();
             });
+
+
+            //
+
 
             /* was from foowiki?
                         $("#newPageButton").click(function () {
@@ -534,6 +585,7 @@ var SchemaEdit = (function () {
                         });
             */
 
+            // TODO this button doesn't appear to exist!
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());
                 $.ajax({
@@ -603,7 +655,7 @@ var SchemaEdit = (function () {
                     "resourceURI": resourceURI
                 };
                 var sparql = sparqlTemplater(deleteResourceSparqlTemplate, map);
-              //  console.log("SPARQL for delete = " + sparql);
+                //  console.log("SPARQL for delete = " + sparql);
                 postData(sparql);
             }
             /*
