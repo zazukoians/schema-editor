@@ -212,21 +212,35 @@ var SchemaEdit = (function () {
                 chooser.appendTo(target);
                 var combobox = chooser.combobox();
                 combobox.combobox("setInputId", id);
+                combobox.combobox({
+                    select: function (event, ui) {
+                        alert("the select event has fired!");
+                        var newResource = $("#resource").val();
+
+                        // relocate to new page
+                        // can use parseUri somehow?
+                        var split = window.location.href.split("?");
+                        var graph = parseUri(window.location.href).queryKey.graph;
+                        window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + graph;
+                    }
+                });
                 /*
                 var graph = parseUri(window.location.href).queryKey.graph;
                 $("#graph").val(graph);
                 var uri = parseUri(window.location.href).queryKey.uri;
                 $("#resource").val(uri);
 */
-                $("#chooseResourceButton").click(function () {
-                    var newResource = $("#resource").val();
+                /* moved to select above
+                                $("#chooseResourceButton").click(function () {
+                                    var newResource = $("#resource").val();
 
-                    // relocate to new page
-                    // can use parseUri somehow?
-                    var split = window.location.href.split("?");
-                    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + graph;
-                });
+                                    // relocate to new page
+                                    // can use parseUri somehow?
+                                    var split = window.location.href.split("?");
+                                    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + graph;
+                                });
 
+                */
             };
             SparqlConnector.listResources(callback);
         },
