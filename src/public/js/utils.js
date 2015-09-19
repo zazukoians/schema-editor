@@ -19,6 +19,42 @@ function refresh() {
     refreshResourceInput();
 }
 
+/* was to be regex-based way of tweaking turtle-sparql to valid sparql */
+function cleanSPARQL(sparql) {
+    // BASE    <http://example.org/book/>
+    var baseRe = /@base.*>\s.*/gi;
+    var match = sparql.match(baseRe);
+    sparql = sparql.replace(baseRe, "");
+    if(match && match[0]) {
+        var sparqlBase = "BASE " + match[0].substring(5, match[0].length - 1);
+        sparql = sparqlBase + "\n" + sparql;
+    }
+
+    var prefixRe = /@prefix.*>\s.*/gi;
+    var matches = sparql.match(prefixRe);
+    console.log("reg array = " + JSON.stringify(matches, false, 4));
+    var noPrefixSparql = sparql.replace(prefixRe, "");
+    var prefixes = "";
+    for(var i = 0; i < matches.length; i++) {
+        var trimmed = matches[i].substring(1, matches[i].length - 1);
+        prefixes = prefixes + trimmed + "\n";
+    }
+    sparql = prefixes + noPrefixSparql;
+    console.log("cleaned sparql = \n" + sparql);
+    return sparql;
+}
+
+function turtleToNtriples(turtle, handleNtriples) {
+    var parser = N3.Parser();
+    parser.parse(turtle,
+        function (error, triple, prefixes) {
+            if(triple)
+                console.log(triple.subject, triple.predicate, triple.object, '.');
+            else
+                console.log("# That's all, folks!", prefixes)
+        });
+}
+
 function refreshResourceInput() {
     var resourceInput = $("#resource");
     if(resourceInput.val()) { // may not be defined
@@ -418,31 +454,31 @@ function hUnescape(value) {
 // (c) Steven Levithan <stevenlevithan.com>
 // MIT License
 
-function parseUri (str) {
-	var	o   = parseUri.options,
-		m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
-		uri = {},
-		i   = 14;
+function parseUri(str) {
+    var o = parseUri.options,
+        m = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+        uri = {},
+        i = 14;
 
-	while (i--) uri[o.key[i]] = m[i] || "";
+    while(i--) uri[o.key[i]] = m[i] || "";
 
-	uri[o.q.name] = {};
-	uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
-		if ($1) uri[o.q.name][$1] = $2;
-	});
+    uri[o.q.name] = {};
+    uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+        if($1) uri[o.q.name][$1] = $2;
+    });
 
-	return uri;
+    return uri;
 };
 
 parseUri.options = {
-	strictMode: false,
-	key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
-	q:   {
-		name:   "queryKey",
-		parser: /(?:^|&)([^&=]*)=?([^&]*)/g
-	},
-	parser: {
-		strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
-		loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
-	}
+    strictMode: false,
+    key: ["source", "protocol", "authority", "userInfo", "user", "password", "host", "port", "relative", "path", "directory", "file", "query", "anchor"],
+    q: {
+        name: "queryKey",
+        parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+    },
+    parser: {
+        strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+        loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+    }
 };

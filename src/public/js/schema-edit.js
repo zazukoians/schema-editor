@@ -19,7 +19,6 @@ var SchemaEdit = (function () {
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
             $("#queryPath").val(Config.sparqlQueryEndpoint);
 
-
             SchemaEdit.makeGraphChooser();
             SchemaEdit.addClassHandler();
             SchemaEdit.addPropertyHandler();
@@ -30,13 +29,9 @@ var SchemaEdit = (function () {
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
 
             SchemaEdit.makeUploadGraphButton();
-
-
+            SchemaEdit.setupButtons();
 
             var graph = parseUri(window.location.href).queryKey.graph;
-
-            // queryString["graph"];
-
         },
 
         makeNewVocabBlock: function () {
@@ -46,7 +41,7 @@ var SchemaEdit = (function () {
                 var name = $("#vocabName").val();
                 var namespace = $("#vocabNamespace").val();
                 var prefix = $("#vocabPrefix").val();
-                var graph = $("#vocabGraph").val();
+                var graph = namespace; // $("#vocabGraph").val();
                 SparqlConnector.createNewVocab(name, namespace, prefix, graph);
             });
         },
@@ -182,8 +177,9 @@ var SchemaEdit = (function () {
                     propertyBlock.append("<hr/>");
                     $("#editor").append(propertyBlock);
                 }
-                SchemaEdit.setupButtons();
+              //  SchemaEdit.setupButtons();
             }
+            console.log("getResourceUrl ="+getResourceUrl);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
 
@@ -249,7 +245,6 @@ var SchemaEdit = (function () {
                 } else {
                     SparqlConnector.updateUriTriple(subject, predicate, object, language, callback);
                 }
-
             });
         },
 
@@ -342,7 +337,7 @@ var SchemaEdit = (function () {
 
         makeClassesList: function () {
             var callback = function (json) {
-                //  console.log("JSON = "+JSON.stringify(json,false,4));
+                console.log("JSON = "+JSON.stringify(json,false,4));
                 SchemaEdit.makeListBlock(json, $("#classes"));
             }
             var classList = SparqlConnector.listClasses(callback);
@@ -528,9 +523,12 @@ var SchemaEdit = (function () {
                             return function (e) {
                                 var turtle = e.target.result;
 
-                                var callback = function(msg) {
-                                  alert(msg);
-                                }
+                                var callback = function (msg) {
+                                        SparqlConnector.setGraphURI(graphURI);
+                                        alert("graphURI = " + graphURI);
+
+
+                                    }
                                 var graphURI = $("#graphName").val();
                                 SparqlConnector.uploadTurtle(graphURI, turtle, callback);
                             };
@@ -568,8 +566,9 @@ var SchemaEdit = (function () {
         </div>
         */
         setupButtons: function () { // TODO refactor - move local to buttons?
-
+console.log("setup buttons called");
             $("#turtle").click(function () { // is used?
+              console.log("#turtle clicked");
                 location.href = SparqlConnector.getTurtleUrl();
             });
 
@@ -646,7 +645,7 @@ var SchemaEdit = (function () {
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
             //  console.log("generateGetUrl sparql = " + sparql);
-            return Config.sparqlServerHost + Config.sparqlQueryEndpoint + encodeURIComponent(sparql);
+            return Config.sparqlServerHost + Config.sparqlQueryEndpoint + encodeURIComponent(sparql) + "&output=xml";
         },
 
         deleteResource: function (resourceURI) {

@@ -37,9 +37,11 @@ var SparqlConnector = (function () {
         setGraphURI: function (graphURI) {
             console.log("setGraphURI graphURI=" + graphURI);
             //var uri = queryString["uri"];
-            //var split = window.location.href.split("?");
+
             Config.graphURI = graphURI;
             //  window.location.href = split[0] + "?uri=" + uri + "&graph=" + // //encodeURI(graphURI);
+            var split = window.location.href.split("?");
+            window.location.href = split[0] + "?graph=" + graphURI;
             return graphURI;
         },
 
@@ -124,7 +126,7 @@ var SparqlConnector = (function () {
                     }
                     callback(resources);
                 }
-                //  console.log("getClassesUrl = " + getResourcesUrl);
+                  console.log("getResourcesUrl = " + getResourcesUrl);
             SparqlConnector.getJsonForSparqlURL(getResourcesUrl, extractResources);
         },
 
@@ -172,15 +174,31 @@ var SparqlConnector = (function () {
                     "graphURI": graphURI,
                     "data": data
                 });
-            console.log("uploadTurtleSparql : " + uploadTurtleSparql);
+
+            var sparql = cleanSPARQL(uploadTurtleSparql);
+
+            // console.log("uploadTurtleSparql : " + uploadTurtleSparql);
             // console.log("graphURI : "+graphURI);
             // console.log("data : "+data);
-            var callback = function (msg) {
-                SparqlConnector.setGraphURI(graphURI);
-                alert("graphURI = " + graphURI);
-                refresh();
-            }
-            SparqlConnector.postData(uploadTurtleSparql, callback);
+
+            //   cleanSPARQL(uploadTurtleSparql);
+            SparqlConnector.postData(sparql, callback);
+
+            // turtleToNtriples(turtle, handleNtriples);
+
+            /* returns a 404, default upload URL not set up ??
+            var targetUrl= Config.sparqlServerHost + Config.sparqlUploadEndpoint + "?graph="+graphURI;
+
+            $.ajax({
+              method: "POST",
+              url: targetUrl,
+              contentType:"text/turtle",
+              data: data
+            })
+              .done(function( msg ) {
+                alert( "Data Saved: " + msg );
+              });
+*/
         },
 
         listPropertiesForClass: function (graphURI, classURI) {
@@ -341,7 +359,7 @@ var SparqlConnector = (function () {
                     update: data
                 })
             }).done(function (msg) {
-              //  alert("postData called msg=" + msg);
+                //  alert("postData called msg=" + msg);
 
                 if(callback) {
                     callback(msg);
@@ -408,6 +426,7 @@ var SparqlConnector = (function () {
         },
 
         getJsonForSparqlURL: function (pageURL, callback) {
+           
             // alert("getJsonForSparqlURL called ");
             $.ajax({
                 url: pageURL,
@@ -416,13 +435,13 @@ var SparqlConnector = (function () {
                     sparql: 'sparql-results+xml;charset=UTF-8'
                 },
                 headers: { // belt and braces
-                    /*
-                      'Accept': 'sparql-results+xml;charset=UTF-8'
-                      */
+//   'Content-Type': 'application/sparql-update'
+                    //'Accept': 'sparql-results+xml;charset=UTF-8'
+
                     //   'Accept-Charset': 'UTF-8' unsafe
                 }
             }).done(function (xml) {
-                // alert("getJsonForSparqlURL called xml="+xml);
+                console.log("getJsonForSparqlURL called xml="+JSON.stringify(xml, false,4));
                 var json = SparqlConnector.sparqlXMLtoJSON(xml);
                 // console.log("JSON = "+JSON.stringify(json));
                 callback(json);
@@ -441,7 +460,7 @@ var SparqlConnector = (function () {
             // maybe force to ISO-8859-1, also known as Latin-1 instead?
 
             var $xml = $(xmlString);
-            // console.log(xmlString);
+
             var variables = $xml.find("variable");
 
             if(variables.length == 0) {

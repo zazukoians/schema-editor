@@ -36,8 +36,13 @@
   <script src="lib/upload/js/jquery.fileupload.js"></script>
 
   <script src="js/combobox.js"></script>
+
   <!-- date formatting -->
   <script src="js/lib/moment.js"></script>
+
+<!-- for converting turtle to ntriples for upload via sparql update -->
+  <!-- script src="js/lib/rdf-ext.js.map"></script -->
+  <script src="js/lib/n3-browser.js"></script>
 
   <!-- TODO return to these
 <script src="js/lib/wysihtml5x-toolbar.js"></script>
@@ -104,12 +109,12 @@
       <h4>Create New Vocab</h4>
       <label for="vocabName">Name</label>
       <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
-      <label for="vocabNamespace">Namespace</label>
+      <label for="vocabNamespace">Namespace (used as Graph Name)</label>
       <input id="vocabNamespace" type="text" name="vocabNamespace" title="namespace of vocab" />
-      <label for="vocabPrefix">Prefix</label>
+      <label for="vocabPrefix">Preferred Prefix</label>
       <input id="vocabPrefix" type="text" name="vocabPrefix" title="vocab preferred prefix" />
-      <label for="vocabGraph">New Graph</label>
-      <input id="vocabGraph" type="text" name="vocabGraph" title="graph in which to store new vocab" />
+      <!-- label for="vocabGraph">New Graph</label>
+      <input id="vocabGraph" type="text" name="vocabGraph" title="graph in which to store new vocab" / -->
 
       <button id="newVocabButton">Create Vocab</button>
     </div>
@@ -136,7 +141,8 @@
 
   <div id="wrapper">
 
-    <div id="left"><!--*** Left Panel *** -->
+    <div id="left">
+      <!--*** Left Panel *** -->
       <div class="list-block">
         <h2 class="header">Classes</h2>
         <div id="classes" class="small"></div>
@@ -148,11 +154,10 @@
       </div>
     </div>
 
-    <div id="center"><!--*** Center Panel *** -->
+    <div id="center">
+      <!--*** Center Panel *** -->
 
       <div id="editor"></div>
-
-      <hr/>
 
       <div id="addClass">
         <h4>Add Class</h4>
@@ -236,11 +241,11 @@
         <br/>
         <br/>
         <label for='graphName'>Graph</label>
-        <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
+        <input name="graph" id="graphName" size="20" value="https://example.org/" /> <!-- http://schema.org/terms/ -->
         <br />
         <!-- input type="submit" value="Upload" class='button' / -->
         <!-- button id="uploadGraph">Upload</button -->
-        <input id="uploadGraph" type="submit" form="upload"/>
+        <input id="uploadGraph" type="submit" form="upload" />
       </form>
 
       <hr/>
@@ -251,7 +256,7 @@
       <hr/>
 
       <div class="endpoints">
-        <a href="htp://sandbox.fusepool.info:8181/sparql">SPARQL Server</a>
+        <a href="http://sandbox.fusepool.info:8181/sparql">SPARQL Server</a>
         <!-- TODO use Config.sparqlServerHost -->
         <div id="serverUrlBlock">
           <label for="serverUrl">Endpoint Host</label>
@@ -274,7 +279,8 @@
       </div>
     </div>
 
-    <div id="right"><!--*** Right Panel *** -->
+    <div id="right">
+      <!--*** Right Panel *** -->
       <h2>History</h2>
     </div>
 

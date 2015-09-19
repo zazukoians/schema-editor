@@ -19,6 +19,7 @@
  *     fit in one line.
  */
 
+// moved out PREFIX dc: <http://purl.org/dc/elements/1.1/> \n\
 var commonPrefixes =
     " \n\
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
@@ -30,8 +31,7 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> \n\
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#> \n\
 PREFIX schema: <http://schema.org/> \n\
 # nb. prefer dcterms over dcelements \n\
-PREFIX dc: <http://purl.org/dc/elements/1.1/> \n\
-PREFIX dcterms: <http://purl.org/dc/terms/> \n\
+PREFIX dc: <http://purl.org/dc/terms/> \n\
 PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n\
 PREFIX dcat: <http://www.w3.org/ns/dcat#> \n\
 PREFIX void: <http://rdfs.org/ns/void#> \n\
@@ -113,6 +113,7 @@ ORDER BY ?property \n\
 
 var getResourcesOfTypeSparqlTemplate = commonPrefixes +
     " \n\
+# from getResourcesOfType \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -123,6 +124,7 @@ ORDER BY ?uri \n\
 
 var getPropertiesOfResource = commonPrefixes +
     " \n\
+# from getPropertiesOfResource \n\
 SELECT DISTINCT * \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -157,6 +159,7 @@ ORDER BY ?uri";
 
 var getResourceSparqlTemplate = commonPrefixes +
     " \n\
+# from getResource \n\
 SELECT DISTINCT ?p ?o ?language \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
@@ -167,7 +170,7 @@ BIND (lang(?o) AS ?language) \n\
 
 var getResourceListSparqlTemplate =
     "\n\
-# from getResourceListSparqlTemplate \n\
+# from getResourceList \n\
 SELECT DISTINCT ?subject \n\
 FROM NAMED <~{graphURI}~>  \n\
 WHERE { \n\
