@@ -31,8 +31,27 @@ var SchemaEdit = (function () {
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.setupButtons();
 
-            var graph = parseUri(window.location.href).queryKey.graph;
+            SchemaEdit.setGraphFromUrl();
+            SchemaEdit.setResourceFromUrl();
+            // var graph = parseUri(window.location.href).queryKey.graph;
+
+
         },
+
+        setGraphFromUrl: function () {
+            var graph = parseUri(window.location.href).queryKey.graph;
+            if(graph && (graph != "")) {
+                $("#graph").val(graph);
+            }
+        },
+
+        setResourceFromUrl: function () {
+            var uri = parseUri(window.location.href).queryKey.uri;
+            if(uri && (uri != "")) {
+                $("#resource").val(uri);
+            }
+        },
+
 
         makeNewVocabBlock: function () {
             $("#newVocabBlock").show();
@@ -177,9 +196,9 @@ var SchemaEdit = (function () {
                     propertyBlock.append("<hr/>");
                     $("#editor").append(propertyBlock);
                 }
-              //  SchemaEdit.setupButtons();
+                //  SchemaEdit.setupButtons();
             }
-            console.log("getResourceUrl ="+getResourceUrl);
+            console.log("getResourceUrl =" + getResourceUrl);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
 
@@ -193,16 +212,17 @@ var SchemaEdit = (function () {
                 chooser.appendTo(target);
                 var combobox = chooser.combobox();
                 combobox.combobox("setInputId", id);
+                /*
                 var graph = parseUri(window.location.href).queryKey.graph;
                 $("#graph").val(graph);
                 var uri = parseUri(window.location.href).queryKey.uri;
                 $("#resource").val(uri);
-
+*/
                 $("#chooseResourceButton").click(function () {
                     var newResource = $("#resource").val();
 
                     // relocate to new page
-                    // can use queryString somehow?
+                    // can use parseUri somehow?
                     var split = window.location.href.split("?");
                     window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + graph;
                 });
@@ -274,21 +294,44 @@ var SchemaEdit = (function () {
                 var chooser = SchemaEdit.makeChooser(graphList);
                 $("#graphChooser").append(chooser);
                 var combobox = chooser.combobox();
+
                 combobox.combobox("setInputId", "graph");
+                combobox.combobox({
+                    select: function (event, ui) {
+                        alert("the select event has fired!");
+                        var newGraph = $("#graph").val();
+                        Config.graphURI = newGraph;
 
-                $("#graphChooserButton").click(function () {
-                    var newGraph = $("#graph").val();
-                    Config.graphURI = newGraph;
-
-                    var split = window.location.href.split("?");
-                    //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
-                    window.location.href = split[0] + "?graph=" + encodeURI(Config.graphURI);
+                        var split = window.location.href.split("?");
+                        //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
+                        window.location.href = split[0] + "?graph=" + encodeURI(Config.graphURI);
+                        SchemaEdit.setGraphFromUrl(); // belt & braces
+                        $("html, body").animate({
+                            scrollTop: 0
+                        }, "slow");
+                    }
                 });
+
+                /* moved to select above
+                                $("#graphChooserButton").click(function () {
+                                    var newGraph = $("#graph").val();
+                                    Config.graphURI = newGraph;
+
+                                    var split = window.location.href.split("?");
+                                    //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
+                                    window.location.href = split[0] + "?graph=" + encodeURI(Config.graphURI);
+                                    SchemaEdit.setGraphFromUrl(); // belt & braces
+                                    $("html, body").animate({
+                                        scrollTop: 0
+                                    }, "slow");
+                                });
+                                */
             };
             SparqlConnector.listGraphs(populateChooser);
         },
 
         makeChooser: function (valueList) {
+            valueList.sort(); // alphabetical by default
             // console.log("type = " + type);
             var choices = $("<select></select>");
 
@@ -337,7 +380,7 @@ var SchemaEdit = (function () {
 
         makeClassesList: function () {
             var callback = function (json) {
-                console.log("JSON = "+JSON.stringify(json,false,4));
+                console.log("JSON = " + JSON.stringify(json, false, 4));
                 SchemaEdit.makeListBlock(json, $("#classes"));
             }
             var classList = SparqlConnector.listClasses(callback);
@@ -524,11 +567,11 @@ var SchemaEdit = (function () {
                                 var turtle = e.target.result;
 
                                 var callback = function (msg) {
-                                        SparqlConnector.setGraphURI(graphURI);
-                                        alert("graphURI = " + graphURI);
+                                    SparqlConnector.setGraphURI(graphURI);
+                                    alert("graphURI = " + graphURI);
 
 
-                                    }
+                                }
                                 var graphURI = $("#graphName").val();
                                 SparqlConnector.uploadTurtle(graphURI, turtle, callback);
                             };
@@ -566,9 +609,9 @@ var SchemaEdit = (function () {
         </div>
         */
         setupButtons: function () { // TODO refactor - move local to buttons?
-console.log("setup buttons called");
+            console.log("setup buttons called");
             $("#turtle").click(function () { // is used?
-              console.log("#turtle clicked");
+                console.log("#turtle clicked");
                 location.href = SparqlConnector.getTurtleUrl();
             });
 

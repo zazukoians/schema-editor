@@ -26,10 +26,11 @@ var Config = (function () {
         sparqlUploadEndpoint: "/sparql/upload"
 */
 
+
         sparqlServerHost: "http://localhost:3333",
         sparqlQueryEndpoint: "/schema-edit/sparql?query=",
         sparqlUpdateEndpoint: "/schema-edit/update"
-        
+
     };
     return Config;
 }());
