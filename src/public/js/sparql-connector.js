@@ -87,25 +87,6 @@ var SparqlConnector = (function () {
             return SparqlConnector.listResourcesOfType("rdf:Property", callback);
         },
 
-        /*
-                listResourcesOfType: function (type, callback) { // TODO appears broken, duplicated below - is used?
-                  alert("listResourcesOfType1: function (type, callback)");
-                    var resources = [];
-                    var getResourceListSparql = sparqlTemplater(
-                        getResourcesOfTypeSparqlTemplate, {
-                            "graphURI": SparqlConnector.getGraphURI(),
-                            "type": type
-                        });
-
-                    var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
-                        encodeURIComponent(getResourceListSparql) + "&output=xml";
-
-                    var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl,
-                        callback);
-
-                    return resources;
-                },
-        */
         listResources: function (callback) {
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
@@ -177,11 +158,6 @@ var SparqlConnector = (function () {
 
             var sparql = cleanSPARQL(uploadTurtleSparql);
 
-            // console.log("uploadTurtleSparql : " + uploadTurtleSparql);
-            // console.log("graphURI : "+graphURI);
-            // console.log("data : "+data);
-
-            //   cleanSPARQL(uploadTurtleSparql);
             SparqlConnector.postData(sparql, callback);
 
             // turtleToNtriples(turtle, handleNtriples);
@@ -454,7 +430,9 @@ var SparqlConnector = (function () {
         sparqlXMLtoJSON: function (xml) {
             var xmlString = (new XMLSerializer()).serializeToString(xml);
             // workaround for wrong interpretation of charset
-            xmlString = xmlString.replace(/[^\u0000-\u007F]/g, '');
+
+            //xmlString = xmlString.replace(/[^\u0000-\u007F]/g, '');
+
             // maybe force to ISO-8859-1, also known as Latin-1 instead?
             var $xml = $(xmlString);
             var variables = $xml.find("variable");

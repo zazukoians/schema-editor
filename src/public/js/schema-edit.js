@@ -33,25 +33,14 @@ var SchemaEdit = (function () {
             SchemaEdit.setupButtons();
 
             // SchemaEdit.setGraphFromUrl();
-            SchemaEdit.setResourceFromUrl();
+            // SchemaEdit.setResourceFromUrl();
         },
 
         setGraphFromUrl: function () {
             var graph = parseUri(window.location.href).queryKey.graph;
             if(graph && (graph != "")) {
                 $("#graph").val(graph);
-                console.log("setGraphFromUrl to " + graph);
-                var chosen = $("#graphChooser");
-                chosen.children().log();
-                chosen.log();
-                /*
-                .filter(function () {
-                  console.log("value = "+$(this).attr("value"));
-                    return $(this).attr("value") === graph;
-                });
-                */
-              //  console.log("chosen = " + JSON.stringify(chosen, false, 4));
-                chosen.attr("selected", "selected");
+              //  console.log("setGraphFromUrl to " + graph);
             }
         },
 
@@ -238,6 +227,7 @@ var SchemaEdit = (function () {
                         window.location.href = newLocation;
                     }
                 });
+                SchemaEdit.setResourceFromUrl();
                 /*
                 var graph = parseUri(window.location.href).queryKey.graph;
                 $("#graph").val(graph);
@@ -359,6 +349,8 @@ var SchemaEdit = (function () {
             }
             return choices;
         },
+
+        // SchemaEdit.setResourceFromUrl();
 
         makeTypedChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
             // console.log("type = " + type);
