@@ -35,11 +35,8 @@ var SparqlConnector = (function () {
         },
 
         setGraphURI: function (graphURI) {
-            console.log("setGraphURI graphURI=" + graphURI);
-            //var uri = queryString["uri"];
-
+            // console.log("setGraphURI graphURI=" + graphURI);
             Config.graphURI = graphURI;
-            //  window.location.href = split[0] + "?uri=" + uri + "&graph=" + // //encodeURI(graphURI);
             var split = window.location.href.split("?");
             window.location.href = split[0] + "?graph=" + graphURI;
             return graphURI;
@@ -99,11 +96,9 @@ var SparqlConnector = (function () {
 
             var extractResources = function (json) {
                     var resources = [];
-                    // console.log("listResources json =" + JSON.stringify(json, false, 4));
                     for(var i = 0; i < json.length; i++) {
                         var subject = json[i]["subject"];
                         resources.push(subject);
-                        //    console.log("subject = " + subject);
                     }
                     callback(resources);
                 }
@@ -112,21 +107,16 @@ var SparqlConnector = (function () {
         },
 
         listResourcesOfType: function (type, callback) {
-            // alert("listResourcesOfType2: function (type, callback)");
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourcesOfTypeSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
                     "type": type
                 });
-            // console.log("getResourceListSparql = \n" + getResourceListSparql);
             var getResourcesUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
-            //  console.log("getClassesUrl = " + getResourcesUrl);
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
-            //    console.log("json =" + json);
-            //  return resources;
         },
 
         /* produces a list of graphs available in the store */
@@ -137,13 +127,11 @@ var SparqlConnector = (function () {
                 for(var i = 0; i < json.length; i++) {
                     graphURIs.push(json[i]["graph"]);
                 }
-                //  console.log("graphs = \n"+JSON.stringify(graphURIs,false,4));
                 callback(graphURIs);
             }
             var getGraphListUrl = Config.sparqlServerHost + Config.sparqlQueryEndpoint +
                 encodeURIComponent(listGraphsSparqlTemplate) + "&output=xml";
 
-            //  console.log("getClassesUrl = " + getResourcesUrl);
             SparqlConnector.getJsonForSparqlURL(getGraphListUrl, makeList);
         },
 
@@ -192,7 +180,6 @@ var SparqlConnector = (function () {
             if(uriNamespaceIndex == -1) {
                 uriNamespaceIndex = uri.lastIndexOf("/");
             }
-            // console.log("uriNamespaceIndex = " + uriNamespaceIndex);
 
             var uriNamespace = uri.substring(0, uriNamespaceIndex + 1); // TODO check length
             var name = uri.substring(uriNamespaceIndex + 1);
@@ -263,7 +250,7 @@ var SparqlConnector = (function () {
         createNewVocab: function (name, namespace, prefix, graph) {
             console.log("createNewVocab graph=" + graph);
             SparqlConnector.setGraphURI(graph);
-            // Config.graphURI = graph;
+
             var createVocabSparql = sparqlTemplater(
                 createVocabSparqlTemplate, {
                     "graphURI": SparqlConnector.getGraphURI(),
@@ -429,11 +416,11 @@ var SparqlConnector = (function () {
 
         sparqlXMLtoJSON: function (xml) {
             var xmlString = (new XMLSerializer()).serializeToString(xml);
-            // workaround for wrong interpretation of charset
 
+            // workaround for wrong interpretation of charset
+            // removed again because it was causing other problems with unicode...
             //xmlString = xmlString.replace(/[^\u0000-\u007F]/g, '');
 
-            // maybe force to ISO-8859-1, also known as Latin-1 instead?
             var $xml = $(xmlString);
             var variables = $xml.find("variable");
             if(variables.length == 0) {
