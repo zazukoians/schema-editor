@@ -102,20 +102,22 @@ var listGraphsSparqlTemplate =
     GRAPH ?graph { ?s ?p ?o . } \n\
 }";
 
+// FROM <~{graphURI}~>  \n\
+
 var getAllProperties = commonPrefixes +
     "SELECT DISTINCT ?property \n\
-FROM NAMED <~{graphURI}~>  \n\
-WHERE { \n\
+WHERE { GRAPH <~{graphURI}~> { \n\
 ?subject ?property ?object \n\
-} \n\
+}} \n\
 ORDER BY ?property \n\
 ";
 
+// NAMED
 var getResourcesOfTypeSparqlTemplate = commonPrefixes +
     " \n\
 # from getResourcesOfType \n\
 SELECT DISTINCT * \n\
-FROM NAMED <~{graphURI}~>  \n\
+FROM <~{graphURI}~>  \n\
 WHERE { \n\
 ?uri a ~{type}~ \n\
 } \n\
@@ -126,7 +128,7 @@ var getPropertiesOfResource = commonPrefixes +
     " \n\
 # from getPropertiesOfResource \n\
 SELECT DISTINCT * \n\
-FROM NAMED <~{graphURI}~>  \n\
+FROM <~{graphURI}~>  \n\
 WHERE { \n\
 <~{subject}~> ?property ?object \n\
 } \n\
@@ -137,7 +139,7 @@ ORDER BY ?p \n\
 var getClassListSparqlTemplate = commonPrefixes +
     " \n\
 SELECT DISTINCT * \n\
-FROM NAMED <~{graphURI}~>  \n\
+FROM <~{graphURI}~>  \n\
 WHERE { \n\
 ?uri a rdfs:Class; \n\
 } \n\
@@ -147,7 +149,7 @@ WHERE { \n\
 var getPropertyListSparqlTemplate = commonPrefixes +
     " \n\
 SELECT DISTINCT * \n\
-FROM NAMED <~{graphURI}~>  \n\
+FROM <~{graphURI}~>  \n\
 WHERE { \n\
 	?uri a rdf:Property; \n\
 	OPTIONAL { \n\
@@ -157,11 +159,12 @@ WHERE { \n\
 \n\
 ORDER BY ?uri";
 
+// NAMED
 var getResourceSparqlTemplate = commonPrefixes +
     " \n\
 # from getResource \n\
 SELECT DISTINCT ?p ?o ?language \n\
-FROM NAMED <~{graphURI}~>  \n\
+FROM <~{graphURI}~>  \n\
 WHERE { \n\
 <~{uri}~> ?p ?o; \n\
 BIND (lang(?o) AS ?language) \n\
@@ -172,7 +175,7 @@ var getResourceListSparqlTemplate =
     "\n\
 # from getResourceList \n\
 SELECT DISTINCT ?subject \n\
-FROM NAMED <~{graphURI}~>  \n\
+FROM <~{graphURI}~>  \n\
 WHERE { \n\
 ?subject ?p ?o; \n\
  FILTER isIRI(?subject) \n\
