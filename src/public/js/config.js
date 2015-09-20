@@ -16,21 +16,28 @@ var Config = (function () {
 
     var Config = {
         // publicFunction can be called externally
-        pagesBaseURI: "http://hyperdata.it/wiki/",
-        graphURI: "http://data.admin.ch/def/hgv/",
 
-/*
-        sparqlServerHost: "http://sandbox.fusepool.info:8181",
-        sparqlQueryEndpoint: "/sparql/select?query=",
-        sparqlUpdateEndpoint: "/sparql/update",
-        sparqlUploadEndpoint: "/sparql/upload"
-*/
+        //  graphURI: "http://data.admin.ch/def/hgv/",
 
+        /*
+                sparqlServerHost: "http://sandbox.fusepool.info:8181",
+                sparqlQueryEndpoint: "/sparql/select?query=",
+                sparqlUpdateEndpoint: "/sparql/update",
+                sparqlUploadEndpoint: "/sparql/upload"
+        */
 
-        sparqlServerHost: "http://localhost:3333",
-        sparqlQueryEndpoint: "/schema-edit/sparql?query=",
-        sparqlUpdateEndpoint: "/schema-edit/update"
+        /*
+                sparqlServerHost: "http://localhost:3333",
+                sparqlQueryEndpoint: "/schema-edit/sparql?query=",
+                sparqlUpdateEndpoint: "/schema-edit/update"
+        */
 
+        sparqlServerHost: "http://zazukoians.org:3030",
+        sparqlQueryEndpoint: "/ontospace/sparql?query=",
+        sparqlUpdateEndpoint: "/ontospace/update"
+
+        // for foowiki
+        // pagesBaseURI: "http://hyperdata.it/wiki/",
     };
     return Config;
 }());

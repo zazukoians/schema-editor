@@ -426,7 +426,7 @@ var SparqlConnector = (function () {
         },
 
         getJsonForSparqlURL: function (pageURL, callback) {
-           
+
             // alert("getJsonForSparqlURL called ");
             $.ajax({
                 url: pageURL,
@@ -441,7 +441,7 @@ var SparqlConnector = (function () {
                     //   'Accept-Charset': 'UTF-8' unsafe
                 }
             }).done(function (xml) {
-                console.log("getJsonForSparqlURL called xml="+JSON.stringify(xml, false,4));
+                // console.log("getJsonForSparqlURL called xml="+JSON.stringify(xml, false,4));
                 var json = SparqlConnector.sparqlXMLtoJSON(xml);
                 // console.log("JSON = "+JSON.stringify(json));
                 callback(json);
@@ -452,17 +452,12 @@ var SparqlConnector = (function () {
         },
 
         sparqlXMLtoJSON: function (xml) {
-
             var xmlString = (new XMLSerializer()).serializeToString(xml);
-
             // workaround for wrong interpretation of charset
             xmlString = xmlString.replace(/[^\u0000-\u007F]/g, '');
             // maybe force to ISO-8859-1, also known as Latin-1 instead?
-
             var $xml = $(xmlString);
-
             var variables = $xml.find("variable");
-
             if(variables.length == 0) {
                 return false;
             }
@@ -496,8 +491,6 @@ var SparqlConnector = (function () {
                 }
                 jsonResults.push(map);
             });
-
-            //  console.log("RESULTS = "+JSON.stringify(jsonResults));
             return jsonResults;
         }
     }

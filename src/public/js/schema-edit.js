@@ -14,6 +14,7 @@ var SchemaEdit = (function () {
          * Initialises SchemaEdit UI
          */
         init: function () {
+
             $("#endpointHost").val(Config.sparqlServerHost);
             $("#endpointLink").attr("href", Config.sparqlServerHost);
             $("#updatePath").val(Config.sparqlUpdateEndpoint);
@@ -31,17 +32,26 @@ var SchemaEdit = (function () {
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.setupButtons();
 
-            SchemaEdit.setGraphFromUrl();
+            // SchemaEdit.setGraphFromUrl();
             SchemaEdit.setResourceFromUrl();
-            // var graph = parseUri(window.location.href).queryKey.graph;
-
-
         },
 
         setGraphFromUrl: function () {
             var graph = parseUri(window.location.href).queryKey.graph;
             if(graph && (graph != "")) {
                 $("#graph").val(graph);
+                console.log("setGraphFromUrl to " + graph);
+                var chosen = $("#graphChooser");
+                chosen.children().log();
+                chosen.log();
+                /*
+                .filter(function () {
+                  console.log("value = "+$(this).attr("value"));
+                    return $(this).attr("value") === graph;
+                });
+                */
+              //  console.log("chosen = " + JSON.stringify(chosen, false, 4));
+                chosen.attr("selected", "selected");
             }
         },
 
@@ -208,7 +218,7 @@ var SchemaEdit = (function () {
         populateResourcesCombobox: function (target, id) {
             var callback = function (json) {
                 // console.log("populateResourcesCombobox json = \n" + JSON.stringify(json, false, 4));
-                var chooser = SchemaEdit.makeChooser(json);
+                var chooser = SchemaEdit.makeChooser(json, "selectResource");
                 chooser.appendTo(target);
                 var combobox = chooser.combobox();
                 combobox.combobox("setInputId", id);
@@ -221,7 +231,11 @@ var SchemaEdit = (function () {
                         // can use parseUri somehow?
                         var split = window.location.href.split("?");
                         var graph = parseUri(window.location.href).queryKey.graph;
-                        window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + graph;
+                        var newLocation = split[0] + "?uri=" + encodeURI(newResource);
+                        if(graph && (graph != "")) {
+                            newLocation = newLocation + "&graph=" + graph;
+                        }
+                        window.location.href = newLocation;
                     }
                 });
                 /*
@@ -305,61 +319,43 @@ var SchemaEdit = (function () {
 
         makeGraphChooser: function () {
             var populateChooser = function (graphList) {
-                var chooser = SchemaEdit.makeChooser(graphList);
+                var chooser = SchemaEdit.makeChooser(graphList, "selectGraph");
                 $("#graphChooser").append(chooser);
                 var combobox = chooser.combobox();
 
                 combobox.combobox("setInputId", "graph");
                 combobox.combobox({
                     select: function (event, ui) {
-                        alert("the select event has fired!");
-                        var newGraph = $("#graph").val();
-                        Config.graphURI = newGraph;
-
+                        var newGraph = this.value;
+                        //  var newGraph = $("#graph").val();
+                        alert("this.value = " + this.value);
+                        SparqlConnector.setGraphURI(newGraph);
                         var split = window.location.href.split("?");
                         //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
-                        window.location.href = split[0] + "?graph=" + encodeURI(Config.graphURI);
-                        SchemaEdit.setGraphFromUrl(); // belt & braces
-                        $("html, body").animate({
+                        // TODO switch to using parseUri
+                        window.location.href = split[0] + "?graph=" + encodeURI(newGraph);
+                        // SchemaEdit.setGraphFromUrl(); // belt & braces
+
+                        $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
                             scrollTop: 0
                         }, "slow");
                     }
                 });
-
-                /* moved to select above
-                                $("#graphChooserButton").click(function () {
-                                    var newGraph = $("#graph").val();
-                                    Config.graphURI = newGraph;
-
-                                    var split = window.location.href.split("?");
-                                    //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
-                                    window.location.href = split[0] + "?graph=" + encodeURI(Config.graphURI);
-                                    SchemaEdit.setGraphFromUrl(); // belt & braces
-                                    $("html, body").animate({
-                                        scrollTop: 0
-                                    }, "slow");
-                                });
-                                */
+                SchemaEdit.setGraphFromUrl();
             };
             SparqlConnector.listGraphs(populateChooser);
         },
 
-        makeChooser: function (valueList) {
+        makeChooser: function (valueList, selectId) {
             valueList.sort(); // alphabetical by default
-            // console.log("type = " + type);
             var choices = $("<select></select>");
-
+            choices.attr("id", selectId);
             for(var i = 0; i < valueList.length; i++) {
                 var listItem = valueList[i];
-                // console.log("type : " + type);
-                //     <option value="ActionScript">ActionScript</option>
                 var option = $("<option class='choice'></option>");
                 option.attr("value", listItem);
                 option.text(listItem);
-                // var last = $(".typeChoice").last();
-                // last.after(option);
                 choices.append(option);
-                // console.log("choices =\n" + choices.html());
             }
             return choices;
         },
@@ -394,7 +390,7 @@ var SchemaEdit = (function () {
 
         makeClassesList: function () {
             var callback = function (json) {
-                console.log("JSON = " + JSON.stringify(json, false, 4));
+                //    console.log("JSON = " + JSON.stringify(json, false, 4));
                 SchemaEdit.makeListBlock(json, $("#classes"));
             }
             var classList = SparqlConnector.listClasses(callback);
