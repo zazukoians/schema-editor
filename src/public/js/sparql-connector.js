@@ -66,7 +66,7 @@ var SparqlConnector = (function () {
         },
 
         getUpdateEndpoint: function () {
-            return Config.sparqlUpdateEndpoint
+            return Config.getSparqlUpdateEndpoint();
         },
 
         setEndpoint: function (graphURI) {
@@ -327,7 +327,7 @@ var SparqlConnector = (function () {
             // alert("postData called");
             $.ajax({
                 type: "POST",
-                url: Config.getSparqlServerHost() + Config.sparqlUpdateEndpoint,
+                url: Config.getSparqlServerHost() + Config.getSparqlUpdateEndpoint(),
                 data: ({
                     update: data
                 })
@@ -365,7 +365,7 @@ var SparqlConnector = (function () {
         },
 
         updateUriTriple: function (subject, predicate, object, language, callback) {
-            if(!language || language == "") { // sensible default
+            if(!language || language == "") { // sensible default?
                 language = "en";
             }
             var updateTripleSparql = sparqlTemplater(

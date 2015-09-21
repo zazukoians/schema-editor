@@ -47,7 +47,9 @@ button, .button {
   padding: 10px;
 }
 
+
 /* , .ui-widget */
+
 label, #propertyLabel {
   display: inline-block;
   width: 20%;
@@ -62,19 +64,20 @@ label, #propertyLabel {
 #newVocabBlock {
   display: none;
 }
+
 #newVocabBlock input {
   display: inline-block;
- float: left;
- width:50%;
+  float: left;
+  width: 50%;
 }
 
-#newVocabBlock label{
-    display: inline-block;
-    float: left;
-    clear: left;
-    width: 250px;
-    padding: 10px;
-    text-align: right;
+#newVocabBlock label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 250px;
+  padding: 10px;
+  text-align: right;
 }
 
 #graphName {
@@ -82,7 +85,7 @@ label, #propertyLabel {
 }
 
 input, textarea, select {
-/*  width: 70%; */
+  /*  width: 70%; */
   box-sizing: border-box;
   -moz-box-sizing: border-box
 }
@@ -111,7 +114,9 @@ input, textarea, select {
   padding: 10px;
 }
 
+
 /* TODO tweak */
+
 .propertyItem .literalObject {
   height: auto;
   background-color: white;
@@ -147,6 +152,10 @@ input, textarea, select {
     background-color: lightgray;
     border-radius: 5px;
     */
+}
+
+.endpoints input {
+  width: 50%;
 }
 
 

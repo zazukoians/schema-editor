@@ -12,8 +12,8 @@ var SchemaEdit = (function () {
          * Initialises SchemaEdit UI
          */
         init: function () {
-          var host = Config.getSparqlServerHost();
-          console.log("host = "+host);
+            var host = Config.getSparqlServerHost();
+            console.log("host = " + host);
 
             $("#endpointHost").val(Config.getSparqlServerHost());
             $("#endpointLink").attr("href", Config.getSparqlServerHost());
@@ -31,9 +31,7 @@ var SchemaEdit = (function () {
 
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.setupButtons();
-
-            // SchemaEdit.setGraphFromUrl();
-            // SchemaEdit.setResourceFromUrl();
+            SchemaEdit.makeEndpointButton();
         },
 
         /* builds graph chooser combobox/autocomplete
@@ -585,6 +583,14 @@ var SchemaEdit = (function () {
             return triple;
         },
 
+        makeEndpointButton: function () {
+            $("#endpointButton").click(function () {
+              alert("#endpointButton clicked");
+              Config.setSparqlServerHost("endpointHost", $("#endpointHost").val());
+              Config.setSparqlServerHost("updatePath", $("#updatePath").val());
+              Config.setSparqlServerHost("queryPath", $("#queryPath").val());
+            });
+        },
         /*
         <div id="upload">
           <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
@@ -620,7 +626,7 @@ var SchemaEdit = (function () {
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());
                 $.ajax({
-                    url: Config.sparqlUpdateEndpoint,
+                    url: Config.getSparqlUpdateEndpoint(),
                     type: 'POST',
                     data: ({
                         update: data

@@ -124,7 +124,7 @@
         <span id="graphChooser"></span>
       </div>
     </div>
-    
+
     <br/>
     <div id="currentResourceBlock">
       <strong>
@@ -255,17 +255,12 @@
       <hr/>
 
       <div class="endpoints">
-        <a href="http://sandbox.fusepool.info:8181/sparql">SPARQL Server</a>
-        <!-- TODO use Config.sparqlServerHost -->
-        <div id="serverUrlBlock">
-          <label for="serverUrl">Endpoint Host</label>
-          <input id="serverUrl" type='text' value=''></input>
-        </div>
-        <br/>
         <strong>Endpoint Settings</strong>
-        <em>(in config.js)</em>
         <br/>
-
+        <div>
+          <label for="endpointHost"><a id="endpointLink">Endpoint Host</a></label>
+          <input id="endpointHost" type='text' value=''></input>
+        </div>
         <div>
           <label for="queryPath">Query Path</label>
           <input id="queryPath" type="text" value=""></input>
@@ -276,8 +271,8 @@
         </div>
         <button id="endpointButton">Set New Values</button>
       </div>
-    </div>
 
+    </div>
     <div id="right">
       <!--*** Right Panel *** -->
       <h2>History</h2>

@@ -19,6 +19,14 @@ function refresh() {
     refreshResourceInput();
 }
 
+function setLocalStorageObject(key, object){
+  localStorage.setItem(key, JSON.stringify(object) );
+}
+
+function getLocalStorageObject(key){
+  JSON.parse(localStorage.getItem(key));
+}
+
 /* was to be regex-based way of tweaking turtle-sparql to valid sparql */
 function cleanSPARQL(sparql) {
     // BASE    <http://example.org/book/>

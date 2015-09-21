@@ -10,11 +10,16 @@ var Config = (function () {
     "use strict";
 
     //http://sandbox.fusepool.info:8181/sparql/select
-    // http://localhost:3333
+    // http://storedhost:3333
     // ttp://sandbox.fusepool.info:8181/sparql/update
     // This is the public interface of the Module.
 
     var Config = {
+        current: { // effectively defaults
+            sparqlServerHost: "http://zazukoians.org:3030",
+            sparqlQueryEndpoint: "/ontospace/sparql?query=",
+            sparqlUpdateEndpoint: "/ontospace/update"
+        },
         // publicFunction can be called externally
 
         //  graphURI: "http://data.admin.ch/def/hgv/",
@@ -27,34 +32,61 @@ var Config = (function () {
         */
 
         /*
-                sparqlServerHost: "http://localhost:3333",
+                sparqlServerHost: "http://storedhost:3333",
                 sparqlQueryEndpoint: "/schema-edit/sparql?query=",
                 sparqlUpdateEndpoint: "/schema-edit/update"
         */
 
-      //  sparqlServerHost: "http://zazukoians.org:3030",
-      //  sparqlQueryEndpoint: "/ontospace/sparql?query=",
-        sparqlUpdateEndpoint: "/ontospace/update",
+        //  sparqlServerHost: "http://zazukoians.org:3030",
+        //  sparqlQueryEndpoint: "/ontospace/sparql?query=",
+        //  sparqlUpdateEndpoint: "/ontospace/update",
 
-        getSparqlServerHost: function() {
-          return Config.default.sparqlServerHost;
+        getSparqlServerHost: function () {
+            var stored = Config.getFromLocalStorage("sparqlServerHost");
+            return stored ? stored : Config.current.sparqlServerHost;
         },
 
-        getSparqlQueryEndpoint: function() {
-          return Config.default.sparqlQueryEndpoint;
+        getSparqlQueryEndpoint: function () {
+            var stored = Config.getFromLocalStorage("sparqlQueryEndpoint");
+            return stored ? stored : Config.current.sparqlQueryEndpoint;
         },
 
-        getSparqlUpdateEndpoint: function() {
-          return Config.default.sparqlUpdateEndpoint;
+        getSparqlUpdateEndpoint: function () {
+            var stored = Config.getFromLocalStorage("sparqlUpdateEndpoint");
+            return stored ? stored : Config.current.sparqlUpdateEndpoint;
         },
 
-        default: {
-          sparqlServerHost: "http://zazukoians.org:3030",
-          sparqlQueryEndpoint: "/ontospace/sparql?query=",
-          sparqlUpdateEndpoint: "/ontospace/update"
+        /* common wrapper */
+        getFromLocalStorage: function (setting) {
+            if(('storedStorage' in window) && window['storedStorage'] !== null) {
+                return storedStorage.getItem("schema-edit.config." + setting);
+            }
+            return false;
+        },
+
+        setSparqlServerHost: function (sparqlServerHost) {
+          Config.current.sparqlServerHost = sparqlServerHost;
+          return Config.setToLocalStorage("sparqlServerHost", sparqlServerHost);
+        },
+
+        setSparqlQueryEndpoint: function (sparqlQueryEndpoint) {
+          Config.current.sparqlQueryEndpoint = sparqlQueryEndpoint;
+          return Config.setToLocalStorage("sparqlQueryEndpoint", sparqlQueryEndpoint);
+        },
+
+        setSparqlUpdateEndpoint: function (sparqlQueryEndpoint) {
+          Config.current.sparqlQueryEndpoint = sparqlQueryEndpoint;
+          return Config.setToLocalStorage("sparqlQueryEndpoint", sparqlQueryEndpoint);
+        },
+
+        /* common wrapper */
+        setToLocalStorage: function (setting, value) {
+            if(('storedStorage' in window) && window['storedStorage'] !== null) {
+                storedStorage.setItem("schema-edit.config." + setting, value);
+                return true;
+            }
+            return false;
         }
-        // for foowiki
-        // pagesBaseURI: "http://hyperdata.it/wiki/",
     };
     return Config;
 }());
