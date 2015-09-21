@@ -7,7 +7,7 @@
 var SchemaEdit = (function () {
     "use strict";
     /**
-     * This is the public interface of the SchemaEdit module.
+     * The public interface of the SchemaEdit module.
      */
     var SchemaEdit = {
         /**
@@ -24,9 +24,9 @@ var SchemaEdit = (function () {
             SchemaEdit.addClassHandler();
             SchemaEdit.addPropertyHandler();
 
-            SchemaEdit.populatePropertiesCombobox();
-            SchemaEdit.populateResourcesCombobox($("#resourceChooser"), "resource");
-            SchemaEdit.populateResourcesCombobox($("#propertyUriValue"), "uriValue");
+            SchemaEdit.makePropertyChooser();
+            SchemaEdit.makeResourceChooser($("#resourceChooser"), "resource");
+            SchemaEdit.makeResourceChooser($("#propertyUriValue"), "uriValue");
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
 
             SchemaEdit.makeUploadGraphButton();
@@ -72,7 +72,6 @@ var SchemaEdit = (function () {
                 var label = $("#classLabel").val();
                 var subClassOf = $("#subClassOf").val();
                 var comment = $("#classComment").val();
-                //  alert("name = "+name+" label = "+label);
                 var callback = function (msg) {
                     alert(msg);
                     window.location.reload();
@@ -91,7 +90,6 @@ var SchemaEdit = (function () {
                 var range = $("#range").val();
                 var subPropertyOf = $("#subPropertyOf").val();
                 var comment = $("#classComment").val();
-                //      alert("name = "+name+" label = "+label);
                 var callback = function (msg) {
                     alert(msg);
                     window.location.reload();
@@ -204,7 +202,7 @@ var SchemaEdit = (function () {
         /**
          * Loads list of properties from SPARQL store into combo box(es)
          */
-        populateResourcesCombobox: function (target, id) {
+        makeResourceChooser: function (target, id) {
             var callback = function (json) {
                 // console.log("populateResourcesCombobox json = \n" + JSON.stringify(json, false, 4));
                 var chooser = SchemaEdit.makeChooser(json, "selectResource");
@@ -213,7 +211,6 @@ var SchemaEdit = (function () {
                 combobox.combobox("setInputId", id);
                 combobox.combobox({
                     select: function (event, ui) {
-                        alert("the select event has fired!");
                         var newResource = $("#resource").val();
 
                         // relocate to new page
@@ -228,23 +225,6 @@ var SchemaEdit = (function () {
                     }
                 });
                 SchemaEdit.setResourceFromUrl();
-                /*
-                var graph = parseUri(window.location.href).queryKey.graph;
-                $("#graph").val(graph);
-                var uri = parseUri(window.location.href).queryKey.uri;
-                $("#resource").val(uri);
-*/
-                /* moved to select above
-                                $("#chooseResourceButton").click(function () {
-                                    var newResource = $("#resource").val();
-
-                                    // relocate to new page
-                                    // can use parseUri somehow?
-                                    var split = window.location.href.split("?");
-                                    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + graph;
-                                });
-
-                */
             };
             SparqlConnector.listResources(callback);
         },
@@ -252,7 +232,7 @@ var SchemaEdit = (function () {
         /**
          * Loads list of properties from SPARQL store into combo box(es)
          */
-        populatePropertiesCombobox: function () {
+        makePropertyChooser: function () {
             var callback = function (json) {
                 // SchemaEdit.makeListBlock(json, $("#properties"));
             }
@@ -317,8 +297,6 @@ var SchemaEdit = (function () {
                 combobox.combobox({
                     select: function (event, ui) {
                         var newGraph = this.value;
-                        //  var newGraph = $("#graph").val();
-                        alert("this.value = " + this.value);
                         SparqlConnector.setGraphURI(newGraph);
                         var split = window.location.href.split("?");
                         //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
@@ -570,9 +548,6 @@ var SchemaEdit = (function () {
 
                                 var callback = function (msg) {
                                     SparqlConnector.setGraphURI(graphURI);
-                                    alert("graphURI = " + graphURI);
-
-
                                 }
                                 var graphURI = $("#graphName").val();
                                 SparqlConnector.uploadTurtle(graphURI, turtle, callback);
