@@ -19,7 +19,7 @@ button, .button {
   width: 25em;
 }
 
-#currentResource {
+#currentResource, #currentGraph {
   padding: 10px;
 }
 

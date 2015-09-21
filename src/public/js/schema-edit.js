@@ -52,12 +52,10 @@ var SchemaEdit = (function () {
                         var newGraph = this.value;
                         SparqlConnector.setGraphURI(newGraph);
                         var split = window.location.href.split("?");
-                        //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
-                        // TODO switch to using parseUri
                         window.location.href = split[0] + "?graph=" + encodeURI(newGraph);
-                        // SchemaEdit.setGraphFromUrl(); // belt & braces
 
-                        $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
+                        // the above can sometimes leave you far down the page, so scroll up
+                        $("html, body").animate({
                             scrollTop: 0
                         }, "slow");
                     }
@@ -75,16 +73,15 @@ var SchemaEdit = (function () {
             }
         },
 
-           /**
-            * Builds Resource chooser combobox/autocomplete widget
-            * queries stores for values
-            * in header in current UI
-            * @param {string} target the element to which the <select> will be appended
-            * @param {string} id the id attribute for the <input> field
-            */
+        /**
+         * Builds Resource chooser combobox/autocomplete widget
+         * queries stores for values
+         * in header in current UI
+         * @param {string} target the element to which the <select> will be appended
+         * @param {string} id the id attribute for the <input> field
+         */
         makeResourceChooser: function (target, id) {
             var callback = function (json) {
-                // console.log("populateResourcesCombobox json = \n" + JSON.stringify(json, false, 4));
                 var chooser = SchemaEdit.makeChooser(json, "selectResource");
                 chooser.appendTo(target);
                 var combobox = chooser.combobox();
@@ -93,8 +90,7 @@ var SchemaEdit = (function () {
                     select: function (event, ui) {
                         var newResource = $("#resource").val();
 
-                        // relocate to new page
-                        // can use parseUri somehow?
+                        // relocate with new URL query params
                         var split = window.location.href.split("?");
                         var graph = parseUri(window.location.href).queryKey.graph;
                         var newLocation = split[0] + "?uri=" + encodeURI(newResource);
@@ -102,6 +98,9 @@ var SchemaEdit = (function () {
                             newLocation = newLocation + "&graph=" + graph;
                         }
                         window.location.href = newLocation;
+                        $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
+                            scrollTop: 0
+                        }, "slow");
                     }
                 });
                 SchemaEdit.setResourceFromUrl();
@@ -135,6 +134,101 @@ var SchemaEdit = (function () {
                 choices.append(option);
             }
             return choices;
+        },
+
+        /* fill in main block with details of current resource */
+        populateWithResource: function (uri) { //  callback??
+            SchemaEdit.makeAddPropertyValue(uri);
+
+            var map = {
+                graphURI: SparqlConnector.getGraphURI(),
+                uri: uri
+            };
+
+            var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
+
+            var makePropertyBlocks = function (json) {
+                // console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
+                for(var i = 0; i < json.length; i++) {
+                    var current = json[i];
+                    var propertyItem = $("<div class='propertyItem'></div>");
+                    var property = $("<a/>");
+                    var p = current["p"];
+                    property.attr("href", p);
+
+                    var pText = p;
+                    if(SparqlConnector.getPrefixedUri(p) != null) {
+                        pText = SparqlConnector.getPrefixedUri(p);
+                    }
+                    property.text(pText);
+
+                    var propertyWrapper = $("<div class='predicate'></div>");
+                    propertyWrapper.append(property);
+                    propertyItem.append(propertyWrapper);
+
+                    var deleteButton = SchemaEdit.makeDeleteButton();
+                    var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
+                    triple += "<" + p + "> "; // predicate/property
+                    // triple += ""
+                    //  property.after(deleteButton);
+                    var value = $("<div>what default?</div>"); // needed for bpropertyItems?
+                    var o = current["o"];
+                    if(current.type == "literal") { // as returned from SPARQL
+                        var language = current["language"];
+                        // console.log("language = " + language);
+                        var value = $("<div class='literalObject' contenteditable='true' title='click to edit'>" + o + "</div>");
+
+                        // valueWrapper.append(value);
+                        // value.text(o);
+                        if(!language || language == "") {
+                            triple += "\"\"\"" + o + "\"\"\" ."; // object
+                        } else {
+                            triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
+                        }
+
+                        if(!language || language == "") { // sensible default
+                            language = "en";
+                        } // TODO best approach? see above
+                    }
+                    if(current.type == "uri") { // as returned from SPARQL
+                        var uriText = o;
+                        if(SparqlConnector.getPrefixedUri(o)) {
+                            uriText = SparqlConnector.getPrefixedUri(o);
+                        }
+
+                        value = $("<a />");
+                        value.attr("href", o);
+                        var value = $("<div class='uriObject' title='click to view target'><a href=''" + o + "'>" + uriText + "</a></div>");
+
+                        triple += " <" + o + "> ."; // object
+
+                        /*
+                         * functionality is already available via Add Property/ Delete
+                         * leaving here for now during evaluation
+                         */
+                        //  propertyItem.append(SchemaEdit.makeChangePredicateButton(triple));
+
+                        //    value.text(uriText);
+
+                    }
+                    deleteButton.attr("data-triple", triple); // stick resource data in attribute
+
+                    var propertyBlock = $("<p class='propertyBlock'/>");
+                    propertyBlock.append("<strong>Property</strong>").append(propertyItem);
+                    propertyItem.append(value);
+                    if(current.type == "literal") { // TODO refactor
+                        propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
+                        propertyItem.append($("<br/>"));
+                        // console.log("value = \n" + value.html());
+                        propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
+                        //  property.after(deleteButton);
+                    }
+                    propertyItem.append(deleteButton);
+                    propertyBlock.append("<hr/>");
+                    $("#editor").append(propertyBlock);
+                }
+            }
+            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
 
         /* creates list of classes in current graph
@@ -242,104 +336,6 @@ var SchemaEdit = (function () {
             SparqlConnector.setCurrentResource(uri);
         },
 
-        populateWithResource: function (uri) { //  callback??
-            SchemaEdit.makeAddPropertyValue(uri);
-
-            var map = {
-                graphURI: SparqlConnector.getGraphURI(),
-                uri: uri
-            };
-
-            var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
-
-            var makePropertyBlocks = function (json) {
-                // console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
-                for(var i = 0; i < json.length; i++) {
-                    var current = json[i];
-                    var propertyItem = $("<div class='propertyItem'></div>");
-                    var property = $("<a/>");
-                    var p = current["p"];
-                    property.attr("href", p);
-
-                    var pText = p;
-                    if(SparqlConnector.getPrefixedUri(p) != null) {
-                        pText = SparqlConnector.getPrefixedUri(p);
-                    }
-                    property.text(pText);
-
-                    var propertyWrapper = $("<div class='predicate'></div>");
-                    propertyWrapper.append(property);
-                    propertyItem.append(propertyWrapper);
-
-                    var deleteButton = SchemaEdit.makeDeleteButton();
-                    var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
-                    triple += "<" + p + "> "; // predicate/property
-                    // triple += ""
-                    //  property.after(deleteButton);
-                    var value = $("<div>what default?</div>"); // needed for bpropertyItems?
-                    var o = current["o"];
-                    if(current.type == "literal") { // as returned from SPARQL
-                        var language = current["language"];
-                        // console.log("language = " + language);
-                        var value = $("<div class='literalObject' contenteditable='true' title='click to edit'>" + o + "</div>");
-
-                        // valueWrapper.append(value);
-                        // value.text(o);
-                        if(!language || language == "") {
-                            triple += "\"\"\"" + o + "\"\"\" ."; // object
-                        } else {
-                            triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
-                        }
-
-                        if(!language || language == "") { // sensible default
-                            language = "en";
-                        } // TODO best approach? see above
-                    }
-                    if(current.type == "uri") { // as returned from SPARQL
-                        var uriText = o;
-                        if(SparqlConnector.getPrefixedUri(o)) {
-                            uriText = SparqlConnector.getPrefixedUri(o);
-                        }
-
-                        value = $("<a />");
-                        value.attr("href", o);
-                        var value = $("<div class='uriObject' title='click to view target'><a href=''" + o + "'>" + uriText + "</a></div>");
-
-                        triple += " <" + o + "> ."; // object
-
-                        /*
-                         * functionality is already available via Add Property/ Delete
-                         * leaving here for now during evaluation
-                         */
-                        //  propertyItem.append(SchemaEdit.makeChangePredicateButton(triple));
-
-                        //    value.text(uriText);
-
-                    }
-                    deleteButton.attr("data-triple", triple); // stick resource data in attribute
-
-                    var propertyBlock = $("<p class='propertyBlock'/>");
-                    propertyBlock.append("<strong>Property</strong>").append(propertyItem);
-                    propertyItem.append(value);
-                    if(current.type == "literal") { // TODO refactor
-                        propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
-                        propertyItem.append($("<br/>"));
-                        // console.log("value = \n" + value.html());
-                        propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
-                        //  property.after(deleteButton);
-                    }
-                    propertyItem.append(deleteButton);
-                    propertyBlock.append("<hr/>");
-                    $("#editor").append(propertyBlock);
-                }
-                //  SchemaEdit.setupButtons();
-            }
-            console.log("getResourceUrl =" + getResourceUrl);
-            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
-        },
-
-
-
         /**
          * Loads list of properties from SPARQL store into combo box(es)
          */
@@ -398,11 +394,6 @@ var SchemaEdit = (function () {
             });
         },
 
-
-
-
-        // SchemaEdit.setResourceFromUrl();
-
         makeTypedChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
             // console.log("type = " + type);
             var choices = $("<select></select>");
@@ -431,8 +422,6 @@ var SchemaEdit = (function () {
             return choices;
         },
 
-
-
         makeLanguageButton: function (subject, predicate, object, language) {
             var languageButton = $("<button class='language'></button>");
             languageButton.text(language);
@@ -446,13 +435,9 @@ var SchemaEdit = (function () {
                     var language;
                     $('.language-radio').each(function () {
                         if(this.type == 'radio' && this.checked) {
-                            //    console.log("here " + this.name + " = " + $(this).val() + " = " + $(this).attr("id") +
-                            //        " = " +
-                            //      $(this).text());
                             language = $(this).val();
                         }
                     });
-                    // console.log("lang = "+language);
                     $(this).dialog("close");
                     SparqlConnector.updateTriple(subject, predicate, object, language, callback);
                     location.reload(true);

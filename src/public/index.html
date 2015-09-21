@@ -40,7 +40,7 @@
   <!-- date formatting -->
   <script src="js/lib/moment.js"></script>
 
-<!-- for converting turtle to ntriples for upload via sparql update -->
+  <!-- for converting turtle to ntriples for upload via sparql update -->
   <!-- script src="js/lib/rdf-ext.js.map"></script -->
   <script src="js/lib/n3-browser.js"></script>
 
@@ -67,7 +67,7 @@
 
       var graph = queryString["graph"];
 
-
+      // TODO use parseUri
       var uri = queryString["uri"];
       if ((!uri || uri == "") && (!graph || graph == "")) {
         // alert("undefined");
@@ -79,7 +79,7 @@
       $("#currentResource").text(uri);
       $("#resource").text(uri);
 
-      SchemaEdit.setCurrentResource(uri);
+      // SchemaEdit.setCurrentResource(uri);
       SchemaEdit.makeClassesList();
       SchemaEdit.makePropertiesList();
 
@@ -113,36 +113,33 @@
       <input id="vocabNamespace" type="text" name="vocabNamespace" title="namespace of vocab" />
       <label for="vocabPrefix">Preferred Prefix</label>
       <input id="vocabPrefix" type="text" name="vocabPrefix" title="vocab preferred prefix" />
-      <!-- label for="vocabGraph">New Graph</label>
-      <input id="vocabGraph" type="text" name="vocabGraph" title="graph in which to store new vocab" / -->
-
       <button id="newVocabButton">Create Vocab</button>
     </div>
 
     <div id="currentGraphBlock">
-      <strong>Current Graph :</strong>
+      <strong>
+        Current Graph :
+      </strong>
       <div id="currentGraph">
         <span id="graphChooser"></span>
-        <!-- button id="graphChooserButton">Set</button -->
       </div>
     </div>
-
+    
+    <br/>
     <div id="currentResourceBlock">
       <strong>
         Current Resource :
-        <!-- span id="currentResource"></span -->
       </strong>
       <div id="currentR">
         <span id="resourceChooser"></span>
-        <!-- button id="chooseResourceButton">Set</button -->
       </div>
     </div>
   </div>
 
   <div id="wrapper">
 
+    <!--*** Left Panel *** -->
     <div id="left">
-      <!--*** Left Panel *** -->
       <div class="list-block">
         <h2 class="header">Classes</h2>
         <div id="classes" class="small"></div>
@@ -154,8 +151,8 @@
       </div>
     </div>
 
+    <!--*** Center Panel *** -->
     <div id="center">
-      <!--*** Center Panel *** -->
 
       <div id="editor"></div>
 
@@ -241,7 +238,8 @@
         <br/>
         <br/>
         <label for='graphName'>Graph</label>
-        <input name="graph" id="graphName" size="20" value="https://example.org/" /> <!-- http://schema.org/terms/ -->
+        <input name="graph" id="graphName" size="20" value="https://example.org/" />
+        <!-- http://schema.org/terms/ -->
         <br />
         <!-- input type="submit" value="Upload" class='button' / -->
         <!-- button id="uploadGraph">Upload</button -->
