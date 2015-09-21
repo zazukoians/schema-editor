@@ -23,6 +23,10 @@ var SparqlConnector = (function () {
 
         setCurrentResource: function (uri) {
             currentResource = uri;
+            Config.currentResource = uri;
+            var split = window.location.href.split("?");
+            window.location.href = split[0] + "?uri=" + uri;
+            return uri;
         },
 
         getCurrentResource: function () {

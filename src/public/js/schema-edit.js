@@ -1,5 +1,3 @@
-// TODO normalize naming SchemaEdit -> SchemaEditor
-// TODO use console.log()s for tests, then remove
 /**
  * The SchemaEdit module
  * Provides UI for SchemaEditor
@@ -88,8 +86,8 @@ var SchemaEdit = (function () {
                 combobox.combobox("setInputId", id);
                 combobox.combobox({
                     select: function (event, ui) {
-                        var newResource = $("#resource").val();
-
+                        //    var newResource = $("#resource").val();
+                        var newResource = this.value;
                         // relocate with new URL query params
                         var split = window.location.href.split("?");
                         var graph = parseUri(window.location.href).queryKey.graph;
@@ -98,6 +96,9 @@ var SchemaEdit = (function () {
                             newLocation = newLocation + "&graph=" + graph;
                         }
                         window.location.href = newLocation;
+
+                        SparqlConnector.setCurrentResource(newResource);
+
                         $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
                             scrollTop: 0
                         }, "slow");
@@ -276,12 +277,9 @@ var SchemaEdit = (function () {
                 var split = window.location.href.split("?");
                 var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(SparqlConnector.getGraphURI());
                 var aElement = $("<a/>").attr("href", url);
-                //  if(name.length > 5) {
-                //   name = name.substring(0, 5); // TODO remove
                 aElement.text(name);
                 itemElement.append(aElement);
                 listElement.append(itemElement);
-                //    }
             }
         },
 
@@ -373,7 +371,7 @@ var SchemaEdit = (function () {
             });
         },
 
-        // NOT USED
+        // NOT USED?
         populateClassesCombobox: function () {
             var callback = function (json) {
                 // SchemaEdit.makeListBlock(json, $("#properties"));
@@ -460,7 +458,6 @@ var SchemaEdit = (function () {
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {
-            //  console.log("makeUpdateButton object = " + object);
             var updateButton = $("<button>Update</button>");
             updateButton.attr("title", "update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
