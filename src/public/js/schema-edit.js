@@ -36,12 +36,77 @@ var SchemaEdit = (function () {
             // SchemaEdit.setResourceFromUrl();
         },
 
+        /* builds graph chooser combobox/autocomplete
+         * queries stores for values
+         * adds to #graphChooser element
+         * in header in current UI */
+        makeGraphChooser: function () {
+            var populateChooser = function (graphList) {
+                var chooser = SchemaEdit.makeChooser(graphList, "selectGraph");
+                $("#graphChooser").append(chooser);
+                var combobox = chooser.combobox();
+
+                combobox.combobox("setInputId", "graph");
+                combobox.combobox({
+                    select: function (event, ui) {
+                        var newGraph = this.value;
+                        SparqlConnector.setGraphURI(newGraph);
+                        var split = window.location.href.split("?");
+                        //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
+                        // TODO switch to using parseUri
+                        window.location.href = split[0] + "?graph=" + encodeURI(newGraph);
+                        // SchemaEdit.setGraphFromUrl(); // belt & braces
+
+                        $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
+                            scrollTop: 0
+                        }, "slow");
+                    }
+                });
+                SchemaEdit.setGraphFromUrl();
+            };
+            SparqlConnector.listGraphs(populateChooser);
+        },
+
         setGraphFromUrl: function () {
             var graph = parseUri(window.location.href).queryKey.graph;
             if(graph && (graph != "")) {
                 $("#graph").val(graph);
-              //  console.log("setGraphFromUrl to " + graph);
+                //  console.log("setGraphFromUrl to " + graph);
             }
+        },
+
+           /**
+            * Builds Resource chooser combobox/autocomplete widget
+            * queries stores for values
+            * in header in current UI
+            * @param {string} target the element to which the <select> will be appended
+            * @param {string} id the id attribute for the <input> field
+            */
+        makeResourceChooser: function (target, id) {
+            var callback = function (json) {
+                // console.log("populateResourcesCombobox json = \n" + JSON.stringify(json, false, 4));
+                var chooser = SchemaEdit.makeChooser(json, "selectResource");
+                chooser.appendTo(target);
+                var combobox = chooser.combobox();
+                combobox.combobox("setInputId", id);
+                combobox.combobox({
+                    select: function (event, ui) {
+                        var newResource = $("#resource").val();
+
+                        // relocate to new page
+                        // can use parseUri somehow?
+                        var split = window.location.href.split("?");
+                        var graph = parseUri(window.location.href).queryKey.graph;
+                        var newLocation = split[0] + "?uri=" + encodeURI(newResource);
+                        if(graph && (graph != "")) {
+                            newLocation = newLocation + "&graph=" + graph;
+                        }
+                        window.location.href = newLocation;
+                    }
+                });
+                SchemaEdit.setResourceFromUrl();
+            };
+            SparqlConnector.listResources(callback);
         },
 
         setResourceFromUrl: function () {
@@ -51,6 +116,80 @@ var SchemaEdit = (function () {
             }
         },
 
+        /**
+         * Shared function for combobox/autocomplete creation
+         * creates and populates a <select> block from an array of values
+         * @param {Array} valueList the values to be loaded into combobox/autocomplete
+         * @param {string} selectId the id attribute for the <select> block
+         * @return {jQuery object} a populated <select> block
+         */
+        makeChooser: function (valueList, selectId) {
+            valueList.sort(); // alphabetical by default
+            var choices = $("<select></select>");
+            choices.attr("id", selectId);
+            for(var i = 0; i < valueList.length; i++) {
+                var listItem = valueList[i];
+                var option = $("<option class='choice'></option>");
+                option.attr("value", listItem);
+                option.text(listItem);
+                choices.append(option);
+            }
+            return choices;
+        },
+
+        /* creates list of classes in current graph
+         * queries stores for values
+           in left column in current UI */
+        makeClassesList: function () {
+            var callback = function (json) {
+                //    console.log("JSON = " + JSON.stringify(json, false, 4));
+                SchemaEdit.makeListBlock(json, $("#classes"));
+            }
+            var classList = SparqlConnector.listClasses(callback);
+        },
+
+
+        /* creates list of properties in current graph
+         * queries stores for values
+           in left column in current UI */
+        makePropertiesList: function () {
+            var callback = function (json) {
+                SchemaEdit.makeListBlock(json, $("#properties"));
+            }
+            var propertiesList = SparqlConnector.listProperties(callback);
+        },
+
+        /**
+         * Comment template. TODO fill me in
+         * @param {string} foo This is a param with a description too long to fit in
+         *     one line.
+         * @return {number} This returns something that has a description too long to
+         *     fit in one line.
+         */
+        makeListBlock: function (json, target) {
+            // nest the list-block inside a <div> container
+            var listContainer = $("<div class='list-container'></div>");
+            var listElement = $("<ul class='list-block'/>");
+
+            listContainer.append(listElement);
+            target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
+
+            for(var i = 0; i < json.length; i++) {
+                var uri = json[i]["uri"];
+                var split = uri.split("/");
+                var name = split[split.length - 1];
+                var itemElement = $("<li></li>");
+                var split = window.location.href.split("?");
+                var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(SparqlConnector.getGraphURI());
+                var aElement = $("<a/>").attr("href", url);
+                //  if(name.length > 5) {
+                //   name = name.substring(0, 5); // TODO remove
+                aElement.text(name);
+                itemElement.append(aElement);
+                listElement.append(itemElement);
+                //    }
+            }
+        },
 
         makeNewVocabBlock: function () {
             $("#newVocabBlock").show();
@@ -199,35 +338,7 @@ var SchemaEdit = (function () {
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
 
-        /**
-         * Loads list of properties from SPARQL store into combo box(es)
-         */
-        makeResourceChooser: function (target, id) {
-            var callback = function (json) {
-                // console.log("populateResourcesCombobox json = \n" + JSON.stringify(json, false, 4));
-                var chooser = SchemaEdit.makeChooser(json, "selectResource");
-                chooser.appendTo(target);
-                var combobox = chooser.combobox();
-                combobox.combobox("setInputId", id);
-                combobox.combobox({
-                    select: function (event, ui) {
-                        var newResource = $("#resource").val();
 
-                        // relocate to new page
-                        // can use parseUri somehow?
-                        var split = window.location.href.split("?");
-                        var graph = parseUri(window.location.href).queryKey.graph;
-                        var newLocation = split[0] + "?uri=" + encodeURI(newResource);
-                        if(graph && (graph != "")) {
-                            newLocation = newLocation + "&graph=" + graph;
-                        }
-                        window.location.href = newLocation;
-                    }
-                });
-                SchemaEdit.setResourceFromUrl();
-            };
-            SparqlConnector.listResources(callback);
-        },
 
         /**
          * Loads list of properties from SPARQL store into combo box(es)
@@ -287,46 +398,8 @@ var SchemaEdit = (function () {
             });
         },
 
-        makeGraphChooser: function () {
-            var populateChooser = function (graphList) {
-                var chooser = SchemaEdit.makeChooser(graphList, "selectGraph");
-                $("#graphChooser").append(chooser);
-                var combobox = chooser.combobox();
 
-                combobox.combobox("setInputId", "graph");
-                combobox.combobox({
-                    select: function (event, ui) {
-                        var newGraph = this.value;
-                        SparqlConnector.setGraphURI(newGraph);
-                        var split = window.location.href.split("?");
-                        //    window.location.href = split[0] + "?uri=" + encodeURI(newResource) + "&graph=" + encodeURI(Config.graphURI);
-                        // TODO switch to using parseUri
-                        window.location.href = split[0] + "?graph=" + encodeURI(newGraph);
-                        // SchemaEdit.setGraphFromUrl(); // belt & braces
 
-                        $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
-                            scrollTop: 0
-                        }, "slow");
-                    }
-                });
-                SchemaEdit.setGraphFromUrl();
-            };
-            SparqlConnector.listGraphs(populateChooser);
-        },
-
-        makeChooser: function (valueList, selectId) {
-            valueList.sort(); // alphabetical by default
-            var choices = $("<select></select>");
-            choices.attr("id", selectId);
-            for(var i = 0; i < valueList.length; i++) {
-                var listItem = valueList[i];
-                var option = $("<option class='choice'></option>");
-                option.attr("value", listItem);
-                option.text(listItem);
-                choices.append(option);
-            }
-            return choices;
-        },
 
         // SchemaEdit.setResourceFromUrl();
 
@@ -358,52 +431,7 @@ var SchemaEdit = (function () {
             return choices;
         },
 
-        makeClassesList: function () {
-            var callback = function (json) {
-                //    console.log("JSON = " + JSON.stringify(json, false, 4));
-                SchemaEdit.makeListBlock(json, $("#classes"));
-            }
-            var classList = SparqlConnector.listClasses(callback);
-        },
 
-        /**
-         * Comment template. TODO fill me in
-         * @param {string} foo This is a param with a description too long to fit in
-         *     one line.
-         * @return {number} This returns something that has a description too long to
-         *     fit in one line.
-         */
-        makePropertiesList: function () {
-            var callback = function (json) {
-                SchemaEdit.makeListBlock(json, $("#properties"));
-            }
-            var propertiesList = SparqlConnector.listProperties(callback); // TODO refactor, as used above
-        },
-
-        makeListBlock: function (json, target) {
-            // nest the list-block inside a <div> container
-            var listContainer = $("<div class='list-container'></div>");
-            var listElement = $("<ul class='list-block'/>");
-
-            listContainer.append(listElement);
-            target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
-
-            for(var i = 0; i < json.length; i++) {
-                var uri = json[i]["uri"];
-                var split = uri.split("/");
-                var name = split[split.length - 1];
-                var itemElement = $("<li></li>");
-                var split = window.location.href.split("?");
-                var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(SparqlConnector.getGraphURI());
-                var aElement = $("<a/>").attr("href", url);
-                //  if(name.length > 5) {
-                //   name = name.substring(0, 5); // TODO remove
-                aElement.text(name);
-                itemElement.append(aElement);
-                listElement.append(itemElement);
-                //    }
-            }
-        },
 
         makeLanguageButton: function (subject, predicate, object, language) {
             var languageButton = $("<button class='language'></button>");
