@@ -12,11 +12,13 @@ var SchemaEdit = (function () {
          * Initialises SchemaEdit UI
          */
         init: function () {
+          var host = Config.getSparqlServerHost();
+          console.log("host = "+host);
 
-            $("#endpointHost").val(Config.sparqlServerHost);
-            $("#endpointLink").attr("href", Config.sparqlServerHost);
-            $("#updatePath").val(Config.sparqlUpdateEndpoint);
-            $("#queryPath").val(Config.sparqlQueryEndpoint);
+            $("#endpointHost").val(Config.getSparqlServerHost());
+            $("#endpointLink").attr("href", Config.getSparqlServerHost());
+            $("#updatePath").val(Config.getSparqlUpdateEndpoint());
+            $("#queryPath").val(Config.getSparqlQueryEndpoint());
 
             SchemaEdit.makeGraphChooser();
             SchemaEdit.addClassHandler();
@@ -675,7 +677,7 @@ var SchemaEdit = (function () {
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
             //  console.log("generateGetUrl sparql = " + sparql);
-            return Config.sparqlServerHost + Config.sparqlQueryEndpoint + encodeURIComponent(sparql) + "&output=xml";
+            return Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() + encodeURIComponent(sparql) + "&output=xml";
         },
 
         deleteResource: function (resourceURI) {

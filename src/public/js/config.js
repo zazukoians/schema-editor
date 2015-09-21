@@ -32,10 +32,27 @@ var Config = (function () {
                 sparqlUpdateEndpoint: "/schema-edit/update"
         */
 
-        sparqlServerHost: "http://zazukoians.org:3030",
-        sparqlQueryEndpoint: "/ontospace/sparql?query=",
-        sparqlUpdateEndpoint: "/ontospace/update"
+      //  sparqlServerHost: "http://zazukoians.org:3030",
+      //  sparqlQueryEndpoint: "/ontospace/sparql?query=",
+        sparqlUpdateEndpoint: "/ontospace/update",
 
+        getSparqlServerHost: function() {
+          return Config.default.sparqlServerHost;
+        },
+
+        getSparqlQueryEndpoint: function() {
+          return Config.default.sparqlQueryEndpoint;
+        },
+
+        getSparqlUpdateEndpoint: function() {
+          return Config.default.sparqlUpdateEndpoint;
+        },
+
+        default: {
+          sparqlServerHost: "http://zazukoians.org:3030",
+          sparqlQueryEndpoint: "/ontospace/sparql?query=",
+          sparqlUpdateEndpoint: "/ontospace/update"
+        }
         // for foowiki
         // pagesBaseURI: "http://hyperdata.it/wiki/",
     };
