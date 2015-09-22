@@ -21,10 +21,10 @@ var SchemaEdit = (function () {
             $("#queryPath").val(Config.getSparqlQueryEndpoint());
 
             SchemaEdit.makeGraphChooser();
+            SchemaEdit.makePropertyChooser();
             SchemaEdit.addClassHandler();
             SchemaEdit.addPropertyHandler();
 
-            SchemaEdit.makePropertyChooser();
             SchemaEdit.makeResourceChooser($("#resourceChooser"), "resource");
             SchemaEdit.makeResourceChooser($("#propertyUriValue"), "uriValue");
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
@@ -97,7 +97,7 @@ var SchemaEdit = (function () {
                         }
                         window.location.href = newLocation;
 
-                        SparqlConnector.setCurrentResource(newResource);
+                        Config.getGraphURI(newResource);
 
                         $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
                             scrollTop: 0
@@ -142,7 +142,7 @@ var SchemaEdit = (function () {
             SchemaEdit.makeAddPropertyValue(uri);
 
             var map = {
-                graphURI: SparqlConnector.getGraphURI(),
+                graphURI: Config.getGraphURI(),
                 uri: uri
             };
 
@@ -168,7 +168,7 @@ var SchemaEdit = (function () {
                     propertyItem.append(propertyWrapper);
 
                     var deleteButton = SchemaEdit.makeDeleteButton();
-                    var triple = "<" + SparqlConnector.getCurrentResource() + "> "; // subject
+                    var triple = "<" + Config.getCurrentResource() + "> "; // subject
                     triple += "<" + p + "> "; // predicate/property
                     // triple += ""
                     //  property.after(deleteButton);
@@ -275,7 +275,7 @@ var SchemaEdit = (function () {
                 var name = split[split.length - 1];
                 var itemElement = $("<li></li>");
                 var split = window.location.href.split("?");
-                var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(SparqlConnector.getGraphURI());
+                var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(Config.getGraphURI());
                 var aElement = $("<a/>").attr("href", url);
                 aElement.text(name);
                 itemElement.append(aElement);
@@ -330,33 +330,61 @@ var SchemaEdit = (function () {
             });
         },
 
-        setCurrentResource: function (uri) {
-            SparqlConnector.setCurrentResource(uri);
-        },
 
         /**
          * Loads list of properties from SPARQL store into combo box(es)
          */
         makePropertyChooser: function () {
+            console.log("makePropertyChooser");
             var callback = function (json) {
                 // SchemaEdit.makeListBlock(json, $("#properties"));
             }
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
             var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
-            $("#propertyChooser").append($("<label for='addPropertyValue'>For Property :</label>"));
+            console.log("adding for property");
+            $("#propertyChooser").append($("<label for='addPropertyValue'>Property : </label>"));
             chooser.appendTo($("#propertyChooser"));
 
             var combobox = chooser.combobox();
             combobox.combobox("setInputId", "addPropertyValue");
 
             $("#addPropertyValueButton").click(function () {
-                var subject = SparqlConnector.getCurrentResource();
+                var subject = Config.getCurrentResource();
                 var predicate = $("#propertyChooser").find("input").val();
+                // TODO make bombproof regex!
+                // TODO seriously refactor
+                /*
+                three alternatives for p and o :
+                Name - prefix with namespace, wrap in <>
+                prefix:name - don't wrap with <>
+                {uri} - wrap with <>
+                */
+                var wrapWithAngles = true;
+                if(predicate.indexOf(":") == -1) { // just name
+                    wrapWithAngles = false;
+                }
+                if(predicate.indexOf(".") == -1 || predicate.indexOf("/") == -1) {
+                    wrapWithAngles = false;
+                }
+                if(wrapWithAngles){
+                  predicate = "<"+predicate+">";
+                }
                 var object = $("#propertyLiteralValue").val();
                 var isLiteral = true;
-                if(!object || object == "") {
-                    object = $("#uriValue").val();
+                if(!object || object == "") { // so URI object
                     isLiteral = false;
+                    object = $("#uriValue").val();
+
+                    wrapWithAngles = true;
+                    if(object.indexOf(":") == -1) {
+                        wrapWithAngles = false; // just name
+                    }
+                    if(object.indexOf(".") == -1 && object.indexOf("/") == -1) {
+                        wrapWithAngles = false; // is prefix
+                    }
+                    if(wrapWithAngles){
+                      object = "<"+object+">";
+                    }
                 }
                 var language = "en";
                 var callback = function (msg) {
@@ -366,7 +394,7 @@ var SchemaEdit = (function () {
                 if(isLiteral) { // TODO refactor
                     SparqlConnector.updateLiteralTriple(subject, predicate, object, language, callback);
                 } else {
-                    SparqlConnector.updateUriTriple(subject, predicate, object, language, callback);
+                    SparqlConnector.insertProperty(subject, predicate, object, language, callback);
                 }
             });
         },
@@ -381,7 +409,7 @@ var SchemaEdit = (function () {
             chooser.appendTo($("#classChooser"));
             chooser.combobox();
             $("#addClassButton").click(function () {
-                var subject = SparqlConnector.getCurrentResource();
+                var subject = Config.getCurrentResource();
                 var predicate = $("#classChooser").find("input").val();
                 var object = "dummy object";
                 var language = "en";
@@ -396,7 +424,7 @@ var SchemaEdit = (function () {
             // console.log("type = " + type);
             var choices = $("<select></select>");
             var map = {
-                "graphURI": SparqlConnector.getGraphURI(),
+                "graphURI": Config.getGraphURI(),
                 "type": type
             };
 
@@ -585,10 +613,10 @@ var SchemaEdit = (function () {
 
         makeEndpointButton: function () {
             $("#endpointButton").click(function () {
-              alert("#endpointButton clicked");
-              Config.setSparqlServerHost("endpointHost", $("#endpointHost").val());
-              Config.setSparqlServerHost("updatePath", $("#updatePath").val());
-              Config.setSparqlServerHost("queryPath", $("#queryPath").val());
+                alert("#endpointButton clicked");
+                Config.setSparqlServerHost("endpointHost", $("#endpointHost").val());
+                Config.setSparqlServerHost("updatePath", $("#updatePath").val());
+                Config.setSparqlServerHost("queryPath", $("#queryPath").val());
             });
         },
         /*
@@ -652,27 +680,28 @@ var SchemaEdit = (function () {
             updateClassButton.click(function () {});
         },
 
-        makePropertyChooser: function () {
-            var map = {
-                graphURI: SparqlConnector.getGraphURI(),
-            };
-            var getAllPropertiesUrl = SchemaEdit.generateGetUrl(getPropertyListSparqlTemplate, map);
-            var callback = function (propertiesArray) {
-                // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
-                for(var i = 0; i < propertiesArray.length; i++) {
-                    var property = propertiesArray[i]["uri"];
-                    //console.log("property : " + property);
-                    //     <option value="ActionScript">ActionScript</option>
-                    var option = $("<option class='propertychoice'></option>");
-                    option.attr("value", property);
-                    option.text(property);
-                    var last = $(".propertyChoice").last();
-                    last.after(option);
-                }
-            };
-            SparqlConnector.getJsonForSparqlURL(getAllPropertiesUrl, callback);
-        },
-
+        /*
+                makePropertyChooser: function () {
+                    var map = {
+                        graphURI: Config.getGraphURI(),
+                    };
+                    var getAllPropertiesUrl = SchemaEdit.generateGetUrl(getPropertyListSparqlTemplate, map);
+                    var callback = function (propertiesArray) {
+                        // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
+                        for(var i = 0; i < propertiesArray.length; i++) {
+                            var property = propertiesArray[i]["uri"];
+                            //console.log("property : " + property);
+                            //     <option value="ActionScript">ActionScript</option>
+                            var option = $("<option class='propertychoice'></option>");
+                            option.attr("value", property);
+                            option.text(property);
+                            var last = $(".propertyChoice").last();
+                            last.after(option);
+                        }
+                    };
+                    SparqlConnector.getJsonForSparqlURL(getAllPropertiesUrl, callback);
+                },
+        */
         makeAddClass: function (uri) {
             var addPropertyButton = $("<button id='addClass'>Add Class</button>");
             $("#editor").prepend(addClassButton);

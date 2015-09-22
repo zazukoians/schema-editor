@@ -241,6 +241,20 @@ var updateUriTripleSparqlTemplate = commonPrefixes +
 }\n\
 }";
 
+// p, o not wrapped in <>
+var insertPropertySparqlTemplate = commonPrefixes +
+    " \n\
+  WITH <~{graphURI}~> \n\
+  	DELETE {  }  \n\
+    WHERE {  \n\
+    <~{subject}~>  ~{predicate}~ ?object  . \n\
+    }; \n\
+	INSERT DATA {  \n\
+		GRAPH <~{graphURI}~> {  \n\
+			<~{subject}~>  ~{predicate}~ ~{object}~  . \n\
+}\n\
+}";
+
 /* maybe needed */
 var deleteTripleSparqlTemplate = commonPrefixes +
     " \n\

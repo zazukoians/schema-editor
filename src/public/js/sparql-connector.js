@@ -21,35 +21,7 @@ var SparqlConnector = (function () {
             SparqlConnector.preloadKnownPrefixes();
         },
 
-        setCurrentResource: function (resource) {
-            currentResource = resource;
-            Config.currentResource = resource;
-            var graph = parseUri(window.location.href).queryKey.graph;
-            var split = window.location.href.split("?");
-            var newUrl = split[0] + "?uri=" + resource;
-            if(graph && (graph != "")) {
-              newUrl = newUrl + "&graph=" + graph;
-            }
-            window.location.href = newUrl;
-            return resource;
-        },
 
-        getCurrentResource: function () {
-            return currentResource;
-        },
-
-        getGraphURI: function () {
-            return queryString["graph"];
-            // return Config.graphURI;
-        },
-
-        setGraphURI: function (graphURI) {
-            // console.log("setGraphURI graphURI=" + graphURI);
-            Config.graphURI = graphURI;
-            var split = window.location.href.split("?");
-            window.location.href = split[0] + "?graph=" + graphURI;
-            return graphURI;
-        },
 
         // API, based on spec
 
@@ -79,7 +51,7 @@ var SparqlConnector = (function () {
         getTurtleUrl: function (type, callback) {
             var resources = [];
             var getTurtleSparql = sparqlTemplater(constructGraph, {
-                "graphURI": SparqlConnector.getGraphURI(),
+                "graphURI": Config.getGraphURI(),
             });
 
             var getTurtleUrl = Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() +
@@ -100,7 +72,7 @@ var SparqlConnector = (function () {
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourceListSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI()
+                    "graphURI": Config.getGraphURI()
                 });
             //  console.log("getResourceListSparql = \n" + getResourceListSparql);
             var getResourcesUrl = Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() +
@@ -114,7 +86,7 @@ var SparqlConnector = (function () {
                     }
                     callback(resources);
                 }
-                  console.log("getResourcesUrl = " + getResourcesUrl);
+                //  console.log("getResourcesUrl = " + getResourcesUrl);
             SparqlConnector.getJsonForSparqlURL(getResourcesUrl, extractResources);
         },
 
@@ -122,7 +94,7 @@ var SparqlConnector = (function () {
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourcesOfTypeSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "type": type
                 });
             var getResourcesUrl = Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() +
@@ -266,7 +238,7 @@ var SparqlConnector = (function () {
 
             var createVocabSparql = sparqlTemplater(
                 createVocabSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "namespace": namespace,
                     "name": name
                 });
@@ -277,7 +249,7 @@ var SparqlConnector = (function () {
 
             var createDummyClassSparql = sparqlTemplater(
                 createDummyClassSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "namespace": namespace
                 });
             var callback = function (msg) {
@@ -294,7 +266,7 @@ var SparqlConnector = (function () {
         addClass: function (namespace, name, label, subClassOf, comment, callback) {
             var addClassSparql = sparqlTemplater(
                 addClassSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "namespace": namespace,
                     "name": name,
                     "label": label,
@@ -309,7 +281,7 @@ var SparqlConnector = (function () {
         addProperty: function (namespace, name, label, domain, range, subPropertyOf, comment, callback) {
             var addPropertySparql = sparqlTemplater(
                 addPropertySparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "namespace": namespace,
                     "name": name,
                     "label": label,
@@ -352,7 +324,7 @@ var SparqlConnector = (function () {
             }
             var updateTripleSparql = sparqlTemplater(
                 updateLiteralTripleSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "subject": subject,
                     "predicate": predicate,
                     "object": object,
@@ -373,13 +345,13 @@ var SparqlConnector = (function () {
             }
             var updateTripleSparql = sparqlTemplater(
                 updateUriTripleSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "subject": subject,
                     "predicate": predicate,
                     "object": object,
                     "language": language
                 });
-            // console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
+             console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
 
             //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
             //    encodeURIComponent(updateTripleSparql) + "&output=xml";
@@ -388,11 +360,32 @@ var SparqlConnector = (function () {
             return false;
         },
 
+        insertProperty: function (subject, predicate, object, language, callback) {
+            if(!language || language == "") { // sensible default?
+                language = "en";
+            }
+            var insertPropertySparql = sparqlTemplater(
+                insertPropertySparqlTemplate, {
+                    "graphURI": Config.getGraphURI(),
+                    "subject": subject,
+                    "predicate": predicate,
+                    "object": object,
+                    "language": language
+                });
+             console.log("insertPropertySparql = \n" + insertPropertySparql);
+
+            //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
+            //    encodeURIComponent(updateTripleSparql) + "&output=xml";
+            // var json = SparqlConnector.getJsonForSparqlURL(updateTripleUrl, callback);
+            SparqlConnector.postData(insertPropertySparql, callback);
+            return false;
+        },
+
         deleteTurtle: function (turtle, callback) { // see http://www.w3.org/TR/sparql11-update/#deleteData
             // console.log("deleteTurtle turtle = " + turtle);
             var deleteTurtleSparql = sparqlTemplater(
                 deleteTurtleSparqlTemplate, {
-                    "graphURI": SparqlConnector.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "turtle": turtle
                 });
             // console.log("deleteTurtleSparql = " + deleteTurtleSparql);

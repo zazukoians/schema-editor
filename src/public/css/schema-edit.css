@@ -131,7 +131,7 @@ input, textarea, select {
 }
 
 #propertyChooser, #classChooser {
-  width: 50%;
+/*  width: 50%; */
   display: block;
   margin: 10px;
 }
