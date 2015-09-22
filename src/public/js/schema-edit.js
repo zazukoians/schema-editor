@@ -12,13 +12,13 @@ var SchemaEdit = (function () {
          * Initialises SchemaEdit UI
          */
         init: function () {
-            var host = Config.getSparqlServerHost();
+            var host = Config.getEndpointHost();
             console.log("host = " + host);
 
-            $("#endpointHost").val(Config.getSparqlServerHost());
-            $("#endpointLink").attr("href", Config.getSparqlServerHost());
-            $("#updatePath").val(Config.getSparqlUpdateEndpoint());
-            $("#queryPath").val(Config.getSparqlQueryEndpoint());
+            $("#endpointHost").val(Config.getEndpointHost());
+            $("#endpointLink").attr("href", Config.getEndpointHost());
+            $("#updatePath").val(Config.getUpdatePath());
+            $("#queryPath").val(Config.getQueryPath());
 
             SchemaEdit.makeGraphChooser();
             SchemaEdit.makePropertyChooser();
@@ -32,6 +32,13 @@ var SchemaEdit = (function () {
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.setupButtons();
             SchemaEdit.makeEndpointButton();
+
+            SchemaEdit.testLocalStorage();
+        },
+
+        testLocalStorage: function () {
+            Config.setToLocalStorage("testSetting", "test");
+            console.log("from localStorage = " + Config.getFromLocalStorage("testSetting"));
         },
 
         /* builds graph chooser combobox/autocomplete
@@ -48,7 +55,7 @@ var SchemaEdit = (function () {
                 combobox.combobox({
                     select: function (event, ui) {
                         var newGraph = this.value;
-                        SparqlConnector.setGraphURI(newGraph);
+                        Config.setGraphURI(newGraph);
                         var split = window.location.href.split("?");
                         window.location.href = split[0] + "?graph=" + encodeURI(newGraph);
 
@@ -366,8 +373,8 @@ var SchemaEdit = (function () {
                 if(predicate.indexOf(".") == -1 || predicate.indexOf("/") == -1) {
                     wrapWithAngles = false;
                 }
-                if(wrapWithAngles){
-                  predicate = "<"+predicate+">";
+                if(wrapWithAngles) {
+                    predicate = "<" + predicate + ">";
                 }
                 var object = $("#propertyLiteralValue").val();
                 var isLiteral = true;
@@ -382,8 +389,8 @@ var SchemaEdit = (function () {
                     if(object.indexOf(".") == -1 && object.indexOf("/") == -1) {
                         wrapWithAngles = false; // is prefix
                     }
-                    if(wrapWithAngles){
-                      object = "<"+object+">";
+                    if(wrapWithAngles) {
+                        object = "<" + object + ">";
                     }
                 }
                 var language = "en";
@@ -585,13 +592,12 @@ var SchemaEdit = (function () {
                                 var turtle = e.target.result;
 
                                 var callback = function (msg) {
-                                    SparqlConnector.setGraphURI(graphURI);
+                                    Config.setGraphURI(graphURI);
                                 }
                                 var graphURI = $("#graphName").val();
                                 SparqlConnector.uploadTurtle(graphURI, turtle, callback);
                             };
                         })(f);
-
                         r.readAsText(f);
                     }
                 } else {
@@ -613,10 +619,12 @@ var SchemaEdit = (function () {
 
         makeEndpointButton: function () {
             $("#endpointButton").click(function () {
-                alert("#endpointButton clicked");
-                Config.setSparqlServerHost("endpointHost", $("#endpointHost").val());
-                Config.setSparqlServerHost("updatePath", $("#updatePath").val());
-                Config.setSparqlServerHost("queryPath", $("#queryPath").val());
+              // console.log("$('#endpointHost').val() = " + $("#endpointHost").val())
+                Config.setEndpointHost($("#endpointHost").val());
+                // alert("#endpointButton clicked $(#endpointHost).val() = "+$("#endpointHost").val());
+                Config.setQueryPath($("#queryPath").val());
+                Config.setUpdatePath($("#updatePath").val());
+                window.location.reload();
             });
         },
         /*
@@ -654,7 +662,7 @@ var SchemaEdit = (function () {
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());
                 $.ajax({
-                    url: Config.getSparqlUpdateEndpoint(),
+                    url: Config.getSparqlUpdatePath(),
                     type: 'POST',
                     data: ({
                         update: data
@@ -712,12 +720,12 @@ var SchemaEdit = (function () {
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
             //  console.log("generateGetUrl sparql = " + sparql);
-            return Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() + encodeURIComponent(sparql) + "&output=xml";
+            return Config.getEndpointHost() + Config.getQueryPath() + encodeURIComponent(sparql) + "&output=xml";
         },
 
         deleteResource: function (resourceURI) {
                 var map = {
-                    "graphURI": SchemaEdit.getGraphURI(),
+                    "graphURI": Config.getGraphURI(),
                     "resourceURI": resourceURI
                 };
                 var sparql = sparqlTemplater(deleteResourceSparqlTemplate, map);

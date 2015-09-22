@@ -12,9 +12,9 @@ var Config = (function () {
     // This is the public interface of the Module.
     var Config = {
         current: { // effectively defaults
-            sparqlServerHost: "http://zazukoians.org:3030",
-            sparqlQueryEndpoint: "/ontospace/sparql?query=",
-            sparqlUpdateEndpoint: "/ontospace/update",
+            endpointHost: "http://zazukoians.org:3030",
+            queryPath: "/ontospace/sparql?query=",
+            updatePath: "/ontospace/update",
 
             currentResource: "",
             graphURI: ""
@@ -40,6 +40,52 @@ var Config = (function () {
         //  sparqlQueryEndpoint: "/ontospace/sparql?query=",
         //  sparqlUpdateEndpoint: "/ontospace/update",
 
+
+        ///////////////////////////////////////
+
+        /* *** Value Getters *** */
+        getCurrentResource: function () {
+            var currentResource = parseUri(window.location.href).queryKey.uri;
+            if(currentResource && (currentResource != "")) {
+                return currentResource;
+            }
+            var stored = Config.getFromLocalStorage("currentResource");
+            return stored ? stored : Config.current.currentResource;
+        },
+
+        getGraphURI: function () {
+            var graphURI = parseUri(window.location.href).queryKey.graph;
+            if(graphURI && (graphURI != "")) {
+                return graphURI;
+            }
+            var stored = Config.getFromLocalStorage("graphURI");
+            return stored ? stored : Config.current.graphURI;
+        },
+
+        getEndpointHost: function () {
+            var stored = Config.getFromLocalStorage("endpointHost");
+            return stored ? stored : Config.current.endpointHost;
+        },
+
+        getQueryPath: function () {
+            var stored = Config.getFromLocalStorage("queryPath");
+            return stored ? stored : Config.current.queryPath;
+        },
+
+        getUpdatePath: function () {
+            var stored = Config.getFromLocalStorage("updatePath");
+            return stored ? stored : Config.current.updatePath;
+        },
+
+        /* common wrapper */
+        getFromLocalStorage: function (setting) {
+            if(('localStorage' in window) && window['localStorage'] !== null) {
+                return localStorage.getItem("schema-edit.config." + setting);
+            }
+            return false;
+        },
+
+        /* *** Value Setters *** */
         setCurrentResource: function (currentResource) {
             Config.current.currentResource = currentResource;
             Config.setToLocalStorage("currentResource", currentResource);
@@ -52,74 +98,33 @@ var Config = (function () {
             window.location.href = newUrl;
         },
 
-        getCurrentResource: function () {
-          var currentResource = parseUri(window.location.href).queryKey.uri;
-          if(currentResource && (currentResource != "")){
-            return currentResource;
-          }
-          var stored = Config.getFromLocalStorage("currentResource");
-          return stored ? stored : Config.current.currentResource;
-        },
-
-        getGraphURI: function () {
-          var graphURI = parseUri(window.location.href).queryKey.graph;
-          if(graphURI && (graphURI != "")){
-            return graphURI;
-          }
-          var stored = Config.getFromLocalStorage("graphURI");
-          return stored ? stored : Config.current.graphURI;
-        },
-
         setGraphURI: function (graphURI) {
-          Config.current.graphURI = graphURI;
-        Config.setToLocalStorage("graphURI", graphURI);
+            Config.current.graphURI = graphURI;
+            Config.setToLocalStorage("graphURI", graphURI);
             var split = window.location.href.split("?");
             window.location.href = split[0] + "?graph=" + graphURI;
         },
-        ///////////////////////////////////////
 
-        getSparqlServerHost: function () {
-            var stored = Config.getFromLocalStorage("sparqlServerHost");
-            return stored ? stored : Config.current.sparqlServerHost;
+        setEndpointHost: function (endpointHost) {
+          console.log("setEndpointHost = "+endpointHost);
+            Config.current.endpointHost = endpointHost;
+            return Config.setToLocalStorage("endpointHost", endpointHost);
         },
 
-        getSparqlQueryEndpoint: function () {
-            var stored = Config.getFromLocalStorage("sparqlQueryEndpoint");
-            return stored ? stored : Config.current.sparqlQueryEndpoint;
+        setQueryPath: function (queryPath) {
+            Config.current.queryPath = queryPath;
+            return Config.setToLocalStorage("queryPath", queryPath);
         },
 
-        getSparqlUpdateEndpoint: function () {
-            var stored = Config.getFromLocalStorage("sparqlUpdateEndpoint");
-            return stored ? stored : Config.current.sparqlUpdateEndpoint;
-        },
-
-        /* common wrapper */
-        getFromLocalStorage: function (setting) {
-            if(('storedStorage' in window) && window['storedStorage'] !== null) {
-                return storedStorage.getItem("schema-edit.config." + setting);
-            }
-            return false;
-        },
-
-        setSparqlServerHost: function (sparqlServerHost) {
-            Config.current.sparqlServerHost = sparqlServerHost;
-            return Config.setToLocalStorage("sparqlServerHost", sparqlServerHost);
-        },
-
-        setSparqlQueryEndpoint: function (sparqlQueryEndpoint) {
-            Config.current.sparqlQueryEndpoint = sparqlQueryEndpoint;
-            return Config.setToLocalStorage("sparqlQueryEndpoint", sparqlQueryEndpoint);
-        },
-
-        setSparqlUpdateEndpoint: function (sparqlQueryEndpoint) {
-            Config.current.sparqlQueryEndpoint = sparqlQueryEndpoint;
-            return Config.setToLocalStorage("sparqlQueryEndpoint", sparqlQueryEndpoint);
+        setUpdatePath: function (updatePath) {
+            Config.current.updatePath = updatePath;
+            return Config.setToLocalStorage("updatePath", updatePath);
         },
 
         /* common wrapper */
         setToLocalStorage: function (setting, value) {
-            if(('storedStorage' in window) && window['storedStorage'] !== null) {
-                storedStorage.setItem("schema-edit.config." + setting, value);
+            if(('localStorage' in window) && window['localStorage'] !== null) {
+                localStorage.setItem("schema-edit.config." + setting, value);
                 return true;
             }
             return false;

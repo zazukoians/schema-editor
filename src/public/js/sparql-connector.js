@@ -28,12 +28,12 @@ var SparqlConnector = (function () {
         // TODO move the original calls to these to point to Config
         /*
         setQueryEndpoint: function (url) {
-            Config.getSparqlQueryEndpoint(url);
+            Config.getSparqlQueryPath(url);
             return getQueryEndpoint();
         },
 
         getQueryEndpoint: function () {
-            return Config.getSparqlQueryEndpoint();
+            return Config.getSparqlQueryPath();
         },
 
         setUpdateEndpoint: function (url) {
@@ -41,7 +41,7 @@ var SparqlConnector = (function () {
         },
 
         getUpdateEndpoint: function () {
-            return Config.getSparqlUpdateEndpoint();
+            return Config.getSparqlUpdatePath();
         },
 
         setEndpoint: function (graphURI) {
@@ -54,7 +54,7 @@ var SparqlConnector = (function () {
                 "graphURI": Config.getGraphURI(),
             });
 
-            var getTurtleUrl = Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() +
+            var getTurtleUrl = Config.getEndpointHost() + Config.getQueryPath() +
                 encodeURIComponent(getTurtleSparql) + "&output=text";
 
             return getTurtleUrl;
@@ -75,7 +75,7 @@ var SparqlConnector = (function () {
                     "graphURI": Config.getGraphURI()
                 });
             //  console.log("getResourceListSparql = \n" + getResourceListSparql);
-            var getResourcesUrl = Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() +
+            var getResourcesUrl = Config.getEndpointHost() + Config.getQueryPath() +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             var extractResources = function (json) {
@@ -97,7 +97,7 @@ var SparqlConnector = (function () {
                     "graphURI": Config.getGraphURI(),
                     "type": type
                 });
-            var getResourcesUrl = Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() +
+            var getResourcesUrl = Config.getEndpointHost() + Config.getQueryPath() +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
@@ -113,7 +113,7 @@ var SparqlConnector = (function () {
                 }
                 callback(graphURIs);
             }
-            var getGraphListUrl = Config.getSparqlServerHost() + Config.getSparqlQueryEndpoint() +
+            var getGraphListUrl = Config.getEndpointHost() + Config.getQueryPath() +
                 encodeURIComponent(listGraphsSparqlTemplate) + "&output=xml";
 
             SparqlConnector.getJsonForSparqlURL(getGraphListUrl, makeList);
@@ -302,7 +302,7 @@ var SparqlConnector = (function () {
             // alert("postData called");
             $.ajax({
                 type: "POST",
-                url: Config.getSparqlServerHost() + Config.getSparqlUpdateEndpoint(),
+                url: Config.getEndpointHost() + Config.getUpdatePath(),
                 data: ({
                     update: data
                 })
