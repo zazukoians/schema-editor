@@ -40,7 +40,6 @@ function cleanSPARQL(sparql) {
 
     var prefixRe = /@prefix.*>\s.*/gi;
     var matches = sparql.match(prefixRe);
-    console.log("reg array = " + JSON.stringify(matches, false, 4));
     var noPrefixSparql = sparql.replace(prefixRe, "");
     var prefixes = "";
     for(var i = 0; i < matches.length; i++) {
@@ -48,7 +47,6 @@ function cleanSPARQL(sparql) {
         prefixes = prefixes + trimmed + "\n";
     }
     sparql = prefixes + noPrefixSparql;
-    console.log("cleaned sparql = \n" + sparql);
     return sparql;
 }
 
@@ -187,6 +185,8 @@ var queryString = (function (a) {
     return b;
 })(window.location.search.substr(1).split('&'));
 
+// TODO material below appears mostly to come from FooWiki - check & remove
+
 /**
  * Comment template.
  * @param {string} foo This is a param with a description too long to fit in
@@ -209,7 +209,6 @@ function translateLinks(object) {
     $('div.content  a', object).each(
         function () {
             var href = this.href;
-            console.log("HREF=" + href);
             if(href.indexOf(FooWiki.serverRootPath) != -1) { // less than perfect, in-page links maybe involve FooWiki.pagesBaseURI
                 var hashPosition = href.indexOf("#");
                 if(hashPosition != -1) {
@@ -241,24 +240,10 @@ function translateLinks(object) {
         var path = FooWiki.pagesBaseURI + $(this).attr("src");
         var me = this;
         var setImgSrc = function (src) {
-            console.log("SRC=" + src);
             $(me).attr("src", src);
         }
         getImage(path, setImgSrc);
     });
-
-    // somethin similar for handlin img 404s
-    // 1unnamed.jpg =>
-    //  http://localhost:3030/foowiki/page.html?uri=http://hyperdata.it/wiki/1unnamed.jpg&type=image
-    /*
-              $('div.content  img', object).each(
-                function () {
-                    var src = $(this).attr("src");
-                //    console.log("this.src="+$(this).attr("src"));
-                    var newSrc = FooWiki.serverRootPath+"page.html?uri="+FooWiki.pagesBaseURI+src+"&type=image";
-                  $(this).attr("src",newSrc);
-                });
-                */
 }
 
 /**

@@ -12,9 +12,6 @@ var SchemaEdit = (function () {
          * Initialises SchemaEdit UI
          */
         init: function () {
-            var host = Config.getEndpointHost();
-            console.log("host = " + host);
-
             $("#endpointHost").val(Config.getEndpointHost());
             $("#endpointLink").attr("href", Config.getEndpointHost());
             $("#updatePath").val(Config.getUpdatePath());
@@ -32,16 +29,9 @@ var SchemaEdit = (function () {
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.setupButtons();
             SchemaEdit.makeEndpointButton();
-
-            SchemaEdit.testLocalStorage();
         },
 
-        testLocalStorage: function () {
-            Config.setToLocalStorage("testSetting", "test");
-            console.log("from localStorage = " + Config.getFromLocalStorage("testSetting"));
-        },
-
-        /* builds graph chooser combobox/autocomplete
+        /* Builds graph chooser combobox/autocomplete
          * queries stores for values
          * adds to #graphChooser element
          * in header in current UI */
@@ -428,7 +418,6 @@ var SchemaEdit = (function () {
         },
 
         makeTypedChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
-            // console.log("type = " + type);
             var choices = $("<select></select>");
             var map = {
                 "graphURI": Config.getGraphURI(),
@@ -437,18 +426,12 @@ var SchemaEdit = (function () {
 
             var getTypesUrl = SchemaEdit.generateGetUrl(getResourcesOfTypeSparqlTemplate, map);
             var callback = function (typesArray) {
-                // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
                 for(var i = 0; i < typesArray.length; i++) {
                     var type = typesArray[i]["uri"];
-                    // console.log("type : " + type);
-                    //     <option value="ActionScript">ActionScript</option>
                     var option = $("<option class='choice'></option>");
                     option.attr("value", type);
                     option.text(type);
-                    // var last = $(".typeChoice").last();
-                    // last.after(option);
                     choices.append(option);
-                    // console.log("choices =\n" + choices.html());
                 }
             };
             SparqlConnector.getJsonForSparqlURL(getTypesUrl, callback);
@@ -486,7 +469,7 @@ var SchemaEdit = (function () {
                     }
                 });
                 var callback = function (msg) {
-                    //    console.log("callback called");
+                  console.log("callback msg = "+msg);
                 }
             });
             return languageButton;
@@ -529,7 +512,6 @@ var SchemaEdit = (function () {
             //  deleteButton.append("<br/>");
             deleteButton.click(function () {
                 var triple = deleteButton.attr("data-triple");
-                // console.log("TRIPLE on delete = " + triple);
                 var callback = function (msg) {
                     $("#dialog").html(msg);
                     $("#dialog").dialog({
@@ -560,7 +542,6 @@ var SchemaEdit = (function () {
 
             changePredicateButton.click(function () {
                 var triple = changePredicateButton.attr("data-triple");
-                // console.log("TRIPLE on delete = " + triple);
                 var callback = function (msg) {
                     $("#dialog").html(msg);
                     $("#dialog").dialog({
@@ -583,7 +564,7 @@ var SchemaEdit = (function () {
             function readMultipleFiles(evt) {
                 //Retrieve all the files from the FileList object
                 var files = evt.target.files;
-
+                console.log("files = "+JSON.stringify(files, false,4));
                 if(files) {
                     for(var i = 0, f; f = files[i]; i++) {
                         var r = new FileReader();
@@ -603,7 +584,8 @@ var SchemaEdit = (function () {
                 } else {
                     alert("Failed to load files");
                 }
-            }
+              }
+
             document.getElementById('uploadFilename').addEventListener('change', readMultipleFiles, false);
         },
 
@@ -619,28 +601,15 @@ var SchemaEdit = (function () {
 
         makeEndpointButton: function () {
             $("#endpointButton").click(function () {
-              // console.log("$('#endpointHost').val() = " + $("#endpointHost").val())
                 Config.setEndpointHost($("#endpointHost").val());
-                // alert("#endpointButton clicked $(#endpointHost).val() = "+$("#endpointHost").val());
                 Config.setQueryPath($("#queryPath").val());
                 Config.setUpdatePath($("#updatePath").val());
                 window.location.reload();
             });
         },
-        /*
-        <div id="upload">
-          <input id="filename" type="file" name="UNSET FILE NAME" size="40" multiple="" />
-          <br/>
-          <br/>
-          <label for='graphName'>Graph</label>
-          <input name="graph" id="graphName" size="20" value="http://schema.org/terms/" />
-          <br />
-          <!-- input type="submit" value="Upload" class='button' / -->
-          <button id="uploadGraph">Upload</button>
-        </div>
-        */
+
         setupButtons: function () { // TODO refactor - move local to buttons?
-            console.log("setup buttons called");
+            //console.log("setup buttons called");
             $("#turtle").click(function () { // is used?
                 console.log("#turtle clicked");
                 location.href = SparqlConnector.getTurtleUrl();

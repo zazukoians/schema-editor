@@ -228,23 +228,15 @@
 
       <a name="uploadRDF" />
       <h3>Upload RDF</h3>
-      <!-- TODO change this from config -->
-      <!-- form action="http://sandbox.fusepool.info:8181/sparql/update" enctype="multipart/form-data" method="post" -->
-      <!-- TODO move to config (bypass Fuseki) -->
-      <!-- onsubmit="window.location.href = 'index.html'; return false;" -->
-      <!-- TODO UNSET FILE NAME ?? -->
+
       <form id="upload" enctype="text/turtle" method="post">
-        <input id="uploadFilename" type="file" name="uploadFilename" size="40" multiple="true" />
-        <br/>
-        <br/>
         <label for='graphName'>Graph</label>
         <input name="graph" id="graphName" size="20" value="https://example.org/" />
-        <!-- http://schema.org/terms/ -->
-        <br />
-        <!-- input type="submit" value="Upload" class='button' / -->
+        <br/>
+        <input id="uploadFilename" type="file" name="uploadFilename" size="40" />
         <!-- button id="uploadGraph">Upload</button -->
-        <!-- input id="uploadGraph" type="submit" form="upload" / -->
-        <button id="uploadGraph">Upload</button>
+        <br/>
+        <em>for now, put graph in first then select files - better UI in progress...</em>
       </form>
 
       <hr/>
