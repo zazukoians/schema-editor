@@ -52,8 +52,11 @@ var SparqlConnector = (function () {
         },
 
         // API, based on spec
+
+        // TODO move the original calls to these to point to Config
+        /*
         setQueryEndpoint: function (url) {
-            Config.getSparqlQueryEndpoint() = url;
+            Config.getSparqlQueryEndpoint(url);
             return getQueryEndpoint();
         },
 
@@ -62,7 +65,7 @@ var SparqlConnector = (function () {
         },
 
         setUpdateEndpoint: function (url) {
-            return getUpdateEndpoint();
+            return getUpdateEndpoint(url);
         },
 
         getUpdateEndpoint: function () {
@@ -72,7 +75,7 @@ var SparqlConnector = (function () {
         setEndpoint: function (graphURI) {
             return graphURI;
         },
-
+*/
         getTurtleUrl: function (type, callback) {
             var resources = [];
             var getTurtleSparql = sparqlTemplater(constructGraph, {
