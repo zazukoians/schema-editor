@@ -104,9 +104,24 @@
   <div id="header">
     <h2>Schema Editor</h2>
 
+    <div class="help">
+      <span href="#overview" class="helpButton">?</span>
+      <div id="overviewHelpText" title="Overview" class="helpText">
+        <p>This is Schema Edit</p>
+      </div>
+    </div>
+
     <div id="newVocabBlock">
       <a href="#uploadRDF">Upload RDF</a>
       <h4>Create New Vocab</h4>
+
+      <!-- div class="help">
+        <a href="#newVocab" class="helpButton">?</a>
+        <div id="newVocabHelpText" title="New Vocab" class="helpText">
+          <p>Create a new vocab</p>
+        </div>
+      </div -->
+
       <label for="vocabName">Name</label>
       <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
       <label for="vocabNamespace">Namespace (used as Graph Name)</label>

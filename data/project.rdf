@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:prj="http://purl.org/stuff/project/"
+  xml:base="http://purl.org/stuff/project">
+  
+  <owl:Ontology rdf:about="http://purl.org/stuff/project">
+    <rdfs:label>Project</rdfs:label>
+    <rdfs:comment>A vocabulary for describing (generic) projects</rdfs:comment>
+  </owl:Ontology>
+  
+  <owl:Class rdf:about="http://purl.org/stuff/project/Module">
+    <rdfs:label>Module</rdfs:label>
+    <rdfs:comment>A Module.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:Class>
+  
+  <owl:Class rdf:about="http://purl.org/stuff/project/Session">
+    <rdfs:comment>A session.</rdfs:comment>
+    <rdfs:label>Session</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:Class>
+  
+  <owl:Class rdf:about="http://purl.org/stuff/project/Agent">
+    <rdfs:label>Agent</rdfs:label>
+    <rdfs:comment>A human or software agent</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:Class>
+  
+  <owl:Class rdf:about="http://purl.org/stuff/project/TaskList">
+    <rdfs:comment>An ordered set of tasks.</rdfs:comment>
+    <rdfs:label>TaskList</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:Class>
+  
+  <owl:Class rdf:about="http://purl.org/stuff/project/Project">
+    <rdfs:label>Project</rdfs:label>
+    <rdfs:comment>A project.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:Class>
+  
+  <owl:Class rdf:about="http://purl.org/stuff/project/Task">
+    <rdfs:comment>A Task.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:label>Task</rdfs:label>
+  </owl:Class>
+  
+  <owl:Class rdf:about="http://purl.org/stuff/project/Goal">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:label>Goal</rdfs:label>
+    <rdfs:comment>A set of resources.</rdfs:comment>
+    <rdfs:comment>A project goal.</rdfs:comment>
+    <rdfs:label>Environment</rdfs:label>
+  </owl:Class>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/hasReport">
+    <rdfs:label>hasReport</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:comment>Points to a report on the project</rdfs:comment>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/dependsOn">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>dependsOn</rdfs:label>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/agentType">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>agentType</rdfs:label>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/hasAgent">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>hasAgent</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/taskType">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>taskType</rdfs:label>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/isHelpedBy">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>isHelpedBy</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/logo">
+  
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Module"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Project"/>
+	<rdfs:domain rdf:resource="http://purl.org/stuff/project/Session"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Agent"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Environment"/>
+        
+    <rdfs:comment>An image associated with the entity.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>logo</rdfs:label>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/helps">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>helps</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/isDependentOf">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:label>isDependentOf</rdfs:label>
+    <rdfs:comment>inverse of depends on</rdfs:comment>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/branchTag">
+    <rdfs:label>branchTag</rdfs:label>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/owner">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:label>owner</rdfs:label>
+    <rdfs:comment></rdfs:comment>  
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/hasTask">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>hasTask</rdfs:label>
+    <owl:inverseOf rdf:resource="http://purl.org/stuff/project/subTaskOf"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:range rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/hasSubGoal">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>hasSubGoal</rdfs:label>
+    <owl:inverseOf rdf:resource="http://purl.org/stuff/project/subGoalOf"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:range rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/hasSubTask">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>hasSubTask</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:range rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+    
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/subGoalOf">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>subGoalOf</rdfs:label>
+    <owl:inverseOf rdf:resource="http://purl.org/stuff/project/hasSubGoal"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:range rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/subTaskOf">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>subTaskOf</rdfs:label>
+    <owl:inverseOf rdf:resource="http://purl.org/stuff/project/hasSubTask"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:range rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/submittedDate">
+    <rdfs:label>submittedDate</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:comment>Submitted date, W3CDTF</rdfs:comment>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/role">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:label>role</rdfs:label>
+    <rdfs:comment></rdfs:comment>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/reporter">
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>reporter</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/hasGoal">
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Session"/>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Agent"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Project"/>
+    <rdfs:range rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:label>hasGoal</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Module"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Environment"/>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/goalType">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:label>goalType</rdfs:label>
+  </owl:ObjectProperty>
+  
+  <owl:ObjectProperty rdf:about="http://purl.org/stuff/project/priority">
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Module"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Project"/>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:label>priority</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty rdf:about="http://purl.org/stuff/project/status">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Module"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:label>status</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Project"/>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+  </owl:DatatypeProperty>
+      
+<owl:DatatypeProperty rdf:about="http://purl.org/stuff/project/name">
+    <rdfs:label>name</rdfs:label>
+    <rdfs:comment>The full name of the entity.</rdfs:comment>
+   
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Project"/>    
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Agent"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Session"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Module"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Environment"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty> 
+
+  <owl:DatatypeProperty rdf:about="http://purl.org/stuff/project/startDate">
+    <rdfs:label>startDate</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:comment>Start date, W3CDTF</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime" />
+  </owl:DatatypeProperty>
+  
+  <owl:DatatypeProperty rdf:about="http://purl.org/stuff/project/duration">
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:comment>Length of time</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+    <rdfs:label>duration</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Project"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Module"/>
+  </owl:DatatypeProperty>
+  
+  <owl:DatatypeProperty rdf:about="http://purl.org/stuff/project/targetDate">
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:label>targetDate</rdfs:label>
+    <rdfs:comment>target date, W3CDTF</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime" />
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="http://purl.org/stuff/project/finishDate">
+    <rdfs:comment>finish date, W3CDTF</rdfs:comment>
+    <rdfs:label>finishDate</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime" />
+  </owl:DatatypeProperty>
+    
+  <owl:DatatypeProperty rdf:about="http://purl.org/stuff/project/version">
+    <rdfs:label>version</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Environment"/>
+    <rdfs:comment>The version label of the entity.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Module"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Project"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/stuff/project/"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Session"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Agent"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Task"/>
+    <rdfs:domain rdf:resource="http://purl.org/stuff/project/Goal"/>
+  </owl:DatatypeProperty>  
+
+    
+</rdf:RDF>

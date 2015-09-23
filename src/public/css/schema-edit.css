@@ -131,7 +131,7 @@ input, textarea, select {
 }
 
 #propertyChooser, #classChooser {
-/*  width: 50%; */
+  /*  width: 50%; */
   display: block;
   margin: 10px;
 }
@@ -156,6 +156,45 @@ input, textarea, select {
 
 .endpoints input {
   width: 50%;
+}
+
+.help {
+  display: block;
+  text-align: right;
+   padding: 2px 20px 2px 2px;
+  left: 60%;
+  top: auto;
+/*  position: absolute; */
+  z-index: 10;
+}
+
+.helpText {
+  display: none;
+}
+
+.helpButton {
+  background-color: #4575c7;
+  -moz-border-radius: 28px;
+  -webkit-border-radius: 28px;
+  border-radius: 28px;
+  border: 1px solid #161d96;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Courier New;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 2px 4px;
+  text-decoration: none;
+}
+
+.helpButton:hover {
+  background-color: #489ee0;
+}
+
+.helpButton:active {
+  position: relative;
+  top: 1px;
 }
 
 

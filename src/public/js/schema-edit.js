@@ -29,6 +29,15 @@ var SchemaEdit = (function () {
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.setupButtons();
             SchemaEdit.makeEndpointButton();
+            SchemaEdit.setupHelpButtons();
+        },
+
+        setupHelpButtons: function () {
+          $(".helpButton").click(
+            function () {
+               $("#overviewHelpText").dialog();
+            }
+          );
         },
 
         /* Builds graph chooser combobox/autocomplete
