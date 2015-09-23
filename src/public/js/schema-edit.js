@@ -33,11 +33,11 @@ var SchemaEdit = (function () {
         },
 
         setupHelpButtons: function () {
-          $(".helpButton").click(
-            function () {
-               $("#overviewHelpText").dialog();
-            }
-          );
+            $(".helpButton").click(
+                function () {
+                    $(this).next().dialog();
+                }
+            );
         },
 
         /* Builds graph chooser combobox/autocomplete
@@ -176,17 +176,14 @@ var SchemaEdit = (function () {
                     var deleteButton = SchemaEdit.makeDeleteButton();
                     var triple = "<" + Config.getCurrentResource() + "> "; // subject
                     triple += "<" + p + "> "; // predicate/property
-                    // triple += ""
-                    //  property.after(deleteButton);
+
                     var value = $("<div>what default?</div>"); // needed for bpropertyItems?
                     var o = current["o"];
                     if(current.type == "literal") { // as returned from SPARQL
                         var language = current["language"];
-                        // console.log("language = " + language);
+
                         var value = $("<div class='literalObject' contenteditable='true' title='click to edit'>" + o + "</div>");
 
-                        // valueWrapper.append(value);
-                        // value.text(o);
                         if(!language || language == "") {
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
                         } else {
@@ -238,9 +235,9 @@ var SchemaEdit = (function () {
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
 
-        /* creates list of classes in current graph
+        /* Creates list of classes in current graph
          * queries stores for values
-           in left column in current UI */
+         * in left column in current UI */
         makeClassesList: function () {
             var callback = function (json) {
                 //    console.log("JSON = " + JSON.stringify(json, false, 4));
@@ -250,9 +247,9 @@ var SchemaEdit = (function () {
         },
 
 
-        /* creates list of properties in current graph
+        /* Creates list of properties in current graph
          * queries stores for values
-           in left column in current UI */
+         * in left column in current UI */
         makePropertiesList: function () {
             var callback = function (json) {
                 SchemaEdit.makeListBlock(json, $("#properties"));
@@ -268,7 +265,6 @@ var SchemaEdit = (function () {
          *     fit in one line.
          */
         makeListBlock: function (json, target) {
-            // nest the list-block inside a <div> container
             var listContainer = $("<div class='list-container'></div>");
             var listElement = $("<ul class='list-block'/>");
 
@@ -296,7 +292,7 @@ var SchemaEdit = (function () {
                 var name = $("#vocabName").val();
                 var namespace = $("#vocabNamespace").val();
                 var prefix = $("#vocabPrefix").val();
-                var graph = namespace; // $("#vocabGraph").val();
+                var graph = namespace;
                 SparqlConnector.createNewVocab(name, namespace, prefix, graph);
             });
         },
@@ -336,18 +332,15 @@ var SchemaEdit = (function () {
             });
         },
 
-
         /**
          * Loads list of properties from SPARQL store into combo box(es)
          */
         makePropertyChooser: function () {
-            console.log("makePropertyChooser");
             var callback = function (json) {
                 // SchemaEdit.makeListBlock(json, $("#properties"));
             }
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
             var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
-            console.log("adding for property");
             $("#propertyChooser").append($("<label for='addPropertyValue'>Property : </label>"));
             chooser.appendTo($("#propertyChooser"));
 
@@ -356,41 +349,23 @@ var SchemaEdit = (function () {
 
             $("#addPropertyValueButton").click(function () {
                 var subject = Config.getCurrentResource();
+                console.log("Config.getCurrentResource() = " + Config.getCurrentResource());
+                if(!Config.getCurrentResource()) {
+                    console.log("no resource");
+                    $("#noResourceError").dialog();
+                    return;
+                }
+                // console.log("getCurrentResource = "+subject);
                 var predicate = $("#propertyChooser").find("input").val();
-                // TODO make bombproof regex!
-                // TODO seriously refactor
-                /*
-                three alternatives for p and o :
-                Name - prefix with namespace, wrap in <>
-                prefix:name - don't wrap with <>
-                {uri} - wrap with <>
-                */
-                var wrapWithAngles = true;
-                if(predicate.indexOf(":") == -1) { // just name
-                    wrapWithAngles = false;
-                }
-                if(predicate.indexOf(".") == -1 || predicate.indexOf("/") == -1) {
-                    wrapWithAngles = false;
-                }
-                if(wrapWithAngles) {
-                    predicate = "<" + predicate + ">";
-                }
+
+                predicate = angleBrackets(predicate);
+
                 var object = $("#propertyLiteralValue").val();
                 var isLiteral = true;
                 if(!object || object == "") { // so URI object
                     isLiteral = false;
                     object = $("#uriValue").val();
-
-                    wrapWithAngles = true;
-                    if(object.indexOf(":") == -1) {
-                        wrapWithAngles = false; // just name
-                    }
-                    if(object.indexOf(".") == -1 && object.indexOf("/") == -1) {
-                        wrapWithAngles = false; // is prefix
-                    }
-                    if(wrapWithAngles) {
-                        object = "<" + object + ">";
-                    }
+                    object = angleBrackets(object);
                 }
                 var language = "en";
                 var callback = function (msg) {
@@ -478,7 +453,7 @@ var SchemaEdit = (function () {
                     }
                 });
                 var callback = function (msg) {
-                  console.log("callback msg = "+msg);
+                    console.log("callback msg = " + msg);
                 }
             });
             return languageButton;
@@ -573,7 +548,7 @@ var SchemaEdit = (function () {
             function readMultipleFiles(evt) {
                 //Retrieve all the files from the FileList object
                 var files = evt.target.files;
-                console.log("files = "+JSON.stringify(files, false,4));
+                console.log("files = " + JSON.stringify(files, false, 4));
                 if(files) {
                     for(var i = 0, f; f = files[i]; i++) {
                         var r = new FileReader();
@@ -593,7 +568,7 @@ var SchemaEdit = (function () {
                 } else {
                     alert("Failed to load files");
                 }
-              }
+            }
 
             document.getElementById('uploadFilename').addEventListener('change', readMultipleFiles, false);
         },
@@ -688,8 +663,10 @@ var SchemaEdit = (function () {
                     SparqlConnector.getJsonForSparqlURL(getAllPropertiesUrl, callback);
                 },
         */
+
+        // TODO is this used?
         makeAddClass: function (uri) {
-            var addPropertyButton = $("<button id='addClass'>Add Class</button>");
+            var addClassButton = $("<button id='addClass'>Add Class</button>");
             $("#editor").prepend(addClassButton);
             addClassButton.click(function () {});
             var chooser = SchemaEdit.makeClassChooser(uri);

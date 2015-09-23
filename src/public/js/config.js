@@ -91,7 +91,7 @@ var Config = (function () {
             Config.setToLocalStorage("currentResource", currentResource);
             var graph = parseUri(window.location.href).queryKey.graph;
             var split = window.location.href.split("?");
-            var newUrl = split[0] + "?uri=" + resource;
+            var newUrl = split[0] + "?uri=" + currentResource;
             if(graph && (graph != "")) {
                 newUrl = newUrl + "&graph=" + graph;
             }

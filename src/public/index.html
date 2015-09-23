@@ -105,7 +105,7 @@
     <h2>Schema Editor</h2>
 
     <div class="help">
-      <span href="#overview" class="helpButton">?</span>
+      <span id="#overviewHelp" class="helpButton">?</span>
       <div id="overviewHelpText" title="Overview" class="helpText">
         <p>This is Schema Edit</p>
       </div>
@@ -115,12 +115,12 @@
       <a href="#uploadRDF">Upload RDF</a>
       <h4>Create New Vocab</h4>
 
-      <!-- div class="help">
-        <a href="#newVocab" class="helpButton">?</a>
+      <div class="help">
+        <span id="#newVocabHelp" class="helpButton">?</span>
         <div id="newVocabHelpText" title="New Vocab" class="helpText">
           <p>Create a new vocab</p>
         </div>
-      </div -->
+      </div>
 
       <label for="vocabName">Name</label>
       <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
@@ -137,6 +137,13 @@
       </strong>
       <div id="currentGraph">
         <span id="graphChooser"></span>
+      </div>
+
+      <div class="help">
+        <span id="#graphChooser" class="helpButton">?</span>
+        <div id="graphChooserHelpText" title="Graph Chooser" class="helpText">
+          <p>Graph Chooser</p>
+        </div>
       </div>
     </div>
 
@@ -231,6 +238,10 @@
         </div>
 
         <button id="addPropertyValueButton">Add</button>
+
+        <div id="noResourceError" class="inform">
+          <p>Please select current resource first.</p>
+        </div>
       </div>
 
       <div>

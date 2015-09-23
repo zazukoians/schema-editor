@@ -158,6 +158,11 @@ input, textarea, select {
   width: 50%;
 }
 
+// text for pop-up dialogs 
+.inform {
+  display: none;
+}
+
 .help {
   display: block;
   text-align: right;

@@ -1,4 +1,4 @@
-/* TODO move into a module, hyperdata-utils?
+// TODO move into a module
 
 /**
  * Comment template.
@@ -19,12 +19,38 @@ function refresh() {
     refreshResourceInput();
 }
 
-function setLocalStorageObject(key, object){
-  localStorage.setItem(key, JSON.stringify(object) );
+/*
+To allow entry of variants of resources
+for inclusion in Turtle/SPARQL
+three alternatives :
+* Name - prefix with namespace, wrap in <>
+* prefix:name - don't wrap with <>
+* {uri} - wrap with <>
+algorithm no doubt can be improved...
+*/
+function angleBrackets(resource) {
+    var wrapWithAngles = true;
+    // just name
+    if(resource.indexOf(":") == -1) {
+        wrapWithAngles = false;
+    }
+    // qname
+    if(resource.indexOf(".") == -1 || predicate.indexOf("/") == -1) {
+        wrapWithAngles = false;
+    }
+    if(wrapWithAngles) {
+        resource = "<" + resource + ">";
+    }
+    return resource;
 }
 
-function getLocalStorageObject(key){
-  JSON.parse(localStorage.getItem(key));
+
+function setLocalStorageObject(key, object) {
+    localStorage.setItem(key, JSON.stringify(object));
+}
+
+function getLocalStorageObject(key) {
+    JSON.parse(localStorage.getItem(key));
 }
 
 /* was to be regex-based way of tweaking turtle-sparql to valid sparql */
