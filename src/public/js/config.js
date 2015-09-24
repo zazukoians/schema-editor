@@ -11,17 +11,20 @@ var Config = (function () {
 
     // This is the public interface of the Module.
     var Config = {
+
         current: { // effectively defaults
-            endpointHost: "http://zazukoians.org:3030",
-            queryPath: "/ontospace/sparql?query=",
-            updatePath: "/ontospace/update",
+            endpointHost: "http://localhost:3333",
+            queryPath: "/schema-edit/sparql?query=",
+            updatePath: "/schema-edit/update",
 
             currentResource: "",
             graphURI: ""
         },
-        // publicFunction can be called externally
-
-        //  graphURI: "http://data.admin.ch/def/hgv/",
+        /*
+        endpointHost: "http://zazukoians.org:3030",
+        queryPath: "/ontospace/sparql?query=",
+        updatePath: "/ontospace/update",
+        */
 
         /*
                 sparqlServerHost: "http://sandbox.fusepool.info:8181",
@@ -30,18 +33,6 @@ var Config = (function () {
                 sparqlUploadEndpoint: "/sparql/upload"
         */
 
-        /*
-                sparqlServerHost: "http://storedhost:3333",
-                sparqlQueryEndpoint: "/schema-edit/sparql?query=",
-                sparqlUpdateEndpoint: "/schema-edit/update"
-        */
-
-        //  sparqlServerHost: "http://zazukoians.org:3030",
-        //  sparqlQueryEndpoint: "/ontospace/sparql?query=",
-        //  sparqlUpdateEndpoint: "/ontospace/update",
-
-
-        ///////////////////////////////////////
 
         /* *** Value Getters *** */
         getCurrentResource: function () {

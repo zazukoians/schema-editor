@@ -21,7 +21,17 @@ var SparqlConnector = (function () {
             SparqlConnector.preloadKnownPrefixes();
         },
 
-
+        ping: function (callback) {
+            var sparql = "SELECT * WHERE {?s ?p ?o} LIMIT 1";
+            var url = Config.getEndpointHost() + Config.getQueryPath() + encodeURIComponent(sparql) + "&output=xml";
+            $.get(url, function () {
+                })
+                .done(function () {
+                })
+                .fail(function () {
+                    callback();
+                });
+        },
 
         // API, based on spec
 
@@ -128,7 +138,7 @@ var SparqlConnector = (function () {
                     "data": data
                 });
 
-                /* workaround for lack of upload endpoint */
+            /* workaround for lack of upload endpoint */
             var sparql = cleanSPARQL(uploadTurtleSparql);
 
             SparqlConnector.postData(sparql, callback);
@@ -243,7 +253,7 @@ var SparqlConnector = (function () {
                     "name": name
                 });
             var callback = function (msg) {
-                alert(msg);
+                console.log("createNewVocab = "+msg);
             }
             SparqlConnector.postData(createVocabSparql, callback);
 
@@ -253,7 +263,7 @@ var SparqlConnector = (function () {
                     "namespace": namespace
                 });
             var callback = function (msg) {
-                alert(msg);
+                console.log("createNewVocab = "+msg);
                 var dummy = "http://purl.org/stuff/hyperdata/Dummy";
                 var split = window.location.href.split("?");
 
@@ -299,7 +309,7 @@ var SparqlConnector = (function () {
         /* *** connector low-level utilities *** */
         // TODO is duplicated below, delete one PS duplicated where???
         postData: function (data, callback) {
-            // alert("postData called");
+
             $.ajax({
                 type: "POST",
                 url: Config.getEndpointHost() + Config.getUpdatePath(),
@@ -307,14 +317,14 @@ var SparqlConnector = (function () {
                     update: data
                 })
             }).done(function (msg) {
-                //  alert("postData called msg=" + msg);
+
 
                 if(callback) {
                     callback(msg);
                 }
             }).fail(function (jqXHR, textStatus,
                 errorThrown) {
-                alert("Error " + textStatus);
+                  console.log("postData error = "+textStatus);
             });
         },
 
@@ -351,7 +361,7 @@ var SparqlConnector = (function () {
                     "object": object,
                     "language": language
                 });
-             console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
+            console.log("updateLiteralTripleSparql = \n" + updateTripleSparql);
 
             //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
             //    encodeURIComponent(updateTripleSparql) + "&output=xml";
@@ -372,7 +382,7 @@ var SparqlConnector = (function () {
                     "object": object,
                     "language": language
                 });
-             console.log("insertPropertySparql = \n" + insertPropertySparql);
+            console.log("insertPropertySparql = \n" + insertPropertySparql);
 
             //var updateTripleUrl = Config.sparqlServerHost + Config.sparqlUpdateEndpoint +
             //    encodeURIComponent(updateTripleSparql) + "&output=xml";
@@ -396,7 +406,6 @@ var SparqlConnector = (function () {
 
         getJsonForSparqlURL: function (pageURL, callback) {
 
-            // alert("getJsonForSparqlURL called ");
             $.ajax({
                 url: pageURL,
                 accept: {
@@ -404,7 +413,7 @@ var SparqlConnector = (function () {
                     sparql: 'sparql-results+xml;charset=UTF-8'
                 },
                 headers: { // belt and braces
-//   'Content-Type': 'application/sparql-update'
+                    //   'Content-Type': 'application/sparql-update'
                     //'Accept': 'sparql-results+xml;charset=UTF-8'
 
                     //   'Accept-Charset': 'UTF-8' unsafe
@@ -416,7 +425,7 @@ var SparqlConnector = (function () {
                 callback(json);
                 // $(window).trigger('resize');
             }).fail(function (msg) {
-                alert("error " + msg);
+                console.log("getJsonForSparqlURL error = "+msg);
             });
         },
 

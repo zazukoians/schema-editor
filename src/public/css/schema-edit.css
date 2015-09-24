@@ -47,13 +47,6 @@ button, .button {
   display: none;
 }
 
-#endpointSettings {
-  padding: 10px;
-}
-
-
-/* , .ui-widget */
-
 label, #propertyLabel {
   display: inline-block;
   width: 20%;
@@ -162,7 +155,10 @@ input, textarea, select {
   width: 50%;
 }
 
-// text for pop-up dialogs
+#endpointSettings {
+  padding: 10px;
+}
+
 .inform {
   display: none;
 }

@@ -12,8 +12,9 @@ var SchemaEdit = (function () {
          * Initialises SchemaEdit UI
          */
         init: function () {
+                      SchemaEdit.endpointsDialog();
             $("#endpointHost").val(Config.getEndpointHost());
-            $("#endpointLink").attr("href", Config.getEndpointHost());
+            //  $("#endpointLink").attr("href", Config.getEndpointHost());
             $("#updatePath").val(Config.getUpdatePath());
             $("#queryPath").val(Config.getQueryPath());
 
@@ -30,13 +31,21 @@ var SchemaEdit = (function () {
             SchemaEdit.setupButtons();
             SchemaEdit.makeEndpointButton();
             SchemaEdit.setupHelpButtons();
-          //  SchemaEdit.endpointsDialog();
         },
 
         endpointsDialog: function () {
+          $("#endpointClearButton").click(
+              function () {
+                  $("#endpoints input").val("");
+              }
+          );
+
+          var dialog = function(){
             $("#endpoints").dialog({
-                width: 500
+                width: 800
             });
+          }
+          SparqlConnector.ping(dialog);
         },
 
         setupHelpButtons: function () {
@@ -311,9 +320,9 @@ var SchemaEdit = (function () {
                 var name = $("#className").val();
                 var label = $("#classLabel").val();
                 var subClassOf = $("#subClassOf").val();
-                console.log("before = "+subClassOf);
+                console.log("before = " + subClassOf);
                 subClassOf = angleBrackets(subClassOf);
-                console.log("after = "+subClassOf);
+                console.log("after = " + subClassOf);
                 var comment = $("#classComment").val();
                 var callback = function (msg) {
                     alert(msg);
