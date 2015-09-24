@@ -66,8 +66,10 @@ var addClassSparqlTemplate = commonPrefixes +
     } \n\
     }";
 
+// TODO tweak, namespace = graph
 var addPropertySparqlTemplate = commonPrefixes +
-    "INSERT DATA {  \n\
+  "BASE <~{namespace}~> \n\
+   INSERT DATA {  \n\
     		GRAPH <~{graphURI}~> {  \n\
     			<~{namespace}~~{name}~>  a rdf:Property ; \n\
           \n\

@@ -12,7 +12,7 @@ var SchemaEdit = (function () {
          * Initialises SchemaEdit UI
          */
         init: function () {
-                      SchemaEdit.endpointsDialog();
+            SchemaEdit.endpointsDialog();
             $("#endpointHost").val(Config.getEndpointHost());
             //  $("#endpointLink").attr("href", Config.getEndpointHost());
             $("#updatePath").val(Config.getUpdatePath());
@@ -34,18 +34,18 @@ var SchemaEdit = (function () {
         },
 
         endpointsDialog: function () {
-          $("#endpointClearButton").click(
-              function () {
-                  $("#endpoints input").val("");
-              }
-          );
+            $("#endpointClearButton").click(
+                function () {
+                    $("#endpoints input").val("");
+                }
+            );
 
-          var dialog = function(){
-            $("#endpoints").dialog({
-                width: 800
-            });
-          }
-          SparqlConnector.ping(dialog);
+            var dialog = function () {
+                $("#endpoints").dialog({
+                    width: 800
+                });
+            }
+            SparqlConnector.ping(dialog);
         },
 
         setupHelpButtons: function () {
@@ -339,11 +339,17 @@ var SchemaEdit = (function () {
                 var name = $("#propertyName").val();
                 var label = $("#propertyLabel").val();
                 var domain = $("#domain").val();
-                domain = angleBrackets(domain);
+                if(domain) {
+                    domain = angleBrackets(domain);
+                }
                 var range = $("#range").val();
-                range = angleBrackets(range);
+                if(range) {
+                    range = angleBrackets(range);
+                }
                 var subPropertyOf = $("#subPropertyOf").val();
-                subPropertyOf = angleBrackets(subPropertyOf);
+                if(subPropertyOf) {
+                    subPropertyOf = angleBrackets(subPropertyOf);
+                }
                 var comment = $("#classComment").val();
                 var callback = function (msg) {
                     alert(msg);
