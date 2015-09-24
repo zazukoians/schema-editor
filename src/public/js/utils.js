@@ -30,13 +30,14 @@ algorithm no doubt can be improved...
 */
 function angleBrackets(resource) {
     var wrapWithAngles = true;
-    // just name
-    if(resource.indexOf(":") == -1) {
+
+    // qname
+    if(resource.indexOf(".") == -1 || resource.indexOf("/") == -1) {
         wrapWithAngles = false;
     }
-    // qname
-    if(resource.indexOf(".") == -1 || predicate.indexOf("/") == -1) {
-        wrapWithAngles = false;
+    // just name
+    if(resource.indexOf(":") == -1) {
+        wrapWithAngles = true;
     }
     if(wrapWithAngles) {
         resource = "<" + resource + ">";

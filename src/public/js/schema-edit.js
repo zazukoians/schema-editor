@@ -30,6 +30,13 @@ var SchemaEdit = (function () {
             SchemaEdit.setupButtons();
             SchemaEdit.makeEndpointButton();
             SchemaEdit.setupHelpButtons();
+          //  SchemaEdit.endpointsDialog();
+        },
+
+        endpointsDialog: function () {
+            $("#endpoints").dialog({
+                width: 500
+            });
         },
 
         setupHelpButtons: function () {
@@ -304,6 +311,9 @@ var SchemaEdit = (function () {
                 var name = $("#className").val();
                 var label = $("#classLabel").val();
                 var subClassOf = $("#subClassOf").val();
+                console.log("before = "+subClassOf);
+                subClassOf = angleBrackets(subClassOf);
+                console.log("after = "+subClassOf);
                 var comment = $("#classComment").val();
                 var callback = function (msg) {
                     alert(msg);
@@ -320,8 +330,11 @@ var SchemaEdit = (function () {
                 var name = $("#propertyName").val();
                 var label = $("#propertyLabel").val();
                 var domain = $("#domain").val();
+                domain = angleBrackets(domain);
                 var range = $("#range").val();
+                range = angleBrackets(range);
                 var subPropertyOf = $("#subPropertyOf").val();
+                subPropertyOf = angleBrackets(subPropertyOf);
                 var comment = $("#classComment").val();
                 var callback = function (msg) {
                     alert(msg);
@@ -349,13 +362,10 @@ var SchemaEdit = (function () {
 
             $("#addPropertyValueButton").click(function () {
                 var subject = Config.getCurrentResource();
-                console.log("Config.getCurrentResource() = " + Config.getCurrentResource());
                 if(!Config.getCurrentResource()) {
-                    console.log("no resource");
                     $("#noResourceError").dialog();
                     return;
                 }
-                // console.log("getCurrentResource = "+subject);
                 var predicate = $("#propertyChooser").find("input").val();
 
                 predicate = angleBrackets(predicate);
