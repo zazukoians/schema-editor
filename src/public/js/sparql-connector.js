@@ -23,7 +23,7 @@ var SparqlConnector = (function () {
 
         ping: function (callback) {
             var sparql = "SELECT * WHERE {?s ?p ?o} LIMIT 1";
-            var url = Config.getEndpointHost() + Config.getQueryPath() + encodeURIComponent(sparql) + "&output=xml";
+            var url = Config.getEndpointHost() + Config.getQueryPath() +"?query=" + encodeURIComponent(sparql) + "&output=xml";
             $.get(url, function () {
                 })
                 .done(function () {
@@ -64,7 +64,7 @@ var SparqlConnector = (function () {
                 "graphURI": Config.getGraphURI(),
             });
 
-            var getTurtleUrl = Config.getEndpointHost() + Config.getQueryPath() +
+            var getTurtleUrl = Config.getEndpointHost() + Config.getQueryPath() +"?query=" +
                 encodeURIComponent(getTurtleSparql) + "&output=text";
 
             return getTurtleUrl;
@@ -85,7 +85,7 @@ var SparqlConnector = (function () {
                     "graphURI": Config.getGraphURI()
                 });
             //  console.log("getResourceListSparql = \n" + getResourceListSparql);
-            var getResourcesUrl = Config.getEndpointHost() + Config.getQueryPath() +
+            var getResourcesUrl = Config.getEndpointHost() + Config.getQueryPath() + "?query=" +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             var extractResources = function (json) {
@@ -107,7 +107,7 @@ var SparqlConnector = (function () {
                     "graphURI": Config.getGraphURI(),
                     "type": type
                 });
-            var getResourcesUrl = Config.getEndpointHost() + Config.getQueryPath() +
+            var getResourcesUrl = Config.getEndpointHost() + Config.getQueryPath() +"?query=" +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
@@ -123,7 +123,7 @@ var SparqlConnector = (function () {
                 }
                 callback(graphURIs);
             }
-            var getGraphListUrl = Config.getEndpointHost() + Config.getQueryPath() +
+            var getGraphListUrl = Config.getEndpointHost() + Config.getQueryPath() +"?query=" +
                 encodeURIComponent(listGraphsSparqlTemplate) + "&output=xml";
 
             SparqlConnector.getJsonForSparqlURL(getGraphListUrl, makeList);

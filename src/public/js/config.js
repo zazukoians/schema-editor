@@ -14,7 +14,7 @@ var Config = (function () {
 
         current: { // effectively defaults
             endpointHost: "http://localhost:3333",
-            queryPath: "/schema-edit/sparql?query=",
+            queryPath: "/schema-edit/sparql",
             updatePath: "/schema-edit/update",
 
             currentResource: "",
@@ -22,13 +22,13 @@ var Config = (function () {
         },
         /*
         endpointHost: "http://zazukoians.org:3030",
-        queryPath: "/ontospace/sparql?query=",
+        queryPath: "/ontospace/sparql",
         updatePath: "/ontospace/update",
         */
 
         /*
                 sparqlServerHost: "http://sandbox.fusepool.info:8181",
-                sparqlQueryEndpoint: "/sparql/select?query=",
+                sparqlQueryEndpoint: "/sparql/select",
                 sparqlUpdateEndpoint: "/sparql/update",
                 sparqlUploadEndpoint: "/sparql/upload"
         */

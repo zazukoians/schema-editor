@@ -694,7 +694,7 @@ var SchemaEdit = (function () {
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
             //  console.log("generateGetUrl sparql = " + sparql);
-            return Config.getEndpointHost() + Config.getQueryPath() + encodeURIComponent(sparql) + "&output=xml";
+            return Config.getEndpointHost() + Config.getQueryPath() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
         },
 
         deleteResource: function (resourceURI) {
