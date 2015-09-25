@@ -28,7 +28,8 @@ var SchemaEdit = (function () {
             //  SchemaEdit.populateClassesCombobox(); // adds anything?
 
             SchemaEdit.makeUploadGraphButton();
-            SchemaEdit.setupButtons();
+            SchemaEdit.makeTurtleButton();
+          //  SchemaEdit.setupButtons();
             SchemaEdit.makeEndpointButton();
             SchemaEdit.setupHelpButtons();
         },
@@ -89,7 +90,6 @@ var SchemaEdit = (function () {
             var graph = parseUri(window.location.href).queryKey.graph;
             if(graph && (graph != "")) {
                 $("#graph").val(graph);
-                //  console.log("setGraphFromUrl to " + graph);
             }
         },
 
@@ -302,8 +302,8 @@ var SchemaEdit = (function () {
         },
 
         makeNewVocabBlock: function () {
-            $("#newVocabBlock").show();
-            $("#currentResourceBlock").hide();
+            // $("#newVocabBlock").show();
+            // $("#currentResourceBlock").hide();
             $("#newVocabButton").click(function () {
                 var name = $("#vocabName").val();
                 var namespace = $("#vocabNamespace").val();
@@ -617,25 +617,16 @@ var SchemaEdit = (function () {
             });
         },
 
+        makeTurtleButton: function () {
+          $("#turtle").click(function () { // is used?
+              console.log("#turtle clicked");
+              location.href = SparqlConnector.getTurtleUrl();
+          });
+        },
+
         setupButtons: function () { // TODO refactor - move local to buttons?
-            //console.log("setup buttons called");
-            $("#turtle").click(function () { // is used?
-                console.log("#turtle clicked");
-                location.href = SparqlConnector.getTurtleUrl();
-            });
 
-
-            //
-
-
-            /* was from foowiki?
-                        $("#newPageButton").click(function () {
-                            var newPageName = $("#newPageName").val();
-                            window.location.href = window.location.href = Config.serverRootPath + "edit.html?uri=" + Config.graphURI + "/" +
-                                newPageName;
-                        });
-            */
-
+/*
             // TODO this button doesn't appear to exist!
             $("#upload-button").click(function () {
                 var data = new FormData($("#upload-file").val());
@@ -650,6 +641,7 @@ var SchemaEdit = (function () {
                 });
                 //    e.preventDefault();
             });
+            */
         },
 
         makeAddPropertyValue: function (uri) {
