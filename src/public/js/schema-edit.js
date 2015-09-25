@@ -13,10 +13,10 @@ var SchemaEdit = (function () {
          */
         init: function () {
             SchemaEdit.endpointsDialog();
-            $("#endpointHost").val(Config.getEndpointHost());
+            //  $("#endpointHost").val(Config.getEndpointHost());
             //  $("#endpointLink").attr("href", Config.getEndpointHost());
-            $("#updatePath").val(Config.getUpdatePath());
-            $("#queryPath").val(Config.getQueryPath());
+            $("#queryEndpoint").val(Config.getQueryEndpoint());
+            $("#updateEndpoint").val(Config.getUpdateEndpoint());
 
             SchemaEdit.makeDeleteResourceButton();
             SchemaEdit.makeGraphChooser();
@@ -349,8 +349,8 @@ var SchemaEdit = (function () {
                 var name = $("#vocabName").val();
                 var graph = $("#vocabNamespace").val();
                 var prefix = $("#vocabPrefix").val();
-                var callback = function(){
-                  Config.setGraphURI(graph);
+                var callback = function () {
+                    Config.setGraphURI(graph);
                 }
                 SparqlConnector.createNewVocab(name, graph, prefix, callback);
             });
@@ -653,9 +653,9 @@ var SchemaEdit = (function () {
 
         makeEndpointButton: function () {
             $("#endpointButton").click(function () {
-                Config.setEndpointHost($("#endpointHost").val());
-                Config.setQueryPath($("#queryPath").val());
-                Config.setUpdatePath($("#updatePath").val());
+            //    Config.setEndpointHost($("#endpointHost").val());
+                Config.setQueryEndpoint($("#queryEndpoint").val());
+                Config.setUpdateEndpoint($("#updateEndpoint").val());
                 window.location.reload();
             });
         },
@@ -735,7 +735,8 @@ var SchemaEdit = (function () {
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
             //  console.log("generateGetUrl sparql = " + sparql);
-            return Config.getEndpointHost() + Config.getQueryPath() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
+          //  return Config.getEndpointHost() + Config.getQueryPath() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
+              return Config.getQueryEndpoint() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
         },
 
         deleteResource: function (resourceURI) {

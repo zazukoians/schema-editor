@@ -13,14 +13,20 @@ var Config = (function () {
     var Config = {
 
         current: { // effectively defaults
+          /*
             endpointHost: "http://localhost:3333",
             queryPath: "/schema-edit/sparql",
             updatePath: "/schema-edit/update",
+*/
+            queryEndpoint: "http://localhost:3333/schema-edit/sparql",
+            updateEndpoint: "http://localhost:3333/schema-edit/update",
 
             currentResource: "",
             graphURI: ""
         },
         /*
+        http://zazukoians.org:3030/ontospace/sparql
+        http://zazukoians.org:3030/ontospace/update
         endpointHost: "http://zazukoians.org:3030",
         queryPath: "/ontospace/sparql",
         updatePath: "/ontospace/update",
@@ -53,6 +59,17 @@ var Config = (function () {
             return stored ? stored : Config.current.graphURI;
         },
 
+        getQueryEndpoint: function () {
+            var stored = Config.getFromLocalStorage("queryEndpoint");
+            return stored ? stored : Config.current.queryEndpoint;
+        },
+
+        getUpdateEndpoint: function () {
+            var stored = Config.getFromLocalStorage("updateEndpoint");
+            return stored ? stored : Config.current.updateEndpoint;
+        },
+
+        /*
         getEndpointHost: function () {
             var stored = Config.getFromLocalStorage("endpointHost");
             return stored ? stored : Config.current.endpointHost;
@@ -67,7 +84,7 @@ var Config = (function () {
             var stored = Config.getFromLocalStorage("updatePath");
             return stored ? stored : Config.current.updatePath;
         },
-
+*/
         /* common wrapper */
         getFromLocalStorage: function (setting) {
             if(('localStorage' in window) && window['localStorage'] !== null) {
@@ -96,8 +113,21 @@ var Config = (function () {
             window.location.href = split[0] + "?graph=" + graphURI;
         },
 
+        setQueryEndpoint: function (queryEndpoint) {
+            console.log("setqueryEndpoint = " + queryEndpoint);
+            Config.current.queryEndpoint = queryEndpoint;
+            return Config.setToLocalStorage("queryEndpoint", queryEndpoint);
+        },
+
+        setUpdateEndpoint: function (updateEndpoint) {
+            console.log("setupdateEndpoint = " + updateEndpoint);
+            Config.current.updateEndpoint = updateEndpoint;
+            return Config.setToLocalStorage("updateEndpoint", updateEndpoint);
+        },
+
+        /*
         setEndpointHost: function (endpointHost) {
-          console.log("setEndpointHost = "+endpointHost);
+            console.log("setEndpointHost = " + endpointHost);
             Config.current.endpointHost = endpointHost;
             return Config.setToLocalStorage("endpointHost", endpointHost);
         },
@@ -111,6 +141,8 @@ var Config = (function () {
             Config.current.updatePath = updatePath;
             return Config.setToLocalStorage("updatePath", updatePath);
         },
+
+        */
 
         /* common wrapper */
         setToLocalStorage: function (setting, value) {
