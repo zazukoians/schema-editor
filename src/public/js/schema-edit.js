@@ -78,7 +78,9 @@ var SchemaEdit = (function () {
         setupHelpButtons: function () {
             $(".helpButton").click(
                 function () {
-                    $(this).next().dialog();
+                    $(this).next().dialog({
+                        width: 800
+                    });
                 }
             );
             /*

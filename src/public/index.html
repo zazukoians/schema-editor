@@ -102,16 +102,23 @@
   <div id="spinner" class="spinner"></div>
 
   <div id="header">
-    <div class="help">
-      <span id="#overviewHelp" class="helpButton">?</span>
-      <div id="overviewHelpText" title="Overview" class="helpText">
-        <p>This is Schema Edit</p>
-      </div>
-    </div>
-    <h2 id="pageTitle">Schema Editor</h2>
 
-    <button id="newVocabButton">New Vocab</button>
-    <div id="newVocabBlock">
+    <div id="titleBlock"  class="editBlock">
+      <div class="help">
+        <span id="#overviewHelp" class="helpButton">?</span>
+        <div id="overviewHelpText" title="Overview" class="helpText">
+          <p>This is Schema Edit. It aims to simplify the development of RDF vocabularies/ontologies. It is not designed to be a general purpose RDF editor. The vocabulary being edited is contained as a graph in a SPARQL 1.1 capable store. Editing operations are carried out directly on that graph, changes take place immediately.</p>
+          <p>The graph name is taken as being the namespace name of the vocabulary.</p>
+          <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name). Alternately full QNames (namespace+local name) may be used.
+          </p>
+        </div>
+      </div>
+
+      <h2 id="pageTitle">Schema Editor</h2>
+    </div>
+
+    <button id="newVocabButton" title="Create new vocabulary">New Vocab</button>
+    <div id="newVocabBlock"  class="editBlock">
       <div class="help">
         <span id="#newVocabHelp" class="helpButton">?</span>
         <div id="newVocabHelpText" title="New Vocab" class="helpText">
@@ -130,12 +137,12 @@
       <button id="createVocabButton">Create</button>
     </div>
 
-    <div id="currentGraphBlock">
+    <div id="currentGraphBlock" class="editBlock">
 
       <div class="help">
         <span id="#graphChooserHelpButton" class="helpButton">?</span>
         <div id="graphChooserHelpText" title="Graph Chooser" class="helpText">
-          <p>Graph Chooser</p>
+          <p>This is the Graph Name of the Vocabulary currently being edited. Click the edit box to list the graphs available in the store.</p>
         </div>
       </div>
 
@@ -148,11 +155,11 @@
     </div>
 
     <br/>
-    <div id="currentResourceBlock">
+    <div id="currentResourceBlock" class="editBlock">
       <div class="help">
         <span id="#currentResourceHelpButton" class="helpButton">?</span>
         <div id="currentResourceHelpText" title="Current Resource" class="helpText">
-          <p>Current Resource</p>
+          <p>This is the resource to which some of the operations below will apply. Click the edit box to list the resources  available in the store.</p>
         </div>
       </div>
 
@@ -180,7 +187,7 @@
         <div class="help">
           <span id="#classesPropertiesHelpButton" class="helpButton">?</span>
           <div id="classesPropertiesHelpText" title="Classes and Properties" class="helpText">
-            <p>These are the  RDF classes and properties in the current graph. Clicking on a class or property will set it to the Current Resource.</p>
+            <p>These are the RDF classes and properties in the current graph. Clicking on a class or property will set it to the Current Resource.</p>
           </div>
         </div>
 
@@ -200,13 +207,15 @@
 
       <div id="editor"></div>
 
-      <div id="addClass">
+      <div id="addClass" class="editBlock">
+
         <div class="help">
           <span id="#addClassHelpButton" class="helpButton">?</span>
           <div id="addClassHelpText" title="Add Class" class="helpText">
             <p>At minimum specify a class name, then click the Add Class button</p>
           </div>
         </div>
+
         <h4>Add Class</h4>
 
         <label for="className">Class Name</label>
@@ -226,7 +235,15 @@
 
       <hr/>
 
-      <div id="addPropertyBlock">
+      <div id="addPropertyBlock" class="editBlock">
+
+        <div class="help">
+          <span id="#addPropertyHelpButton" class="helpButton">?</span>
+          <div id="addPropertyHelpText" title="Add Class" class="helpText">
+            <p>At minimum specify a property name, then click the Add Property button</p>
+          </div>
+        </div>
+
         <h4>Add Property</h4>
 
         <label for="propertyName">Property Name</label>
@@ -252,7 +269,14 @@
 
       <hr/>
 
-      <div id="addPropertyValueBlock">
+      <div id="addPropertyValueBlock" class="editBlock">
+
+        <div class="help">
+          <span id="#addPropertyValueHelpButton" class="helpButton">?</span>
+          <div id="addPropertyValueHelpText" title="Add Property Value" class="helpText">
+            <p>A Current Resource must have been selected (above), then this may be used to add a specific triple. Provide values for the property and its value (literal or resource).</p>
+          </div>
+        </div>
         <!-- class="ui-widget" -->
         <h4>Add Property To Current Resource</h4>
         <div id="propertyChooser">
@@ -273,25 +297,38 @@
       </div>
       <hr/>
 
-      <a name="uploadRDF" />
-      <h3>Upload RDF</h3>
+      <div id="uploadRDFBlock" class="editBlock">
 
-      <form id="upload" enctype="text/turtle" method="post">
-        <label for='graphName'>Graph</label>
-        <input name="graph" id="graphName" size="20" value="https://example.org/" />
-        <br/>
-        <input id="uploadFilename" type="file" name="uploadFilename" size="40" />
-        <!-- button id="uploadGraph">Upload</button -->
-        <br/>
-        <em>for now, put graph in first then select files - better UI in progress...</em>
-      </form>
+        <div class="help">
+          <span id="#uploadRDFHelpButton" class="helpButton">?</span>
+          <div id="uploadRDFHelpText" title="Upload RDF" class="helpText">
+            <p>Allows the uploading of Turtle data to the current graph. First enter the namespace/graph name/base URI of the RDF you wish to upload. Then click Choose File. Once chosen, the data will automatically be uploaded.</p>
+          </div>
+        </div>
 
+        <a name="uploadRDF" />
+        <h3>Upload RDF</h3>
+
+        <form id="upload" enctype="text/turtle" method="post">
+          <label for='graphName'>Graph</label>
+          <input name="graph" id="graphName" size="20" value="https://example.org/" />
+          <br/>
+          <input id="uploadFilename" type="file" name="uploadFilename" size="40" />
+        </form>
+      </div>
       <hr/>
 
-      <h3>Export Turtle</h3>
-      <button id="turtle">Export</button>
+      <div id="exportTurtleBlock" class="editBlock">
+        <div class="help">
+          <span id="#exportTurtleHelpButton" class="helpButton">?</span>
+          <div id="exportTurtleHelpText" title="Upload RDF" class="helpText">
+            <p>Displays the Turtle of the Current Graph. You are responsible for saving it yourself.</p>
+          </div>
+        </div>
 
-      <hr/>
+        <h3>Export Turtle</h3>
+        <button id="turtle">Export</button>
+      </div>
 
       <div id="endpoints">
         <strong>Endpoint Settings</strong>
