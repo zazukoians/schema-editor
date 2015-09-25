@@ -33,7 +33,7 @@ function angleBrackets(resource) {
 
     // empty
     if(!resource || resource == "") {
-        return resource;
+        return false;
     }
     // qname (no dot or slash)
     if(resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {

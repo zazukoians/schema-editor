@@ -46,12 +46,14 @@ var constructGraph = commonPrefixes +
     "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <~{graphURI}~> { ?s ?p ?o } . }";
 
 var addClassSparqlTemplate = commonPrefixes +
-    "INSERT DATA {  \n\
+  "BASE <~{namespace}~> \n\
+    INSERT DATA {  \n\
     		GRAPH <~{graphURI}~> {  \n\
     			<~{namespace}~~{name}~>  a rdfs:Class ; \n\
       \n\
           ~{#label}~ \n\
               rdfs:label \"\"\"~{label}~\"\"\" ; \n\
+              skos:prefLabel \"\"\"~{label}~\"\"\" ; \n\
           ~{/label}~  \n\
 \n\
           ~{#subClassOf}~ \n\
@@ -60,6 +62,7 @@ var addClassSparqlTemplate = commonPrefixes +
 \n\
           ~{#comment}~ \n\
               rdfs:comment \"\"\"~{comment}~\"\"\" ; \n\
+              skos:definition \"\"\"~{comment}~\"\"\" ; \n\
           ~{/comment}~ \n\
 \n\
           rdfs:isDefinedBy <~{namespace}~> \n\
@@ -74,7 +77,8 @@ var addPropertySparqlTemplate = commonPrefixes +
     			<~{namespace}~~{name}~>  a rdf:Property ; \n\
           \n\
           ~{#label}~ \n\
-              rdfs:label \"\"\"~{label}~\"\"\" \n\
+              rdfs:label \"\"\"~{label}~\"\"\" ; \n\
+              skos:prefLabel \"\"\"~{label}~\"\"\" ; \n\
           ~{/label}~ ; \n\
 \n\
           ~{#subPropertyOf}~ \n\
@@ -91,6 +95,7 @@ var addPropertySparqlTemplate = commonPrefixes +
 \n\
           ~{#comment}~ \n\
             rdfs:comment \"\"\"~{comment}~\"\"\" ; \n\
+            skos:definition \"\"\"~{comment}~\"\"\" ; \n\
           ~{/comment}~  \n\
 \n\
           rdfs:isDefinedBy <~{namespace}~> \n\
