@@ -102,26 +102,24 @@
   <div id="spinner" class="spinner"></div>
 
   <div id="header">
-    <h2>Schema Editor</h2>
-
     <div class="help">
       <span id="#overviewHelp" class="helpButton">?</span>
       <div id="overviewHelpText" title="Overview" class="helpText">
         <p>This is Schema Edit</p>
       </div>
     </div>
+    <h2 id="pageTitle">Schema Editor</h2>
 
-<button id="newVocabButton">New Vocab</button>
+    <button id="newVocabButton">New Vocab</button>
     <div id="newVocabBlock">
-      <a href="#uploadRDF">Upload RDF</a>
-      <h4>Create New Vocab</h4>
-
       <div class="help">
         <span id="#newVocabHelp" class="helpButton">?</span>
         <div id="newVocabHelpText" title="New Vocab" class="helpText">
           <p>Create a new vocab</p>
         </div>
       </div>
+      <a href="#uploadRDF">Upload RDF</a>
+      <h4>Create New Vocab</h4>
 
       <label for="vocabName">Name</label>
       <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
@@ -133,29 +131,40 @@
     </div>
 
     <div id="currentGraphBlock">
+
+      <div class="help">
+        <span id="#graphChooserHelpButton" class="helpButton">?</span>
+        <div id="graphChooserHelpText" title="Graph Chooser" class="helpText">
+          <p>Graph Chooser</p>
+        </div>
+      </div>
+
       <strong>
         Current Graph :
       </strong>
       <div id="currentGraph">
         <span id="graphChooser"></span>
       </div>
-
-      <div class="help">
-        <span id="#graphChooser" class="helpButton">?</span>
-        <div id="graphChooserHelpText" title="Graph Chooser" class="helpText">
-          <p>Graph Chooser</p>
-        </div>
-      </div>
     </div>
 
     <br/>
     <div id="currentResourceBlock">
+      <div class="help">
+        <span id="#currentResourceHelpButton" class="helpButton">?</span>
+        <div id="currentResourceHelpText" title="Current Resource" class="helpText">
+          <p>Current Resource</p>
+        </div>
+      </div>
+
       <strong>
         Current Resource :
       </strong>
       <div id="currentR">
-        <span id="resourceChooser"></span><button id="deleteResource">Delete Resource</button>
-        <div id="deleteResourceText" class="dialog"><p>Resource Deleted</p></div>
+        <span id="resourceChooser"></span>
+        <button id="deleteResource">Delete Resource</button>
+        <div id="deleteResourceText" class="dialog">
+          <p>Resource Deleted</p>
+        </div>
       </div>
     </div>
   </div>
@@ -164,8 +173,18 @@
 
     <!--*** Left Panel *** -->
     <div id="left">
+
       <div class="list-block">
-        <h2 class="header">Classes</h2>
+
+        <h2 id="classesTitle" class="header">Classes</h2>
+        <div class="help">
+          <span id="#classesPropertiesHelpButton" class="helpButton">?</span>
+          <div id="classesPropertiesHelpText" title="Classes and Properties" class="helpText">
+            <p>These are the  RDF classes and properties in the current graph. Clicking on a class or property will set it to the Current Resource.</p>
+          </div>
+        </div>
+
+
         <div id="classes" class="small"></div>
       </div>
 
@@ -174,6 +193,7 @@
         <div id="properties" class="small"></div>
       </div>
     </div>
+    <!--*** End Left Panel *** -->
 
     <!--*** Center Panel *** -->
     <div id="center">
@@ -181,14 +201,13 @@
       <div id="editor"></div>
 
       <div id="addClass">
-        <h4>Add Class</h4>
-
         <div class="help">
           <span id="#addClassHelpButton" class="helpButton">?</span>
           <div id="addClassHelpText" title="Add Class" class="helpText">
             <p>At minimum specify a class name, then click the Add Class button</p>
           </div>
         </div>
+        <h4>Add Class</h4>
 
         <label for="className">Class Name</label>
         <input id="className" title="enter text" />
@@ -223,10 +242,10 @@
         <input id="subPropertyOf" title="enter parent property" class="resource" />
 
         <label for="domain">rdfs:domain</label>
-        <input id="domain" title="enter domain class" class="resource"  />
+        <input id="domain" title="enter domain class" class="resource" />
 
         <label for="range">rdfs:range</label>
-        <input id="range" title="enter range class" class="resource"  />
+        <input id="range" title="enter range class" class="resource" />
 
         <button id="addPropertyButton">Add Property</button>
       </div>
@@ -289,16 +308,19 @@
           <label for="updatePath">Update Path</label>
           <input id="updatePath" type="text" value=""></input>
         </div>
-        <button id="endpointButton">Set New Values</button><button id="endpointClearButton">Clear</button>
+        <button id="endpointButton">Set New Values</button>
+        <button id="endpointClearButton">Clear</button>
       </div>
 
     </div>
+    <!--*** End Center Panel *** -->
 
     <!--*** Right Panel *** -->
     <div id="right">
       <h2>History</h2>
     </div>
   </div>
+  <!--*** End Right Panel *** -->
 
   <div id="footer">
   </div>

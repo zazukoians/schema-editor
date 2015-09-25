@@ -40,7 +40,7 @@ var SchemaEdit = (function () {
             $("#deleteResource").click(
                 function () {
                     var resource = Config.getCurrentResource();
-                    console.log("Config.getCurrentResource() = "+Config.getCurrentResource());
+                    console.log("Config.getCurrentResource() = " + Config.getCurrentResource());
                     var callback = function (msg) {
                         $("#deleteResourceText").dialog();
                     }
@@ -81,6 +81,18 @@ var SchemaEdit = (function () {
                     $(this).next().dialog();
                 }
             );
+            /*
+            $("#overviewHelp").position({
+                my: "center",
+                at: "right",
+                of: "#pageTitle"
+            });
+            $("#classesPropertiesHelpButton").position({
+                my: "center",
+                at: "left",
+                of: "#classesTitle"
+            });
+            */
         },
 
         /* Builds graph chooser combobox/autocomplete
