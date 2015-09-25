@@ -244,7 +244,7 @@ var SparqlConnector = (function () {
 
         createNewVocab: function (name, namespace, prefix, graph) {
             console.log("createNewVocab graph=" + graph);
-            SparqlConnector.setGraphURI(graph);
+            Config.setGraphURI(graph);
 
             var createVocabSparql = sparqlTemplater(
                 createVocabSparqlTemplate, {

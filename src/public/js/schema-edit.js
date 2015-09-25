@@ -29,9 +29,20 @@ var SchemaEdit = (function () {
 
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.makeTurtleButton();
-          //  SchemaEdit.setupButtons();
+            //  SchemaEdit.setupButtons();
             SchemaEdit.makeEndpointButton();
+            SchemaEdit.makeNewVocabButton();
             SchemaEdit.setupHelpButtons();
+        },
+
+        makeNewVocabButton: function () {
+          $("#newVocabButton").click(
+            function () {
+              $("#newVocabBlock").show();
+              $("#currentResourceBlock").hide();
+              $("#currentGraphBlock").hide();
+            }
+          );
         },
 
         endpointsDialog: function () {
@@ -40,7 +51,6 @@ var SchemaEdit = (function () {
                     $("#endpoints input").val("");
                 }
             );
-
             var dialog = function () {
                 $("#endpoints").dialog({
                     width: 800
@@ -302,9 +312,7 @@ var SchemaEdit = (function () {
         },
 
         makeNewVocabBlock: function () {
-            // $("#newVocabBlock").show();
-            // $("#currentResourceBlock").hide();
-            $("#newVocabButton").click(function () {
+            $("#createVocabButton").click(function () {
                 var name = $("#vocabName").val();
                 var namespace = $("#vocabNamespace").val();
                 var prefix = $("#vocabPrefix").val();
@@ -618,30 +626,30 @@ var SchemaEdit = (function () {
         },
 
         makeTurtleButton: function () {
-          $("#turtle").click(function () { // is used?
-              console.log("#turtle clicked");
-              location.href = SparqlConnector.getTurtleUrl();
-          });
+            $("#turtle").click(function () { // is used?
+                console.log("#turtle clicked");
+                location.href = SparqlConnector.getTurtleUrl();
+            });
         },
 
         setupButtons: function () { // TODO refactor - move local to buttons?
 
-/*
-            // TODO this button doesn't appear to exist!
-            $("#upload-button").click(function () {
-                var data = new FormData($("#upload-file").val());
-                $.ajax({
-                    url: Config.getSparqlUpdatePath(),
-                    type: 'POST',
-                    data: ({
-                        update: data
-                    }),
-                    processData: false,
-                    contentType: false
-                });
-                //    e.preventDefault();
-            });
-            */
+            /*
+                        // TODO this button doesn't appear to exist!
+                        $("#upload-button").click(function () {
+                            var data = new FormData($("#upload-file").val());
+                            $.ajax({
+                                url: Config.getSparqlUpdatePath(),
+                                type: 'POST',
+                                data: ({
+                                    update: data
+                                }),
+                                processData: false,
+                                contentType: false
+                            });
+                            //    e.preventDefault();
+                        });
+                        */
         },
 
         makeAddPropertyValue: function (uri) {
