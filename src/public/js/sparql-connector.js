@@ -23,11 +23,9 @@ var SparqlConnector = (function () {
 
         ping: function (callback) {
             var sparql = "SELECT * WHERE {?s ?p ?o} LIMIT 1";
-            var url = Config.getEndpointHost() + Config.getQueryPath() +"?query=" + encodeURIComponent(sparql) + "&output=xml";
-            $.get(url, function () {
-                })
-                .done(function () {
-                })
+            var url = Config.getEndpointHost() + Config.getQueryPath() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
+            $.get(url, function () {})
+                .done(function () {})
                 .fail(function () {
                     callback();
                 });
@@ -64,7 +62,7 @@ var SparqlConnector = (function () {
                 "graphURI": Config.getGraphURI(),
             });
 
-            var getTurtleUrl = Config.getEndpointHost() + Config.getQueryPath() +"?query=" +
+            var getTurtleUrl = Config.getEndpointHost() + Config.getQueryPath() + "?query=" +
                 encodeURIComponent(getTurtleSparql) + "&output=text";
 
             return getTurtleUrl;
@@ -107,7 +105,7 @@ var SparqlConnector = (function () {
                     "graphURI": Config.getGraphURI(),
                     "type": type
                 });
-            var getResourcesUrl = Config.getEndpointHost() + Config.getQueryPath() +"?query=" +
+            var getResourcesUrl = Config.getEndpointHost() + Config.getQueryPath() + "?query=" +
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             var json = SparqlConnector.getJsonForSparqlURL(getResourcesUrl, callback);
@@ -123,7 +121,7 @@ var SparqlConnector = (function () {
                 }
                 callback(graphURIs);
             }
-            var getGraphListUrl = Config.getEndpointHost() + Config.getQueryPath() +"?query=" +
+            var getGraphListUrl = Config.getEndpointHost() + Config.getQueryPath() + "?query=" +
                 encodeURIComponent(listGraphsSparqlTemplate) + "&output=xml";
 
             SparqlConnector.getJsonForSparqlURL(getGraphListUrl, makeList);
@@ -253,12 +251,12 @@ var SparqlConnector = (function () {
                 })
             }).done(function (msg) {
                 if(callback) {
-                  console.log("callback called");
+                    console.log("callback called");
                     callback(msg);
                 }
             }).fail(function (jqXHR, textStatus,
                 errorThrown) {
-                  console.log("postData error = "+textStatus);
+                console.log("postData error = " + textStatus);
             });
         },
 
@@ -271,35 +269,37 @@ var SparqlConnector = (function () {
             SparqlConnector.postData(deleteResourceSparql, callback);
         },
 
-        createNewVocab: function (name, namespace, prefix, graph) {
-            console.log("createNewVocab graph=" + graph);
-            Config.setGraphURI(graph);
+        createNewVocab: function (name, graph, prefix, callback) {
+            // console.log("createNewVocab graph=" + graph);
+            // Config.setGraphURI(graph);
 
             var createVocabSparql = sparqlTemplater(
                 createVocabSparqlTemplate, {
-                    "graphURI": Config.getGraphURI(),
-                    "namespace": namespace,
+                    "graphURI": graph,
+                    "prefix": prefix,
                     "name": name
                 });
-            var callback = function (msg) {
-                console.log("createNewVocab = "+msg);
-            }
+            console.log("createVocabSparql = \n" + createVocabSparql);
+
             SparqlConnector.postData(createVocabSparql, callback);
 
-            var createDummyClassSparql = sparqlTemplater(
-                createDummyClassSparqlTemplate, {
-                    "graphURI": Config.getGraphURI(),
-                    "namespace": namespace
-                });
-            var callback = function (msg) {
-                console.log("createNewVocab = "+msg);
-                var dummy = "http://purl.org/stuff/hyperdata/Dummy";
-                var split = window.location.href.split("?");
+            /*
+                        var createDummyClassSparql = sparqlTemplater(
+                            createDummyClassSparqlTemplate, {
+                                "graphURI": Config.getGraphURI(),
+                                "namespace": namespace
+                            });
+                        var callback = function (msg) {
+                            console.log("createNewVocab = "+msg);
+                            var dummy = "http://purl.org/stuff/hyperdata/Dummy";
+                            var split = window.location.href.split("?");
 
-                // console.log("queryKey.uri = "+queryKey.uri);
-                window.location.href = split[0] + "?uri=" + encodeURI(dummy) + "&graph=" + encodeURI(Config.graphURI);
-            }
-            SparqlConnector.postData(createDummyClassSparql, callback);
+                            // console.log("queryKey.uri = "+queryKey.uri);
+                            window.location.href = split[0] + "?uri=" + encodeURI(dummy) + "&graph=" + encodeURI(Config.graphURI);
+                        }
+
+                        SparqlConnector.postData(createDummyClassSparql, callback);
+                          */
         },
 
         addClass: function (namespace, name, label, subClassOf, comment, callback) {
@@ -434,7 +434,7 @@ var SparqlConnector = (function () {
                 callback(json);
                 // $(window).trigger('resize');
             }).fail(function (msg) {
-                console.log("getJsonForSparqlURL error = "+msg);
+                console.log("getJsonForSparqlURL error = " + msg);
             });
         },
 

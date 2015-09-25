@@ -32,7 +32,10 @@ var SchemaEdit = (function () {
             SchemaEdit.makeTurtleButton();
             //  SchemaEdit.setupButtons();
             SchemaEdit.makeEndpointButton();
+
             SchemaEdit.makeNewVocabButton();
+            SchemaEdit.makeNewVocabBlock();
+
             SchemaEdit.setupHelpButtons();
         },
 
@@ -344,10 +347,12 @@ var SchemaEdit = (function () {
         makeNewVocabBlock: function () {
             $("#createVocabButton").click(function () {
                 var name = $("#vocabName").val();
-                var namespace = $("#vocabNamespace").val();
+                var graph = $("#vocabNamespace").val();
                 var prefix = $("#vocabPrefix").val();
-                var graph = namespace;
-                SparqlConnector.createNewVocab(name, namespace, prefix, graph);
+                var callback = function(){
+                  Config.setGraphURI(graph);
+                }
+                SparqlConnector.createNewVocab(name, graph, prefix, callback);
             });
         },
 

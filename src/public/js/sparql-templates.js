@@ -46,7 +46,7 @@ var constructGraph = commonPrefixes +
     "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <~{graphURI}~> { ?s ?p ?o } . }";
 
 var addClassSparqlTemplate = commonPrefixes +
-  "BASE <~{namespace}~> \n\
+    "BASE <~{namespace}~> \n\
     INSERT DATA {  \n\
     		GRAPH <~{graphURI}~> {  \n\
     			<~{namespace}~~{name}~>  a rdfs:Class ; \n\
@@ -71,7 +71,7 @@ var addClassSparqlTemplate = commonPrefixes +
 
 // TODO tweak, namespace = graph
 var addPropertySparqlTemplate = commonPrefixes +
-  "BASE <~{namespace}~> \n\
+    "BASE <~{namespace}~> \n\
    INSERT DATA {  \n\
     		GRAPH <~{graphURI}~> {  \n\
     			<~{namespace}~~{name}~>  a rdf:Property ; \n\
@@ -220,10 +220,13 @@ var updateLiteralTripleSparqlTemplate = commonPrefixes +
 }";
 
 var createVocabSparqlTemplate = commonPrefixes +
-    "INSERT DATA {  \n\
+"CREATE GRAPH <~{graphURI}~> ; \n\
+    INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
-			<~{namespace}~>  a owl:Ontology; \n\
-      rdfs:label \"\"\"~{name}~\"\"\" \n\
+			<~{graphURI}~>  a owl:Ontology; \n\
+      stuff:prefPrefix \"\"\"~{prefix}~\"\"\" ; \n\
+      rdfs:label \"\"\"~{name}~\"\"\" ; \n\
+      skos:prefLabel \"\"\"~{name}~\"\"\" \n\
 } \n\
 }";
 
