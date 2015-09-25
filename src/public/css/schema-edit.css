@@ -16,7 +16,7 @@ button, .button {
 }
 
 .resource {
-    border: 1px solid red;
+    border: 2px solid #96F;
 }
 
 #resource, #graph {
@@ -40,6 +40,10 @@ button, .button {
 }
 
 #dialog {
+  display: none;
+}
+
+.dialog {
   display: none;
 }
 
@@ -83,6 +87,7 @@ label, #propertyLabel {
 
 input, textarea, select {
   /*  width: 70%; */
+  border: 2px solid lightgray;
   box-sizing: border-box;
   -moz-box-sizing: border-box
 }
@@ -117,7 +122,7 @@ input, textarea, select {
 .propertyItem .literalObject {
   height: auto;
   background-color: white;
-  border: 1px solid black;
+  border: 2px solid grey;
   border-radius: 3px;
   padding: 2px 2px 0px 5px;
 }

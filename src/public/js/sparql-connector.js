@@ -242,6 +242,35 @@ var SparqlConnector = (function () {
             return knownPrefixes;
         },
 
+        /* *** connector low-level utilities *** */
+        postData: function (data, callback) {
+
+            $.ajax({
+                type: "POST",
+                url: Config.getEndpointHost() + Config.getUpdatePath(),
+                data: ({
+                    update: data
+                })
+            }).done(function (msg) {
+                if(callback) {
+                  console.log("callback called");
+                    callback(msg);
+                }
+            }).fail(function (jqXHR, textStatus,
+                errorThrown) {
+                  console.log("postData error = "+textStatus);
+            });
+        },
+
+        deleteResource: function (resource, callback) {
+            var deleteResourceSparql = sparqlTemplater(
+                deleteResourceSparqlTemplate, {
+                    "graphURI": Config.getGraphURI(),
+                    "resourceURI": resource
+                });
+            SparqlConnector.postData(deleteResourceSparql, callback);
+        },
+
         createNewVocab: function (name, namespace, prefix, graph) {
             console.log("createNewVocab graph=" + graph);
             Config.setGraphURI(graph);
@@ -306,27 +335,7 @@ var SparqlConnector = (function () {
         },
 
 
-        /* *** connector low-level utilities *** */
-        // TODO is duplicated below, delete one PS duplicated where???
-        postData: function (data, callback) {
 
-            $.ajax({
-                type: "POST",
-                url: Config.getEndpointHost() + Config.getUpdatePath(),
-                data: ({
-                    update: data
-                })
-            }).done(function (msg) {
-
-
-                if(callback) {
-                    callback(msg);
-                }
-            }).fail(function (jqXHR, textStatus,
-                errorThrown) {
-                  console.log("postData error = "+textStatus);
-            });
-        },
 
         updateLiteralTriple: function (subject, predicate, object, language, callback) {
             if(!language || language == "") { // sensible default

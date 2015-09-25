@@ -31,11 +31,16 @@ algorithm no doubt can be improved...
 function angleBrackets(resource) {
     var wrapWithAngles = true;
 
-    // qname
-    if(resource.indexOf(".") == -1 || resource.indexOf("/") == -1) {
+    // empty
+    if(!resource || resource == "") {
+        return resource;
+    }
+    // qname (no dot or slash)
+    if(resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
         wrapWithAngles = false;
     }
-    // just name
+
+    // just name (no colon)
     if(resource.indexOf(":") == -1) {
         wrapWithAngles = true;
     }

@@ -18,6 +18,7 @@ var SchemaEdit = (function () {
             $("#updatePath").val(Config.getUpdatePath());
             $("#queryPath").val(Config.getQueryPath());
 
+            SchemaEdit.makeDeleteResourceButton();
             SchemaEdit.makeGraphChooser();
             SchemaEdit.makePropertyChooser();
             SchemaEdit.addClassHandler();
@@ -35,14 +36,29 @@ var SchemaEdit = (function () {
             SchemaEdit.setupHelpButtons();
         },
 
+        makeDeleteResourceButton: function () {
+            $("#deleteResource").click(
+                function () {
+                    var resource = Config.getCurrentResource();
+                    console.log("Config.getCurrentResource() = "+Config.getCurrentResource());
+                    var callback = function (msg) {
+                        $("#deleteResourceText").dialog();
+                    }
+                    SparqlConnector.deleteResource(resource, callback);
+                    var split = window.location.href.split("?");
+                    window.location.href = split[0] + "?graph=" + Config.getGraphURI();
+                }
+            );
+        },
+
         makeNewVocabButton: function () {
-          $("#newVocabButton").click(
-            function () {
-              $("#newVocabBlock").show();
-              $("#currentResourceBlock").hide();
-              $("#currentGraphBlock").hide();
-            }
-          );
+            $("#newVocabButton").click(
+                function () {
+                    $("#newVocabBlock").show();
+                    $("#currentResourceBlock").hide();
+                    $("#currentGraphBlock").hide();
+                }
+            );
         },
 
         endpointsDialog: function () {
