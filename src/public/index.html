@@ -103,13 +103,15 @@
 
   <div id="header">
 
-    <div id="titleBlock"  class="editBlock">
+    <div id="titleBlock" class="editBlock">
       <div class="help">
         <span id="#overviewHelp" class="helpButton">?</span>
         <div id="overviewHelpText" title="Overview" class="helpText">
-          <p>This is Schema Edit. It aims to simplify the development of RDF vocabularies/ontologies. It is not designed to be a general purpose RDF editor. The vocabulary being edited is contained as a graph in a SPARQL 1.1 capable store. Editing operations are carried out directly on that graph, changes take place immediately.</p>
+          <p>This is Schema Edit. It aims to simplify the development of RDF vocabularies/ontologies. It is not designed to be a general purpose RDF editor. The vocabulary being edited is contained as a graph in a SPARQL 1.1 capable store. Editing operations
+            are carried out directly on that graph, changes take place immediately.</p>
           <p>The graph name is taken as being the namespace name of the vocabulary.</p>
-          <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name). Alternately full QNames (namespace+local name) may be used.
+          <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name).
+            Alternately full QNames (namespace+local name) may be used.
           </p>
         </div>
       </div>
@@ -118,7 +120,7 @@
     </div>
 
     <button id="newVocabButton" title="Create new vocabulary">New Vocab</button>
-    <div id="newVocabBlock"  class="editBlock">
+    <div id="newVocabBlock" class="editBlock">
       <div class="help">
         <span id="#newVocabHelp" class="helpButton">?</span>
         <div id="newVocabHelpText" title="New Vocab" class="helpText">
@@ -159,7 +161,7 @@
       <div class="help">
         <span id="#currentResourceHelpButton" class="helpButton">?</span>
         <div id="currentResourceHelpText" title="Current Resource" class="helpText">
-          <p>This is the resource to which some of the operations below will apply. Click the edit box to list the resources  available in the store.</p>
+          <p>This is the resource to which some of the operations below will apply. Click the edit box to list the resources available in the store.</p>
         </div>
       </div>
 
@@ -218,17 +220,19 @@
 
         <h4>Add Class</h4>
 
-        <label for="className">Class Name</label>
-        <input id="className" title="enter text" />
+        <div class="inputBlockLeft">
+          <label for="className">Class Name</label>
+          <input id="className" title="enter text" />
 
-        <label for="classLabel">rdfs:label</label>
-        <input id="classLabel" title="enter human-readable version of name" />
-
-        <label for="subClassOf">rdfs:subClassOf</label>
-        <input id="subClassOf" title="enter parent class" class="resource" />
-
+          <label for="classLabel">rdfs:label</label>
+          <input id="classLabel" title="enter human-readable version of name" />
+        </div>
+        <div class="inputBlockRight">
+          <label for="subClassOf">rdfs:subClassOf</label>
+          <input id="subClassOf" title="enter parent class" class="resource" />
+        </div>
         <label for="classComment">rdfs:comment</label>
-        <input id="classComment" title="enter human-readable description" />
+        <textarea id="classComment" rows="4" cols="75" title="Enter human-readable description"></textarea>
 
         <button id="addClassButton">Add Class</button>
       </div>
@@ -246,23 +250,26 @@
 
         <h4>Add Property</h4>
 
-        <label for="propertyName">Property Name</label>
-        <input id="propertyName" title="enter text" />
+        <div class="inputBlockLeft">
+          <label for="propertyName">Property Name</label>
+          <input id="propertyName" title="enter text" />
 
-        <label for="propertyLabel">rdfs:label</label>
-        <input id="propertyLabel" title="enter human-readable version of name" />
+          <label for="propertyLabel">rdfs:label</label>
+          <input id="propertyLabel" title="enter human-readable version of name" />
+        </div>
 
+        <div class="inputBlockRight">
+          <label for="subPropertyOf">rdfs:subPropertyOf</label>
+          <input id="subPropertyOf" title="enter parent property" class="resource" />
+          <br/>
+          <label for="domain">rdfs:domain</label>
+          <input id="domain" title="enter domain class" class="resource" />
+
+          <label for="range">rdfs:range</label>
+          <input id="range" title="enter range class" class="resource" />
+        </div>
         <label for="propertyComment">rdfs:comment</label>
-        <input id="propertyComment" title="enter human-readable description" />
-
-        <label for="subPropertyOf">rdfs:subPropertyOf</label>
-        <input id="subPropertyOf" title="enter parent property" class="resource" />
-
-        <label for="domain">rdfs:domain</label>
-        <input id="domain" title="enter domain class" class="resource" />
-
-        <label for="range">rdfs:range</label>
-        <input id="range" title="enter range class" class="resource" />
+        <textarea id="propertyComment" rows="4" cols="75" title="Enter human-readable description"></textarea>
 
         <button id="addPropertyButton">Add Property</button>
       </div>

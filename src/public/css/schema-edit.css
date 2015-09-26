@@ -7,7 +7,7 @@
 }
 
 #newVocabButton {
-margin: 10px 0px 20px 0px;
+  margin: 10px 0px 20px 0px;
 }
 
 .editBlock {
@@ -59,15 +59,35 @@ button, .button {
   display: none;
 }
 
+/* Input Fields */
+#inputBlockLeft {
+  display: inline-block;
+}
+
+#inputBlockRight {
+  display: inline-block;
+}
+
+input, textarea, select {
+  /*  width: 70%; */
+  border: 2px solid lightgray;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box
+}
+
 label {
   display: inline-block;
-  width: 20%;
+  width: 210px;
   text-align: right;
   /* display:block; */
   /* margin:8px; */
   /*   width: 450px; */
   clear: right;
   overflow: auto;
+}
+
+textarea {
+ vertical-align: top;
 }
 
 #newVocabBlock {
@@ -93,12 +113,7 @@ label {
   width: 75%;
 }
 
-input, textarea, select {
-  /*  width: 70%; */
-  border: 2px solid lightgray;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box
-}
+
 
 
 /* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
@@ -178,12 +193,12 @@ input, textarea, select {
 
 #titleBlock .help {
   right: 40%;
-    top: 0px;
+  top: 0px;
 }
 
 #currentGraphBlock .help, #currentResourceBlock .help {
   right: 40%;
-    top: 0px;
+  top: 0px;
 }
 
 .help {
