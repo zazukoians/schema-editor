@@ -240,6 +240,56 @@ textarea {
   top: 1px;
 }
 
+.langButton {
+  background-color: #0A0;
+  -moz-border-radius: 28px;
+  -webkit-border-radius: 28px;
+  border-radius: 28px;
+  border: 1px solid #161d96;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Courier New;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 2px 4px;
+  text-decoration: none;
+}
+
+.langButton:hover {
+  background-color: #0f0;
+}
+
+.langButton:active {
+  position: relative;
+  top: 1px;
+}
+
+.plusButton {
+  background-color: #0A0;
+  -moz-border-radius: 28px;
+  -webkit-border-radius: 28px;
+  border-radius: 28px;
+  border: 1px solid #161d96;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Courier New;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 2px 4px;
+  text-decoration: none;
+}
+
+.plusButton:hover {
+  background-color: #0f0;
+}
+
+.plusButton:active {
+  position: relative;
+  top: 1px;
+}
+
 
 /* collapsible chunks */
 

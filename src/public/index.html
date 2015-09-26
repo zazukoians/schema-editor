@@ -225,14 +225,18 @@
           <input id="className" title="enter text" />
 
           <label for="classLabel">rdfs:label</label>
-          <input id="classLabel" title="enter human-readable version of name" />
+          <input id="classLabel" title="enter human-readable version of name" lang="en"/>
+          <span class="langButton"></span>
         </div>
+
         <div class="inputBlockRight">
           <label for="subClassOf">rdfs:subClassOf</label>
           <input id="subClassOf" title="enter parent class" class="resource" />
+          <span id="#subClassOfPlusButton" class="plusButton">+</span>
         </div>
         <label for="classComment">rdfs:comment</label>
         <textarea id="classComment" rows="4" cols="75" title="Enter human-readable description"></textarea>
+        <span class="langButton"></span>
 
         <button id="addClassButton">Add Class</button>
       </div>
