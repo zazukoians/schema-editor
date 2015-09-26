@@ -43,7 +43,6 @@ var SchemaEdit = (function () {
             $("#deleteResource").click(
                 function () {
                     var resource = Config.getCurrentResource();
-                    console.log("Config.getCurrentResource() = " + Config.getCurrentResource());
                     var callback = function (msg) {
                         $("#deleteResourceText").dialog();
                     }
@@ -214,7 +213,6 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
-                // console.log("makePropertyBlocks json \n"+JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem'></div>");
@@ -282,9 +280,7 @@ var SchemaEdit = (function () {
                     if(current.type == "literal") { // TODO refactor
                         propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
                         propertyItem.append($("<br/>"));
-                        // console.log("value = \n" + value.html());
                         propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
-                        //  property.after(deleteButton);
                     }
                     propertyItem.append(deleteButton);
                     propertyBlock.append("<hr/>");
@@ -299,7 +295,6 @@ var SchemaEdit = (function () {
          * in left column in current UI */
         makeClassesList: function () {
             var callback = function (json) {
-                //    console.log("JSON = " + JSON.stringify(json, false, 4));
                 SchemaEdit.makeListBlock(json, $("#classes"));
             }
             var classList = SparqlConnector.listClasses(callback);
@@ -363,9 +358,7 @@ var SchemaEdit = (function () {
                 var name = $("#className").val();
                 var label = $("#classLabel").val();
                 var subClassOf = $("#subClassOf").val();
-                console.log("before = " + subClassOf);
                 subClassOf = angleBrackets(subClassOf);
-                console.log("after = " + subClassOf);
                 var comment = $("#classComment").val();
                 var callback = function (msg) {
                     alert(msg);
@@ -616,7 +609,6 @@ var SchemaEdit = (function () {
             function readMultipleFiles(evt) {
                 //Retrieve all the files from the FileList object
                 var files = evt.target.files;
-                console.log("files = " + JSON.stringify(files, false, 4));
                 if(files) {
                     for(var i = 0, f; f = files[i]; i++) {
                         var r = new FileReader();
@@ -637,7 +629,6 @@ var SchemaEdit = (function () {
                     alert("Failed to load files");
                 }
             }
-
             document.getElementById('uploadFilename').addEventListener('change', readMultipleFiles, false);
         },
 
@@ -661,8 +652,7 @@ var SchemaEdit = (function () {
         },
 
         makeTurtleButton: function () {
-            $("#turtle").click(function () { // is used?
-                console.log("#turtle clicked");
+            $("#turtle").click(function () {
                 location.href = SparqlConnector.getTurtleUrl();
             });
         },
@@ -711,7 +701,6 @@ var SchemaEdit = (function () {
                         // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
                         for(var i = 0; i < propertiesArray.length; i++) {
                             var property = propertiesArray[i]["uri"];
-                            //console.log("property : " + property);
                             //     <option value="ActionScript">ActionScript</option>
                             var option = $("<option class='propertychoice'></option>");
                             option.attr("value", property);
@@ -734,8 +723,6 @@ var SchemaEdit = (function () {
 
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
-            //  console.log("generateGetUrl sparql = " + sparql);
-          //  return Config.getEndpointHost() + Config.getQueryPath() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
               return Config.getQueryEndpoint() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
         },
 
@@ -745,7 +732,6 @@ var SchemaEdit = (function () {
                     "resourceURI": resourceURI
                 };
                 var sparql = sparqlTemplater(deleteResourceSparqlTemplate, map);
-                //  console.log("SPARQL for delete = " + sparql);
                 postData(sparql);
             }
             /*
