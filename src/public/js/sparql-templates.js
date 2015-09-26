@@ -46,10 +46,10 @@ var constructGraph = commonPrefixes +
     "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <~{graphURI}~> { ?s ?p ?o } . }";
 
 var addClassSparqlTemplate = commonPrefixes +
-    "BASE <~{namespace}~> \n\
+    "BASE <~{graphURI}~> \n\
     INSERT DATA {  \n\
     		GRAPH <~{graphURI}~> {  \n\
-    			<~{namespace}~~{name}~>  a rdfs:Class ; \n\
+    			<~{graphURI}~~{name}~>  a rdfs:Class ; \n\
       \n\
           ~{#label}~ \n\
               rdfs:label \"\"\"~{label}~\"\"\" ; \n\
@@ -65,7 +65,7 @@ var addClassSparqlTemplate = commonPrefixes +
               skos:definition \"\"\"~{comment}~\"\"\" ; \n\
           ~{/comment}~ \n\
 \n\
-          rdfs:isDefinedBy <~{namespace}~> \n\
+          rdfs:isDefinedBy <~{graphURI}~> \n\
     } \n\
     }";
 

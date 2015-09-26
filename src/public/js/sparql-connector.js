@@ -292,16 +292,10 @@ var SparqlConnector = (function () {
                           */
         },
 
-        addClass: function (namespace, name, label, subClassOf, comment, callback) {
+        addClass: function(map, callback) {
+
             var addClassSparql = sparqlTemplater(
-                addClassSparqlTemplate, {
-                    "graphURI": Config.getGraphURI(),
-                    "namespace": namespace,
-                    "name": name,
-                    "label": label,
-                    "subClassOf": subClassOf,
-                    "comment": comment
-                });
+                addClassSparqlTemplate, map);
 
             SparqlConnector.postData(addClassSparql, callback);
         },
