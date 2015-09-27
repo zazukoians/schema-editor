@@ -512,27 +512,25 @@ var SchemaEdit = (function () {
             $(".langButton").click(
                 function () {
                     var target = $(this).prev();
-                    var languageChoices = $("#language-radio").html();
+                    var languageChoices = $("#languageSelect").html();
                     var dialog = $("#dialog");
-                    dialog.addClass("show");
+                    // dialog.addClass("show");
                     dialog.html(languageChoices);
 
                     var changeLangHandler = function () {
                         var language;
-                        $('.language-radio').each(function () {
+                        $('.languageRadio').each(function () {
                             if(this.type == 'radio' && this.checked) {
                                 language = $(this).val();
                             }
                         });
                         $(this).dialog("close");
-                        //    SparqlConnector.updateTriple(subject, predicate, object, language, callback);
-                        //  location.reload(true);
                         target.attr("lang", language);
-                        console.log("chosen = " + language);
                         SchemaEdit.initLangButtons();
                     }
 
                     dialog.dialog({
+                      title: "Choose Language",
                         resizable: false,
                         modal: true,
                         buttons: {
@@ -549,14 +547,14 @@ var SchemaEdit = (function () {
             var languageButton = $("<button class='language'></button>");
             languageButton.text(language);
             languageButton.click(function () {
-                var languageChoices = $("#language-radio").html();
+                var languageChoices = $("#languageSelect").html();
                 var dialog = $("#dialog");
                 // dialog.buttonset(); // jQueryUI
                 dialog.addClass("show");
                 dialog.html(languageChoices);
                 var updateHandler = function () {
                     var language;
-                    $('.language-radio').each(function () {
+                    $('.languageRadio').each(function () {
                         if(this.type == 'radio' && this.checked) {
                             language = $(this).val();
                         }

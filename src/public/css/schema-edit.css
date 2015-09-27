@@ -55,8 +55,8 @@ button, .button {
   display: none;
 }
 
-#language-radio {
-  display: none;
+#languageSelect {
+    background-color: white;
 }
 
 /* Input Fields */
