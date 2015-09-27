@@ -36,6 +36,9 @@ var SchemaEdit = (function () {
             SchemaEdit.makeNewVocabButton();
             SchemaEdit.makeNewVocabBlock();
 
+            SchemaEdit.initResourceButtons();
+            SchemaEdit.setupResourceButtons();
+
             SchemaEdit.initLangButtons();
             SchemaEdit.setupLangButtons();
 
@@ -504,11 +507,9 @@ var SchemaEdit = (function () {
             $button.text(lang);
         },
 
-        /* Plus buttons add functionality to input fields :
-           language choice for literals
-           alternate representations for resources */
+        /* language choice for literals */
+        /*   alternate representations for resources */
         setupLangButtons: function () {
-
             $(".langButton").click(
                 function () {
                     var target = $(this).prev();
@@ -530,7 +531,7 @@ var SchemaEdit = (function () {
                     }
 
                     dialog.dialog({
-                      title: "Choose Language",
+                        title: "Choose Language",
                         resizable: false,
                         modal: true,
                         buttons: {
@@ -578,6 +579,55 @@ var SchemaEdit = (function () {
                 }
             });
             return languageButton;
+        },
+
+        initResourceButtons: function () {
+            $(".resourceButton").each(
+                function () {
+                    $(SchemaEdit.setResourceButtonValue($(this)));
+                }
+            );
+        },
+
+        setResourceButtonValue: function ($button) {
+            var target = $($button).prev();
+            $button.text("R");
+        },
+
+        /*   alternate predicates rdfs:label/skos:prefLabel etc. */
+        setupResourceButtons: function () {
+            $(".resourceButton").click(
+                function () {
+                    var target = $(this).prev();
+                    var propertiesChoices = $("#propertiesSelect").html();
+                    var dialog = $("#dialog");
+                    // dialog.addClass("show");
+                    dialog.html(propertiesChoices);
+
+                    var changePropertiesHandler = function () {
+                      //  var language;
+                        $('.propertiesCheckbox').each(function () {
+                            if(this.checked) {
+                          //      language = $(this).val();
+                            }
+                        });
+                        $(this).dialog("close");
+                      //  target.attr("lang", language);
+                    //    SchemaEdit.initLangButtons();
+                    }
+
+                    dialog.dialog({
+                        title: "Choose Language",
+                        resizable: false,
+                        modal: true,
+                        buttons: {
+                            "Update": changePropertiesHandler,
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                });
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {

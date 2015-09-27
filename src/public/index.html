@@ -226,17 +226,18 @@
 
           <label for="classLabel">rdfs:label</label>
           <input id="classLabel" title="Enter human-readable version of name" lang="en" />
-          <span class="langButton"></span>
+          <button class="langButton"></button>
+          <button class="resourceButton"></button>
         </div>
 
         <div class="inputBlockRight">
           <label for="subClassOf">rdfs:subClassOf</label>
           <input id="subClassOf" title="Enter parent class" class="resource" />
-          <span id="#subClassOfPlusButton" class="plusButton">+</span>
         </div>
         <label for="classComment">rdfs:comment</label>
         <textarea id="classComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
-        <span class="langButton"></span>
+        <button class="langButton"></button>
+        <button class="resourceButton"></button>
 
         <button id="addClassButton">Add Class</button>
       </div>
@@ -260,7 +261,8 @@
 
           <label for="propertyLabel">rdfs:label</label>
           <input id="propertyLabel" title="Enter human-readable version of name" lang="en" />
-          <span class="langButton"></span>
+          <button class="langButton"></button>
+          <button class="resourceButton"></button>
         </div>
 
         <div class="inputBlockRight">
@@ -275,7 +277,8 @@
         </div>
         <label for="propertyComment">rdfs:comment</label>
         <textarea id="propertyComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
-<span class="langButton"></span>
+        <button class="langButton"></button>
+        <button class="resourceButton"></button>
 
         <button id="addPropertyButton">Add Property</button>
       </div>
@@ -297,7 +300,8 @@
 
         <label for="propertyLiteralValue">Literal Value : </label>
         <input id="propertyLiteralValue" title="enter text (leave blank for URI value)" lang="en" />
-<span class="langButton"></span>
+        <button class="langButton"></button>
+        <button class="resourceButton"></button>
 
         <div id="propertyUriValue">
           <label for="uriValue">URI Value : </label>
@@ -375,12 +379,12 @@
   </div>
 
   <div id="languageSelect">
-      <label for="languageEn">en</label>
-      <input id="languageEn" value="en" type="radio" name="language" checked="checked" class="languageRadio" />
-      <label for="languageDe">de</label>
-      <input id="languageDe" value="de" type="radio" name="language" class="languageRadio" />
-      <label for="languageIt">it</label>
-      <input id="languageIt" value="it" type="radio" name="language" class="languageRadio" />
+    <label for="languageEn">en</label>
+    <input id="languageEn" value="en" type="radio" name="language" checked="checked" class="languageRadio" />
+    <label for="languageDe">de</label>
+    <input id="languageDe" value="de" type="radio" name="language" class="languageRadio" />
+    <label for="languageIt">it</label>
+    <input id="languageIt" value="it" type="radio" name="language" class="languageRadio" />
   </div>
 
 </body>
