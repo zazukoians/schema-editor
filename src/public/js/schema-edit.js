@@ -315,8 +315,8 @@ var SchemaEdit = (function () {
          *     fit in one line.
          */
         makeListBlock: function (json, target) {
-            var listContainer = $("<div class='list-container'></div>");
-            var listElement = $("<ul class='list-block'/>");
+            var listContainer = $("<div></div>");
+            var listElement = $("<ul/>");
 
             listContainer.append(listElement);
             target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
@@ -404,7 +404,7 @@ var SchemaEdit = (function () {
             }
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
             var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
-            $("#propertyChooser").append($("<label for='addPropertyValue'>Property : </label>"));
+            $("#propertyChooser").append($("<label for='addPropertyValue'>Property</label>"));
             chooser.appendTo($("#propertyChooser"));
 
             var combobox = chooser.combobox();

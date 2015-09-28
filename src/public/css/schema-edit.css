@@ -3,7 +3,30 @@
 .header {
   font-weight: bold;
   display: block;
-  text-align: center;
+}
+
+/* New Vocab */
+#newVocabButton {
+  margin: 10px 0px 20px 0px;
+}
+
+#newVocabBlock {
+  display: none;
+}
+
+#newVocabBlock input {
+  display: inline-block;
+  float: left;
+  width: 50%;
+}
+
+#newVocabBlock label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 250px;
+  padding: 10px;
+  text-align: right;
 }
 
 #currentContext {
@@ -30,14 +53,12 @@
     text-align: right;
 }
 
-#center input {
+#center input, #center textarea {
   display: inline-block;
   float: left;
 }
 
-#newVocabButton {
-  margin: 10px 0px 20px 0px;
-}
+
 
 button, .button {
   color: white;
@@ -48,16 +69,20 @@ button, .button {
   border-radius: 5px;
 }
 
+.editBlock {
+  display: inline-block;
+}
+
+#addClassButton {
+  text-align: left;
+}
+
 .resource {
   border: 2px solid #96F;
 }
 
 .show {
   /*    display: block; */
-}
-
-.inline button {
-  /* display:inline; */
 }
 
 #dialog {
@@ -72,16 +97,9 @@ button, .button {
     background-color: white;
 }
 
-/* Input Fields */
-#inputBlockLeft {
-  display: inline-block;
-}
-
-#inputBlockRight {
-  display: inline-block;
-}
 
 input, textarea, select {
+  width: 30em;
   margin: 0px 2px 4px 8px;
   border: 2px solid lightgray;
   box-sizing: border-box;
@@ -92,37 +110,13 @@ textarea {
  vertical-align: top;
 }
 
-#newVocabBlock {
-  display: none;
-}
-
-#newVocabBlock input {
-  display: inline-block;
-  float: left;
-  width: 50%;
-}
-
-#newVocabBlock label {
-  display: inline-block;
-  float: left;
-  clear: left;
-  width: 250px;
-  padding: 10px;
-  text-align: right;
+#classesTitle, #propertiesTitle {
+    display: block;
+  text-align: left;
 }
 
 #graphName {
   width: 75%;
-}
-
-
-
-
-/* source: http://www.ehow.com/how_12214447_make-collapsing-lists-java.html */
-
-.list-container {
-  display: block;
-  /*    width: 200px; */
 }
 
 .propertyBlock {
@@ -131,24 +125,14 @@ textarea {
   /* 400px */
 }
 
-.propertyItem {
-  /* text-align: none; */
-  display: block;
-}
-
-.propertyItem .predicate, .propertyItem .uriObject {
-  display: inline;
-  padding: 10px;
-}
-
-
-/* TODO tweak */
-
-
-
 #classes, #properties {
   display: block;
   text-align: center;
+}
+
+.resourceList {
+    display: block;
+  float: left;
 }
 
 #propertyChooser, #classChooser {
@@ -344,8 +328,8 @@ textarea {
 /* as used for classes and properties */
 
 .list-block {
-  position: relative;
-  display: block;
+/*  position: relative; */
+/*  display: block; */
   margin: 2em 2em 0em 2em;
   list-style-type: none;
 }

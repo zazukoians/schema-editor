@@ -196,12 +196,12 @@
           </div>
         </div>
 
-        <div id="classes" class="small"></div>
+        <div id="classes" class="resourceList small"></div>
       </div>
-
+      <br/>
       <div class="list-block">
-        <h2 class="header">Properties</h2>
-        <div id="properties" class="small"></div>
+        <h2 id="propertiesTitle" class="header">Properties</h2>
+        <div id="properties" class="resourceList small"></div>
       </div>
     </div>
     <!--*** End Left Panel *** -->
@@ -254,26 +254,24 @@
 
         <h4>Add Property</h4>
 
-        <div class="inputBlockLeft">
-          <label for="propertyName">Property Name</label>
-          <input id="propertyName" title="Enter text" />
+        <label for="propertyName">Property Name</label>
+        <input id="propertyName" title="Enter text" />
 
-          <label for="propertyLabel">rdfs:label</label>
-          <input id="propertyLabel" title="Enter human-readable version of name" lang="en" />
-          <button class="langButton"></button>
-          <button class="resourceButton"></button>
-        </div>
+        <label for="propertyLabel">rdfs:label</label>
+        <input id="propertyLabel" title="Enter human-readable version of name" lang="en" />
+        <button class="langButton"></button>
+        <button class="resourceButton"></button>
 
-        <div class="inputBlockRight">
-          <label for="subPropertyOf">rdfs:subPropertyOf</label>
-          <input id="subPropertyOf" title="enter parent property" class="resource" />
-          <br/>
-          <label for="domain">rdfs:domain</label>
-          <input id="domain" title="enter domain class" class="resource" />
 
-          <label for="range">rdfs:range</label>
-          <input id="range" title="enter range class" class="resource" />
-        </div>
+        <label for="subPropertyOf">rdfs:subPropertyOf</label>
+        <input id="subPropertyOf" title="enter parent property" class="resource" />
+
+        <label for="domain">rdfs:domain</label>
+        <input id="domain" title="enter domain class" class="resource" />
+
+        <label for="range">rdfs:range</label>
+        <input id="range" title="enter range class" class="resource" />
+
         <label for="propertyComment">rdfs:comment</label>
         <textarea id="propertyComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
         <button class="langButton"></button>
@@ -297,13 +295,13 @@
         <div id="propertyChooser">
         </div>
 
-        <label for="propertyLiteralValue">Literal Value : </label>
+        <label for="propertyLiteralValue">Literal Value</label>
         <input id="propertyLiteralValue" title="enter text (leave blank for URI value)" lang="en" />
         <button class="langButton"></button>
         <button class="resourceButton"></button>
 
         <div id="propertyUriValue">
-          <label for="uriValue">URI Value : </label>
+          <label for="uriValue">URI Value</label>
         </div>
 
         <button id="addPropertyValueButton">Add</button>
