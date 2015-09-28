@@ -44,6 +44,8 @@ var SchemaEdit = (function () {
             SchemaEdit.initLangButtons();
             SchemaEdit.setupLangButtons();
 
+            SchemaEdit.setupPlusButtons();
+
             SchemaEdit.helpMap = {};
             SchemaEdit.setupHelpButtons();
 
@@ -70,6 +72,16 @@ var SchemaEdit = (function () {
                     $("#newVocabBlock").show();
                     $("#currentResourceBlock").hide();
                     $("#currentGraphBlock").hide();
+                }
+            );
+        },
+
+        setupPlusButtons: function () {
+            $(".plusButton").click(
+                function () {
+                  var prev = $(this).prev();
+                  $(prev).clone().appendTo(prev);
+                  SchemaEdit.setupLangButtons();
                 }
             );
         },
@@ -504,7 +516,7 @@ var SchemaEdit = (function () {
         setLangButtonValue: function ($button) {
             var target = $($button).prev();
             var lang = target.attr("lang");
-            console.log("setLangButtonValue lang = " + lang);
+            // console.log("setLangButtonValue lang = " + lang);
             $button.text(lang);
         },
 
@@ -545,6 +557,7 @@ var SchemaEdit = (function () {
                 });
         },
 
+/*
         makeLanguageButton: function (subject, predicate, object, language) {
             var languageButton = $("<button class='language'></button>");
             languageButton.text(language);
@@ -581,7 +594,7 @@ var SchemaEdit = (function () {
             });
             return languageButton;
         },
-
+*/
         initResourceButtons: function () {
             $(".resourceButton").each(
                 function () {

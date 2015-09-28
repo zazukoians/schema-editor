@@ -219,7 +219,7 @@ textarea {
   background-color: #489ee0;
 }
 
-.helpButton {
+.helpButton, .plusButton {
   display: block;
 }
 

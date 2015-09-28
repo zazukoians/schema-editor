@@ -124,7 +124,7 @@
     <button id="newVocabButton" title="Create new vocabulary">New Vocab</button>
     <div id="newVocabBlock" class="editBlock">
       <div class="help">
-        <span id="#newVocabHelp" class="helpButton">?</span>
+        <button class="helpButton">?</button>
         <div id="newVocabHelpText" title="New Vocab" class="helpText">
           <p>Create a new vocab</p>
         </div>
@@ -233,10 +233,13 @@
         <label for="subClassOf">rdfs:subClassOf</label>
         <input id="subClassOf" title="Enter parent class" class="resource" />
 
-        <label for="classLabel">rdfs:label</label>
-        <input id="classLabel" title="Enter human-readable version of name" lang="en" />
-        <button class="langButton"></button>
-        <button class="resourceButton"></button>
+        <div class="fieldBlock">
+          <label for="classLabel">rdfs:label</label>
+          <input id="classLabel" title="Enter human-readable version of name" lang="en" />
+          <button class="langButton"></button>
+          <button class="resourceButton"></button>
+        </div>
+        <button class="plusButton">+</button>
 
         <label for="classComment">rdfs:comment</label>
         <textarea id="classComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
