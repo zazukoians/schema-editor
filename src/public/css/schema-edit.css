@@ -93,6 +93,10 @@ button, .button {
   display: none;
 }
 
+#advancedBlock {
+  display: none;
+}
+
 #languageSelect {
   background-color: white;
 }
@@ -157,6 +161,14 @@ textarea {
   padding: 10px;
 }
 
+
+/* for popup dialog */
+
+#languageSelect * {
+  text-align: left;
+  vertical-align: middle;
+}
+
 .inform {
   display: none;
 }
@@ -181,7 +193,6 @@ textarea {
   text-align: right;
   padding: 2px 2px 2px 2px;
 }
-
 
 .helpText {
   display: none;
@@ -208,10 +219,8 @@ textarea {
   background-color: #489ee0;
 }
 
-
-
 .helpButton {
-display: block;
+  display: block;
 }
 
 .helpButton:active, .langButton:active, .resourceButton:active {
@@ -274,6 +283,7 @@ display: block;
 .hide:target ~ .full {
   display: inline;
 }
+
 
 /*style the (+) and (-) */
 

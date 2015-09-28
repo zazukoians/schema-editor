@@ -39,12 +39,15 @@ var SchemaEdit = (function () {
             SchemaEdit.initResourceButtons();
             SchemaEdit.setupResourceButtons();
 
+            SchemaEdit.makeAdvancedButton();
+
             SchemaEdit.initLangButtons();
             SchemaEdit.setupLangButtons();
 
-SchemaEdit.helpMap = {};
-
+            SchemaEdit.helpMap = {};
             SchemaEdit.setupHelpButtons();
+
+            $(".resourceButton").hide(); // for selecting skos properties etc - maybe come back to later
         },
 
         makeDeleteResourceButton: function () {
@@ -71,6 +74,14 @@ SchemaEdit.helpMap = {};
             );
         },
 
+        makeAdvancedButton: function () {
+            $("#advancedButton").click(
+                function () {
+                    $("#advancedBlock").toggle();
+                }
+            );
+        },
+
         endpointsDialog: function () {
             $("#endpointClearButton").click(
                 function () {
@@ -86,20 +97,20 @@ SchemaEdit.helpMap = {};
         },
 
         setupHelpButtons: function () {
-          $(".helpButton").each(
-            function () {
-              var id = $(this).attr("id");
-              var $dialog = $(this).next().dialog({
-                  autoOpen: false,
-                  width: 800
-              });
-              SchemaEdit.helpMap[id] = $dialog;
-            }
-          );
+            $(".helpButton").each(
+                function () {
+                    var id = $(this).attr("id");
+                    var $dialog = $(this).next().dialog({
+                        autoOpen: false,
+                        width: 800
+                    });
+                    SchemaEdit.helpMap[id] = $dialog;
+                }
+            );
 
             $(".helpButton").click(
                 function () {
-                  var id = $(this).attr("id");
+                    var id = $(this).attr("id");
                     SchemaEdit.helpMap[id].dialog('open');
                 }
             );

@@ -219,7 +219,7 @@
       <div id="addClass" class="editBlock">
 
         <div class="help">
-          <span id="#addClassHelpButton" class="helpButton">?</span>
+          <button id="#addClassHelpButton" class="helpButton">?</button>
           <div id="addClassHelpText" title="Add Class" class="helpText">
             <p>At minimum specify a class name, then click the Add Class button</p>
           </div>
@@ -267,7 +267,6 @@
         <button class="langButton"></button>
         <button class="resourceButton"></button>
 
-
         <label for="subPropertyOf">rdfs:subPropertyOf</label>
         <input id="subPropertyOf" title="enter parent property" class="resource" />
 
@@ -296,23 +295,27 @@
           </div>
         </div>
         <!-- class="ui-widget" -->
-        <h4>Add Property To Current Resource</h4>
-        <div id="propertyChooser">
-        </div>
 
-        <label for="propertyLiteralValue">Literal Value</label>
-        <input id="propertyLiteralValue" title="enter text (leave blank for URI value)" lang="en" />
-        <button class="langButton"></button>
-        <button class="resourceButton"></button>
+        <button id="advancedButton">Advanced</button>
+        <div id="advancedBlock">
+          <h4>Add Property To Current Resource</h4>
+          <div id="propertyChooser">
+          </div>
 
-        <div id="propertyUriValue">
-          <label for="uriValue">URI Value</label>
-        </div>
+          <label for="propertyLiteralValue">Literal Value</label>
+          <input id="propertyLiteralValue" title="enter text (leave blank for URI value)" lang="en" />
+          <button class="langButton"></button>
+          <button class="resourceButton"></button>
 
-        <button id="addPropertyValueButton">Add</button>
+          <div id="propertyUriValue">
+            <label for="uriValue">URI Value</label>
+          </div>
 
-        <div id="noResourceError" class="inform">
-          <p>Please select current resource first.</p>
+          <button id="addPropertyValueButton">Add</button>
+
+          <div id="noResourceError" class="inform">
+            <p>Please select current resource first.</p>
+          </div>
         </div>
       </div>
       <hr/>
