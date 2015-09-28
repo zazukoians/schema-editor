@@ -42,6 +42,8 @@ var SchemaEdit = (function () {
             SchemaEdit.initLangButtons();
             SchemaEdit.setupLangButtons();
 
+SchemaEdit.helpMap = {};
+
             SchemaEdit.setupHelpButtons();
         },
 
@@ -84,25 +86,23 @@ var SchemaEdit = (function () {
         },
 
         setupHelpButtons: function () {
+          $(".helpButton").each(
+            function () {
+              var id = $(this).attr("id");
+              var $dialog = $(this).next().dialog({
+                  autoOpen: false,
+                  width: 800
+              });
+              SchemaEdit.helpMap[id] = $dialog;
+            }
+          );
+
             $(".helpButton").click(
                 function () {
-                    $(this).next().dialog({
-                        width: 800
-                    });
+                  var id = $(this).attr("id");
+                    SchemaEdit.helpMap[id].dialog('open');
                 }
             );
-            /*
-            $("#overviewHelp").position({
-                my: "center",
-                at: "right",
-                of: "#pageTitle"
-            });
-            $("#classesPropertiesHelpButton").position({
-                my: "center",
-                at: "left",
-                of: "#classesTitle"
-            });
-            */
         },
 
         /* Builds graph chooser combobox/autocomplete
