@@ -232,7 +232,7 @@ var SchemaEdit = (function () {
                     }
                     property.text(pText);
 
-                    var propertyWrapper = $("<div class='predicate'></div>");
+                    var propertyWrapper = $("<label/>");
                     propertyWrapper.append(property);
                     propertyItem.append(propertyWrapper);
 
@@ -245,7 +245,8 @@ var SchemaEdit = (function () {
                     if(current.type == "literal") { // as returned from SPARQL
                         var language = current["language"];
 
-                        var value = $("<div class='literalObject' contenteditable='true' title='click to edit'>" + o + "</div>");
+                        var value = $("<input class='literalObject' contenteditable='true' title='Change value' />");
+                        value.attr("value", o);
 
                         if(!language || language == "") {
                             triple += "\"\"\"" + o + "\"\"\" ."; // object
@@ -265,18 +266,9 @@ var SchemaEdit = (function () {
 
                         value = $("<a />");
                         value.attr("href", o);
-                        var value = $("<div class='uriObject' title='click to view target'><a href=''" + o + "'>" + uriText + "</a></div>");
+                        var value = $("<span class='uriObject' title='Edit value'><a href=''" + o + "'>" + uriText + "</a></div>");
 
                         triple += " <" + o + "> ."; // object
-
-                        /*
-                         * functionality is already available via Add Property/ Delete
-                         * leaving here for now during evaluation
-                         */
-                        //  propertyItem.append(SchemaEdit.makeChangePredicateButton(triple));
-
-                        //    value.text(uriText);
-
                     }
                     deleteButton.attr("data-triple", triple); // stick resource data in attribute
 
@@ -284,8 +276,6 @@ var SchemaEdit = (function () {
                     propertyBlock.append("<strong>Property</strong>").append(propertyItem);
                     propertyItem.append(value);
                     if(current.type == "literal") { // TODO refactor
-                        propertyItem.append(SchemaEdit.makeLanguageButton(uri, p, o, language));
-                        propertyItem.append($("<br/>"));
                         propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
                     }
                     propertyItem.append(deleteButton);
@@ -605,15 +595,15 @@ var SchemaEdit = (function () {
                     dialog.html(propertiesChoices);
 
                     var changePropertiesHandler = function () {
-                      //  var language;
+                        //  var language;
                         $('.propertiesCheckbox').each(function () {
                             if(this.checked) {
-                          //      language = $(this).val();
+                                //      language = $(this).val();
                             }
                         });
                         $(this).dialog("close");
-                      //  target.attr("lang", language);
-                    //    SchemaEdit.initLangButtons();
+                        //  target.attr("lang", language);
+                        //    SchemaEdit.initLangButtons();
                     }
 
                     dialog.dialog({

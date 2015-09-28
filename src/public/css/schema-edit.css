@@ -6,12 +6,37 @@
   text-align: center;
 }
 
-#newVocabButton {
-  margin: 10px 0px 20px 0px;
+#currentContext {
+  display: block;
 }
 
-.editBlock {
-  position: relative;
+#resource, #graph {
+  width: 25em;
+}
+
+#currentResource, #currentGraph {
+  padding: 10px;
+}
+
+#currentR {
+  padding: 10px;
+}
+
+#center label {
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: right;
+}
+
+#center input {
+  display: inline-block;
+  float: left;
+}
+
+#newVocabButton {
+  margin: 10px 0px 20px 0px;
 }
 
 button, .button {
@@ -25,18 +50,6 @@ button, .button {
 
 .resource {
   border: 2px solid #96F;
-}
-
-#resource, #graph {
-  width: 25em;
-}
-
-#currentResource, #currentGraph {
-  padding: 10px;
-}
-
-#currentR {
-  padding: 10px;
 }
 
 .show {
@@ -69,21 +82,10 @@ button, .button {
 }
 
 input, textarea, select {
-  /*  width: 70%; */
+  margin: 0px 2px 4px 8px;
   border: 2px solid lightgray;
   box-sizing: border-box;
   -moz-box-sizing: border-box
-}
-
-label {
-  display: inline-block;
-  width: 210px;
-  text-align: right;
-  /* display:block; */
-  /* margin:8px; */
-  /*   width: 450px; */
-  clear: right;
-  overflow: auto;
 }
 
 textarea {
@@ -142,13 +144,7 @@ textarea {
 
 /* TODO tweak */
 
-.propertyItem .literalObject {
-  height: auto;
-  background-color: white;
-  border: 2px solid grey;
-  border-radius: 3px;
-  padding: 2px 2px 0px 5px;
-}
+
 
 #classes, #properties {
   display: block;
@@ -216,6 +212,7 @@ textarea {
 }
 
 .helpButton, .langButton, .resourceButton, .plusButton {
+  float: left;
   background-color: #4575c7;
   -moz-border-radius: 28px;
   -webkit-border-radius: 28px;
@@ -240,7 +237,7 @@ textarea {
 }
 
 .helpButton:active, .langButton:active, .resourceButton:active {
-  position: relative;
+/*  position: relative; */
   top: 1px;
 }
 

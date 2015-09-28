@@ -139,43 +139,46 @@
       <button id="createVocabButton">Create</button>
     </div>
 
-    <div id="currentGraphBlock" class="editBlock">
+    <div id="currentContext">
+      <div id="currentGraphBlock" class="editBlock">
 
-      <div class="help">
-        <span id="#graphChooserHelpButton" class="helpButton">?</span>
-        <div id="graphChooserHelpText" title="Graph Chooser" class="helpText">
-          <p>This is the Graph Name of the Vocabulary currently being edited. Click the edit box to list the graphs available in the store.</p>
+        <div class="help">
+          <span id="#graphChooserHelpButton" class="helpButton">?</span>
+          <div id="graphChooserHelpText" title="Graph Chooser" class="helpText">
+            <p>This is the Graph Name of the Vocabulary currently being edited. Click the edit box to list the graphs available in the store.</p>
+          </div>
+        </div>
+
+        <strong>
+          Current Graph :
+        </strong>
+        <div id="currentGraph">
+          <span id="graphChooser"></span>
         </div>
       </div>
 
-      <strong>
-        Current Graph :
-      </strong>
-      <div id="currentGraph">
-        <span id="graphChooser"></span>
+      <br/>
+      <div id="currentResourceBlock" class="editBlock">
+        <div class="help">
+          <span id="#currentResourceHelpButton" class="helpButton">?</span>
+          <div id="currentResourceHelpText" title="Current Resource" class="helpText">
+            <p>This is the resource to which some of the operations below will apply. Click the edit box to list the resources available in the store.</p>
+          </div>
+        </div>
+
+        <strong>
+          Current Resource :
+        </strong>
+        <div id="currentR">
+          <span id="resourceChooser"></span>
+          <button id="deleteResource">Delete Resource</button>
+          <div id="deleteResourceText" class="dialog">
+            <p>Resource Deleted</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <br/>
-    <div id="currentResourceBlock" class="editBlock">
-      <div class="help">
-        <span id="#currentResourceHelpButton" class="helpButton">?</span>
-        <div id="currentResourceHelpText" title="Current Resource" class="helpText">
-          <p>This is the resource to which some of the operations below will apply. Click the edit box to list the resources available in the store.</p>
-        </div>
-      </div>
-
-      <strong>
-        Current Resource :
-      </strong>
-      <div id="currentR">
-        <span id="resourceChooser"></span>
-        <button id="deleteResource">Delete Resource</button>
-        <div id="deleteResourceText" class="dialog">
-          <p>Resource Deleted</p>
-        </div>
-      </div>
-    </div>
   </div>
 
   <div id="wrapper">
@@ -192,7 +195,6 @@
             <p>These are the RDF classes and properties in the current graph. Clicking on a class or property will set it to the Current Resource.</p>
           </div>
         </div>
-
 
         <div id="classes" class="small"></div>
       </div>
@@ -220,20 +222,17 @@
 
         <h4>Add Class</h4>
 
-        <div class="inputBlockLeft">
-          <label for="className">Class Name</label>
-          <input id="className" title="Enter text" />
+        <label for="className">Class Name</label>
+        <input id="className" title="Enter text" />
 
-          <label for="classLabel">rdfs:label</label>
-          <input id="classLabel" title="Enter human-readable version of name" lang="en" />
-          <button class="langButton"></button>
-          <button class="resourceButton"></button>
-        </div>
+        <label for="subClassOf">rdfs:subClassOf</label>
+        <input id="subClassOf" title="Enter parent class" class="resource" />
 
-        <div class="inputBlockRight">
-          <label for="subClassOf">rdfs:subClassOf</label>
-          <input id="subClassOf" title="Enter parent class" class="resource" />
-        </div>
+        <label for="classLabel">rdfs:label</label>
+        <input id="classLabel" title="Enter human-readable version of name" lang="en" />
+        <button class="langButton"></button>
+        <button class="resourceButton"></button>
+
         <label for="classComment">rdfs:comment</label>
         <textarea id="classComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
         <button class="langButton"></button>
