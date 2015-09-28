@@ -104,7 +104,7 @@
   <div id="header">
 
     <div id="titleBlock" class="editBlock">
-      <h2 id="pageTitle">Schema Editor</h2>
+
       <div class="help">
         <button id="#overviewHelp" class="helpButton">?</button>
         <div id="overviewHelpText" title="Overview" class="helpText">
@@ -116,8 +116,11 @@
           </p>
         </div>
       </div>
-    </div>
 
+      <h2 id="pageTitle">Schema Editor</h2>
+
+    </div>
+    <br/>
     <button id="newVocabButton" title="Create new vocabulary">New Vocab</button>
     <div id="newVocabBlock" class="editBlock">
       <div class="help">
@@ -158,6 +161,7 @@
 
       <br/>
       <div id="currentResourceBlock" class="editBlock">
+
         <div class="help">
           <span id="#currentResourceHelpButton" class="helpButton">?</span>
           <div id="currentResourceHelpText" title="Current Resource" class="helpText">
@@ -175,6 +179,7 @@
             <p>Resource Deleted</p>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -187,13 +192,14 @@
 
       <div class="list-block">
 
-        <h2 id="classesTitle" class="header">Classes</h2>
         <div class="help">
           <span id="#classesPropertiesHelpButton" class="helpButton">?</span>
           <div id="classesPropertiesHelpText" title="Classes and Properties" class="helpText">
             <p>These are the RDF classes and properties in the current graph. Clicking on a class or property will set it to the Current Resource.</p>
           </div>
         </div>
+
+        <h2 id="classesTitle" class="header">Classes</h2>
 
         <div id="classes" class="resourceList small"></div>
       </div>
@@ -244,14 +250,14 @@
 
       <div id="addPropertyBlock" class="editBlock">
 
-        <h4>Add Property</h4>
-
         <div class="help">
           <button id="#addPropertyHelpButton" class="helpButton">?</button>
           <div id="addPropertyHelpText" title="Add Class" class="helpText">
             <p>At minimum specify a property name, then click the Add Property button</p>
           </div>
         </div>
+
+        <h4>Add Property</h4>
 
         <label for="propertyName">Property Name</label>
         <input id="propertyName" title="Enter text" />
@@ -330,6 +336,7 @@
           <input id="uploadFilename" type="file" name="uploadFilename" size="40" />
         </form>
       </div>
+
       <hr/>
 
       <div id="exportTurtleBlock" class="editBlock">
@@ -344,6 +351,8 @@
         <button id="turtle">Export</button>
       </div>
 
+      <hr/>
+
       <div id="endpoints">
         <strong>Endpoint Settings</strong>
         <br/>
@@ -355,6 +364,7 @@
           <label for="updateEndpoint">Update Endpoint</label>
           <input id="updateEndpoint" type="text" value=""></input>
         </div>
+        <br/>
         <button id="endpointButton">Set New Values</button>
         <button id="endpointClearButton">Clear</button>
       </div>

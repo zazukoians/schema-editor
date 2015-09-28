@@ -161,6 +161,10 @@ textarea {
   display: none;
 }
 
+#pageTitle {
+  display: inline;
+}
+
 #titleBlock .help {
   right: 40%;
   top: 0px;
@@ -173,21 +177,11 @@ textarea {
 
 .help {
   display: block;
+  float: left;
   text-align: right;
   padding: 2px 2px 2px 2px;
 }
 
-.help {
-  display: block;
-  text-align: right;
-  padding: 2px 2px 2px 2px;
-  /*
-  right: 20px;
-  top: 10px;
-  position: absolute;
-  z-index: 10;
-  */
-}
 
 .helpText {
   display: none;
