@@ -383,17 +383,12 @@ var SchemaEdit = (function () {
                     "graphURI": Config.getGraphURI(),
                     "name": $("#className").val(),
                     "subClassOf": angleBrackets($("#subClassOf").val()),
-
-                    /*
-                    "label": $("#classLabel").val(),
-                    "labelLang": $("#classLabel").attr("lang"),
-                    "comment": $("#classComment").val(),
-                    "commentLang": $("#classComment").attr("lang")
-                    */
                 }
 
-                //  var labels = [];
-                //  var labelLangs = [];
+              /* Currently looping through different values here,
+               * making a server call for each.
+               * TODO move to looping within template
+               */
                 $("#addClass .classLabel").each(
                     function () {
                         //    labels.push($(this).val());
@@ -403,6 +398,16 @@ var SchemaEdit = (function () {
                         SparqlConnector.addClass(map, callback);
                     }
                 );
+                $("#addClass .classComment").each(
+                    function () {
+                        //    labels.push($(this).val());
+                        //    labelLangs.push($(this).attr("lang"));
+                        map["comment"] = $(this).val();
+                        map["commentLang"] = $(this).attr("lang");
+                        SparqlConnector.addClass(map, callback);
+                    }
+                );
+                 window.location.reload();
             });
         },
 
