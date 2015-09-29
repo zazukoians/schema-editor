@@ -111,9 +111,6 @@
           <p>This is Schema Edit. It aims to simplify the development of RDF vocabularies/ontologies. It is not designed to be a general purpose RDF editor. The vocabulary being edited is contained as a graph in a SPARQL 1.1 capable store. Editing operations
             are carried out directly on that graph, changes take place immediately.</p>
           <p>The graph name is taken as being the namespace name of the vocabulary.</p>
-          <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name).
-            Alternately full QNames (namespace+local name) may be used.
-          </p>
         </div>
       </div>
 
@@ -221,7 +218,11 @@
         <div class="help">
           <button id="#addClassHelpButton" class="helpButton">?</button>
           <div id="addClassHelpText" title="Add Class" class="helpText">
-            <p>At minimum specify a class name, then click the Add Class button</p>
+            <p>At minimum specify a class name, then click the Add Class button. </p>
+            <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name).
+              Alternately full QNames (namespace+local name) may be used.
+            </p>
+            <p>To add extra label/comment fields, click the (+) button.</p>
           </div>
         </div>
 
@@ -256,8 +257,12 @@
 
         <div class="help">
           <button id="#addPropertyHelpButton" class="helpButton">?</button>
-          <div id="addPropertyHelpText" title="Add Class" class="helpText">
-            <p>At minimum specify a property name, then click the Add Property button</p>
+          <div id="addPropertyHelpText" title="Add Property" class="helpText">
+            <p>At minimum specify a property name, then click the Add Property button. </p>
+            <p>To add extra label/comment fields, click the (+) button.</p>
+            <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name).
+              Alternately full QNames (namespace+local name) may be used.
+            </p>
           </div>
         </div>
 
@@ -358,7 +363,7 @@
           </div>
         </div>
 
-        <h3>Export Turtle</h3>
+        <h3 class="blockTitle">Export Turtle</h3>
         <button id="turtle">Export</button>
       </div>
 

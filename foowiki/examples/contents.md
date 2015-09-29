@@ -1,1 +1,0 @@
-Examples of Turtle data/ SPARQL queries used

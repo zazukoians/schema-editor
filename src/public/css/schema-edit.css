@@ -173,7 +173,7 @@ textarea {
   display: none;
 }
 
-#pageTitle {
+#pageTitle, .blockTitle {
   display: inline;
 }
 
@@ -256,6 +256,9 @@ textarea {
   top: 1px;
 }
 
+.uriObject{
+  margin: 8px;
+}
 
 /* collapsible chunks */
 

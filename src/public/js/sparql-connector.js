@@ -208,6 +208,9 @@ var SparqlConnector = (function () {
                 prefix: "rdf",
                 uri: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
             }, {
+              prefix: "skos",
+              uri: "http://www.w3.org/2004/02/skos/core#"
+          }, {
                 prefix: "foaf",
                 uri: "http://xmlns.com/foaf/0.1/"
             }, {
