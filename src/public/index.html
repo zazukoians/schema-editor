@@ -266,11 +266,6 @@
         <label for="propertyName">Property Name</label>
         <input id="propertyName" title="Enter text" />
 
-        <label for="propertyLabel">rdfs:label</label>
-        <input id="propertyLabel" title="Enter human-readable version of name" lang="en" />
-        <button class="langButton"></button>
-
-
         <label for="subPropertyOf">rdfs:subPropertyOf</label>
         <input id="subPropertyOf" title="enter parent property" class="resource" />
 
@@ -280,10 +275,19 @@
         <label for="range">rdfs:range</label>
         <input id="range" title="enter range class" class="resource" />
 
-        <label for="propertyComment">rdfs:comment</label>
-        <textarea id="propertyComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
-        <button class="langButton"></button>
+        <div class="fieldBlock">
+          <label>rdfs:label</label>
+          <input class="propertyLabel" title="Enter human-readable version of name" lang="en" />
+          <button class="langButton"></button>
+        </div>
+        <button class="plusButton">+</button>
 
+        <div class="fieldBlock">
+          <label>rdfs:comment</label>
+          <textarea class="propertyComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
+          <button class="langButton"></button>
+        </div>
+        <button class="plusButton">+</button>
 
         <button id="addPropertyButton">Add Property</button>
       </div>

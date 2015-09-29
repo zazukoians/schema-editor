@@ -375,24 +375,19 @@ var SchemaEdit = (function () {
             var button = $("#addClassButton");
             button.click(function () {
 
-                var callback = function (msg) {
-                    // alert(msg);
-                    // window.location.reload();
-                }
+                var callback = function (msg) {}
                 var map = {
                     "graphURI": Config.getGraphURI(),
                     "name": $("#className").val(),
                     "subClassOf": angleBrackets($("#subClassOf").val()),
                 }
 
-              /* Currently looping through different values here,
-               * making a server call for each.
-               * TODO move to looping within template
-               */
+                /* Currently looping through different values here,
+                 * making a server call for each.
+                 * TODO move to looping within template
+                 */
                 $("#addClass .classLabel").each(
                     function () {
-                        //    labels.push($(this).val());
-                        //    labelLangs.push($(this).attr("lang"));
                         map["label"] = $(this).val();
                         map["labelLang"] = $(this).attr("lang");
                         SparqlConnector.addClass(map, callback);
@@ -400,23 +395,21 @@ var SchemaEdit = (function () {
                 );
                 $("#addClass .classComment").each(
                     function () {
-                        //    labels.push($(this).val());
-                        //    labelLangs.push($(this).attr("lang"));
                         map["comment"] = $(this).val();
                         map["commentLang"] = $(this).attr("lang");
                         SparqlConnector.addClass(map, callback);
                     }
                 );
-                 window.location.reload();
+                window.location.reload();
             });
         },
 
         addPropertyHandler: function () {
             var button = $("#addPropertyButton");
             button.click(function () {
-                var namespace = parseUri(window.location.href).queryKey.graph;
+              //  var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#propertyName").val();
-                var label = $("#propertyLabel").val();
+                // var label = $("#propertyLabel").val();
                 var domain = $("#domain").val();
                 if(domain) {
                     domain = angleBrackets(domain);
@@ -429,12 +422,36 @@ var SchemaEdit = (function () {
                 if(subPropertyOf) {
                     subPropertyOf = angleBrackets(subPropertyOf);
                 }
-                var comment = $("#classComment").val();
-                var callback = function (msg) {
-                    alert(msg);
-                    window.location.reload();
-                }
-                SparqlConnector.addProperty(namespace, name, label, domain, range, subPropertyOf, comment, callback);
+                //  var comment = $("#classComment").val();
+                var callback = function (msg) {}
+
+                var map = {
+                    "graphURI": Config.getGraphURI(),
+                    "name": name,
+                    "domain": domain,
+                    "range": range,
+                    "subPropertyOf": subPropertyOf,
+                    "label": "",
+                    "labelLang": "",
+                    "comment": "",
+                    "comment": ""
+                };
+
+                $("#addPropertyBlock .propertyLabel").each(
+                    function () {
+                      console.log("label = "+$(this).val());
+                        map["label"] = $(this).val();
+                        map["labelLang"] = $(this).attr("lang");
+                        SparqlConnector.addProperty(map, callback);
+                    }
+                );
+                $("#addPropertyBlock .propertyComment").each(
+                    function () {
+                        map["comment"] = $(this).val();
+                        map["commentLang"] = $(this).attr("lang");
+                        SparqlConnector.addProperty(map, callback);
+                    }
+                );
                 window.location.reload();
             });
         },

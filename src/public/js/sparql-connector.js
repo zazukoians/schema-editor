@@ -1,4 +1,3 @@
-
 /**
  * Comment template. TODO fill me in
  * @param {string} foo This is a param with a description too long to fit in
@@ -86,13 +85,13 @@ var SparqlConnector = (function () {
                 encodeURIComponent(getResourceListSparql) + "&output=xml";
 
             var extractResources = function (json) {
-                    var resources = [];
-                    for(var i = 0; i < json.length; i++) {
-                        var subject = json[i]["subject"];
-                        resources.push(subject);
-                    }
-                    callback(resources);
+                var resources = [];
+                for(var i = 0; i < json.length; i++) {
+                    var subject = json[i]["subject"];
+                    resources.push(subject);
                 }
+                callback(resources);
+            }
             SparqlConnector.getJsonForSparqlURL(getResourcesUrl, extractResources);
         },
 
@@ -292,7 +291,7 @@ var SparqlConnector = (function () {
                           */
         },
 
-        addClass: function(map, callback) {
+        addClass: function (map, callback) {
 
             var addClassSparql = sparqlTemplater(
                 addClassSparqlTemplate, map);
@@ -300,23 +299,12 @@ var SparqlConnector = (function () {
             SparqlConnector.postData(addClassSparql, callback);
         },
 
-        addProperty: function (namespace, name, label, domain, range, subPropertyOf, comment, callback) {
+        addProperty: function (map, callback) {
             var addPropertySparql = sparqlTemplater(
-                addPropertySparqlTemplate, {
-                    "graphURI": Config.getGraphURI(),
-                    "namespace": namespace,
-                    "name": name,
-                    "label": label,
-                    "domain": domain,
-                    "range": range,
-                    "subPropertyOf": subPropertyOf,
-                    "comment": comment
-                });
+                addPropertySparqlTemplate, map);
+            console.log("addPropertySparql = \n" + addPropertySparql);
             SparqlConnector.postData(addPropertySparql, callback);
         },
-
-
-
 
         updateLiteralTriple: function (subject, predicate, object, language, callback) {
             if(!language || language == "") { // sensible default

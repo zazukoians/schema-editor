@@ -71,14 +71,14 @@ var addClassSparqlTemplate = commonPrefixes +
 
 // TODO tweak, namespace = graph
 var addPropertySparqlTemplate = commonPrefixes +
-    "BASE <~{namespace}~> \n\
+    "BASE <~{graphURI}~> \n\
    INSERT DATA {  \n\
     		GRAPH <~{graphURI}~> {  \n\
-    			<~{namespace}~~{name}~>  a rdf:Property ; \n\
+    			<~{graphURI}~~{name}~>  a rdf:Property ; \n\
           \n\
           ~{#label}~ \n\
-              rdfs:label \"\"\"~{label}~\"\"\" ; \n\
-              skos:prefLabel \"\"\"~{label}~\"\"\" ; \n\
+              rdfs:label \"\"\"~{label}~\"\"\"@~{labelLang}~ ; \n\
+              skos:prefLabel \"\"\"~{label}~\"\"\"@~{labelLang}~ ; \n\
           ~{/label}~ ; \n\
 \n\
           ~{#subPropertyOf}~ \n\
@@ -94,11 +94,11 @@ var addPropertySparqlTemplate = commonPrefixes +
           ~{/range}~ \n\
 \n\
           ~{#comment}~ \n\
-            rdfs:comment \"\"\"~{comment}~\"\"\" ; \n\
-            skos:definition \"\"\"~{comment}~\"\"\" ; \n\
+            rdfs:comment \"\"\"~{comment}~\"\"\"@~{commentLang}~ ; \n\
+            skos:definition \"\"\"~{comment}~\"\"\"@~{commentLang}~ ; \n\
           ~{/comment}~  \n\
 \n\
-          rdfs:isDefinedBy <~{namespace}~> \n\
+          rdfs:isDefinedBy <~{graphURI}~> \n\
     } \n\
     }";
 
@@ -220,7 +220,7 @@ var updateLiteralTripleSparqlTemplate = commonPrefixes +
 }";
 
 var createVocabSparqlTemplate = commonPrefixes +
-"CREATE GRAPH <~{graphURI}~> ; \n\
+    "CREATE GRAPH <~{graphURI}~> ; \n\
     INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
 			<~{graphURI}~>  a owl:Ontology; \n\
