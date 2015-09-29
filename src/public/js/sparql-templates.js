@@ -52,8 +52,8 @@ var addClassSparqlTemplate = commonPrefixes +
     			<~{graphURI}~~{name}~>  a rdfs:Class ; \n\
       \n\
           ~{#label}~ \n\
-              rdfs:label \"\"\"~{label}~\"\"\" ; \n\
-              skos:prefLabel \"\"\"~{label}~\"\"\" ; \n\
+              rdfs:label \"\"\"~{label}~\"\"\"@~{labelLang}~ ; \n\
+              skos:prefLabel \"\"\"~{label}~\"\"\"@~{labelLang}~ ; \n\
           ~{/label}~  \n\
 \n\
           ~{#subClassOf}~ \n\
@@ -61,8 +61,8 @@ var addClassSparqlTemplate = commonPrefixes +
           ~{/subClassOf}~  \n\
 \n\
           ~{#comment}~ \n\
-              rdfs:comment \"\"\"~{comment}~\"\"\" ; \n\
-              skos:definition \"\"\"~{comment}~\"\"\" ; \n\
+              rdfs:comment \"\"\"~{comment}~\"\"\"@~{commentLang}~ ; \n\
+              skos:definition \"\"\"~{comment}~\"\"\"@~{commentLang}~ ; \n\
           ~{/comment}~ \n\
 \n\
           rdfs:isDefinedBy <~{graphURI}~> \n\

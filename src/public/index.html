@@ -234,17 +234,16 @@
         <input id="subClassOf" title="Enter parent class" class="resource" />
 
         <div class="fieldBlock">
-          <label for="classLabel">rdfs:label</label>
-          <input id="classLabel" title="Enter human-readable version of name" lang="en" />
+          <label>rdfs:label</label>
+          <input class="classLabel" title="Enter human-readable version of name" lang="en" />
           <button class="langButton"></button>
-          <button class="resourceButton"></button>
         </div>
         <button class="plusButton">+</button>
 
         <label for="classComment">rdfs:comment</label>
         <textarea id="classComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
         <button class="langButton"></button>
-        <button class="resourceButton"></button>
+
 
         <button id="addClassButton">Add Class</button>
       </div>
@@ -268,7 +267,7 @@
         <label for="propertyLabel">rdfs:label</label>
         <input id="propertyLabel" title="Enter human-readable version of name" lang="en" />
         <button class="langButton"></button>
-        <button class="resourceButton"></button>
+
 
         <label for="subPropertyOf">rdfs:subPropertyOf</label>
         <input id="subPropertyOf" title="enter parent property" class="resource" />
@@ -282,7 +281,7 @@
         <label for="propertyComment">rdfs:comment</label>
         <textarea id="propertyComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea>
         <button class="langButton"></button>
-        <button class="resourceButton"></button>
+
 
         <button id="addPropertyButton">Add Property</button>
       </div>
@@ -308,7 +307,7 @@
           <label for="propertyLiteralValue">Literal Value</label>
           <input id="propertyLiteralValue" title="enter text (leave blank for URI value)" lang="en" />
           <button class="langButton"></button>
-          <button class="resourceButton"></button>
+
 
           <div id="propertyUriValue">
             <label for="uriValue">URI Value</label>

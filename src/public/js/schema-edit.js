@@ -79,9 +79,10 @@ var SchemaEdit = (function () {
         setupPlusButtons: function () {
             $(".plusButton").click(
                 function () {
-                  var prev = $(this).prev();
-                  $(prev).clone().appendTo(prev);
-                  SchemaEdit.setupLangButtons();
+                    var prev = $(this).prev(".fieldBlock");
+                    prev.log();
+                    $(prev).append(prev.clone(true));
+                    SchemaEdit.setupLangButtons();
                 }
             );
         },
@@ -373,20 +374,35 @@ var SchemaEdit = (function () {
         addClassHandler: function () {
             var button = $("#addClassButton");
             button.click(function () {
+
+                var callback = function (msg) {
+                    // alert(msg);
+                    // window.location.reload();
+                }
                 var map = {
                     "graphURI": Config.getGraphURI(),
                     "name": $("#className").val(),
+                    "subClassOf": angleBrackets($("#subClassOf").val()),
+
+                    /*
                     "label": $("#classLabel").val(),
                     "labelLang": $("#classLabel").attr("lang"),
-                    "subClassOf": angleBrackets($("#subClassOf").val()),
                     "comment": $("#classComment").val(),
                     "commentLang": $("#classComment").attr("lang")
+                    */
                 }
-                var callback = function (msg) {
-                    alert(msg);
-                    window.location.reload();
-                }
-                SparqlConnector.addClass(map, callback);
+
+                //  var labels = [];
+                //  var labelLangs = [];
+                $("#addClass .classLabel").each(
+                    function () {
+                        //    labels.push($(this).val());
+                        //    labelLangs.push($(this).attr("lang"));
+                        map["label"] = $(this).val();
+                        map["labelLang"] = $(this).attr("lang");
+                        SparqlConnector.addClass(map, callback);
+                    }
+                );
             });
         },
 
@@ -557,44 +573,44 @@ var SchemaEdit = (function () {
                 });
         },
 
-/*
-        makeLanguageButton: function (subject, predicate, object, language) {
-            var languageButton = $("<button class='language'></button>");
-            languageButton.text(language);
-            languageButton.click(function () {
-                var languageChoices = $("#languageSelect").html();
-                var dialog = $("#dialog");
-                // dialog.buttonset(); // jQueryUI
-                dialog.addClass("show");
-                dialog.html(languageChoices);
-                var updateHandler = function () {
-                    var language;
-                    $('.languageRadio').each(function () {
-                        if(this.type == 'radio' && this.checked) {
-                            language = $(this).val();
+        /*
+                makeLanguageButton: function (subject, predicate, object, language) {
+                    var languageButton = $("<button class='language'></button>");
+                    languageButton.text(language);
+                    languageButton.click(function () {
+                        var languageChoices = $("#languageSelect").html();
+                        var dialog = $("#dialog");
+                        // dialog.buttonset(); // jQueryUI
+                        dialog.addClass("show");
+                        dialog.html(languageChoices);
+                        var updateHandler = function () {
+                            var language;
+                            $('.languageRadio').each(function () {
+                                if(this.type == 'radio' && this.checked) {
+                                    language = $(this).val();
+                                }
+                            });
+                            $(this).dialog("close");
+                            SparqlConnector.updateTriple(subject, predicate, object, language, callback);
+                            location.reload(true);
+                        };
+                        dialog.dialog({
+                            resizable: false,
+                            modal: true,
+                            buttons: {
+                                "Update Value": updateHandler,
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                        var callback = function (msg) {
+                            console.log("callback msg = " + msg);
                         }
                     });
-                    $(this).dialog("close");
-                    SparqlConnector.updateTriple(subject, predicate, object, language, callback);
-                    location.reload(true);
-                };
-                dialog.dialog({
-                    resizable: false,
-                    modal: true,
-                    buttons: {
-                        "Update Value": updateHandler,
-                        Cancel: function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                });
-                var callback = function (msg) {
-                    console.log("callback msg = " + msg);
-                }
-            });
-            return languageButton;
-        },
-*/
+                    return languageButton;
+                },
+        */
         initResourceButtons: function () {
             $(".resourceButton").each(
                 function () {
