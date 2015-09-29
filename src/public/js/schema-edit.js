@@ -219,7 +219,7 @@ var SchemaEdit = (function () {
          */
         makeChooser: function (valueList, selectId) {
             valueList.sort(); // alphabetical by default
-            var choices = $("<select></select>");
+            var choices = $("<select/>");
             choices.attr("id", selectId);
             for(var i = 0; i < valueList.length; i++) {
                 var listItem = valueList[i];
@@ -243,9 +243,10 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
+              //  console.log("JSON = \n" + JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
-                    var propertyItem = $("<div class='propertyItem'></div>");
+                    var propertyItem = $("<div class='propertyItem' />");
                     var property = $("<a/>");
                     var p = current["p"];
                     property.attr("href", p);
@@ -264,23 +265,20 @@ var SchemaEdit = (function () {
                     var triple = "<" + Config.getCurrentResource() + "> "; // subject
                     triple += "<" + p + "> "; // predicate/property
 
-                    var value = $("<div>what default?</div>"); // needed for bpropertyItems?
+                    var value = $("<div>what default?</div>"); // needed for bNodes?
                     var o = current["o"];
                     if(current.type == "literal") { // as returned from SPARQL
                         var language = current["language"];
 
-                        var value = $("<input class='literalObject' contenteditable='true' title='Change value' />");
-                        value.attr("value", o);
-
-                        if(!language || language == "") {
-                            triple += "\"\"\"" + o + "\"\"\" ."; // object
-                        } else {
-                            triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
-                        }
-
                         if(!language || language == "") { // sensible default
                             language = "en";
                         } // TODO best approach? see above
+
+                        var value = $("<input class='literalObject' contenteditable='true' title='Change value' />");
+                        value.attr("value", o);
+                        value.attr("lang", language);
+
+                        triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
                     }
                     if(current.type == "uri") { // as returned from SPARQL
                         var uriText = o;
@@ -299,13 +297,18 @@ var SchemaEdit = (function () {
                     var propertyBlock = $("<p class='propertyBlock'/>");
                     propertyBlock.append("<strong>Property</strong>").append(propertyItem);
                     propertyItem.append(value);
+
                     if(current.type == "literal") { // TODO refactor
+                        propertyItem.append($("<button class='langButton' />"));
+                        var language = value.attr("lang"); // TODO some refactoring needed around this
                         propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
                     }
                     propertyItem.append(deleteButton);
                     propertyBlock.append("<hr/>");
                     $("#editor").append(propertyBlock);
                 }
+                SchemaEdit.initLangButtons();
+                SchemaEdit.setupLangButtons();
             }
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
@@ -407,7 +410,7 @@ var SchemaEdit = (function () {
         addPropertyHandler: function () {
             var button = $("#addPropertyButton");
             button.click(function () {
-              //  var namespace = parseUri(window.location.href).queryKey.graph;
+                //  var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#propertyName").val();
                 // var label = $("#propertyLabel").val();
                 var domain = $("#domain").val();
@@ -439,7 +442,7 @@ var SchemaEdit = (function () {
 
                 $("#addPropertyBlock .propertyLabel").each(
                     function () {
-                      console.log("label = "+$(this).val());
+                        console.log("label = " + $(this).val());
                         map["label"] = $(this).val();
                         map["labelLang"] = $(this).attr("lang");
                         SparqlConnector.addProperty(map, callback);
@@ -684,31 +687,18 @@ var SchemaEdit = (function () {
 
         makeUpdateButton: function (subject, predicate, object, language) {
             var updateButton = $("<button>Update</button>");
-            updateButton.attr("title", "update this literal value"); // tooltip
+            updateButton.attr("title", "Update this literal value"); // tooltip
             var tripleAttribute = SchemaEdit.makeTripleAttribute(subject, predicate, object, true);
             updateButton.attr("data-triple", tripleAttribute); // stick resource data in attribute
             updateButton.click(function () {
 
-                var newContent = updateButton.parent().find(".literalObject").text();
-
-                // newContent = newContent.replace(/<button.+button>/g, ""); // TODO get button placed better, remove this
-                // var timestamp = ?????
-                // historyBefore("update"+timestamp)
-                // historyAfter("update"+timestamp)
-                // history.add("before",currentState)
-                // history.add("undo",sparql)
-                // history.add("after",currentState)
-                // history.add("item",undo button)
+var inputField = updateButton.parent().find(".literalObject");
+                var newContent = inputField.val();
+                language = inputField.attr("lang"); // TODO needs tidying up before here
                 var callback = function () {
-                    $("#dialog").html(newContent);
-                    $("#dialog").dialog({
-                        close: function (event, ui) {
-                            location.reload(true);
-                        }
-                    });
-                    console.log("callback called");
+                  location.reload(true);
                 }
-                SparqlConnector.updateTriple(subject, predicate, newContent, language, callback);
+                SparqlConnector.updateLiteralTriple(subject, predicate, newContent, language, callback);
             });
             return updateButton;
         },

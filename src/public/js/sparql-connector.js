@@ -302,7 +302,7 @@ var SparqlConnector = (function () {
         addProperty: function (map, callback) {
             var addPropertySparql = sparqlTemplater(
                 addPropertySparqlTemplate, map);
-            console.log("addPropertySparql = \n" + addPropertySparql);
+          //  console.log("addPropertySparql = \n" + addPropertySparql);
             SparqlConnector.postData(addPropertySparql, callback);
         },
 
@@ -318,6 +318,7 @@ var SparqlConnector = (function () {
                     "object": object,
                     "language": language
                 });
+                console.log("updateTripleSparql = \n"+updateTripleSparql);
             SparqlConnector.postData(updateTripleSparql, callback);
             return false;
         },
