@@ -31,7 +31,7 @@ var SchemaEdit = (function () {
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.makeTurtleButton();
             //  SchemaEdit.setupButtons();
-            SchemaEdit.makeEndpointButton();
+            //SchemaEdit.makeEndpointButton();
 
             SchemaEdit.makeNewVocabButton();
             SchemaEdit.makeNewVocabBlock();
@@ -81,7 +81,7 @@ var SchemaEdit = (function () {
                 function () {
                     var prev = $(this).prev(".fieldBlock");
                     prev.log();
-                    $(prev).append(prev.clone(true));
+                    $(prev).after(prev.clone(true));
                     SchemaEdit.setupLangButtons();
                 }
             );
@@ -96,18 +96,45 @@ var SchemaEdit = (function () {
         },
 
         endpointsDialog: function () {
-            $("#endpointClearButton").click(
-                function () {
-                    $("#endpoints input").val("");
-                }
-            );
+
+          // this is the button on the main form, not dialog
+            $("#endpointButton").click(function () {
+                Config.setQueryEndpoint($("#queryEndpoint").val());
+                Config.setUpdateEndpoint($("#updateEndpoint").val());
+                window.location.reload();
+            });
+
+            /*
+              $("#endpointClearButton").click(
+                  function () {
+                      $("#endpoints input").val("");
+                  }
+              );
+              */
             var dialog = function () {
                 $("#endpoints").dialog({
-                    width: 800
+                    width: 800,
+                    buttons: {
+                        "Clear": function () {
+                            $("#endpoints input").val("");
+                        },
+                        "Update": function () {
+                            Config.setQueryEndpoint($("#queryEndpoint").val());
+                            Config.setUpdateEndpoint($("#updateEndpoint").val());
+                            $(this).dialog("close");
+                            window.location.reload();
+                        }
+                    }
                 });
             }
+
             SparqlConnector.ping(dialog);
         },
+
+        /*
+        makeEndpointButton: function () {
+        },
+*/
 
         setupHelpButtons: function () {
             $(".helpButton").each(
@@ -243,7 +270,7 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
-              //  console.log("JSON = \n" + JSON.stringify(json, false, 4));
+                //  console.log("JSON = \n" + JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem' />");
@@ -692,11 +719,11 @@ var SchemaEdit = (function () {
             updateButton.attr("data-triple", tripleAttribute); // stick resource data in attribute
             updateButton.click(function () {
 
-var inputField = updateButton.parent().find(".literalObject");
+                var inputField = updateButton.parent().find(".literalObject");
                 var newContent = inputField.val();
                 language = inputField.attr("lang"); // TODO needs tidying up before here
                 var callback = function () {
-                  location.reload(true);
+                    location.reload(true);
                 }
                 SparqlConnector.updateLiteralTriple(subject, predicate, newContent, language, callback);
             });
@@ -792,15 +819,6 @@ var inputField = updateButton.parent().find(".literalObject");
                 triple += " <" + object + "> .";
             }
             return triple;
-        },
-
-        makeEndpointButton: function () {
-            $("#endpointButton").click(function () {
-                //    Config.setEndpointHost($("#endpointHost").val());
-                Config.setQueryEndpoint($("#queryEndpoint").val());
-                Config.setUpdateEndpoint($("#updateEndpoint").val());
-                window.location.reload();
-            });
         },
 
         makeTurtleButton: function () {
