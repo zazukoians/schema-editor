@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ontology Editor: Issues</title>
+  <link rel="self" href="https://zazuko.plan.io/projects/ontology-editor/issues.atom?key=93a62ff7fae7f2e8ee06688c0e913275efdd1656"/>
+  <link rel="alternate" href="https://zazuko.plan.io/projects/ontology-editor/issues"/>
+  <id>https://zazuko.plan.io/</id>
+  <icon>https://zazuko.plan.io/assets/planio2light/favicon/favicon-4f9057bfbde417efa15928c1e253d525.ico</icon>
+  <updated>2015-10-02T13:33:58Z</updated>
+  <author>
+    <name>Zazuko GmbH Planio</name>
+  </author>
+  <generator uri="https://plan.io/">
+Planio  </generator>
+  <entry>
+    <title>Task #59 (Open): Share buttons</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/59"/>
+    <id>https://zazuko.plan.io/issues/59</id>
+    <updated>2015-10-02T13:33:58Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;(low priority)&lt;/p&gt;
+
+
+buttons to allow sharing of current view via
+	&lt;ul&gt;
+	&lt;li&gt;email&lt;/li&gt;
+		&lt;li&gt;twitter&lt;/li&gt;
+		&lt;li&gt;G+&lt;/li&gt;
+		&lt;li&gt;FB&lt;/li&gt;
+	&lt;/ul&gt;
+
+
+	&lt;p&gt;also "Watch" button? Feed?&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #58 (Open): Share buttons</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/58"/>
+    <id>https://zazuko.plan.io/issues/58</id>
+    <updated>2015-10-01T08:00:48Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;(low priority)&lt;/p&gt;
+
+
+buttons to allow sharing of current view via
+	&lt;ul&gt;
+	&lt;li&gt;email&lt;/li&gt;
+		&lt;li&gt;twitter&lt;/li&gt;
+		&lt;li&gt;G+&lt;/li&gt;
+		&lt;li&gt;FB&lt;/li&gt;
+	&lt;/ul&gt;
+
+
+	&lt;p&gt;also "Watch" button? Feed?&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #57 (Open): Include endpoint settings in URLs</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/57"/>
+    <id>https://zazuko.plan.io/issues/57</id>
+    <updated>2015-10-01T07:58:44Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;(Reto suggestion 2015-09-29)&lt;/p&gt;
+
+
+@danja - &lt;br /&gt;this will be good for sharing/collab.&lt;br /&gt;bit messy for general use though, so maybe add as:
+	&lt;ul&gt;
+	&lt;li&gt;user preference&lt;br /&gt;and/or&lt;/li&gt;
+		&lt;li&gt;button "Full URL" or similar&lt;/li&gt;
+	&lt;/ul&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #56 (Open): Change UI theme</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/56"/>
+    <id>https://zazuko.plan.io/issues/56</id>
+    <updated>2015-10-01T07:47:57Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;(from Adrian 2015-09-29)&lt;/p&gt;
+
+
+	&lt;p&gt;Please use a different default theme, on themeroller I liked this one:&lt;/p&gt;
+
+
+	&lt;p&gt;&lt;a class="external" href="http://jqueryui.com/themeroller/themeroller?ffDefault=Verdana%2CArial%2Csans-serif&amp;#38;fwDefault=normal&amp;#38;fsDefault=1.1em&amp;#38;cornerRadius=4px&amp;#38;bgColorHeader=cccccc&amp;#38;bgTextureHeader=highlight_soft&amp;#38;bgImgOpacityHeader=75&amp;#38;borderColorHeader=aaaaaa&amp;#38;fcHeader=222222&amp;#38;iconColorHeader=222222&amp;#38;bgColorContent=ffffff&amp;#38;bgTextureContent=flat&amp;#38;bgImgOpacityContent=75&amp;#38;borderColorContent=aaaaaa&amp;#38;fcContent=222222&amp;#38;iconColorContent=222222&amp;#38;bgColorDefault=e6e6e6&amp;#38;bgTextureDefault=glass&amp;#38;bgImgOpacityDefault=75&amp;#38;borderColorDefault=d3d3d3&amp;#38;fcDefault=555555&amp;#38;iconColorDefault=888888&amp;#38;bgColorHover=dadada&amp;#38;bgTextureHover=glass&amp;#38;bgImgOpacityHover=75&amp;#38;borderColorHover=999999&amp;#38;fcHover=212121&amp;#38;iconColorHover=454545&amp;#38;bgColorActive=ffffff&amp;#38;bgTextureActive=glass&amp;#38;bgImgOpacityActive=65&amp;#38;borderColorActive=aaaaaa&amp;#38;fcActive=212121&amp;#38;iconColorActive=454545&amp;#38;bgColorHighlight=fbf9ee&amp;#38;bgTextureHighlight=glass&amp;#38;bgImgOpacityHighlight=55&amp;#38;borderColorHighlight=fcefa1&amp;#38;fcHighlight=363636&amp;#38;iconColorHighlight=2e83ff&amp;#38;bgColorError=fef1ec&amp;#38;bgTextureError=glass&amp;#38;bgImgOpacityError=9"&gt;http://jqueryui.com/themeroller/themeroller?ffDefault=Verdana%2CArial%2Csans-serif&amp;#38;fwDefault=normal&amp;#38;fsDefault=1.1em&amp;#38;cornerRadius=4px&amp;#38;bgColorHeader=cccccc&amp;#38;bgTextureHeader=highlight_soft&amp;#38;bgImgOpacityHeader=75&amp;#38;borderColorHeader=aaaaaa&amp;#38;fcHeader=222222&amp;#38;iconColorHeader=222222&amp;#38;bgColorContent=ffffff&amp;#38;bgTextureContent=flat&amp;#38;bgImgOpacityContent=75&amp;#38;borderColorContent=aaaaaa&amp;#38;fcContent=222222&amp;#38;iconColorContent=222222&amp;#38;bgColorDefault=e6e6e6&amp;#38;bgTextureDefault=glass&amp;#38;bgImgOpacityDefault=75&amp;#38;borderColorDefault=d3d3d3&amp;#38;fcDefault=555555&amp;#38;iconColorDefault=888888&amp;#38;bgColorHover=dadada&amp;#38;bgTextureHover=glass&amp;#38;bgImgOpacityHover=75&amp;#38;borderColorHover=999999&amp;#38;fcHover=212121&amp;#38;iconColorHover=454545&amp;#38;bgColorActive=ffffff&amp;#38;bgTextureActive=glass&amp;#38;bgImgOpacityActive=65&amp;#38;borderColorActive=aaaaaa&amp;#38;fcActive=212121&amp;#38;iconColorActive=454545&amp;#38;bgColorHighlight=fbf9ee&amp;#38;bgTextureHighlight=glass&amp;#38;bgImgOpacityHighlight=55&amp;#38;borderColorHighlight=fcefa1&amp;#38;fcHighlight=363636&amp;#38;iconColorHighlight=2e83ff&amp;#38;bgColorError=fef1ec&amp;#38;bgTextureError=glass&amp;#38;bgImgOpacityError=9&lt;/a&gt;&lt;br /&gt;5&amp;#38;borderColorError=cd0a0a&amp;#38;fcError=cd0a0a&amp;#38;iconColorError=cd0a0a&amp;#38;bgColorOverlay=aaaaaa&amp;#38;bgTextureOverlay=flat&amp;#38;bgImgOpacityOverlay=0&amp;#38;opacityOverlay=30&amp;#38;bgColorShadow=aaaaaa&amp;#38;bgTextureShadow=flat&amp;#38;bgImgOpacityShadow=0&amp;#38;opacityShadow=30&amp;#38;thicknessShadow=8px&amp;#38;offsetTopShadow=-8px&amp;#38;offsetLeftShadow=-8px&amp;#38;cornerRadiusShadow=8px&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #55 (Open): Multiple domain/range</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/55"/>
+    <id>https://zazuko.plan.io/issues/55</id>
+    <updated>2015-10-01T07:46:46Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;we replace rdfs:domain and rdfs:label [?range?] gets replaced by&lt;br /&gt;&lt;a class="external" href="http://schema.org/domainIncludes"&gt;http://schema.org/domainIncludes&lt;/a&gt; &lt;a class="external" href="http://schema.org/rangeIncludes"&gt;http://schema.org/rangeIncludes&lt;/a&gt;. We can&lt;br /&gt;have more than one of those (+ button required)&lt;/p&gt;
+
+
+	&lt;p&gt;(from Adrian, 2015-09-29)&lt;/p&gt;
+
+
+	&lt;p&gt;- try Union approach too - @danja&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #54 (Open): Consistent UI for created classes/properties</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/54"/>
+    <id>https://zazuko.plan.io/issues/54</id>
+    <updated>2015-10-01T07:45:02Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;the predicate-object listing of existing classes/properties is&lt;br /&gt;replaced by showing it in the same dialog where I create them in the&lt;br /&gt;first place. The "add" button becomes an "update" button in this situation&lt;/p&gt;
+
+
+	&lt;p&gt;(from Adrian, 2015-09-29)&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #53 (Open): Prepared language fields</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/53"/>
+    <id>https://zazuko.plan.io/issues/53</id>
+    <updated>2015-10-01T07:43:45Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;for selected user-configured languages and all languages available in&lt;br /&gt;the ontology I get prepopulated entry fields for label/comments&lt;/p&gt;
+
+
+	&lt;p&gt;(from Adrian, 2015-09-29)&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #52 (Open): Language config</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/52"/>
+    <id>https://zazuko.plan.io/issues/52</id>
+    <updated>2015-10-01T07:42:39Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;languages can be configured per user (browser) and are stored in&lt;br /&gt;browser, when loading an ontology the languages used in this ontology&lt;br /&gt;are added&lt;/p&gt;
+
+
+	&lt;p&gt;(from Adrian, 2015-09-29)&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #51 (Open): Support Hash URIs</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/51"/>
+    <id>https://zazuko.plan.io/issues/51</id>
+    <updated>2015-10-01T07:41:23Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;for graph name/namespace&lt;/p&gt;
+
+
+	&lt;p&gt;(from Adrian, 2015-09-29)&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #50 (Open): Add support for OWL ontology terms</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/50"/>
+    <id>https://zazuko.plan.io/issues/50</id>
+    <updated>2015-09-27T13:58:43Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;It will be desirable to support terms such as owl:Class etc. This can be implemented simply through a little dialog triggered by a button associated with eacxh relevant input field.&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #49 (Open): Add extra input fields for different languages</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/49"/>
+    <id>https://zazuko.plan.io/issues/49</id>
+    <updated>2015-09-27T13:56:23Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;As values are added for each field that supports multiple languages, a new, empty input box should be made available.&lt;/p&gt;
+
+
+	&lt;p&gt;(Right now it's possible to do this, but only after initial Class/Property creation).&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #47 (Open): Warn User when they attempt to leave a page with unsaved changes</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/47"/>
+    <id>https://zazuko.plan.io/issues/47</id>
+    <updated>2015-09-25T17:16:49Z</updated>
+    <author>
+      <name>Reto Gmür</name>
+      <email>reto.gmuer@zazuko.com</email>
+    </author>
+    <content type="html">
+    </content>
+  </entry>
+  <entry>
+    <title>Task #46 (Open): History (revert)</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/46"/>
+    <id>https://zazuko.plan.io/issues/46</id>
+    <updated>2015-09-22T17:56:23Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;After each modification, the action taken should be recorded and displayed. It should be straightforward to do this in a way that a corresponding revert operation should be available. The best way of doing this remains to be seen : per-operation or simple versioning.&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #43 (Open): Delete or modify classes and properties</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/43"/>
+    <id>https://zazuko.plan.io/issues/43</id>
+    <updated>2015-09-22T17:48:21Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;It will be desirable to thoroughly delete classes and properties (and their associated children) from with the app.&lt;/p&gt;
+
+
+	&lt;p&gt;Some simple modifications will be desirable too - e.g. renaming of a class. This can currently be achieved by adding the new versions and then deleting the old ones, but it's a bit tedious.&lt;/p&gt;    </content>
+  </entry>
+  <entry>
+    <title>Task #41 (Open): Create prefix map</title>
+    <link rel="alternate" href="https://zazuko.plan.io/issues/41"/>
+    <id>https://zazuko.plan.io/issues/41</id>
+    <updated>2015-09-22T17:35:58Z</updated>
+    <author>
+      <name>Danny Ayers</name>
+      <email>danny.ayers@gmail.com</email>
+    </author>
+    <content type="html">
+&lt;p&gt;It would help with adding relationships with well-known vocabs to maintain a list of namespace:preferred prefix mappings.&lt;/p&gt;    </content>
+  </entry>
+</feed>
