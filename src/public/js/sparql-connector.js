@@ -208,9 +208,9 @@ var SparqlConnector = (function () {
                 prefix: "rdf",
                 uri: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
             }, {
-              prefix: "skos",
-              uri: "http://www.w3.org/2004/02/skos/core#"
-          }, {
+                prefix: "skos",
+                uri: "http://www.w3.org/2004/02/skos/core#"
+            }, {
                 prefix: "foaf",
                 uri: "http://xmlns.com/foaf/0.1/"
             }, {
@@ -298,14 +298,14 @@ var SparqlConnector = (function () {
 
             var addClassSparql = sparqlTemplater(
                 addClassSparqlTemplate, map);
-
+            console.log("addClassSparql = \n" + addClassSparql);
             SparqlConnector.postData(addClassSparql, callback);
         },
 
         addProperty: function (map, callback) {
             var addPropertySparql = sparqlTemplater(
                 addPropertySparqlTemplate, map);
-          //  console.log("addPropertySparql = \n" + addPropertySparql);
+            //  console.log("addPropertySparql = \n" + addPropertySparql);
             SparqlConnector.postData(addPropertySparql, callback);
         },
 
@@ -321,7 +321,7 @@ var SparqlConnector = (function () {
                     "object": object,
                     "language": language
                 });
-                console.log("updateTripleSparql = \n"+updateTripleSparql);
+            console.log("updateTripleSparql = \n" + updateTripleSparql);
             SparqlConnector.postData(updateTripleSparql, callback);
             return false;
         },
