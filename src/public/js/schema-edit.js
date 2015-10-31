@@ -97,7 +97,7 @@ var SchemaEdit = (function () {
 
         endpointsDialog: function () {
 
-          // this is the button on the main form, not dialog
+            // this is the button on the main form, not dialog
             $("#endpointButton").click(function () {
                 Config.setQueryEndpoint($("#queryEndpoint").val());
                 Config.setUpdateEndpoint($("#updateEndpoint").val());
@@ -272,6 +272,9 @@ var SchemaEdit = (function () {
             var makePropertyBlocks = function (json) {
                 //  console.log("JSON = \n" + JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
+
+                    makePropertyEditBlock(json[i]); // NEW
+
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem' />");
                     var property = $("<a/>");
@@ -338,6 +341,10 @@ var SchemaEdit = (function () {
                 SchemaEdit.setupLangButtons();
             }
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
+        },
+
+        makePropertyEditBlock: function (currentPropertyJSON) {
+            console.log("makePropertyEditBlock =\n"+JSON.stringify(currentPropertyJSON, false, 0));
         },
 
         /* Creates list of classes in current graph
