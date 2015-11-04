@@ -10,17 +10,17 @@
   * Property Description Template
   */
  var propertyTemplate = " \n\
- <label>Property</label> \n\
- <input class="resource" value="~{propertyName}~" /> \n\
+ <label for="~{propertyNameID}~">Property</label> \n\
+ <input id="~{propertyNameID}~" class="literal" value="~{propertyName}~" /> \n\
  \n\
-  <label>rdfs:subPropertyOf</label> \n\
-  <input class="resource" value="~{subPropertyOf}~" /> \n\
+  <label for="~{subPropertyOfID}~">rdfs:subPropertyOf</label> \n\
+  <input id="~{subPropertyOfID}~" class="resource" value="~{subPropertyOf}~" /> \n\
 \n\
- <label>rdfs:domain</label> \n\
- <input value="~{domain}~" class="resource" /> \n\
+ <label for="~{domainID}~">rdfs:domain</label> \n\
+ <input id="~{domainID}~" value="~{domain}~" class="resource" /> \n\
 \n\
- <label>rdfs:range</label> \n\
- <input value="~{range}~" class="resource" /> \n\
+ <label for="~{rangeID}~">rdfs:range</label> \n\
+ <input id="~{rangeID}~" value="~{range}~" class="resource" /> \n\
 \n\
  <div class="fieldBlock"> \n\
    <label>rdfs:label</label> \n\

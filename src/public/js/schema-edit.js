@@ -301,11 +301,9 @@ var SchemaEdit = (function () {
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
             var makePropertyBlocks = function (json) {
-                //  console.log("JSON = \n" + JSON.stringify(json, false, 4));
+                SchemaEdit.makePropertyEditBlock(json); // NEW
+
                 for(var i = 0; i < json.length; i++) {
-
-                    //  SchemaEdit.makePropertyEditBlock(json[i]); // NEW
-
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem' />");
                     var property = $("<a/>");
@@ -375,34 +373,80 @@ var SchemaEdit = (function () {
         },
 
         // NEW
-        makePropertyEditBlock: function (current) {
-            // templater(raw, replacementMap)
-            var p = current["p"];
-
-            var pText = p;
-            if(SparqlConnector.getPrefixedUri(p) != null) {
-                pText = SparqlConnector.getPrefixedUri(p); // TODO rename to resolvePrefix
-            }
-
-            var o = current["o"];
-            if(current.type == "literal") { // as returned from SPARQL
-
-            }
-            if(current.type == "uri") { // as returned from SPARQL
-
-            }
+        makePropertyEditBlock: function (json) {
+            console.log("JSON = \n" + JSON.stringify(json, false, 4));
             /*
-            propertyNameID
             propertyName
-            subPropertyOfID
-            propertyName
-            domainID
+            subPropertyOf
             domain
-            rangeID
             range
             */
-            templater(propertyTemplate, replacementMap);
 
+            json = SchemaEdit.transformJSON(json);
+
+            console.log("JSON2 = \n" + JSON.stringify(json, false, 4));
+
+            /*
+                        var pText = p;
+                        if(SparqlConnector.getPrefixedUri(p) != null) {
+                            pText = SparqlConnector.getPrefixedUri(p); // TODO rename to resolvePrefix
+                        }
+            */
+
+            //  templater(propertyTemplate, replacementMap);
+
+        },
+
+        transformJSON: function (json) { // ugly, but will do for now
+            var subPropertyOf = [];
+            var domain = [];
+            var range = [];
+            var label = [];
+            var comment = [];
+
+            for(var i = 0; i < json.length; i++) {
+              var current = json[i];
+                var p = current["p"];
+                var o = current["o"];
+                console.log("P = "+p);
+                if(p == "http://www.w3.org/2000/01/rdf-schema#subPropertyOf") {
+                    subPropertyOf.push(o);
+                }
+                if(p == "http://www.w3.org/2000/01/rdf-schema#domain") {
+                    domain.push(o);
+                }
+                if(p == "http://www.w3.org/2000/01/rdf-schema#range") {
+                    range.push(o);
+                }
+                if(p == "http://www.w3.org/2000/01/rdf-schema#label") {
+                    label.push(o);
+                }
+                if(p == "http://www.w3.org/2000/01/rdf-schema#comment") {
+                    comment.push(o);
+                }
+            }
+            if(subPropertyOf.length = 0) {
+                subPropertyOf.push("");
+            }
+            if(domain.length = 0) {
+                domain.push("");
+            }
+            if(range.length = 0) {
+                range.push("");
+            }
+            if(label.length = 0) {
+                label.push("");
+            }
+            if(comment.length = 0) {
+                comment.push("");
+            }
+            return {
+                "subPropertyOf": subPropertyOf,
+                "domain": domain,
+                "range": range,
+                "label": label,
+                "comment": comment
+            }
         },
 
         // NEW
