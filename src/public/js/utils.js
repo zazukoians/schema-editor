@@ -158,7 +158,6 @@ function setupErrorHandling() {
 function sparqlTemplater(raw, replacementMap, isWrite) {
     if(isWrite && replacementMap["content"]) {
         replacementMap["content"] = escapeLiterals(replacementMap["content"]);
-
     }
     return templater(raw, replacementMap);
 }
@@ -198,7 +197,6 @@ function templater(raw, replacementMap) {
     var template = Hogan.compile(raw, {
         delimiters: '~{ }~'
     });
-
     var result = template.render(replacementMap);
     return htmlUnescape(result);
 }

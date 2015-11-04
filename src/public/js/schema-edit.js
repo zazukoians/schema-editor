@@ -50,6 +50,37 @@ var SchemaEdit = (function () {
             SchemaEdit.setupHelpButtons();
 
             $(".resourceButton").hide(); // for selecting skos properties etc - maybe come back to later
+
+            SparqlConnector.init();
+        },
+
+        render: function () {
+            var graph = queryString["graph"];
+
+            // TODO use parseUri
+            var uri = queryString["uri"];
+            if((!uri || uri == "") && (!graph || graph == "")) {
+                // alert("undefined");
+                SchemaEdit.makeNewVocabBlock();
+                return;
+            }
+            uri = encodeURI(uri);
+
+            $("#currentResource").text(uri);
+            $("#resource").text(uri);
+
+            // SchemaEdit.setCurrentResource(uri);
+            SchemaEdit.makeClassesList();
+            SchemaEdit.makePropertiesList();
+
+            var uri = queryString["uri"];
+            if(uri) { // TODO need to check if this if() is working
+                // console.log("URI="+uri);
+                uri = encodeURI(uri);
+                SchemaEdit.populateWithResource(uri);
+            }
+
+            refresh(); // redraws flex columns
         },
 
         makeDeleteResourceButton: function () {
@@ -273,7 +304,7 @@ var SchemaEdit = (function () {
                 //  console.log("JSON = \n" + JSON.stringify(json, false, 4));
                 for(var i = 0; i < json.length; i++) {
 
-                    makePropertyEditBlock(json[i]); // NEW
+                    //  SchemaEdit.makePropertyEditBlock(json[i]); // NEW
 
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem' />");
@@ -343,8 +374,64 @@ var SchemaEdit = (function () {
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
 
-        makePropertyEditBlock: function (currentPropertyJSON) {
-            console.log("makePropertyEditBlock =\n"+JSON.stringify(currentPropertyJSON, false, 0));
+        // NEW
+        makePropertyEditBlock: function (current) {
+            // templater(raw, replacementMap)
+            var p = current["p"];
+
+            var pText = p;
+            if(SparqlConnector.getPrefixedUri(p) != null) {
+                pText = SparqlConnector.getPrefixedUri(p); // TODO rename to resolvePrefix
+            }
+
+            var o = current["o"];
+            if(current.type == "literal") { // as returned from SPARQL
+
+            }
+            if(current.type == "uri") { // as returned from SPARQL
+
+            }
+            /*
+            propertyNameID
+            propertyName
+            subPropertyOfID
+            propertyName
+            domainID
+            domain
+            rangeID
+            range
+            */
+            templater(propertyTemplate, replacementMap);
+
+        },
+
+        // NEW
+        renderLiteralProperty: function (current) {
+            var language = current["language"];
+
+            if(!language || language == "") { // sensible default
+                language = "en";
+            } // TODO best approach? see above
+
+            var value = $("<input class='literalObject' contenteditable='true' title='Change value' />");
+            value.attr("value", o);
+            value.attr("lang", language);
+
+            triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
+        },
+
+        // NEW
+        renderResourceProperty: function (current) {
+            var uriText = o;
+            if(SparqlConnector.getPrefixedUri(o)) {
+                uriText = SparqlConnector.getPrefixedUri(o);
+            }
+
+            value = $("<a />");
+            value.attr("href", o);
+            var value = $("<span class='uriObject' title='Edit value'><a href=''" + o + "'>" + uriText + "</a></div>");
+
+            triple += " <" + o + "> ."; // object
         },
 
         /* Creates list of classes in current graph

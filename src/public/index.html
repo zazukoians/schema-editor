@@ -62,36 +62,9 @@
   <script type="text/javascript" language="javascript">
     $(function() {
       SchemaEdit.init();
-      SparqlConnector.init();
+    
       spinner();
-
-      var graph = queryString["graph"];
-
-      // TODO use parseUri
-      var uri = queryString["uri"];
-      if ((!uri || uri == "") && (!graph || graph == "")) {
-        // alert("undefined");
-        SchemaEdit.makeNewVocabBlock();
-        return;
-      }
-      uri = encodeURI(uri);
-
-      $("#currentResource").text(uri);
-      $("#resource").text(uri);
-
-      // SchemaEdit.setCurrentResource(uri);
-      SchemaEdit.makeClassesList();
-      SchemaEdit.makePropertiesList();
-
-      var uri = queryString["uri"];
-      if (uri) { // TODO need to check if this if() is working
-        // console.log("URI="+uri);
-        uri = encodeURI(uri);
-        SchemaEdit.populateWithResource(uri);
-      }
-
-      refresh(); // redraws flex columns
-
+      SchemaEdit.render();
     });
   </script>
 </head>

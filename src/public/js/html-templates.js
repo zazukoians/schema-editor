@@ -10,11 +10,11 @@
   * Property Description Template
   */
  var propertyTemplate = " \n\
- <label for="~{propertyNameID}~">Property Name</label> \n\
- <input id="~{propertyNameID}~" value="~{propertyName}~" /> \n\
-\n\
- <label for="~{subPropertyOfID}~">rdfs:subPropertyOf</label> \n\
- <input id="~{subPropertyOfID}~" class="resource" value="~{propertyName}~" /> \n\
+ <label for="~{propertyNameID}~">Property</label> \n\
+ <input id="~{propertyNameID}~" class="literal" value="~{propertyName}~" /> \n\
+ \n\
+  <label for="~{subPropertyOfID}~">rdfs:subPropertyOf</label> \n\
+  <input id="~{subPropertyOfID}~" class="resource" value="~{propertyName}~" /> \n\
 \n\
  <label for="~{domainID}~">rdfs:domain</label> \n\
  <input id="~{domainID}~" value="~{domain}~" class="resource" /> \n\
@@ -24,14 +24,14 @@
 \n\
  <div class="fieldBlock"> \n\
    <label>rdfs:label</label> \n\
-   <input class="propertyLabel" title="Enter human-readable version of name" lang="en" /> \n\
+   <input class="propertyLabel" class="literal" /> \n\
    <button class="langButton"></button> \n\
  </div> \n\
  <button class="plusButton">+</button> \n\
 \n\
  <div class="fieldBlock"> \n\
    <label>rdfs:comment</label> \n\
-   <textarea class="propertyComment" rows="4" cols="75" title="Enter human-readable description" lang="en"></textarea> \n\
+   <textarea class="propertyComment" rows="4" cols="75" class="literal"></textarea> \n\
    <button class="langButton"></button> \n\
  </div> \n\
  <button class="plusButton">+</button> \n\
