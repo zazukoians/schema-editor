@@ -37,6 +37,19 @@ point browser at localhost:8888
 there is an npm stop as well, but it's a little brutal, use at your own risk :)
 
 ----
+## Implementation Notes
+
+### Overall Layout/Design
+As [schema.org](http://schema.org/) was mentioned around specification time, it was considered desirable to support ontologies of this size. In practice this meant providing a coarse-grained view of terms in the ontology (the class & property lists in the left column) and fine-grained focus per-term (by clicking on a specific class/property). While it might be relatively straightforward to provide fine-grained views of every term simultaneously this is considered very low priority as such a view will be less clear for larger vocabularies with no added functionality.
+
+### Value Types
+For the object of properties a distinction is made between URI and Literal types. This is a convenience for the UI as the syntax varies between the two. URI & Literal come from the SPARQL result binding types.
+
+* URI will refer to a subclass of **rdfs:Resource** that *isn't* an **rdfs:Literal**, i.e. one named with a URI
+* Literal will refer to a *language-tagged string* (see the Note under [RDF 1.1 Datatypes](http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/#section-Datatypes)), the most suitable type for annotating ontologies.
+
+----
+## Earlier Install Notes to Refactor
 
 A non-critical aim is to provide danbri with something he can use for editing the schema.org vocabulary, the project title chosen with this in mind.
 

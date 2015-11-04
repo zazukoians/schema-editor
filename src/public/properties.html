@@ -57,14 +57,42 @@
   <script src="js/schema-edit.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/sparql-templates.js"></script>
+  <script src="js/html-templates.js"></script>
 
   <!-- TODO refactor scripts to more appropriate files -->
   <script type="text/javascript" language="javascript">
     $(function() {
       SchemaEdit.init();
-    
+      SparqlConnector.init();
       spinner();
-      SchemaEdit.render();
+
+      var graph = queryString["graph"];
+
+      // TODO use parseUri
+      var uri = queryString["uri"];
+      if ((!uri || uri == "") && (!graph || graph == "")) {
+        // alert("undefined");
+        SchemaEdit.makeNewVocabBlock();
+        return;
+      }
+      uri = encodeURI(uri);
+
+      $("#currentResource").text(uri);
+      $("#resource").text(uri);
+
+      // SchemaEdit.setCurrentResource(uri);
+      SchemaEdit.makeClassesList();
+      SchemaEdit.makePropertiesList();
+
+      var uri = queryString["uri"];
+      if (uri) { // TODO need to check if this if() is working
+        // console.log("URI="+uri);
+        uri = encodeURI(uri);
+        SchemaEdit.populateWithResource(uri);
+      }
+
+      refresh(); // redraws flex columns
+
     });
   </script>
 </head>
