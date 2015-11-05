@@ -9,56 +9,42 @@
  /**
   * Property Description Template
   */
- var propertyTemplate = " \n\
+ var propertyTemplate = "\n\
+ <br/> \n\
  <label>Property</label> \n\
- <input class="resource" value="~{propertyName}~" /> \n\
+ <input class='resource' value='~{propertyName}~' /> \n\
  \n\
+~{#subPropertyOf}~ \n\
   <label>rdfs:subPropertyOf</label> \n\
-  <input class="resource" value="~{subPropertyOf}~" /> \n\
+  <input class='resource' value='~{subPropertyOfURI}~' /> \n\
+~{/subPropertyOf}~ \n\
 \n\
+~{#domain}~ \n\
  <label>rdfs:domain</label> \n\
- <input value="~{domain}~" class="resource" /> \n\
+ <input value='~{domainURI}~' class='resource' /> \n\
+ ~{/domain}~ \n\
 \n\
+~{#range}~ \n\
  <label>rdfs:range</label> \n\
- <input value="~{range}~" class="resource" /> \n\
+ <input value='~{rangeURI}~' class='resource' /> \n\
+  ~{/range}~ \n\
 \n\
- <div class="fieldBlock"> \n\
+~{#label}~ \n\
+ <div class='fieldBlock'> \n\
    <label>rdfs:label</label> \n\
-   <input class="propertyLabel" class="literal" /> \n\
-   <button class="langButton"></button> \n\
+   <input class='propertyLabel' class='literal' lang='~{language}~' value='~{content}~' /> \n\
+   <button class='langButton'></button> \n\
  </div> \n\
- <button class="plusButton">+</button> \n\
+   ~{/label}~ \n\
+ <button class='plusButton'>+</button> \n\
 \n\
- <div class="fieldBlock"> \n\
+~{#comment}~ \n\
+ <div class='fieldBlock'> \n\
    <label>rdfs:comment</label> \n\
-   <textarea class="propertyComment" rows="4" cols="75" class="literal"></textarea> \n\
-   <button class="langButton"></button> \n\
+   <textarea class='propertyComment' rows='4' cols='75' class='literal'  lang='~{language}~'>~{content}~</textarea> \n\
+   <button class='langButton'></button> \n\
  </div> \n\
- <button class="plusButton">+</button> \n\
+   ~{/comment}~ \n\
+ <button class='plusButton'>+</button> \n\
+  <br/> \n\
 ";
-
-/**
- * Class Description Template
- * TODO is needed?
- */
-var classTemplate = " \n\
-<label for="~{classNameID}~">Class Name</label> \n\
-<input id="~{classNameID}~" value="~{className}~" /> \n\
-\n\
-<label for="~{subClassOfID}~">rdfs:subClassOf</label> \n\
-<input id="~{subClassOfID}~" class="resource" value="~{className}~" /> \n\
-\n\
-<div class="fieldBlock"> \n\
-  <label>rdfs:label</label> \n\
-  <input class="classLabel" value="~{className}~" /> \n\
-  <button class="langButton"></button> \n\
-</div> \n\
-<button class="plusButton">+</button> \n\
-\n\
-<div class="fieldBlock"> \n\
-  <label>rdfs:comment</label> \n\
-  <textarea class="classComment" rows="4" cols="75" title="Enter human-readable description">~{classComment}~</textarea> \n\
-  <button class="langButton"></button> \n\
-</div>\n\
-<button class="plusButton">+</button>\n\
-            ";

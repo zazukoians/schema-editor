@@ -291,7 +291,7 @@ var SchemaEdit = (function () {
 
         /* fill in main block with details of current resource */
         populateWithResource: function (uri) { //  callback??
-            SchemaEdit.makeAddPropertyValue(uri);
+            SchemaEdit.makeAddPropertyValue(uri); // NEW
 
             var map = {
                 graphURI: Config.getGraphURI(),
@@ -303,6 +303,7 @@ var SchemaEdit = (function () {
             var makePropertyBlocks = function (json) {
                 SchemaEdit.makePropertyEditBlock(json); // NEW
 
+/*
                 for(var i = 0; i < json.length; i++) {
                     var current = json[i];
                     var propertyItem = $("<div class='propertyItem' />");
@@ -366,6 +367,7 @@ var SchemaEdit = (function () {
                     propertyBlock.append("<hr/>");
                     $("#editor").append(propertyBlock);
                 }
+                */
                 SchemaEdit.initLangButtons();
                 SchemaEdit.setupLangButtons();
             }
@@ -374,27 +376,16 @@ var SchemaEdit = (function () {
 
         // NEW
         makePropertyEditBlock: function (json) {
-            console.log("JSON = \n" + JSON.stringify(json, false, 4));
-            /*
-            propertyName
-            subPropertyOf
-            domain
-            range
-            */
-
-            json = SchemaEdit.transformJSON(json);
-
-            console.log("JSON2 = \n" + JSON.stringify(json, false, 4));
-
+            var replacementMap = SchemaEdit.transformJSON(json);
+            console.log("JSON2 = \n" + JSON.stringify(replacementMap, false, 4));
             /*
                         var pText = p;
                         if(SparqlConnector.getPrefixedUri(p) != null) {
                             pText = SparqlConnector.getPrefixedUri(p); // TODO rename to resolvePrefix
                         }
             */
-
-            //  templater(propertyTemplate, replacementMap);
-
+            var block = templater(propertyTemplate, replacementMap);
+            $("#editor").append(block);
         },
 
         transformJSON: function (json) { // ugly, but will do for now
@@ -405,39 +396,54 @@ var SchemaEdit = (function () {
             var comment = [];
 
             for(var i = 0; i < json.length; i++) {
-              var current = json[i];
-                var p = current["p"];
-                var o = current["o"];
-                console.log("P = "+p);
-                if(p == "http://www.w3.org/2000/01/rdf-schema#subPropertyOf") {
-                    subPropertyOf.push(o);
+                var current = json[i];
+                var predicate = current["p"];
+                var object = current["o"];
+                var language = current["language"];
+                console.log("P = " + predicate);
+                console.log("O = " + object);
+                if(predicate == "http://www.w3.org/2000/01/rdf-schema#subPropertyOf") {
+                    console.log("push");
+                    subPropertyOf.push({
+                        "subPropertyOfURI": object
+                    });
                 }
-                if(p == "http://www.w3.org/2000/01/rdf-schema#domain") {
-                    domain.push(o);
+                if(predicate == "http://www.w3.org/2000/01/rdf-schema#domain") {
+                    domain.push({
+                        "domainURI": object
+                    });
                 }
-                if(p == "http://www.w3.org/2000/01/rdf-schema#range") {
-                    range.push(o);
+                if(predicate == "http://www.w3.org/2000/01/rdf-schema#range") {
+                    range.push({
+                        "rangeURI": object
+                    });
                 }
-                if(p == "http://www.w3.org/2000/01/rdf-schema#label") {
-                    label.push(o);
+                if(predicate == "http://www.w3.org/2000/01/rdf-schema#label") {
+                    label.push({
+                        "content": object,
+                        "language": language
+                    });
                 }
-                if(p == "http://www.w3.org/2000/01/rdf-schema#comment") {
-                    comment.push(o);
+                if(predicate == "http://www.w3.org/2000/01/rdf-schema#comment") {
+                    comment.push({
+                        "content": object,
+                        "language": language
+                    });
                 }
             }
-            if(subPropertyOf.length = 0) {
+            if(subPropertyOf.length == 0) {
                 subPropertyOf.push("");
             }
-            if(domain.length = 0) {
+            if(domain.length == 0) {
                 domain.push("");
             }
-            if(range.length = 0) {
+            if(range.length == 0) {
                 range.push("");
             }
-            if(label.length = 0) {
+            if(label.length == 0) {
                 label.push("");
             }
-            if(comment.length = 0) {
+            if(comment.length == 0) {
                 comment.push("");
             }
             return {

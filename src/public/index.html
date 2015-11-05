@@ -54,15 +54,16 @@
   <script src="js/sparql-connector.js"></script>
 
   <!-- Schema Editor Specific -->
+  <script src="js/sparql-templates.js"></script>
+  <script src="js/html-templates.js"></script>
   <script src="js/schema-edit.js"></script>
   <script src="js/utils.js"></script>
-  <script src="js/sparql-templates.js"></script>
+
 
   <!-- TODO refactor scripts to more appropriate files -->
   <script type="text/javascript" language="javascript">
     $(function() {
       SchemaEdit.init();
-    
       spinner();
       SchemaEdit.render();
     });
