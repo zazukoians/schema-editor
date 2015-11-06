@@ -73,9 +73,26 @@ button, .button {
   display: inline-block;
 }
 
+
+.propertyEditBlock {
+    display: inline;
+    align-items: left;
+}
+
+
+.updatePropertyButton {
+      display: block;
+  margin-top: auto ;
+    margin-right: auto ;
+      margin-left: 0px ;
+        margin-bottom: 0px ;
+}
+
 #addClassButton {
   text-align: left;
 }
+
+
 
 .resource {
   border: 2px solid #96F;

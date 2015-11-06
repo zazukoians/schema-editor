@@ -170,11 +170,12 @@ ORDER BY ?uri";
 var getResourceSparqlTemplate = commonPrefixes +
     " \n\
 # from getResource \n\
-SELECT DISTINCT ?p ?o ?language \n\
+SELECT DISTINCT ?s ?p ?o ?language \n\
 FROM <~{graphURI}~>  \n\
 WHERE { \n\
 <~{uri}~> ?p ?o; \n\
 BIND (lang(?o) AS ?language) \n\
+BIND (<~{uri}~> AS ?s) \n\
 } \n\
 ";
 

@@ -302,72 +302,6 @@ var SchemaEdit = (function () {
 
             var makePropertyBlocks = function (json) {
                 SchemaEdit.makePropertyEditBlock(json); // NEW
-
-/*
-                for(var i = 0; i < json.length; i++) {
-                    var current = json[i];
-                    var propertyItem = $("<div class='propertyItem' />");
-                    var property = $("<a/>");
-                    var p = current["p"];
-                    property.attr("href", p);
-
-                    var pText = p;
-                    if(SparqlConnector.getPrefixedUri(p) != null) {
-                        pText = SparqlConnector.getPrefixedUri(p);
-                    }
-                    property.text(pText);
-
-                    var propertyWrapper = $("<label/>");
-                    propertyWrapper.append(property);
-                    propertyItem.append(propertyWrapper);
-
-                    var deleteButton = SchemaEdit.makeDeleteButton();
-                    var triple = "<" + Config.getCurrentResource() + "> "; // subject
-                    triple += "<" + p + "> "; // predicate/property
-
-                    var value = $("<div>what default?</div>"); // needed for bNodes?
-                    var o = current["o"];
-                    if(current.type == "literal") { // as returned from SPARQL
-                        var language = current["language"];
-
-                        if(!language || language == "") { // sensible default
-                            language = "en";
-                        } // TODO best approach? see above
-
-                        var value = $("<input class='literalObject' contenteditable='true' title='Change value' />");
-                        value.attr("value", o);
-                        value.attr("lang", language);
-
-                        triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
-                    }
-                    if(current.type == "uri") { // as returned from SPARQL
-                        var uriText = o;
-                        if(SparqlConnector.getPrefixedUri(o)) {
-                            uriText = SparqlConnector.getPrefixedUri(o);
-                        }
-
-                        value = $("<a />");
-                        value.attr("href", o);
-                        var value = $("<span class='uriObject' title='Edit value'><a href=''" + o + "'>" + uriText + "</a></div>");
-
-                        triple += " <" + o + "> ."; // object
-                    }
-                    deleteButton.attr("data-triple", triple); // stick resource data in attribute
-
-                    var propertyBlock = $("<p class='propertyBlock'/>");
-                    propertyBlock.append("<strong>Property</strong>").append(propertyItem);
-                    propertyItem.append(value);
-
-                    if(current.type == "literal") { // TODO refactor
-                        propertyItem.append($("<button class='langButton' />"));
-                        var language = value.attr("lang"); // TODO some refactoring needed around this
-                        propertyItem.append(SchemaEdit.makeUpdateButton(uri, p, o, language));
-                    }
-                    propertyItem.append(deleteButton);
-                    propertyBlock.append("<hr/>");
-                    $("#editor").append(propertyBlock);
-                }
-                */
                 SchemaEdit.initLangButtons();
                 SchemaEdit.setupLangButtons();
             }
@@ -378,16 +312,13 @@ var SchemaEdit = (function () {
         makePropertyEditBlock: function (json) {
             var replacementMap = SchemaEdit.transformJSON(json);
             console.log("JSON2 = \n" + JSON.stringify(replacementMap, false, 4));
-            /*
-                        var pText = p;
-                        if(SparqlConnector.getPrefixedUri(p) != null) {
-                            pText = SparqlConnector.getPrefixedUri(p); // TODO rename to resolvePrefix
-                        }
-            */
             var block = templater(propertyTemplate, replacementMap);
             $("#editor").append(block);
         },
 
+        /* takes SPARQL results JSON and changes it into
+         * a form that's easier to insert into template
+         */
         transformJSON: function (json) { // ugly, but will do for now
             var subPropertyOf = [];
             var domain = [];
@@ -397,11 +328,13 @@ var SchemaEdit = (function () {
 
             for(var i = 0; i < json.length; i++) {
                 var current = json[i];
+                var subject = current["s"];
                 var predicate = current["p"];
                 var object = current["o"];
                 var language = current["language"];
-                console.log("P = " + predicate);
-                console.log("O = " + object);
+                // console.log("S = " + subject);
+                // console.log("P = " + predicate);
+                // console.log("O = " + object);
                 if(predicate == "http://www.w3.org/2000/01/rdf-schema#subPropertyOf") {
                     console.log("push");
                     subPropertyOf.push({
@@ -446,42 +379,20 @@ var SchemaEdit = (function () {
             if(comment.length == 0) {
                 comment.push("");
             }
+
+            var propertyName = subject;
+            if(SparqlConnector.getPrefixedUri(propertyName) != null) {
+                propertyName = SparqlConnector.getPrefixedUri(propertyName); // TODO rename to resolvePrefix
+            }
+
             return {
+                "propertyName": subject,
                 "subPropertyOf": subPropertyOf,
                 "domain": domain,
                 "range": range,
                 "label": label,
                 "comment": comment
             }
-        },
-
-        // NEW
-        renderLiteralProperty: function (current) {
-            var language = current["language"];
-
-            if(!language || language == "") { // sensible default
-                language = "en";
-            } // TODO best approach? see above
-
-            var value = $("<input class='literalObject' contenteditable='true' title='Change value' />");
-            value.attr("value", o);
-            value.attr("lang", language);
-
-            triple += "\"\"\"" + o + "\"\"\"@" + language + " ."; // object
-        },
-
-        // NEW
-        renderResourceProperty: function (current) {
-            var uriText = o;
-            if(SparqlConnector.getPrefixedUri(o)) {
-                uriText = SparqlConnector.getPrefixedUri(o);
-            }
-
-            value = $("<a />");
-            value.attr("href", o);
-            var value = $("<span class='uriObject' title='Edit value'><a href=''" + o + "'>" + uriText + "</a></div>");
-
-            triple += " <" + o + "> ."; // object
         },
 
         /* Creates list of classes in current graph

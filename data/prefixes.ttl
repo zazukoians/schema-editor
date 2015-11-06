@@ -1,0 +1,75 @@
+# mapping preferred prefixes against namespace URIs
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://purl.org/stuff/prefix/> .
+
+# the vocab
+:PrefixMap a rdfs:Class .
+:prefix a rdf:Property .
+:namespace a rdf:Property .
+
+# the data
+:rdf a :PrefixMap ;
+     :prefix "rdf" ;
+     :namespace <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+:rdfs a :PrefixMap ;
+     :prefix "rdfs" ;
+     :namespace <http://www.w3.org/2000/01/rdf-schema#> .
+
+:owl a :PrefixMap ;
+     :prefix "owl" ;
+     :namespace <http://www.w3.org/2002/07/owl#> .
+
+:xsd a :PrefixMap ;
+     :prefix "xsd" ;
+     :namespace <http://www.w3.org/2001/XMLSchema#> .
+
+:vann a :PrefixMap ;
+     :prefix "vann" ;
+     :namespace <http://purl.org/vocab/vann/> .
+
+:sem a :PrefixMap ;
+     :prefix "sem" ;
+     :namespace <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+
+:skos a :PrefixMap ;
+     :prefix "skos" ;
+     :namespace <http://www.w3.org/2004/02/skos/core#> .
+
+:schema a :PrefixMap ;
+     :prefix "schema" ;
+     :namespace <http://schema.org/> .
+
+:dc a :PrefixMap ;
+     :prefix "dc" ;
+     :namespace <http://purl.org/dc/terms/> .
+
+:foaf a :PrefixMap ;
+     :prefix "foaf" ;
+     :namespace <http://xmlns.com/foaf/0.1/> .
+
+:dcat a :PrefixMap ;
+     :prefix "dcat" ;
+     :namespace <http://www.w3.org/ns/dcat#> .
+
+:void a :PrefixMap ;
+     :prefix "void" ;
+     :namespace <http://rdfs.org/ns/void#> .
+
+:bibo a :PrefixMap ;
+     :prefix "bibo" ;
+     :namespace <http://purl.org/ontology/bibo/> .
+
+:dctype a :PrefixMap ;
+     :prefix "dctype" ;
+     :namespace <http://purl.org/dc/dcmitype/> .
+
+:sioc a :PrefixMap ;
+     :prefix "sioc" ;
+     :namespace <http://rdfs.org/sioc/ns#> .
+
+:stuff a :PrefixMap ;
+     :prefix "stuff" ;
+     :namespace <http://purl.org/stuff#> .
