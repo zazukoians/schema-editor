@@ -12,6 +12,8 @@ var SchemaEdit = (function () {
          * Initialises SchemaEdit UI
          */
         init: function () {
+
+            SchemaEdit.loadPrefixes();
             SchemaEdit.endpointsDialog();
             //  $("#endpointHost").val(Config.getEndpointHost());
             //  $("#endpointLink").attr("href", Config.getEndpointHost());
@@ -52,6 +54,23 @@ var SchemaEdit = (function () {
             $(".resourceButton").hide(); // for selecting skos properties etc - maybe come back to later
 
             SparqlConnector.init();
+        },
+
+        loadPrefixes: function () {
+          SchemaEdit.prefixes = {};
+          var getPrefixesUrl = SchemaEdit.generateGetUrl(getPrefixesSparql);
+          var fillPrefixMap = function (json) {
+            // console.log("Prefixes = \n"+JSON.stringify(json, false, 4));
+             for(var entry in json){
+               // console.log("prefix = "+json[entry]["prefix"]);
+               var prefix = json[entry]["prefix"];
+               var namespace = json[entry]["namespace"];
+            //  console.log("entry = \n"+JSON.stringify(json[i], false, 4));
+            SchemaEdit.prefixes[prefix] = namespace;
+            }
+            console.log("SchemaEdit.prefixes = \n"+JSON.stringify(SchemaEdit.prefixes, false, 4));
+          }
+          SparqlConnector.getJsonForSparqlURL(getPrefixesUrl, fillPrefixMap);
         },
 
         render: function () {
@@ -308,10 +327,9 @@ var SchemaEdit = (function () {
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
 
-        // NEW
         makePropertyEditBlock: function (json) {
             var replacementMap = SchemaEdit.transformJSON(json);
-            console.log("JSON2 = \n" + JSON.stringify(replacementMap, false, 4));
+            // console.log("JSON2 = \n" + JSON.stringify(replacementMap, false, 4));
             var block = templater(propertyTemplate, replacementMap);
             $("#editor").append(block);
         },
@@ -449,6 +467,7 @@ var SchemaEdit = (function () {
                 var name = $("#vocabName").val();
                 var graph = $("#vocabNamespace").val();
                 var prefix = $("#vocabPrefix").val();
+                SchemaEdit.prefixes[prefix] = graph;
                 var callback = function () {
                     Config.setGraphURI(graph);
                 }

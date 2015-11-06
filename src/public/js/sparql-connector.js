@@ -277,6 +277,16 @@ var SparqlConnector = (function () {
 
             SparqlConnector.postData(createVocabSparql, callback);
 
+            var addPrefixSparql = sparqlTemplater(
+                addPrefixSparqlTemplate, {
+                    "namespace": graph,
+                    "prefix": prefix
+                });
+                console.log("addPrefixSparql = \n"+addPrefixSparql);
+                var log = function() {
+                  console.log("SchemaEdit.prefixes = \n"+JSON.stringify(SchemaEdit.prefixes, false, 4));
+                }
+                SparqlConnector.postData(addPrefixSparql, log);
             /*
                         var createDummyClassSparql = sparqlTemplater(
                             createDummyClassSparqlTemplate, {

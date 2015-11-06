@@ -19,6 +19,32 @@
  *     fit in one line.
  */
 
+var getPrefixesSparql = "\n\
+PREFIX : <http://purl.org/stuff/prefix/> \n\
+\n\
+SELECT DISTINCT ?prefix ?namespace \n\
+WHERE { \n\
+GRAPH <http://purl.org/stuff/prefix/> { \n\
+[ \n\
+:prefix ?prefix ; \n\
+:namespace ?namespace \n\
+] \n\
+}} \n\
+ORDER BY ?prefix";
+
+var addPrefixSparqlTemplate = "\n\
+PREFIX : <http://purl.org/stuff/prefix/> \n\
+\n\
+    INSERT DATA {  \n\
+		GRAPH <http://purl.org/stuff/prefix/> {  \n\
+      [ \n\
+      :prefix \"~{prefix}~\" ; \n\
+      :namespace <~{namespace}~> \n\
+      ] \n\
+} \n\
+}";
+
+
 // moved out PREFIX dc: <http://purl.org/dc/elements/1.1/> \n\
 var commonPrefixes =
     " \n\
