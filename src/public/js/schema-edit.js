@@ -13,7 +13,9 @@ var SchemaEdit = (function () {
          */
         init: function () {
 
-            SchemaEdit.loadPrefixes();
+            if(!SEUtils.prefixes || !(SEUtils.prefixes["loaded"] == true)) {
+                SEUtils.initPrefixes();
+            }
             SchemaEdit.endpointsDialog();
             //  $("#endpointHost").val(Config.getEndpointHost());
             //  $("#endpointLink").attr("href", Config.getEndpointHost());
@@ -56,22 +58,7 @@ var SchemaEdit = (function () {
             SparqlConnector.init();
         },
 
-        loadPrefixes: function () {
-          SchemaEdit.prefixes = {};
-          var getPrefixesUrl = SchemaEdit.generateGetUrl(getPrefixesSparql);
-          var fillPrefixMap = function (json) {
-            // console.log("Prefixes = \n"+JSON.stringify(json, false, 4));
-             for(var entry in json){
-               // console.log("prefix = "+json[entry]["prefix"]);
-               var prefix = json[entry]["prefix"];
-               var namespace = json[entry]["namespace"];
-            //  console.log("entry = \n"+JSON.stringify(json[i], false, 4));
-            SchemaEdit.prefixes[prefix] = namespace;
-            }
-            console.log("SchemaEdit.prefixes = \n"+JSON.stringify(SchemaEdit.prefixes, false, 4));
-          }
-          SparqlConnector.getJsonForSparqlURL(getPrefixesUrl, fillPrefixMap);
-        },
+
 
         render: function () {
             var graph = queryString["graph"];

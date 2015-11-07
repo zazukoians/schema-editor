@@ -8,6 +8,74 @@
  *     fit in one line.
  */
 
+var SEUtils = (function () {
+    "use strict";
+
+    // This is the public interface of the Module.
+    var SEUtils = {
+
+        initPrefixes: function (callback) {
+            SEUtils.prefixes = {}
+            SEUtils.loadPrefixes(callback);
+            console.log("init SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
+        },
+
+        /*
+         * if in prefix map SEUtils.prefixes
+         * e.g.
+         *  "foaf" => "http://xmlns.com/foaf/0.1/"
+         */
+        getNamespaceForPrefix: function (prefix) {
+            // TODO if not found, delegate to http://prefix.cc/foaf.file.json
+            return SEUtils.prefixes[prefix];
+        },
+
+        /*
+         * if in prefix map SEUtils.prefixes
+         * e.g.
+         *  "http://xmlns.com/foaf/0.1/" => "foaf"
+         */
+        getPrefixForNamespace: function (namespace) {
+          console.log("getPrefixForNamespace called");
+            // TODO if not found, delegate to http://prefix.cc
+            return SEUtils.getKeyByValue(SEUtils.prefixes, namespace);
+        },
+
+        /* reverse lookup in map { key : value } */
+        getKeyByValue: function (map, value) {
+            for(var prop in map) {
+                if(map.hasOwnProperty(prop)) {
+                    if(map[prop] === value)
+                        return prop;
+                }
+            }
+        },
+
+        loadPrefixes: function (callback) {
+            // SchemaEdit.prefixes = {};
+            var getPrefixesUrl = SchemaEdit.generateGetUrl(getPrefixesSparql);
+            var fillPrefixMap = function (json) {
+                // console.log("Prefixes = \n"+JSON.stringify(json, false, 4));
+                for(var entry in json) {
+                    // console.log("prefix = "+json[entry]["prefix"]);
+                    var prefix = json[entry]["prefix"];
+                    var namespace = json[entry]["namespace"];
+                    //  console.log("entry = \n"+JSON.stringify(json[i], false, 4));
+                    SEUtils.prefixes[prefix] = namespace;
+                    SEUtils.prefixes["loaded"] = true;
+                }
+           console.log("xSEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
+              if(callback){
+                callback();
+              }
+            }
+            SparqlConnector.getJsonForSparqlURL(getPrefixesUrl, fillPrefixMap);
+        }
+    };
+
+    return SEUtils;
+}());
+
 /* Forces refresh of columns
  * fixes non-intuitive problem with post-Ajax redrawing
  */
@@ -19,14 +87,8 @@ function refresh() {
     refreshResourceInput();
 }
 
-function getKeyByValue(value) {
-    for(var prop in this) {
-        if(this.hasOwnProperty(prop)) {
-            if(this[prop] === value)
-                return prop;
-        }
-    }
-}
+
+
 /*
 To allow entry of variants of resources
 for inclusion in Turtle/SPARQL

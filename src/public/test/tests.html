@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QUnit</title>
+  <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.20.0.css">
+
+  <!-- SchemaEdit includes -->
+
+  <!-- mustache template compiler -->
+  <script src="../js/lib/hogan-3.0.2.js"></script>
+
+  <!-- jQuery + jQueryUI -->
+  <script src="../js/lib/jquery-1.10.2.js"></script>
+  <script src="../lib/jquery-ui/jquery-ui.js"></script>
+
+  <script src="../lib/upload/js/vendor/jquery.ui.widget.js"></script>
+  <script src="../lib/upload/js/jquery.iframe-transport.js"></script>
+  <script src="../lib/upload/js/jquery.fileupload.js"></script>
+
+  <script src="../js/combobox.js"></script>
+
+  <!-- date formatting -->
+  <script src="../js/lib/moment.js"></script>
+
+  <!-- for converting turtle to ntriples for upload via sparql update -->
+  <!-- currently not using, instead using a workaround to tweak Turtle/SPARQL
+       syntax to use Updates -->
+  <!-- script src="js/lib/rdf-ext.js.map"></script
+  < script src="js/lib/n3-browser.js"></script>
+   -->
+
+  <!-- TODO return to these
+<script src="js/lib/wysihtml5x-toolbar.js"></script>
+<script src="js/lib/advanced_and_extended.js"></script>
+-->
+
+  <!-- local scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/sparql-connector.js"></script>
+
+  <!-- Schema Editor Specific -->
+  <script src="../js/sparql-templates.js"></script>
+  <script src="../js/html-templates.js"></script>
+  <script src="../js/schema-edit.js"></script>
+  <script src="../js/utils.js"></script>
+</head>
+
+<body>
+  <h2>SchemaEdit Tests</h2>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="//code.jquery.com/qunit/qunit-1.20.0.js"></script>
+  <script src="js/tests.js"></script>
+</body>
+</html>
