@@ -1,5 +1,3 @@
-// TODO move into a module
-
 /**
  * Comment template.
  * @param {string} foo This is a param with a description too long to fit in
@@ -8,16 +6,29 @@
  *     fit in one line.
  */
 
+// TODO move other functions into module
+
 var SEUtils = (function () {
     "use strict";
 
     // This is the public interface of the Module.
     var SEUtils = {
 
+      /* *** Prefixes/Namespaces Map related START *** */
+      /**
+       * Creates and populates prefixes/namespaces map
+       *
+       * of form :
+       *     SEUtils.prefixes =  {
+       *                              "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+       *                             "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+       *                           "schema": "http://schema.org/"
+       *                          }
+       */
         initPrefixes: function (callback) {
-            SEUtils.prefixes = {}
+            SEUtils.prefixes = {};
             SEUtils.loadPrefixes(callback);
-            console.log("init SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
+            // console.log("init SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
         },
 
         /*
@@ -36,7 +47,6 @@ var SEUtils = (function () {
          *  "http://xmlns.com/foaf/0.1/" => "foaf"
          */
         getPrefixForNamespace: function (namespace) {
-          console.log("getPrefixForNamespace called");
             // TODO if not found, delegate to http://prefix.cc
             return SEUtils.getKeyByValue(SEUtils.prefixes, namespace);
         },
@@ -64,13 +74,13 @@ var SEUtils = (function () {
                     SEUtils.prefixes[prefix] = namespace;
                     SEUtils.prefixes["loaded"] = true;
                 }
-           console.log("xSEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
               if(callback){
                 callback();
               }
             }
             SparqlConnector.getJsonForSparqlURL(getPrefixesUrl, fillPrefixMap);
         }
+              /* *** Prefixes/Namespaces Map related END *** */
     };
 
     return SEUtils;

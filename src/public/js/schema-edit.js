@@ -16,6 +16,17 @@ var SchemaEdit = (function () {
             if(!SEUtils.prefixes || !(SEUtils.prefixes["loaded"] == true)) {
                 SEUtils.initPrefixes();
             }
+
+            SchemaEdit.makeNewVocabButton();
+            SchemaEdit.makeNewVocabBlock();
+
+            SchemaEdit.makeGraphChooser();
+            SchemaEdit.makeResourceChooser($("#resourceChooser"), "resource");
+            SchemaEdit.makeResourceChooser($("#propertyUriValue"), "uriValue");
+
+            SchemaEdit.makeClassesList();
+            SchemaEdit.makePropertiesList();
+
             SchemaEdit.endpointsDialog();
             //  $("#endpointHost").val(Config.getEndpointHost());
             //  $("#endpointLink").attr("href", Config.getEndpointHost());
@@ -23,22 +34,13 @@ var SchemaEdit = (function () {
             $("#updateEndpoint").val(Config.getUpdateEndpoint());
 
             SchemaEdit.makeDeleteResourceButton();
-            SchemaEdit.makeGraphChooser();
+
             SchemaEdit.makePropertyChooser();
             SchemaEdit.addClassHandler();
             SchemaEdit.addPropertyHandler();
 
-            SchemaEdit.makeResourceChooser($("#resourceChooser"), "resource");
-            SchemaEdit.makeResourceChooser($("#propertyUriValue"), "uriValue");
-            //  SchemaEdit.populateClassesCombobox(); // adds anything?
-
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.makeTurtleButton();
-            //  SchemaEdit.setupButtons();
-            //SchemaEdit.makeEndpointButton();
-
-            SchemaEdit.makeNewVocabButton();
-            SchemaEdit.makeNewVocabBlock();
 
             SchemaEdit.initResourceButtons();
             SchemaEdit.setupResourceButtons();
@@ -58,8 +60,6 @@ var SchemaEdit = (function () {
             SparqlConnector.init();
         },
 
-
-
         render: function () {
             var graph = queryString["graph"];
 
@@ -67,7 +67,7 @@ var SchemaEdit = (function () {
             var uri = queryString["uri"];
             if((!uri || uri == "") && (!graph || graph == "")) {
                 // alert("undefined");
-                SchemaEdit.makeNewVocabBlock();
+                //  SchemaEdit.makeNewVocabBlock();
                 return;
             }
             uri = encodeURI(uri);
@@ -75,18 +75,158 @@ var SchemaEdit = (function () {
             $("#currentResource").text(uri);
             $("#resource").text(uri);
 
-            // SchemaEdit.setCurrentResource(uri);
-            SchemaEdit.makeClassesList();
-            SchemaEdit.makePropertiesList();
-
             var uri = queryString["uri"];
             if(uri) { // TODO need to check if this if() is working
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
                 SchemaEdit.populateWithResource(uri);
             }
-
             refresh(); // redraws flex columns
+        },
+
+        makeNewVocabButton: function () {
+            $("#newVocabButton").click(
+                function () {
+                    $("#newVocabBlock").show();
+                    $("#currentResourceBlock").hide();
+                    $("#currentGraphBlock").hide();
+                }
+            );
+        },
+
+        makeNewVocabBlock: function () {
+            $("#createVocabButton").click(function () {
+                var name = $("#vocabName").val();
+                var graph = $("#vocabNamespace").val();
+                var prefix = $("#vocabPrefix").val();
+                SchemaEdit.prefixes[prefix] = graph;
+                var callback = function () {
+                    Config.setGraphURI(graph);
+                }
+                SparqlConnector.createNewVocab(name, graph, prefix, callback);
+            });
+        },
+
+        /* Builds graph chooser combobox/autocomplete
+         * queries stores for values
+         * adds to #graphChooser element
+         * in header in current UI */
+        makeGraphChooser: function () {
+            var populateChooser = function (graphList) {
+                var chooser = SchemaEdit.makeChooser(graphList, "selectGraph");
+                $("#graphChooser").append(chooser);
+                var combobox = chooser.combobox();
+
+                combobox.combobox("setInputId", "graph");
+                combobox.combobox({
+                    select: function (event, ui) {
+                        var newGraph = this.value;
+                        Config.setGraphURI(newGraph);
+                        var split = window.location.href.split("?");
+                        window.location.href = split[0] + "?graph=" + encodeURI(newGraph);
+
+                        // the above can sometimes leave you far down the page, so scroll up
+                        $("html, body").animate({
+                            scrollTop: 0
+                        }, "slow");
+                    }
+                });
+                SchemaEdit.setGraphFromUrl();
+            };
+            SparqlConnector.listGraphs(populateChooser);
+        },
+
+        /**
+         * Builds Resource chooser combobox/autocomplete widget
+         * queries stores for values
+         * in header in current UI
+         * @param {string} target the element to which the <select> will be appended
+         * @param {string} id the id attribute for the <input> field
+         */
+        makeResourceChooser: function (target, id) {
+            var callback = function (json) {
+                var chooser = SchemaEdit.makeChooser(json, "selectResource");
+                chooser.appendTo(target);
+                var combobox = chooser.combobox();
+                combobox.combobox("setInputId", id);
+                combobox.combobox({
+                    select: function (event, ui) {
+                        //    var newResource = $("#resource").val();
+                        var newResource = this.value;
+                        // relocate with new URL query params
+                        var split = window.location.href.split("?");
+                        var graph = parseUri(window.location.href).queryKey.graph;
+                        var newLocation = split[0] + "?uri=" + encodeURI(newResource);
+                        if(graph && (graph != "")) {
+                            newLocation = newLocation + "&graph=" + graph;
+                        }
+                        window.location.href = newLocation;
+
+                        Config.getGraphURI(newResource);
+
+                        $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
+                            scrollTop: 0
+                        }, "slow");
+                    }
+                });
+                SchemaEdit.setResourceFromUrl();
+            };
+            SparqlConnector.listResources(callback);
+        },
+
+        setResourceFromUrl: function () {
+            var uri = parseUri(window.location.href).queryKey.uri;
+            if(uri && (uri != "")) {
+                $("#resource").val(uri);
+            }
+        },
+
+        /* Creates list of classes in current graph
+         * queries stores for values
+         * in left column in current UI */
+        makeClassesList: function () {
+            var callback = function (json) {
+                SchemaEdit.makeListBlock(json, $("#classes"));
+            }
+            var classList = SparqlConnector.listClasses(callback);
+        },
+
+        /* Creates list of properties in current graph
+         * queries stores for values
+         * in left column in current UI */
+        makePropertiesList: function () {
+            var callback = function (json) {
+                SchemaEdit.makeListBlock(json, $("#properties"));
+            }
+            var propertiesList = SparqlConnector.listProperties(callback);
+        },
+
+        /**
+         * Comment template. TODO fill me in
+         * @param {string} foo This is a param with a description too long to fit in
+         *     one line.
+         * @return {number} This returns something that has a description too long to
+         *     fit in one line.
+         */
+        makeListBlock: function (json, target) {
+            var listContainer = $("<div></div>");
+            var listElement = $("<ul/>");
+
+            listContainer.append(listElement);
+            target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
+
+            for(var i = 0; i < json.length; i++) {
+                var uri = json[i]["uri"];
+                var split = uri.split("/");
+                var name = split[split.length - 1];
+                var itemElement = $("<li></li>");
+                var split = window.location.href.split("?");
+                var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(Config.getGraphURI());
+                var aElement = $("<a/>").attr("href", url);
+                aElement.text(name);
+                itemElement.append(aElement);
+                listElement.append(itemElement);
+            }
         },
 
         makeDeleteResourceButton: function () {
@@ -103,15 +243,7 @@ var SchemaEdit = (function () {
             );
         },
 
-        makeNewVocabButton: function () {
-            $("#newVocabButton").click(
-                function () {
-                    $("#newVocabBlock").show();
-                    $("#currentResourceBlock").hide();
-                    $("#currentGraphBlock").hide();
-                }
-            );
-        },
+
 
         setupPlusButtons: function () {
             $(".plusButton").click(
@@ -193,34 +325,7 @@ var SchemaEdit = (function () {
             );
         },
 
-        /* Builds graph chooser combobox/autocomplete
-         * queries stores for values
-         * adds to #graphChooser element
-         * in header in current UI */
-        makeGraphChooser: function () {
-            var populateChooser = function (graphList) {
-                var chooser = SchemaEdit.makeChooser(graphList, "selectGraph");
-                $("#graphChooser").append(chooser);
-                var combobox = chooser.combobox();
 
-                combobox.combobox("setInputId", "graph");
-                combobox.combobox({
-                    select: function (event, ui) {
-                        var newGraph = this.value;
-                        Config.setGraphURI(newGraph);
-                        var split = window.location.href.split("?");
-                        window.location.href = split[0] + "?graph=" + encodeURI(newGraph);
-
-                        // the above can sometimes leave you far down the page, so scroll up
-                        $("html, body").animate({
-                            scrollTop: 0
-                        }, "slow");
-                    }
-                });
-                SchemaEdit.setGraphFromUrl();
-            };
-            SparqlConnector.listGraphs(populateChooser);
-        },
 
         setGraphFromUrl: function () {
             var graph = parseUri(window.location.href).queryKey.graph;
@@ -229,50 +334,7 @@ var SchemaEdit = (function () {
             }
         },
 
-        /**
-         * Builds Resource chooser combobox/autocomplete widget
-         * queries stores for values
-         * in header in current UI
-         * @param {string} target the element to which the <select> will be appended
-         * @param {string} id the id attribute for the <input> field
-         */
-        makeResourceChooser: function (target, id) {
-            var callback = function (json) {
-                var chooser = SchemaEdit.makeChooser(json, "selectResource");
-                chooser.appendTo(target);
-                var combobox = chooser.combobox();
-                combobox.combobox("setInputId", id);
-                combobox.combobox({
-                    select: function (event, ui) {
-                        //    var newResource = $("#resource").val();
-                        var newResource = this.value;
-                        // relocate with new URL query params
-                        var split = window.location.href.split("?");
-                        var graph = parseUri(window.location.href).queryKey.graph;
-                        var newLocation = split[0] + "?uri=" + encodeURI(newResource);
-                        if(graph && (graph != "")) {
-                            newLocation = newLocation + "&graph=" + graph;
-                        }
-                        window.location.href = newLocation;
 
-                        Config.getGraphURI(newResource);
-
-                        $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
-                            scrollTop: 0
-                        }, "slow");
-                    }
-                });
-                SchemaEdit.setResourceFromUrl();
-            };
-            SparqlConnector.listResources(callback);
-        },
-
-        setResourceFromUrl: function () {
-            var uri = parseUri(window.location.href).queryKey.uri;
-            if(uri && (uri != "")) {
-                $("#resource").val(uri);
-            }
-        },
 
         /**
          * Shared function for combobox/autocomplete creation
@@ -398,68 +460,6 @@ var SchemaEdit = (function () {
                 "label": label,
                 "comment": comment
             }
-        },
-
-        /* Creates list of classes in current graph
-         * queries stores for values
-         * in left column in current UI */
-        makeClassesList: function () {
-            var callback = function (json) {
-                SchemaEdit.makeListBlock(json, $("#classes"));
-            }
-            var classList = SparqlConnector.listClasses(callback);
-        },
-
-
-        /* Creates list of properties in current graph
-         * queries stores for values
-         * in left column in current UI */
-        makePropertiesList: function () {
-            var callback = function (json) {
-                SchemaEdit.makeListBlock(json, $("#properties"));
-            }
-            var propertiesList = SparqlConnector.listProperties(callback);
-        },
-
-        /**
-         * Comment template. TODO fill me in
-         * @param {string} foo This is a param with a description too long to fit in
-         *     one line.
-         * @return {number} This returns something that has a description too long to
-         *     fit in one line.
-         */
-        makeListBlock: function (json, target) {
-            var listContainer = $("<div></div>");
-            var listElement = $("<ul/>");
-
-            listContainer.append(listElement);
-            target.append(listContainer); // TODO consider returning the block instead, let the caller decide what to do with it
-
-            for(var i = 0; i < json.length; i++) {
-                var uri = json[i]["uri"];
-                var split = uri.split("/");
-                var name = split[split.length - 1];
-                var itemElement = $("<li></li>");
-                var split = window.location.href.split("?");
-                var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(Config.getGraphURI());
-                var aElement = $("<a/>").attr("href", url);
-                aElement.text(name);
-                itemElement.append(aElement);
-                listElement.append(itemElement);
-            }
-        },
-
-        makeNewVocabBlock: function () {
-            $("#createVocabButton").click(function () {
-                var name = $("#vocabName").val();
-                var graph = $("#vocabNamespace").val();
-                var prefix = $("#vocabPrefix").val();
-                SchemaEdit.prefixes[prefix] = graph;
-                var callback = function () {
-                    Config.setGraphURI(graph);
-                }
-                SparqlConnector.createNewVocab(name, graph, prefix, callback);
-            });
         },
 
         addClassHandler: function () {
