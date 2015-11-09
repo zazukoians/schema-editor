@@ -14,21 +14,21 @@ var SEUtils = (function () {
     // This is the public interface of the Module.
     var SEUtils = {
 
-      /* *** Prefixes/Namespaces Map related START *** */
-      /**
-       * Creates and populates prefixes/namespaces map
-       *
-       * of form :
-       *     SEUtils.prefixes =  {
-       *                              "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-       *                             "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-       *                           "schema": "http://schema.org/"
-       *                          }
-       */
+        /* *** Prefixes/Namespaces Map related START *** */
+        /**
+         * Creates and populates prefixes/namespaces map
+         *
+         * of form :
+         *     SEUtils.prefixes =  {
+         *                              "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+         *                             "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+         *                           "schema": "http://schema.org/"
+         *                          }
+         */
         initPrefixes: function (callback) {
-          if(SEUtils.prefixes && SEUtils.prefixes["foaf"]=="http://xmlns.com/foaf/0.1/") {
-            return; // already there
-          }
+            if(SEUtils.prefixes && SEUtils.prefixes["foaf"] == "http://xmlns.com/foaf/0.1/") {
+                return; // already there
+            }
             SEUtils.prefixes = {};
             SEUtils.loadPrefixes(callback);
             // console.log("init SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
@@ -61,6 +61,26 @@ var SEUtils = (function () {
             return prefix;
         },
 
+        /*
+         * if in prefix map SEUtils.prefixes
+         * e.g.
+         *  "http://xmlns.com/foaf/0.1/" => "foaf"
+         */
+        curieFromURI: function (uri) {
+          console.log("uri = "+uri);
+            var index = uri.indexOf("#");
+            if(index == -1) {
+                index = uri.lastIndexOf("/");
+            }
+            var ns = uri.substring(0, index+1);
+            console.log("ns = "+ns);
+            var prefix = SEUtils.getPrefixForNamespace(ns);
+            var name = uri.substring(index+1);
+            console.log("prefix = "+prefix);
+            console.log("name = "+name);
+            return prefix + ":" + name;
+        },
+
         /* reverse lookup in map { key : value } */
         getKeyByValue: function (map, value) {
             for(var prop in map) {
@@ -83,9 +103,9 @@ var SEUtils = (function () {
                     SEUtils.prefixes[prefix] = namespace;
                     SEUtils.prefixes["loaded"] = true;
                 }
-              if(callback){
-                callback();
-              }
+                if(callback) {
+                    callback();
+                }
             }
             SparqlConnector.getJsonForSparqlURL(getPrefixesUrl, fillPrefixMap);
         },
@@ -100,31 +120,31 @@ var SEUtils = (function () {
         algorithm no doubt can be improved...
         */
         resolveToURI: function (resource) {
-          console.log("resource = "+resource);
-            // empty
-            if(!resource || resource == "") {
-                return false;
-            }
-            // CURIE (with colon, no dot or slash ) http://www.w3.org/TR/curie/
-            // look up namespace
-            if(resource.indexOf(":") != -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
-              console.log("curie recognised");
+                console.log("resource = " + resource);
+                // empty
+                if(!resource || resource == "") {
+                    return false;
+                }
+                // CURIE (with colon, no dot or slash ) http://www.w3.org/TR/curie/
+                // look up namespace
+                if(resource.indexOf(":") != -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
+                    console.log("curie recognised");
 
-              var split = resource.split(":");
-              var ns = Config.getGraphURI();
-              if(split[0] !=""){ // isn't  :name
-                ns = SEUtils.getNamespaceForPrefix(split[0]);
-              }
-                return ns+split[1];
+                    var split = resource.split(":");
+                    var ns = Config.getGraphURI();
+                    if(split[0] != "") { // isn't  :name
+                        ns = SEUtils.getNamespaceForPrefix(split[0]);
+                    }
+                    return ns + split[1];
+                }
+                // just name (no colon)
+                // use current graph URI as namespace
+                if(resource.indexOf(":") == -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
+                    return Config.getGraphURI() + resource;
+                }
+                return resource;
             }
-            // just name (no colon)
-            // use current graph URI as namespace
-            if(resource.indexOf(":") == -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
-                return Config.getGraphURI()+resource;
-            }
-            return resource;
-        }
-              /* *** Prefixes/Namespaces Map related END *** */
+            /* *** Prefixes/Namespaces Map related END *** */
     };
 
     return SEUtils;

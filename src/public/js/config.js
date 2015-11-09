@@ -13,7 +13,7 @@ var Config = (function () {
     var Config = {
 
         current: { // effectively defaults
-          /*
+            /*
             endpointHost: "http://localhost:3333",
             queryPath: "/schema-edit/sparql",
             updatePath: "/schema-edit/update",
@@ -106,12 +106,13 @@ var Config = (function () {
             window.location.href = newUrl;
         },
 
-        setGraphURI: function (graphURI) {
+        setGraphURI: function (graphURI, reload) {
             Config.current.graphURI = graphURI;
             Config.setToLocalStorage("graphURI", graphURI);
-            // TODO move this =>
-        //    var split = window.location.href.split("?");
-        //    window.location.href = split[0] + "?graph=" + graphURI;
+            if(reload) {
+                var split = window.location.href.split("?");
+                window.location.href = split[0] + "?graph=" + graphURI;
+            }
         },
 
         setQueryEndpoint: function (queryEndpoint) {

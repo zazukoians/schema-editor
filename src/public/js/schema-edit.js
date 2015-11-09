@@ -79,7 +79,7 @@ var SchemaEdit = (function () {
             if(uri) { // TODO need to check if this if() is working
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
-                SchemaEdit.populateWithResource(uri);
+                SchemaEdit.renderProperties(uri);
             }
             refresh(); // redraws flex columns
         },
@@ -101,9 +101,9 @@ var SchemaEdit = (function () {
                 var name = $("#vocabName").val();
                 var graph = $("#vocabNamespace").val();
                 var prefix = $("#vocabPrefix").val();
-                SchemaEdit.prefixes[prefix] = graph;
+                SEUtils.prefixes[prefix] = graph;
                 var callback = function () {
-                    Config.setGraphURI(graph);
+                    Config.setGraphURI(graph, true);
                 }
                 SparqlConnector.createNewVocab(name, graph, prefix, callback);
             });
@@ -187,7 +187,6 @@ var SchemaEdit = (function () {
             }
         },
 
-
         makeDeleteResourceButton: function () {
             $("#deleteResource").click(
                 function () {
@@ -257,7 +256,7 @@ var SchemaEdit = (function () {
         /* ***  Classes & Properties (link) Lists END *** */
 
         /* fill in main block with details of current resource */
-        populateWithResource: function (uri) { //  callback??
+        renderProperties: function (uri) { //  callback??
             SchemaEdit.makeAddPropertyValue(uri); // NEW
 
             var map = {
@@ -276,14 +275,10 @@ var SchemaEdit = (function () {
         },
 
         makePropertyEditBlock: function (json) {
-            var replacementMap = SchemaEdit.transformJSON(json);
-            // console.log("JSON2 = \n" + JSON.stringify(replacementMap, false, 4));
+            var replacementMap = SchemaEdit.transformPropertyJSON(json);
             var block = templater(propertyTemplate, replacementMap);
             $("#editor").append(block);
         },
-
-
-
 
         setupPlusButtons: function () {
             $(".plusButton").click(
@@ -402,7 +397,7 @@ var SchemaEdit = (function () {
         /* takes SPARQL results JSON and changes it into
          * a form that's easier to insert into template
          */
-        transformJSON: function (json) { // ugly, but will do for now
+        transformPropertyJSON: function (json) { // ugly, but will do for now
             var subPropertyOf = [];
             var domain = [];
             var range = [];
@@ -411,20 +406,21 @@ var SchemaEdit = (function () {
 
             for(var i = 0; i < json.length; i++) {
                 var current = json[i];
-                console.log("current = "+JSON.stringify(current, false, 4));
+                // console.log("current = "+JSON.stringify(current, false, 4));
                 var type = current["type"];
                 var subject = current["s"];
                 var predicate = current["p"];
                 var object = current["o"];
+
                 if(type=="uri"){
-                  object = SEUtils.getPrefixForNamespace(object);
+                  object = SEUtils.curieFromURI(object);
                 }
                 var language = current["language"];
                 // console.log("S = " + subject);
                 // console.log("P = " + predicate);
                 // console.log("O = " + object);
                 if(predicate == "http://www.w3.org/2000/01/rdf-schema#subPropertyOf") {
-                    console.log("push");
+                  //  console.log("push");
                     subPropertyOf.push({
                         "subPropertyOfURI": object
                     });
@@ -468,13 +464,10 @@ var SchemaEdit = (function () {
                 comment.push("");
             }
 
-            var propertyName = subject;
-            if(SparqlConnector.getPrefixedUri(propertyName) != null) {
-                propertyName = SparqlConnector.getPrefixedUri(propertyName); // TODO rename to resolvePrefix
-            }
+            var propertyName = SEUtils.curieFromURI(subject);
 
             return {
-                "propertyName": subject,
+                "propertyName": propertyName,
                 "subPropertyOf": subPropertyOf,
                 "domain": domain,
                 "range": range,
