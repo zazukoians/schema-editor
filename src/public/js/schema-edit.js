@@ -79,7 +79,7 @@ var SchemaEdit = (function () {
             if(uri) { // TODO need to check if this if() is working
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
-                SchemaEdit.renderProperties(uri);
+                SchemaEdit.renderResource(uri);
             }
             refresh(); // redraws flex columns
         },
@@ -256,8 +256,8 @@ var SchemaEdit = (function () {
         /* ***  Classes & Properties (link) Lists END *** */
 
         /* fill in main block with details of current resource */
-        renderProperties: function (uri) { //  callback??
-            SchemaEdit.makeAddPropertyValue(uri); // NEW
+        renderResource: function (uri) {
+            SchemaEdit.makeAddPropertyValue(uri);
 
             var map = {
                 graphURI: Config.getGraphURI(),
@@ -266,17 +266,17 @@ var SchemaEdit = (function () {
 
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
-            var makePropertyBlocks = function (json) {
-                SchemaEdit.makePropertyEditBlock(json); // NEW
+            var makeViewBlocks = function (json) {
+                SchemaEdit.makePropertyEditBlock(json);
                 SchemaEdit.initLangButtons();
                 SchemaEdit.setupLangButtons();
             }
-            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
+            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makeViewBlocks);
         },
 
         makePropertyEditBlock: function (json) {
             var replacementMap = SchemaEdit.transformPropertyJSON(json);
-            var block = templater(propertyTemplate, replacementMap);
+            var block = templater(SE_HtmlTemplates.viewTemplate, replacementMap);
             $("#editor").append(block);
         },
 
