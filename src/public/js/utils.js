@@ -26,6 +26,9 @@ var SEUtils = (function () {
        *                          }
        */
         initPrefixes: function (callback) {
+          if(SEUtils.prefixes && SEUtils.prefixes["foaf"]=="http://xmlns.com/foaf/0.1/") {
+            return; // already there
+          }
             SEUtils.prefixes = {};
             SEUtils.loadPrefixes(callback);
             // console.log("init SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
@@ -38,6 +41,11 @@ var SEUtils = (function () {
          */
         getNamespaceForPrefix: function (prefix) {
             // TODO if not found, delegate to http://prefix.cc/foaf.file.json
+            /*
+            console.log("getNamespaceForPrefix SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
+            console.log("foaf = "+SEUtils.prefixes['foaf']);
+            console.log("prefix = "+prefix);
+            */
             return SEUtils.prefixes[prefix];
         },
 
@@ -48,7 +56,9 @@ var SEUtils = (function () {
          */
         getPrefixForNamespace: function (namespace) {
             // TODO if not found, delegate to http://prefix.cc
-            return SEUtils.getKeyByValue(SEUtils.prefixes, namespace);
+            var prefix = SEUtils.getKeyByValue(SEUtils.prefixes, namespace);
+            if(!prefix) return namespace;
+            return prefix;
         },
 
         /* reverse lookup in map { key : value } */
@@ -62,7 +72,6 @@ var SEUtils = (function () {
         },
 
         loadPrefixes: function (callback) {
-            // SchemaEdit.prefixes = {};
             var getPrefixesUrl = SchemaEdit.generateGetUrl(getPrefixesSparql);
             var fillPrefixMap = function (json) {
                 // console.log("Prefixes = \n"+JSON.stringify(json, false, 4));
@@ -79,6 +88,41 @@ var SEUtils = (function () {
               }
             }
             SparqlConnector.getJsonForSparqlURL(getPrefixesUrl, fillPrefixMap);
+        },
+
+        /*
+        To allow entry of variants of resources
+        for inclusion in Turtle/SPARQL
+        three alternatives :
+        * Name - prefix with namespace, wrap in <>
+        * prefix:name - don't wrap with <>
+        * {uri} - wrap with <>
+        algorithm no doubt can be improved...
+        */
+        resolveToURI: function (resource) {
+          console.log("resource = "+resource);
+            // empty
+            if(!resource || resource == "") {
+                return false;
+            }
+            // CURIE (with colon, no dot or slash ) http://www.w3.org/TR/curie/
+            // look up namespace
+            if(resource.indexOf(":") != -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
+              console.log("curie recognised");
+
+              var split = resource.split(":");
+              var ns = Config.getGraphURI();
+              if(split[0] !=""){ // isn't  :name
+                ns = SEUtils.getNamespaceForPrefix(split[0]);
+              }
+                return ns+split[1];
+            }
+            // just name (no colon)
+            // use current graph URI as namespace
+            if(resource.indexOf(":") == -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
+                return Config.getGraphURI()+resource;
+            }
+            return resource;
         }
               /* *** Prefixes/Namespaces Map related END *** */
     };
@@ -95,39 +139,6 @@ function refresh() {
     elem.offsetHeight; // no need to store this anywhere, the reference is enough
     elem.style.display = 'flex';
     refreshResourceInput();
-}
-
-
-
-/*
-To allow entry of variants of resources
-for inclusion in Turtle/SPARQL
-three alternatives :
-* Name - prefix with namespace, wrap in <>
-* prefix:name - don't wrap with <>
-* {uri} - wrap with <>
-algorithm no doubt can be improved...
-*/
-function angleBrackets(resource) {
-    var wrapWithAngles = true;
-
-    // empty
-    if(!resource || resource == "") {
-        return false;
-    }
-    // qname (no dot or slash)
-    if(resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
-        wrapWithAngles = false;
-    }
-
-    // just name (no colon)
-    if(resource.indexOf(":") == -1) {
-        wrapWithAngles = true;
-    }
-    if(wrapWithAngles) {
-        resource = "<" + resource + ">";
-    }
-    return resource;
 }
 
 

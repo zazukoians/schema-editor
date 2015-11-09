@@ -287,21 +287,6 @@ var SparqlConnector = (function () {
                   console.log("SchemaEdit.prefixes = \n"+JSON.stringify(SchemaEdit.prefixes, false, 4));
                 }
                 SparqlConnector.postData(addPrefixSparql, log);
-            /*
-                        var createDummyClassSparql = sparqlTemplater(
-                            createDummyClassSparqlTemplate, {
-                                "graphURI": Config.getGraphURI(),
-                                "namespace": namespace
-                            });
-                        var callback = function (msg) {
-                            var dummy = "http://purl.org/stuff/hyperdata/Dummy";
-                            var split = window.location.href.split("?");
-
-                            window.location.href = split[0] + "?uri=" + encodeURI(dummy) + "&graph=" + encodeURI(Config.graphURI);
-                        }
-
-                        SparqlConnector.postData(createDummyClassSparql, callback);
-                          */
         },
 
         addClass: function (map, callback) {

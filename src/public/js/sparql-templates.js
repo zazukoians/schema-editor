@@ -83,7 +83,7 @@ var addClassSparqlTemplate = commonPrefixes +
           ~{/label}~  \n\
 \n\
           ~{#subClassOf}~ \n\
-              rdfs:subClassOf ~{subClassOf}~ ; \n\
+              rdfs:subClassOf <~{subClassOf}~> ; \n\
           ~{/subClassOf}~  \n\
 \n\
           ~{#comment}~ \n\
@@ -108,15 +108,15 @@ var addPropertySparqlTemplate = commonPrefixes +
           ~{/label}~ ; \n\
 \n\
           ~{#subPropertyOf}~ \n\
-              rdfs:subPropertyOf ~{subPropertyOf}~ ; \n\
+              rdfs:subPropertyOf <~{subPropertyOf}~> ; \n\
           ~{/subPropertyOf}~  \n\
 \n\
           ~{#domain}~ \n\
-              rdfs:domain ~{domain}~ ; \n\
+              rdfs:domain <~{domain}~> ; \n\
           ~{/domain}~  \n\
 \n\
           ~{#range}~ \n\
-              rdfs:range ~{range}~ ; \n\
+              rdfs:range <~{range}~> ; \n\
           ~{/range}~ \n\
 \n\
           ~{#comment}~ \n\

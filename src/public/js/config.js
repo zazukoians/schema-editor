@@ -109,8 +109,9 @@ var Config = (function () {
         setGraphURI: function (graphURI) {
             Config.current.graphURI = graphURI;
             Config.setToLocalStorage("graphURI", graphURI);
-            var split = window.location.href.split("?");
-            window.location.href = split[0] + "?graph=" + graphURI;
+            // TODO move this =>
+        //    var split = window.location.href.split("?");
+        //    window.location.href = split[0] + "?graph=" + graphURI;
         },
 
         setQueryEndpoint: function (queryEndpoint) {

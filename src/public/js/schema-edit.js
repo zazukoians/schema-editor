@@ -84,6 +84,8 @@ var SchemaEdit = (function () {
             refresh(); // redraws flex columns
         },
 
+        /* ***  New Vocab Section START *** */
+
         makeNewVocabButton: function () {
             $("#newVocabButton").click(
                 function () {
@@ -106,6 +108,10 @@ var SchemaEdit = (function () {
                 SparqlConnector.createNewVocab(name, graph, prefix, callback);
             });
         },
+        /* ***  New Vocab Section END *** */
+
+
+        /* *** Current Graph & Resource Choosers START *** */
 
         /* Builds graph chooser combobox/autocomplete
          * queries stores for values
@@ -181,6 +187,25 @@ var SchemaEdit = (function () {
             }
         },
 
+
+        makeDeleteResourceButton: function () {
+            $("#deleteResource").click(
+                function () {
+                    var resource = Config.getCurrentResource();
+                    var callback = function (msg) {
+                        $("#deleteResourceText").dialog();
+                    }
+                    SparqlConnector.deleteResource(resource, callback);
+                    var split = window.location.href.split("?");
+                    window.location.href = split[0] + "?graph=" + Config.getGraphURI();
+                }
+            );
+        },
+
+        /* ***  Current Graph & Resource Choosers END *** */
+
+        /* ***  Classes & Properties (link) Lists START *** */
+
         /* Creates list of classes in current graph
          * queries stores for values
          * in left column in current UI */
@@ -229,19 +254,34 @@ var SchemaEdit = (function () {
             }
         },
 
-        makeDeleteResourceButton: function () {
-            $("#deleteResource").click(
-                function () {
-                    var resource = Config.getCurrentResource();
-                    var callback = function (msg) {
-                        $("#deleteResourceText").dialog();
-                    }
-                    SparqlConnector.deleteResource(resource, callback);
-                    var split = window.location.href.split("?");
-                    window.location.href = split[0] + "?graph=" + Config.getGraphURI();
-                }
-            );
+        /* ***  Classes & Properties (link) Lists END *** */
+
+        /* fill in main block with details of current resource */
+        populateWithResource: function (uri) { //  callback??
+            SchemaEdit.makeAddPropertyValue(uri); // NEW
+
+            var map = {
+                graphURI: Config.getGraphURI(),
+                uri: uri
+            };
+
+            var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
+
+            var makePropertyBlocks = function (json) {
+                SchemaEdit.makePropertyEditBlock(json); // NEW
+                SchemaEdit.initLangButtons();
+                SchemaEdit.setupLangButtons();
+            }
+            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
         },
+
+        makePropertyEditBlock: function (json) {
+            var replacementMap = SchemaEdit.transformJSON(json);
+            // console.log("JSON2 = \n" + JSON.stringify(replacementMap, false, 4));
+            var block = templater(propertyTemplate, replacementMap);
+            $("#editor").append(block);
+        },
+
 
 
 
@@ -357,31 +397,7 @@ var SchemaEdit = (function () {
             return choices;
         },
 
-        /* fill in main block with details of current resource */
-        populateWithResource: function (uri) { //  callback??
-            SchemaEdit.makeAddPropertyValue(uri); // NEW
 
-            var map = {
-                graphURI: Config.getGraphURI(),
-                uri: uri
-            };
-
-            var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
-
-            var makePropertyBlocks = function (json) {
-                SchemaEdit.makePropertyEditBlock(json); // NEW
-                SchemaEdit.initLangButtons();
-                SchemaEdit.setupLangButtons();
-            }
-            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makePropertyBlocks);
-        },
-
-        makePropertyEditBlock: function (json) {
-            var replacementMap = SchemaEdit.transformJSON(json);
-            // console.log("JSON2 = \n" + JSON.stringify(replacementMap, false, 4));
-            var block = templater(propertyTemplate, replacementMap);
-            $("#editor").append(block);
-        },
 
         /* takes SPARQL results JSON and changes it into
          * a form that's easier to insert into template
@@ -395,9 +411,14 @@ var SchemaEdit = (function () {
 
             for(var i = 0; i < json.length; i++) {
                 var current = json[i];
+                console.log("current = "+JSON.stringify(current, false, 4));
+                var type = current["type"];
                 var subject = current["s"];
                 var predicate = current["p"];
                 var object = current["o"];
+                if(type=="uri"){
+                  object = SEUtils.getPrefixForNamespace(object);
+                }
                 var language = current["language"];
                 // console.log("S = " + subject);
                 // console.log("P = " + predicate);
@@ -467,10 +488,14 @@ var SchemaEdit = (function () {
             button.click(function () {
 
                 var callback = function (msg) {}
+
+                var subClassOf = $("#subClassOf").val();
+                subClassOf = SEUtils.resolveToURI(subClassOf);
+
                 var map = {
                     "graphURI": Config.getGraphURI(),
                     "name": $("#className").val(),
-                    "subClassOf": angleBrackets($("#subClassOf").val()),
+                    "subClassOf": subClassOf
                 }
 
                 /* Currently looping through different values here,
@@ -503,15 +528,15 @@ var SchemaEdit = (function () {
                 // var label = $("#propertyLabel").val();
                 var domain = $("#domain").val();
                 if(domain) {
-                    domain = angleBrackets(domain);
+                    domain = SEUtils.resolveToURI(domain);
                 }
                 var range = $("#range").val();
                 if(range) {
-                    range = angleBrackets(range);
+                    range = SEUtils.resolveToURI(range);
                 }
                 var subPropertyOf = $("#subPropertyOf").val();
                 if(subPropertyOf) {
-                    subPropertyOf = angleBrackets(subPropertyOf);
+                    subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
                 }
                 //  var comment = $("#classComment").val();
                 var callback = function (msg) {}
@@ -525,7 +550,7 @@ var SchemaEdit = (function () {
                     "label": "",
                     "labelLang": "",
                     "comment": "",
-                    "comment": ""
+                    "commentLang": ""
                 };
 
                 $("#addPropertyBlock .propertyLabel").each(
