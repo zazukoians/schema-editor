@@ -11,68 +11,83 @@
  * http://twitter.github.io/hogan.js/
  */
 
- var SE_HtmlTemplates = (function() {
-   "use strict";
+var SE_HtmlTemplates = (function () {
+    "use strict";
 
-   // This is the public interface of the Module.
-   var SE_HtmlTemplates = {
-     /**
-      * Template for describing resource
-      */
-     viewTemplate : "\n\
-     <div class='propertyEditBlock'> \n\
-        <label>Property</label> \n\
-        <input class='resource' value='~{propertyName}~' /> \n\
-     \n\
-        ~{#subPropertyOf}~ \n\
-           <label>rdfs:subPropertyOf</label> \n\
-           <input class='resource' value='~{subPropertyOfURI}~' /> \n\
-        ~{/subPropertyOf}~ \n\
-    \n\
-        ~{#domain}~ \n\
-           <label>rdfs:domain</label> \n\
-           <input value='~{domainURI}~' class='resource' /> \n\
-        ~{/domain}~ \n\
-    \n\
-        ~{#range}~ \n\
-           <label>rdfs:range</label> \n\
-           <input value='~{rangeURI}~' class='resource' /> \n\
-       ~{/range}~ \n\
-    \n\
-       ~{#label}~ \n\
-          <div class='fieldBlock'> \n\
-             <label>rdfs:label</label> \n\
-             <input class='propertyLabel' class='literal' lang='~{language}~' value='~{content}~' /> \n\
-             <button class='langButton'></button> \n\
-          </div> \n\
-       ~{/label}~ \n\
-       <button class='plusButton'>+</button> \n\
-    \n\
-       ~{#comment}~ \n\
-          <div class='fieldBlock'> \n\
-             <label>rdfs:comment</label> \n\
-             <textarea class='propertyComment' rows='4' cols='75' class='literal'  lang='~{language}~'>~{content}~</textarea> \n\
-             <button class='langButton'></button> \n\
-          </div> \n\
-       ~{/comment}~ \n\
-       <button class='plusButton'>+</button> \n\
-     \n\
-       <button class='updatePropertyButton'>Update</button> \n\
-    </div> \n\
-    "
-   };
+    // This is the public interface of the Module.
+    var SE_HtmlTemplates = {
+        /**
+         * Template for describing resource
+         */
+        viewTemplate: "\n\
+<div class='propertyEditBlock'> \n\
+   <label>RDF Type</label> \n\
+   <input class='resource' value='~{rdfType}~' /> \n\
+\n\
+   <label>Resource Name</label> \n\
+   <input class='resource' value='~{resourceName}~' /> \n\
+\n\
+   ~{#isProperty}~ \n\
+      ~{#subPropertyOf}~ \n\
+         <label>rdfs:subPropertyOf</label> \n\
+         <input class='resource' value='~{subPropertyOfURI}~' /> \n\
+      ~{/subPropertyOf}~ \n\
+   ~{/isProperty}~ \n\
+\n\
+   ~{#isClass}~ \n\
+      ~{#subClassOf}~ \n\
+         <label>rdfs:subClassOf</label> \n\
+         <input class='resource' value='~{subClassOfURI}~' /> \n\
+      ~{/subClassOf}~ \n\
+   ~{/isClass}~ \n\
+\n\
+   ~{#isProperty}~ \n\
+      ~{#domain}~ \n\
+         <label>rdfs:domain</label> \n\
+         <input value='~{domainURI}~' class='resource' /> \n\
+      ~{/domain}~ \n\
+   ~{/isProperty}~ \n\
+\n\
+   ~{#isProperty}~ \n\
+      ~{#range}~ \n\
+         <label>rdfs:range</label> \n\
+         <input value='~{rangeURI}~' class='resource' /> \n\
+      ~{/range}~ \n\
+   ~{/isProperty}~ \n\
+\n\
+   ~{#label}~ \n\
+      <div class='fieldBlock'> \n\
+         <label>rdfs:label</label> \n\
+         <input class='propertyLabel' class='literal' lang='~{language}~' value='~{content}~' /> \n\
+         <button class='langButton'></button> \n\
+      </div> \n\
+   ~{/label}~ \n\
+   <button class='plusButton'>+</button> \n\
+\n\
+   ~{#comment}~ \n\
+      <div class='fieldBlock'> \n\
+         <label>rdfs:comment</label> \n\
+         <textarea class='propertyComment' rows='4' cols='75' class='literal'  lang='~{language}~'>~{content}~</textarea> \n\
+         <button class='langButton'></button> \n\
+      </div> \n\
+   ~{/comment}~ \n\
+\n\
+   <button class='plusButton'>+</button> \n\
+\n\
+   <button class='updatePropertyButton'>Update</button> \n\
+</div>"
+};
 
-   return SE_HtmlTemplates;
- }());
+    return SE_HtmlTemplates;
+}());
 
- var SE_SparqlTemplates = (function() {
-   "use strict";
+var SE_SparqlTemplates = (function () {
+    "use strict";
 
-   // This is the public interface of the Module.
-   var SE_SparqlTemplates = {
-     // moved out PREFIX dc: <http://purl.org/dc/elements/1.1/> \n\
-     commonPrefixes :
-         " \n\
+    // This is the public interface of the Module.
+    var SE_SparqlTemplates = {
+        // moved out PREFIX dc: <http://purl.org/dc/elements/1.1/> \n\
+        commonPrefixes: " \n\
      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n\
      PREFIX owl: <http://www.w3.org/2002/07/owl#> \n\
@@ -92,12 +107,12 @@
      PREFIX stuff: <http://purl.org/stuff#>  \n\
      \n\
      "
-   };
+    };
+    return SE_SparqlTemplates;
+}());
 
-   return SE_SparqlTemplates;
- }());
-
-var getPrefixesSparql = "\n\
+var getPrefixesSparql =
+    "\n\
 PREFIX : <http://purl.org/stuff/prefix/> \n\
 \n\
 SELECT DISTINCT ?prefix ?namespace \n\
@@ -110,7 +125,8 @@ GRAPH <http://purl.org/stuff/prefix/> { \n\
 }} \n\
 ORDER BY ?prefix";
 
-var addPrefixSparqlTemplate = "\n\
+var addPrefixSparqlTemplate =
+    "\n\
 PREFIX : <http://purl.org/stuff/prefix/> \n\
 \n\
     INSERT DATA {  \n\

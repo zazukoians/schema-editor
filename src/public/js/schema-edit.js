@@ -398,6 +398,12 @@ var SchemaEdit = (function () {
          * a form that's easier to insert into template
          */
         transformPropertyJSON: function (json) { // ugly, but will do for now
+
+            var isClass = false;
+            var isProperty = false;
+
+            var rdfType = [];
+            var subClassOf = [];
             var subPropertyOf = [];
             var domain = [];
             var range = [];
@@ -412,15 +418,30 @@ var SchemaEdit = (function () {
                 var predicate = current["p"];
                 var object = current["o"];
 
-                if(type=="uri"){
-                  object = SEUtils.curieFromURI(object);
+                if(type == "uri") {
+                    object = SEUtils.curieFromURI(object);
                 }
                 var language = current["language"];
                 // console.log("S = " + subject);
                 // console.log("P = " + predicate);
                 // console.log("O = " + object);
+                if(predicate == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
+                    rdfType.push(object);
+                    if(object == "rdfs:Class") {
+                        isClass = true;
+                    }
+                    if(object == "rdf:Property") {
+                        isProperty = true;
+                    }
+                }
+                if(predicate == "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
+                    //  console.log("push");
+                    subClassOf.push({
+                        "subClassOfURI": object
+                    });
+                }
                 if(predicate == "http://www.w3.org/2000/01/rdf-schema#subPropertyOf") {
-                  //  console.log("push");
+                    //  console.log("push");
                     subPropertyOf.push({
                         "subPropertyOfURI": object
                     });
@@ -448,6 +469,9 @@ var SchemaEdit = (function () {
                     });
                 }
             }
+            if(rdfType.length == 0) {
+                rdfType.push("");
+            }
             if(subPropertyOf.length == 0) {
                 subPropertyOf.push("");
             }
@@ -464,11 +488,15 @@ var SchemaEdit = (function () {
                 comment.push("");
             }
 
-            var propertyName = SEUtils.curieFromURI(subject);
+            var resourceName = SEUtils.curieFromURI(subject);
 
             return {
-                "propertyName": propertyName,
+                "isClass": isClass,
+                "isProperty": isProperty,
+                "resourceName": resourceName,
+                "rdfType": rdfType,
                 "subPropertyOf": subPropertyOf,
+                "subClassOf": subClassOf,
                 "domain": domain,
                 "range": range,
                 "label": label,
