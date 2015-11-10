@@ -107,6 +107,7 @@ var Config = (function () {
         },
 
         setGraphURI: function (graphURI, reload) {
+          console.log("setGraphURI graphURI = " + graphURI);
             Config.current.graphURI = graphURI;
             Config.setToLocalStorage("graphURI", graphURI);
             if(reload) {
@@ -116,13 +117,13 @@ var Config = (function () {
         },
 
         setQueryEndpoint: function (queryEndpoint) {
-            console.log("setqueryEndpoint = " + queryEndpoint);
+            // console.log("setqueryEndpoint = " + queryEndpoint);
             Config.current.queryEndpoint = queryEndpoint;
             return Config.setToLocalStorage("queryEndpoint", queryEndpoint);
         },
 
         setUpdateEndpoint: function (updateEndpoint) {
-            console.log("setupdateEndpoint = " + updateEndpoint);
+            // console.log("setupdateEndpoint = " + updateEndpoint);
             Config.current.updateEndpoint = updateEndpoint;
             return Config.setToLocalStorage("updateEndpoint", updateEndpoint);
         },

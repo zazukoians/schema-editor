@@ -30,31 +30,6 @@ var SparqlConnector = (function () {
                 });
         },
 
-        // API, based on spec
-
-        // TODO move the original calls to these to point to Config
-        /*
-        setQueryEndpoint: function (url) {
-            Config.getSparqlQueryPath(url);
-            return getQueryEndpoint();
-        },
-
-        getQueryEndpoint: function () {
-            return Config.getSparqlQueryPath();
-        },
-
-        setUpdateEndpoint: function (url) {
-            return getUpdateEndpoint(url);
-        },
-
-        getUpdateEndpoint: function () {
-            return Config.getSparqlUpdatePath();
-        },
-
-        setEndpoint: function (graphURI) {
-            return graphURI;
-        },
-*/
         getTurtleUrl: function (type, callback) {
             var resources = [];
             var getTurtleSparql = sparqlTemplater(constructGraph, {
@@ -191,6 +166,7 @@ var SparqlConnector = (function () {
             return null;
         },
 
+// TODO replace with SEUtils.prefixes
         preloadKnownPrefixes: function () {
             var known = [{
                 prefix: "schema",
@@ -287,9 +263,9 @@ var SparqlConnector = (function () {
                     "namespace": graph,
                     "prefix": prefix
                 });
-                console.log("addPrefixSparql = \n"+addPrefixSparql);
+              //  console.log("addPrefixSparql = \n"+addPrefixSparql);
                 var log = function() {
-                  console.log("SchemaEdit.prefixes = \n"+JSON.stringify(SchemaEdit.prefixes, false, 4));
+                //  console.log("SEUtils.prefixes = \n"+JSON.stringify(SEUtils.prefixes, false, 4));
                 }
                 SparqlConnector.postData(addPrefixSparql, log);
         },
@@ -298,7 +274,7 @@ var SparqlConnector = (function () {
 
             var addClassSparql = sparqlTemplater(
                 addClassSparqlTemplate, map);
-            console.log("addClassSparql = \n" + addClassSparql);
+            // console.log("addClassSparql = \n" + addClassSparql);
             SparqlConnector.postData(addClassSparql, callback);
         },
 

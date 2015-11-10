@@ -77,7 +77,6 @@ var SchemaEdit = (function () {
 
             var uri = queryString["uri"];
             if(uri) { // TODO need to check if this if() is working
-                // console.log("URI="+uri);
                 uri = encodeURI(uri);
                 SchemaEdit.renderTerm(uri);
             }
@@ -105,6 +104,7 @@ var SchemaEdit = (function () {
                 var callback = function () {
                     Config.setGraphURI(graph, true);
                 }
+                // mystring[mystring.length-1] === '#'
                 SparqlConnector.createNewVocab(name, graph, prefix, callback);
             });
         },
@@ -426,6 +426,9 @@ var SchemaEdit = (function () {
         setGraphFromUrl: function () {
             var graph = parseUri(window.location.href).queryKey.graph;
             if(graph && (graph != "")) {
+              if(graph[graph.length-1] != '/'){
+                graph = graph+"#";
+              }
                 $("#graph").val(graph);
             }
         },
