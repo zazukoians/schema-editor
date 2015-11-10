@@ -110,6 +110,10 @@ button, .button {
   display: none;
 }
 
+#languageSelect, #postConfirmDialog {
+    display: none;
+}
+
 #advancedBlock {
   display: none;
 }
