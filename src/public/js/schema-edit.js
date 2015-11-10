@@ -810,45 +810,21 @@ var SchemaEdit = (function () {
                         }
                     });
                 });
+                SchemaEdit.setupAddLanguageButton();
+        },
+
+        setupAddLanguageButton: function () {
+          $("#addLanguageButton").click(
+              function () {
+                console.log("click");
+                $(this).prev().log();
+              });
         },
 
         /*
-                makeLanguageButton: function (subject, predicate, object, language) {
-                    var languageButton = $("<button class='language'></button>");
-                    languageButton.text(language);
-                    languageButton.click(function () {
-                        var languageChoices = $("#languageSelect").html();
-                        var dialog = $("#dialog");
-                        // dialog.buttonset(); // jQueryUI
-                        dialog.addClass("show");
-                        dialog.html(languageChoices);
-                        var updateHandler = function () {
-                            var language;
-                            $('.languageRadio').each(function () {
-                                if(this.type == 'radio' && this.checked) {
-                                    language = $(this).val();
-                                }
-                            });
-                            $(this).dialog("close");
-                            SparqlConnector.updateTriple(subject, predicate, object, language, callback);
-                            location.reload(true);
-                        };
-                        dialog.dialog({
-                            resizable: false,
-                            modal: true,
-                            buttons: {
-                                "Update Value": updateHandler,
-                                Cancel: function () {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        });
-                        var callback = function (msg) {
-                            console.log("callback msg = " + msg);
-                        }
-                    });
-                    return languageButton;
-                },
+        <label for="addLanguage">Add Language</label>
+        <input id="addLanguage" type="text" name="addLanguage" title="enter language code"/>
+        <button id="addLanguageButton">Add</button>
         */
         initResourceButtons: function () {
             $(".resourceButton").each(
