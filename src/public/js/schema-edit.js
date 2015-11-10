@@ -312,14 +312,6 @@ var SchemaEdit = (function () {
                         range = SEUtils.resolveToURI(range);
                     }
 
-                    /*
-                    {
-                      "label": [
-                        { "labelText": text, "labelLang": lang},
-                      ]
-                    }
-                    */
-
                     var labelList = [];
                     termEditBlock.find(".label").each(function () {
                         var li = {};
@@ -330,10 +322,10 @@ var SchemaEdit = (function () {
 
                     var commentList = [];
                     termEditBlock.find(".comment").each(function () {
-                      var li = {};
-                      li["commentText"] = $(this).val();
-                      li["commentLang"] = $(this).attr("lang");
-                      commentList.push(li);
+                        var li = {};
+                        li["commentText"] = $(this).val();
+                        li["commentLang"] = $(this).attr("lang");
+                        commentList.push(li);
                     });
 
                     var callback = function (msg) {}
@@ -352,20 +344,20 @@ var SchemaEdit = (function () {
                     var notifyOfUpdate = function () {
                         console.log("update done.");
                         //   window.location.reload();
+
+                        SchemaEdit.postConfirmDialog();
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
-                    console.log("updateTermSparql = \n" + updateTermSparql);
                     SparqlConnector.postData(updateTermSparql, notifyOfUpdate);
                 }
             );
         },
 
         setupPlusButtons: function () {
-            console.log("setupPlusButtons");
+            $(".plusButton").unbind("click");
             $(".plusButton").click(
                 function () {
-                    console.log("plus");
                     var prev = $(this).prev(".fieldBlock");
                     prev.log();
                     $(prev).after(prev.clone(true));
@@ -567,11 +559,28 @@ var SchemaEdit = (function () {
             }
         },
 
+        postConfirmDialog: function () {
+            $("#postConfirmDialog").dialog({
+                    width: 200,
+                    modal: true,
+                    buttons: {
+                        "Close": function () {
+                            $(this).dialog("close");
+                            window.location.reload();
+                        }
+                    }
+            });
+
+      },
+
+        // TODO merge with updateTerm
         addClassHandler: function () {
             var button = $("#addClassButton");
             button.click(function () {
 
-                var callback = function (msg) {}
+                var callback = function (msg) {
+                    SchemaEdit.postConfirmDialog();
+                }
 
                 var subClassOf = $("#subClassOf").val();
                 subClassOf = SEUtils.resolveToURI(subClassOf);
@@ -600,7 +609,7 @@ var SchemaEdit = (function () {
                         SparqlConnector.addClass(map, callback);
                     }
                 );
-                window.location.reload();
+
             });
         },
 
@@ -624,7 +633,9 @@ var SchemaEdit = (function () {
                     subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
                 }
 
-                var callback = function (msg) {}
+                var callback = function () {
+                    SchemaEdit.postConfirmDialog();
+                }
 
                 var map = {
                     "graphURI": Config.getGraphURI(),
@@ -638,9 +649,10 @@ var SchemaEdit = (function () {
                     "commentLang": ""
                 };
 
+// TODO I don't like the look of these... merge with edit term & get rid of loops
                 $("#addPropertyBlock .propertyLabel").each(
                     function () {
-                        console.log("label = " + $(this).val());
+                        //  console.log("label = " + $(this).val());
                         map["label"] = $(this).val();
                         map["labelLang"] = $(this).attr("lang");
                         SparqlConnector.addProperty(map, callback);

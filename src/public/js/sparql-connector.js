@@ -249,11 +249,16 @@ var SparqlConnector = (function () {
             }).done(function (msg) {
                 if(callback) {
                     console.log("callback called");
-                    callback(msg);
+                    if(msg){
+                      callback(msg);
+                    } else {
+                      callback();
+                    }
                 }
             }).fail(function (jqXHR, textStatus,
                 errorThrown) {
-                console.log("postData error = " + textStatus);
+              //  console.log("postData error = " + textStatus);
+              callback("Post Error<br\>"+textStatus+"<br\>"+errorThrown);
             });
         },
 
