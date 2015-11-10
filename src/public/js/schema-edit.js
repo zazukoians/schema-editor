@@ -79,7 +79,7 @@ var SchemaEdit = (function () {
             if(uri) { // TODO need to check if this if() is working
                 // console.log("URI="+uri);
                 uri = encodeURI(uri);
-                SchemaEdit.renderResource(uri);
+                SchemaEdit.renderTerm(uri);
             }
             refresh(); // redraws flex columns
         },
@@ -256,9 +256,7 @@ var SchemaEdit = (function () {
         /* ***  Classes & Properties (link) Lists END *** */
 
         /* fill in main block with details of current resource */
-        renderResource: function (uri) {
-            SchemaEdit.makeAddPropertyValue(uri);
-
+        renderTerm: function (uri) {
             var map = {
                 graphURI: Config.getGraphURI(),
                 uri: uri
@@ -266,23 +264,108 @@ var SchemaEdit = (function () {
 
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
 
-            var makeViewBlocks = function (json) {
-                SchemaEdit.makePropertyEditBlock(json);
+            var makeTermBlocks = function (json) {
+                SchemaEdit.makeTermEditBlock(json);
+                SchemaEdit.setupUpdateTermButtons();
                 SchemaEdit.initLangButtons();
                 SchemaEdit.setupLangButtons();
+                SchemaEdit.setupPlusButtons();
             }
-            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makeViewBlocks);
+            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makeTermBlocks);
         },
 
-        makePropertyEditBlock: function (json) {
-            var replacementMap = SchemaEdit.transformPropertyJSON(json);
-            var block = templater(SE_HtmlTemplates.viewTemplate, replacementMap);
+        makeTermEditBlock: function (json) {
+            var replacementMap = SchemaEdit.transformResourceJSON(json);
+            var block = templater(SE_HtmlTemplates.termTemplate, replacementMap);
             $("#editor").append(block);
         },
 
+        setupUpdateTermButtons: function () {
+            $(".updateTermButton").click(
+                function () {
+                    // $(this).log()
+                    var termEditBlock = $(this).parent();
+
+                    var resourceName = termEditBlock.find(".resourceName").val();
+                    resourceName = SEUtils.resolveToURI(resourceName);
+
+                    var rdfType = termEditBlock.find(".rdfType").val();
+                    rdfType = SEUtils.resolveToURI(rdfType);
+
+                    var subPropertyOf = termEditBlock.find(".subPropertyOf").val();
+                    if(subPropertyOf) {
+                        subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
+                    }
+
+                    var subClassOf = termEditBlock.find(".subClassOf").val();
+                    if(subClassOf) {
+                        subClassOf = SEUtils.resolveToURI(subClassOf);
+                    }
+
+                    var domain = termEditBlock.find(".domain").val();
+                    if(domain) {
+                        domain = SEUtils.resolveToURI(domain);
+                    }
+
+                    var range = termEditBlock.find(".range").val();
+                    if(range) {
+                        range = SEUtils.resolveToURI(range);
+                    }
+
+                    /*
+                    {
+                      "label": [
+                        { "labelText": text, "labelLang": lang},
+                      ]
+                    }
+                    */
+
+                    var labelList = [];
+                    termEditBlock.find(".label").each(function () {
+                        var li = {};
+                        li["labelText"] = $(this).val();
+                        li["labelLang"] = $(this).attr("lang");
+                        labelList.push(li);
+                    });
+
+                    var commentList = [];
+                    termEditBlock.find(".comment").each(function () {
+                      var li = {};
+                      li["commentText"] = $(this).val();
+                      li["commentLang"] = $(this).attr("lang");
+                      commentList.push(li);
+                    });
+
+                    var callback = function (msg) {}
+
+                    var map = {
+                        "graphURI": Config.getGraphURI(),
+                        "rdfType": rdfType,
+                        "resourceName": resourceName,
+                        "subPropertyOf": subPropertyOf,
+                        "subClassOf": subClassOf,
+                        "domain": domain,
+                        "range": range,
+                        "label": labelList,
+                        "comment": commentList,
+                    };
+                    var notifyOfUpdate = function () {
+                        console.log("update done.");
+                        //   window.location.reload();
+                    };
+                    var updateTermSparql = sparqlTemplater(
+                        SE_SparqlTemplates.updateTerm, map);
+                    console.log("updateTermSparql = \n" + updateTermSparql);
+                    SparqlConnector.postData(updateTermSparql, notifyOfUpdate);
+                }
+            );
+        },
+
         setupPlusButtons: function () {
+            console.log("setupPlusButtons");
             $(".plusButton").click(
                 function () {
+                    console.log("plus");
                     var prev = $(this).prev(".fieldBlock");
                     prev.log();
                     $(prev).after(prev.clone(true));
@@ -308,13 +391,6 @@ var SchemaEdit = (function () {
                 window.location.reload();
             });
 
-            /*
-              $("#endpointClearButton").click(
-                  function () {
-                      $("#endpoints input").val("");
-                  }
-              );
-              */
             var dialog = function () {
                 $("#endpoints").dialog({
                     width: 800,
@@ -334,11 +410,6 @@ var SchemaEdit = (function () {
 
             SparqlConnector.ping(dialog);
         },
-
-        /*
-        makeEndpointButton: function () {
-        },
-*/
 
         setupHelpButtons: function () {
             $(".helpButton").each(
@@ -360,16 +431,12 @@ var SchemaEdit = (function () {
             );
         },
 
-
-
         setGraphFromUrl: function () {
             var graph = parseUri(window.location.href).queryKey.graph;
             if(graph && (graph != "")) {
                 $("#graph").val(graph);
             }
         },
-
-
 
         /**
          * Shared function for combobox/autocomplete creation
@@ -397,7 +464,7 @@ var SchemaEdit = (function () {
         /* takes SPARQL results JSON and changes it into
          * a form that's easier to insert into template
          */
-        transformPropertyJSON: function (json) { // ugly, but will do for now
+        transformResourceJSON: function (json) { // ugly, but will do for now
 
             var isClass = false;
             var isProperty = false;
@@ -422,9 +489,7 @@ var SchemaEdit = (function () {
                     object = SEUtils.curieFromURI(object);
                 }
                 var language = current["language"];
-                // console.log("S = " + subject);
-                // console.log("P = " + predicate);
-                // console.log("O = " + object);
+
                 if(predicate == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
                     rdfType.push(object);
                     if(object == "rdfs:Class") {
@@ -435,13 +500,11 @@ var SchemaEdit = (function () {
                     }
                 }
                 if(predicate == "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
-                    //  console.log("push");
                     subClassOf.push({
                         "subClassOfURI": object
                     });
                 }
                 if(predicate == "http://www.w3.org/2000/01/rdf-schema#subPropertyOf") {
-                    //  console.log("push");
                     subPropertyOf.push({
                         "subPropertyOfURI": object
                     });
@@ -541,16 +604,17 @@ var SchemaEdit = (function () {
             });
         },
 
+        // TODO merge with updateTerm
         addPropertyHandler: function () {
             var button = $("#addPropertyButton");
             button.click(function () {
-                //  var namespace = parseUri(window.location.href).queryKey.graph;
                 var name = $("#propertyName").val();
-                // var label = $("#propertyLabel").val();
+
                 var domain = $("#domain").val();
                 if(domain) {
                     domain = SEUtils.resolveToURI(domain);
                 }
+
                 var range = $("#range").val();
                 if(range) {
                     range = SEUtils.resolveToURI(range);
@@ -559,7 +623,7 @@ var SchemaEdit = (function () {
                 if(subPropertyOf) {
                     subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
                 }
-                //  var comment = $("#classComment").val();
+
                 var callback = function (msg) {}
 
                 var map = {
@@ -597,9 +661,8 @@ var SchemaEdit = (function () {
          * Loads list of properties from SPARQL store into combo box(es)
          */
         makePropertyChooser: function () {
-            var callback = function (json) {
-                // SchemaEdit.makeListBlock(json, $("#properties"));
-            }
+            var callback = function (json) {}
+
             var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
             var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
             $("#propertyChooser").append($("<label for='addPropertyValue'>Property</label>"));
@@ -639,6 +702,7 @@ var SchemaEdit = (function () {
         },
 
         // NOT USED?
+        /*
         populateClassesCombobox: function () {
             var callback = function (json) {
                 // SchemaEdit.makeListBlock(json, $("#properties"));
@@ -658,6 +722,7 @@ var SchemaEdit = (function () {
                 SparqlConnector.updateTriple(subject, predicate, object, language, callback);
             });
         },
+        */
 
         makeTypedChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
             var choices = $("<select></select>");
@@ -954,19 +1019,21 @@ var SchemaEdit = (function () {
                         */
         },
 
-        makeAddPropertyValue: function (uri) {
-            var updatePropertyButton = $("<button id='updateProperty'>Add this property</button>");
-            // updatePropertyButton.append($("<hr/>"));
-            var updateClassButton = $("<button id='updateClass'>Add this class</button>");
-            //  updateClassButton.append($("<hr/>"));
-            $("#newProperty").append(updatePropertyButton);
-            $("#newClass").append(updateClassButton);
-            // $("#newProperty") is <input>
-            updatePropertyButton.click(function () {
+        /*
+                makeAddPropertyValue: function (uri) {
+                    var updatePropertyButton = $("<button id='updateProperty'>Add this property</button>");
+                    // updatePropertyButton.append($("<hr/>"));
+                    var updateClassButton = $("<button id='updateClass'>Add this class</button>");
+                    //  updateClassButton.append($("<hr/>"));
+                    $("#newProperty").append(updatePropertyButton);
+                    $("#newClass").append(updateClassButton);
+                    // $("#newProperty") is <input>
+                    updatePropertyButton.click(function () {
 
-            });
-            updateClassButton.click(function () {});
-        },
+                    });
+                    updateClassButton.click(function () {});
+                },
+        */
 
         /*
                 makePropertyChooser: function () {

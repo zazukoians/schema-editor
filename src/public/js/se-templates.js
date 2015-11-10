@@ -1,6 +1,6 @@
 /* TODO refactor into module
  *
- * Templates for SPARQL queries
+ * Templates for HTML rendering and SPARQL queries
  *
  * format is variant of Mustache
  * using ~{ }~ instead of {{ }}
@@ -11,54 +11,57 @@
  * http://twitter.github.io/hogan.js/
  */
 
+/* *** HTML TEMPLATES *** */
+
 var SE_HtmlTemplates = (function () {
     "use strict";
 
     // This is the public interface of the Module.
     var SE_HtmlTemplates = {
+
         /**
-         * Template for describing resource
+         * Template for describing/editing terms
          */
-        viewTemplate: "\n\
-<div class='propertyEditBlock'> \n\
+        termTemplate: "\n\
+<div class='termEditBlock'> \n\
    <label>RDF Type</label> \n\
-   <input class='resource' value='~{rdfType}~' /> \n\
+   <input class='resource rdfType' value='~{rdfType}~' /> \n\
 \n\
    <label>Resource Name</label> \n\
-   <input class='resource' value='~{resourceName}~' /> \n\
+   <input class='resource resourceName' value='~{resourceName}~' /> \n\
 \n\
    ~{#isProperty}~ \n\
       ~{#subPropertyOf}~ \n\
          <label>rdfs:subPropertyOf</label> \n\
-         <input class='resource' value='~{subPropertyOfURI}~' /> \n\
+         <input class='resource subPropertyOf' value='~{subPropertyOfURI}~' /> \n\
       ~{/subPropertyOf}~ \n\
    ~{/isProperty}~ \n\
 \n\
    ~{#isClass}~ \n\
       ~{#subClassOf}~ \n\
          <label>rdfs:subClassOf</label> \n\
-         <input class='resource' value='~{subClassOfURI}~' /> \n\
+         <input class='resource subClassOf' value='~{subClassOfURI}~' /> \n\
       ~{/subClassOf}~ \n\
    ~{/isClass}~ \n\
 \n\
    ~{#isProperty}~ \n\
       ~{#domain}~ \n\
          <label>rdfs:domain</label> \n\
-         <input value='~{domainURI}~' class='resource' /> \n\
+         <input value='~{domainURI}~' class='resource domain' /> \n\
       ~{/domain}~ \n\
    ~{/isProperty}~ \n\
 \n\
    ~{#isProperty}~ \n\
       ~{#range}~ \n\
          <label>rdfs:range</label> \n\
-         <input value='~{rangeURI}~' class='resource' /> \n\
+         <input value='~{rangeURI}~' class='resource range' /> \n\
       ~{/range}~ \n\
    ~{/isProperty}~ \n\
 \n\
    ~{#label}~ \n\
       <div class='fieldBlock'> \n\
          <label>rdfs:label</label> \n\
-         <input class='propertyLabel' class='literal' lang='~{language}~' value='~{content}~' /> \n\
+         <input class='label literal' lang='~{language}~' value='~{content}~' /> \n\
          <button class='langButton'></button> \n\
       </div> \n\
    ~{/label}~ \n\
@@ -67,19 +70,40 @@ var SE_HtmlTemplates = (function () {
    ~{#comment}~ \n\
       <div class='fieldBlock'> \n\
          <label>rdfs:comment</label> \n\
-         <textarea class='propertyComment' rows='4' cols='75' class='literal'  lang='~{language}~'>~{content}~</textarea> \n\
+         <textarea class='comment literal' rows='4' cols='75' lang='~{language}~'>~{content}~</textarea> \n\
          <button class='langButton'></button> \n\
       </div> \n\
    ~{/comment}~ \n\
 \n\
    <button class='plusButton'>+</button> \n\
 \n\
-   <button class='updatePropertyButton'>Update</button> \n\
+   <button class='updateTermButton'>Update</button> \n\
 </div>"
-};
+    };
 
     return SE_HtmlTemplates;
 }());
+
+/* *** SPARQL TEMPLATES *** */
+
+var  commonPrefixes = " \n\
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n\
+PREFIX owl: <http://www.w3.org/2002/07/owl#> \n\
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n\
+PREFIX vann: <http://purl.org/vocab/vann/> \n\
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> \n\
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#> \n\
+PREFIX schema: <http://schema.org/> \n\
+# nb. prefer dcterms over dcelements \n\
+PREFIX dc: <http://purl.org/dc/terms/> \n\
+PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n\
+PREFIX dcat: <http://www.w3.org/ns/dcat#> \n\
+PREFIX void: <http://rdfs.org/ns/void#> \n\
+PREFIX bibo: <http://purl.org/ontology/bibo/> \n\
+PREFIX dctype: <http://purl.org/dc/dcmitype/> \n\
+PREFIX sioc: <http://rdfs.org/sioc/ns#>  \n\
+PREFIX stuff: <http://purl.org/stuff#>  \n";
 
 var SE_SparqlTemplates = (function () {
     "use strict";
@@ -87,26 +111,50 @@ var SE_SparqlTemplates = (function () {
     // This is the public interface of the Module.
     var SE_SparqlTemplates = {
         // moved out PREFIX dc: <http://purl.org/dc/elements/1.1/> \n\
-        commonPrefixes: " \n\
-     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
-     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n\
-     PREFIX owl: <http://www.w3.org/2002/07/owl#> \n\
-     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n\
-     PREFIX vann: <http://purl.org/vocab/vann/> \n\
-     PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> \n\
-     PREFIX skos: <http://www.w3.org/2004/02/skos/core#> \n\
-     PREFIX schema: <http://schema.org/> \n\
-     # nb. prefer dcterms over dcelements \n\
-     PREFIX dc: <http://purl.org/dc/terms/> \n\
-     PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n\
-     PREFIX dcat: <http://www.w3.org/ns/dcat#> \n\
-     PREFIX void: <http://rdfs.org/ns/void#> \n\
-     PREFIX bibo: <http://purl.org/ontology/bibo/> \n\
-     PREFIX dctype: <http://purl.org/dc/dcmitype/> \n\
-     PREFIX sioc: <http://rdfs.org/sioc/ns#>  \n\
-     PREFIX stuff: <http://purl.org/stuff#>  \n\
-     \n\
-     "
+
+     updateTerm : commonPrefixes +
+     "WITH <~{graphURI}~> \n\
+     DELETE {  \n\
+     <~{resourceName}~> ?p ?o . \n\
+     }  \n\
+     WHERE {  \n\
+     <~{resourceName}~>  ?p ?o  . \n\
+   }; \n\
+ \n\
+ BASE <~{graphURI}~> \n\
+        INSERT DATA {  \n\
+         		GRAPH <~{graphURI}~> {  \n\
+         			<~{resourceName}~>  a <~{rdfType}~> ; \n\
+\n\
+               ~{#subClassOf}~ \n\
+                  rdfs:subClassOf <~{subClassOf}~> ; \n\
+               ~{/subClassOf}~  \n\
+\n\
+               ~{#subPropertyOf}~ \n\
+                   rdfs:subPropertyOf <~{subPropertyOf}~> ; \n\
+               ~{/subPropertyOf}~  \n\
+\n\
+               ~{#domain}~ \n\
+                   rdfs:domain <~{domain}~> ; \n\
+               ~{/domain}~  \n\
+\n\
+               ~{#range}~ \n\
+                   rdfs:range <~{range}~> ; \n\
+               ~{/range}~ \n\
+\n\
+               ~{#label}~ \n\
+                   rdfs:label \"\"\"~{labelText}~\"\"\"@~{labelLang}~ ; \n\
+                   skos:prefLabel \"\"\"~{labelText}~\"\"\"@~{labelLang}~ ; \n\
+               ~{/label}~ ; \n\
+\n\
+               ~{#comment}~ \n\
+                 rdfs:comment \"\"\"~{commentText}~\"\"\"@~{commentLang}~ ; \n\
+                 skos:definition \"\"\"~{commentText}~\"\"\"@~{commentLang}~ ; \n\
+               ~{/comment}~  \n\
+\n\
+               rdfs:isDefinedBy <~{graphURI}~> \n\
+         } \n\
+         }"
     };
     return SE_SparqlTemplates;
 }());
@@ -138,13 +186,10 @@ PREFIX : <http://purl.org/stuff/prefix/> \n\
 } \n\
 }";
 
-
-
-
-var constructGraph = SE_SparqlTemplates.commonPrefixes +
+var constructGraph = commonPrefixes +
     "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <~{graphURI}~> { ?s ?p ?o } . }";
 
-var addClassSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var addClassSparqlTemplate = commonPrefixes +
     "BASE <~{graphURI}~> \n\
     INSERT DATA {  \n\
     		GRAPH <~{graphURI}~> {  \n\
@@ -169,7 +214,7 @@ var addClassSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
     }";
 
 // TODO tweak, namespace = graph
-var addPropertySparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var addPropertySparqlTemplate = commonPrefixes +
     "BASE <~{graphURI}~> \n\
    INSERT DATA {  \n\
     		GRAPH <~{graphURI}~> {  \n\
@@ -210,7 +255,7 @@ var listGraphsSparqlTemplate =
 
 // FROM <~{graphURI}~>  \n\
 
-var getAllProperties = SE_SparqlTemplates.commonPrefixes +
+var getAllProperties = commonPrefixes +
     "SELECT DISTINCT ?property \n\
 WHERE { GRAPH <~{graphURI}~> { \n\
 ?subject ?property ?object \n\
@@ -219,7 +264,7 @@ ORDER BY ?property \n\
 ";
 
 // NAMED
-var getResourcesOfTypeSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var getResourcesOfTypeSparqlTemplate = commonPrefixes +
     " \n\
 # from getResourcesOfType \n\
 SELECT DISTINCT * \n\
@@ -230,7 +275,7 @@ WHERE { \n\
 ORDER BY ?uri \n\
 ";
 
-var getPropertiesOfResource = SE_SparqlTemplates.commonPrefixes +
+var getPropertiesOfResource = commonPrefixes +
     " \n\
 # from getPropertiesOfResource \n\
 SELECT DISTINCT * \n\
@@ -243,7 +288,7 @@ ORDER BY ?p \n\
 
 /*
 // redundant - using getResourceSparqlTemplate??
-var getClassListSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var getClassListSparqlTemplate = commonPrefixes +
     " \n\
 SELECT DISTINCT * \n\
 FROM <~{graphURI}~>  \n\
@@ -253,7 +298,7 @@ WHERE { \n\
 ";
 
 // redundant - using getResourceSparqlTemplate??
-var getPropertyListSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var getPropertyListSparqlTemplate = commonPrefixes +
     " \n\
 SELECT DISTINCT * \n\
 FROM <~{graphURI}~>  \n\
@@ -269,7 +314,7 @@ ORDER BY ?uri";
 */
 
 // NAMED
-var getResourceSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var getResourceSparqlTemplate = commonPrefixes +
     " \n\
 # from getResource \n\
 SELECT DISTINCT ?s ?p ?o ?language \n\
@@ -292,7 +337,7 @@ WHERE { \n\
 } \n\
 ";
 
-var deleteResourceSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var deleteResourceSparqlTemplate = commonPrefixes +
     " \n\
 WITH <~{graphURI}~> \n\
 DELETE {  \n\
@@ -302,14 +347,14 @@ WHERE {  \n\
 <~{resourceURI}~>  ?p ?o  . \n\
 }";
 
-var deleteTurtleSparqlTemplate = SE_SparqlTemplates.commonPrefixes + " \n\
+var deleteTurtleSparqlTemplate = commonPrefixes + " \n\
 		DELETE DATA { \n\
 			GRAPH <~{graphURI}~> { \n\
 				 ~{turtle}~ \n\
 			} \n\
 		}";
 
-var updateLiteralTripleSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var updateLiteralTripleSparqlTemplate = commonPrefixes +
     " \n\
   WITH <~{graphURI}~> \n\
 	DELETE { <~{subject}~> <~{predicate}~> ?object }  \n\
@@ -322,7 +367,7 @@ var updateLiteralTripleSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
 }\n\
 }";
 
-var createVocabSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var createVocabSparqlTemplate = commonPrefixes +
     "CREATE GRAPH <~{graphURI}~> ; \n\
     INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
@@ -333,7 +378,7 @@ var createVocabSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
 } \n\
 }";
 
-var createDummyClassSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var createDummyClassSparqlTemplate = commonPrefixes +
     "INSERT DATA {  \n\
 		GRAPH <~{graphURI}~> {  \n\
 			<~{namespace}~Dummy>  a rdfs:Class; \n\
@@ -341,7 +386,7 @@ var createDummyClassSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
 } \n\
 }";
 
-var updateUriTripleSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var updateUriTripleSparqlTemplate = commonPrefixes +
     " \n\
   WITH <~{graphURI}~> \n\
 	DELETE { <~{subject}~> <~{predicate}~> ?object }  \n\
@@ -355,7 +400,7 @@ var updateUriTripleSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
 }";
 
 // p, o not wrapped in <>
-var insertPropertySparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var insertPropertySparqlTemplate = commonPrefixes +
     " \n\
   WITH <~{graphURI}~> \n\
   	DELETE {  }  \n\
@@ -369,7 +414,7 @@ var insertPropertySparqlTemplate = SE_SparqlTemplates.commonPrefixes +
 }";
 
 /* maybe needed */
-var deleteTripleSparqlTemplate = SE_SparqlTemplates.commonPrefixes +
+var deleteTripleSparqlTemplate = commonPrefixes +
     " \n\
 WITH <~{graphURI}~> \n\
 DELETE {  \n\

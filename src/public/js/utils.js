@@ -67,17 +67,17 @@ var SEUtils = (function () {
          *  "http://xmlns.com/foaf/0.1/" => "foaf"
          */
         curieFromURI: function (uri) {
-          console.log("uri = "+uri);
+        //  console.log("uri = "+uri);
             var index = uri.indexOf("#");
             if(index == -1) {
                 index = uri.lastIndexOf("/");
             }
             var ns = uri.substring(0, index+1);
-            console.log("ns = "+ns);
+        //    console.log("ns = "+ns);
             var prefix = SEUtils.getPrefixForNamespace(ns);
             var name = uri.substring(index+1);
-            console.log("prefix = "+prefix);
-            console.log("name = "+name);
+        //    console.log("prefix = "+prefix);
+        //    console.log("name = "+name);
             return prefix + ":" + name;
         },
 
@@ -465,7 +465,7 @@ function includeContent(aElement) {
         $(aElement).replaceWith(content);
     }
 
-    console.log("uri=" + uri);
+  //  console.log("uri=" + uri);
     getResource(uri, handler);
 
 }

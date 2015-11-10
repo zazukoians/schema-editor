@@ -364,7 +364,6 @@ var SparqlConnector = (function () {
         },
 
         getJsonForSparqlURL: function (pageURL, callback) {
-
             $.ajax({
                 url: pageURL,
                 accept: {
