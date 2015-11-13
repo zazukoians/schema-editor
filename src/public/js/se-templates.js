@@ -30,32 +30,40 @@ var SE_HtmlTemplates = (function () {
    <label>Resource Name</label> \n\
    <input class='resource resourceName' value='~{resourceName}~' /> \n\
 \n\
-   ~{#isProperty}~ \n\
-      ~{#subPropertyOf}~ \n\
-         <label>rdfs:subPropertyOf</label> \n\
-         <input class='resource subPropertyOf' value='~{subPropertyOfURI}~' /> \n\
-      ~{/subPropertyOf}~ \n\
-   ~{/isProperty}~ \n\
-\n\
    ~{#isClass}~ \n\
       ~{#subClassOf}~ \n\
+            <div class='fieldBlock'> \n\
          <label>rdfs:subClassOf</label> \n\
          <input class='resource subClassOf' value='~{subClassOfURI}~' /> \n\
+         </div> \n\
       ~{/subClassOf}~ \n\
+   <button class='plusButton'>+</button> \n\
    ~{/isClass}~ \n\
 \n\
-   ~{#isProperty}~ \n\
+         ~{#isProperty}~ \n\
+            ~{#subPropertyOf}~ \n\
+              <div class='fieldBlock'> \n\
+               <label>rdfs:subPropertyOf</label> \n\
+               <input class='resource subPropertyOf' value='~{subPropertyOfURI}~' /> \n\
+               </div> \n\
+            ~{/subPropertyOf}~ \n\
+               <button class='plusButton'>+</button> \n\
+\n\
       ~{#domain}~ \n\
+        <div class='fieldBlock'> \n\
          <label>rdfs:domain</label> \n\
          <input value='~{domainURI}~' class='resource domain' /> \n\
+         </div> \n\
       ~{/domain}~ \n\
-   ~{/isProperty}~ \n\
+         <button class='plusButton'>+</button> \n\
 \n\
-   ~{#isProperty}~ \n\
       ~{#range}~ \n\
+        <div class='fieldBlock'> \n\
          <label>rdfs:range</label> \n\
          <input value='~{rangeURI}~' class='resource range' /> \n\
+         </div> \n\
       ~{/range}~ \n\
+         <button class='plusButton'>+</button> \n\
    ~{/isProperty}~ \n\
 \n\
    ~{#label}~ \n\

@@ -36,6 +36,7 @@ var SchemaEdit = (function () {
             SchemaEdit.makeDeleteResourceButton();
 
             SchemaEdit.makePropertyChooser();
+
             SchemaEdit.addClassHandler();
             SchemaEdit.addPropertyHandler();
 
@@ -292,14 +293,24 @@ var SchemaEdit = (function () {
                     var rdfType = termEditBlock.find(".rdfType").val();
                     rdfType = SEUtils.resolveToURI(rdfType);
 
-                    var subPropertyOf = termEditBlock.find(".subPropertyOf").val();
-                    if(subPropertyOf) {
-                        subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
-                    }
-
+/*
                     var subClassOf = termEditBlock.find(".subClassOf").val();
                     if(subClassOf) {
                         subClassOf = SEUtils.resolveToURI(subClassOf);
+                    }
+  */
+                    var subClassOfList = [];
+                    termEditBlock.find(".subClassOf").each(function () {
+                      var subClassOf = $(this).val();
+                      subClassOf = SEUtils.resolveToURI(subClassOf);
+                        subClassOfList.push({"subClassOf":subClassOf});
+                    });
+
+                    console.log("subClassOfList = \n"+JSON.stringify(subClassOfList,false,4));
+
+                    var subPropertyOf = termEditBlock.find(".subPropertyOf").val();
+                    if(subPropertyOf) {
+                        subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
                     }
 
                     var domain = termEditBlock.find(".domain").val();
@@ -315,28 +326,28 @@ var SchemaEdit = (function () {
                     var labelList = [];
                     termEditBlock.find(".label").each(function () {
                         var li = {};
-                            li["labelText"] = $(this).val();
-                            var lang = $(this).attr("lang");
-                            if(!lang || lang == ""){
-                              lang = "en";
-                            }
-                            li["labelLang"] = lang;
+                        li["labelText"] = $(this).val();
+                        var lang = $(this).attr("lang");
+                        if(!lang || lang == "") {
+                            lang = "en";
+                        }
+                        li["labelLang"] = lang;
                         labelList.push(li);
                     });
-                  //  console.log("labelList = \n"+JSON.stringify(labelList,false,4));
+                    //  console.log("labelList = \n"+JSON.stringify(labelList,false,4));
 
                     var commentList = [];
                     termEditBlock.find(".comment").each(function () {
                         var li = {};
-                            li["commentText"] = $(this).val();
-                            var lang = $(this).attr("lang");
-                            if(!lang || lang == ""){
-                              lang = "en";
-                            }
-                            li["commentLang"] = lang;
+                        li["commentText"] = $(this).val();
+                        var lang = $(this).attr("lang");
+                        if(!lang || lang == "") {
+                            lang = "en";
+                        }
+                        li["commentLang"] = lang;
                         commentList.push(li);
                     });
-                  //  console.log("commentList = \n"+JSON.stringify(commentList,false,4));
+                    //  console.log("commentList = \n"+JSON.stringify(commentList,false,4));
 
                     var callback = function (msg) {}
 
@@ -345,7 +356,7 @@ var SchemaEdit = (function () {
                         "rdfType": rdfType,
                         "resourceName": resourceName,
                         "subPropertyOf": subPropertyOf,
-                        "subClassOf": subClassOf,
+                        "subClassOf": subClassOfList,
                         "domain": domain,
                         "range": range,
                         "label": labelList,
@@ -541,14 +552,21 @@ var SchemaEdit = (function () {
             if(rdfType.length == 0) {
                 rdfType.push("");
             }
-            if(subPropertyOf.length == 0) {
-                subPropertyOf.push("");
+            if(isClass) {
+                if(subClassOf.length == 0) {
+                    subClassOf.push("");
+                }
             }
-            if(domain.length == 0) {
-                domain.push("");
-            }
-            if(range.length == 0) {
-                range.push("");
+            if(isProperty) {
+                if(subPropertyOf.length == 0) {
+                    subPropertyOf.push("");
+                }
+                if(domain.length == 0) {
+                    domain.push("");
+                }
+                if(range.length == 0) {
+                    range.push("");
+                }
             }
             if(label.length == 0) {
                 label.push("");
