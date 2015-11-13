@@ -143,13 +143,17 @@ var SE_SparqlTemplates = (function () {
                ~{/range}~ \n\
 \n\
                ~{#label}~ \n\
-                   rdfs:label \"\"\"~{labelText}~\"\"\"@~{labelLang}~ ; \n\
-                   skos:prefLabel \"\"\"~{labelText}~\"\"\"@~{labelLang}~ ; \n\
+                   ~{#labelText}~ \n\
+                      rdfs:label \"\"\"~{labelText}~\"\"\"@~{labelLang}~ ; \n\
+                      skos:prefLabel \"\"\"~{labelText}~\"\"\"@~{labelLang}~ ; \n\
+                   ~{/labelText}~ ; \n\
                ~{/label}~ ; \n\
 \n\
                ~{#comment}~ \n\
-                 rdfs:comment \"\"\"~{commentText}~\"\"\"@~{commentLang}~ ; \n\
-                 skos:definition \"\"\"~{commentText}~\"\"\"@~{commentLang}~ ; \n\
+                  ~{#commentText}~ \n\
+                       rdfs:comment \"\"\"~{commentText}~\"\"\"@~{commentLang}~ ; \n\
+                       skos:definition \"\"\"~{commentText}~\"\"\"@~{commentLang}~ ; \n\
+                  ~{/commentText}~  \n\
                ~{/comment}~  \n\
 \n\
                rdfs:isDefinedBy <~{graphURI}~> \n\

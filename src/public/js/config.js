@@ -37,6 +37,9 @@ var Config = (function () {
                 sparqlQueryEndpoint: "/sparql/select",
                 sparqlUpdateEndpoint: "/sparql/update",
                 sparqlUploadEndpoint: "/sparql/upload"
+
+                http://sandbox.fusepool.info:8181/sparql/select
+                http://sandbox.fusepool.info:8181/sparql/update
         */
 
 

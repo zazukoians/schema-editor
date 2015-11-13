@@ -48,7 +48,7 @@ var SchemaEdit = (function () {
             SchemaEdit.makeAdvancedButton();
 
             SchemaEdit.initLangButtons();
-            SchemaEdit.setupLangButtons();
+            SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
 
             SchemaEdit.setupPlusButtons();
 
@@ -102,9 +102,9 @@ var SchemaEdit = (function () {
                 var prefix = $("#vocabPrefix").val();
                 SEUtils.prefixes[prefix] = graph;
                 var callback = function () {
-                    Config.setGraphURI(graph, true);
-                }
-                // mystring[mystring.length-1] === '#'
+                        Config.setGraphURI(graph, true);
+                    }
+                    // mystring[mystring.length-1] === '#'
                 SparqlConnector.createNewVocab(name, graph, prefix, callback);
             });
         },
@@ -268,7 +268,7 @@ var SchemaEdit = (function () {
                 SchemaEdit.makeTermEditBlock(json);
                 SchemaEdit.setupUpdateTermButtons();
                 SchemaEdit.initLangButtons();
-                SchemaEdit.setupLangButtons();
+                SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
                 SchemaEdit.setupPlusButtons();
             }
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, makeTermBlocks);
@@ -315,18 +315,28 @@ var SchemaEdit = (function () {
                     var labelList = [];
                     termEditBlock.find(".label").each(function () {
                         var li = {};
-                        li["labelText"] = $(this).val();
-                        li["labelLang"] = $(this).attr("lang");
+                            li["labelText"] = $(this).val();
+                            var lang = $(this).attr("lang");
+                            if(!lang || lang == ""){
+                              lang = "en";
+                            }
+                            li["labelLang"] = lang;
                         labelList.push(li);
                     });
+                  //  console.log("labelList = \n"+JSON.stringify(labelList,false,4));
 
                     var commentList = [];
                     termEditBlock.find(".comment").each(function () {
                         var li = {};
-                        li["commentText"] = $(this).val();
-                        li["commentLang"] = $(this).attr("lang");
+                            li["commentText"] = $(this).val();
+                            var lang = $(this).attr("lang");
+                            if(!lang || lang == ""){
+                              lang = "en";
+                            }
+                            li["commentLang"] = lang;
                         commentList.push(li);
                     });
+                  //  console.log("commentList = \n"+JSON.stringify(commentList,false,4));
 
                     var callback = function (msg) {}
 
@@ -349,6 +359,7 @@ var SchemaEdit = (function () {
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
+                    console.log("updateTermSparql = \n" + updateTermSparql);
                     SparqlConnector.postData(updateTermSparql, notifyOfUpdate);
                 }
             );
@@ -361,7 +372,7 @@ var SchemaEdit = (function () {
                     var prev = $(this).prev(".fieldBlock");
                     prev.log();
                     $(prev).after(prev.clone(true));
-                    SchemaEdit.setupLangButtons();
+                    SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
                 }
             );
         },
@@ -426,9 +437,9 @@ var SchemaEdit = (function () {
         setGraphFromUrl: function () {
             var graph = parseUri(window.location.href).queryKey.graph;
             if(graph && (graph != "")) {
-              if(graph[graph.length-1] != '/'){
-                graph = graph+"#";
-              }
+                if(graph[graph.length - 1] != '/') {
+                    graph = graph + "#";
+                }
                 $("#graph").val(graph);
             }
         },
@@ -564,17 +575,17 @@ var SchemaEdit = (function () {
 
         postConfirmDialog: function () {
             $("#postConfirmDialog").dialog({
-                    width: 200,
-                    modal: true,
-                    buttons: {
-                        "Close": function () {
-                            $(this).dialog("close");
-                            window.location.reload();
-                        }
+                width: 200,
+                modal: true,
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                        window.location.reload();
                     }
+                }
             });
 
-      },
+        },
 
         // TODO merge with updateTerm
         addClassHandler: function () {
@@ -652,7 +663,7 @@ var SchemaEdit = (function () {
                     "commentLang": ""
                 };
 
-// TODO I don't like the look of these... merge with edit term & get rid of loops
+                // TODO I don't like the look of these... merge with edit term & get rid of loops
                 $("#addPropertyBlock .propertyLabel").each(
                     function () {
                         //  console.log("label = " + $(this).val());
@@ -771,6 +782,11 @@ var SchemaEdit = (function () {
         setLangButtonValue: function ($button) {
             var target = $($button).prev();
             var lang = target.attr("lang");
+
+            if(!lang || lang == "") {
+                lang = "lang";
+            }
+
             // console.log("setLangButtonValue lang = " + lang);
             $button.text(lang);
         },
@@ -810,15 +826,15 @@ var SchemaEdit = (function () {
                         }
                     });
                 });
-                SchemaEdit.setupAddLanguageButton();
+            SchemaEdit.setupAddLanguageButton();
         },
 
         setupAddLanguageButton: function () {
-          $("#addLanguageButton").click(
-              function () {
-                console.log("click");
-                $(this).prev().log();
-              });
+            $("#addLanguageButton").click(
+                function () {
+                    console.log("click");
+                    $(this).prev().log();
+                });
         },
 
         /*
@@ -885,6 +901,9 @@ var SchemaEdit = (function () {
                 var inputField = updateButton.parent().find(".literalObject");
                 var newContent = inputField.val();
                 language = inputField.attr("lang"); // TODO needs tidying up before here
+                if(!language || language == "") {
+                    language = "en";
+                }
                 var callback = function () {
                     location.reload(true);
                 }
