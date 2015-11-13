@@ -293,25 +293,29 @@ var SchemaEdit = (function () {
                     var rdfType = termEditBlock.find(".rdfType").val();
                     rdfType = SEUtils.resolveToURI(rdfType);
 
-/*
-                    var subClassOf = termEditBlock.find(".subClassOf").val();
-                    if(subClassOf) {
-                        subClassOf = SEUtils.resolveToURI(subClassOf);
-                    }
-  */
                     var subClassOfList = [];
                     termEditBlock.find(".subClassOf").each(function () {
-                      var subClassOf = $(this).val();
-                      subClassOf = SEUtils.resolveToURI(subClassOf);
-                        subClassOfList.push({"subClassOf":subClassOf});
+                        var subClassOf = $(this).val();
+                        subClassOf = SEUtils.resolveToURI(subClassOf);
+                        subClassOfList.push({
+                            "subClassOf": subClassOf
+                        });
                     });
 
-                    console.log("subClassOfList = \n"+JSON.stringify(subClassOfList,false,4));
-
-                    var subPropertyOf = termEditBlock.find(".subPropertyOf").val();
-                    if(subPropertyOf) {
+                    /*
+                                        var subPropertyOf = termEditBlock.find(".subPropertyOf").val();
+                                        if(subPropertyOf) {
+                                            subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
+                                        }
+                      */
+                    var subPropertyOfList = [];
+                    termEditBlock.find(".subPropertyOf").each(function () {
+                        var subPropertyOf = $(this).val();
                         subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
-                    }
+                        subPropertyOfList.push({
+                            "subPropertyOf": subPropertyOf
+                        });
+                    });
 
                     var domain = termEditBlock.find(".domain").val();
                     if(domain) {
@@ -355,8 +359,8 @@ var SchemaEdit = (function () {
                         "graphURI": Config.getGraphURI(),
                         "rdfType": rdfType,
                         "resourceName": resourceName,
-                        "subPropertyOf": subPropertyOf,
                         "subClassOf": subClassOfList,
+                        "subPropertyOf": subPropertyOfList,
                         "domain": domain,
                         "range": range,
                         "label": labelList,
