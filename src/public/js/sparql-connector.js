@@ -361,7 +361,7 @@ var SparqlConnector = (function () {
                 var json = SparqlConnector.sparqlXMLtoJSON(xml);
                 callback(json);
             }).fail(function (msg) {
-                console.log("getJsonForSparqlURL error = " + msg);
+                console.log("getJsonForSparqlURL error = " + JSON.stringify(msg,false,4));
             });
         },
 

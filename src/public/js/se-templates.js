@@ -94,7 +94,8 @@ var SE_HtmlTemplates = (function () {
 
 /* *** SPARQL TEMPLATES *** */
 
-var  commonPrefixes = " \n\
+var commonPrefixes =
+    " \n\
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n\
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n\
 PREFIX owl: <http://www.w3.org/2002/07/owl#> \n\
@@ -120,8 +121,8 @@ var SE_SparqlTemplates = (function () {
     var SE_SparqlTemplates = {
         // moved out PREFIX dc: <http://purl.org/dc/elements/1.1/> \n\
 
-     updateTerm : commonPrefixes +
-     "WITH <~{graphURI}~> \n\
+        updateTerm: commonPrefixes +
+            "WITH <~{graphURI}~> \n\
      DELETE {  \n\
      <~{resourceName}~> ?p ?o . \n\
      }  \n\
@@ -165,8 +166,14 @@ var SE_SparqlTemplates = (function () {
                ~{/comment}~  \n\
 \n\
                rdfs:isDefinedBy <~{graphURI}~> \n\
-         } \n\
-         }"
+         }, \n\
+       }",
+        getLanguages: "SELECT DISTINCT ?language \n\
+                FROM <~{graphURI}~>  \n\
+                WHERE { \n\
+                ?s ?p ?o; \n\
+                BIND (lang(?o) AS ?language) \n\
+              }"
     };
     return SE_SparqlTemplates;
 }());

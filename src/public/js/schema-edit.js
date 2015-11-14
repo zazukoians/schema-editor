@@ -17,6 +17,8 @@ var SchemaEdit = (function () {
                 SEUtils.initPrefixes();
             }
 
+            SchemaEdit.collectLanguages();
+
             SchemaEdit.makeNewVocabButton();
             SchemaEdit.makeNewVocabBlock();
 
@@ -61,6 +63,31 @@ var SchemaEdit = (function () {
             $(".resourceButton").hide(); // for selecting skos properties etc - maybe come back to later
 
             SparqlConnector.init();
+        },
+
+        collectLanguages: function () {
+          console.log("languages sparql = \n" + SE_SparqlTemplates.getLanguages);
+
+          var getLanguagesSparql = sparqlTemplater(
+              SE_SparqlTemplates.getLanguages, {
+                  "graphURI": Config.getGraphURI(),
+              });
+
+            var getLanguagesUrl = Config.getQueryEndpoint() + "?query=" +
+                encodeURIComponent(getLanguagesSparql) + "&output=xml";
+
+            var callback = function (json) {
+            //    console.log("json = \n" + JSON.stringify(json, false, 4));
+                var languages = [];
+                for(var i=0;i<json.length;i++){
+                  var lang = json[i]["language"];
+                  if(lang && lang != ""){
+                    languages.push(lang);
+                  }
+                }
+                console.log("languages = \n" + JSON.stringify(languages, false, 4));
+            }
+            SparqlConnector.getJsonForSparqlURL(getLanguagesUrl, callback);
         },
 
         render: function () {
@@ -174,13 +201,13 @@ var SchemaEdit = (function () {
         },
 
         loadNewResource: function (newResource) {
-          var split = window.location.href.split("?");
-          var graph = parseUri(window.location.href).queryKey.graph;
-          var newLocation = split[0] + "?uri=" + encodeURI(newResource);
-          if(graph && (graph != "")) {
-              newLocation = newLocation + "&graph=" + graph;
-          }
-          window.location.href = newLocation;
+            var split = window.location.href.split("?");
+            var graph = parseUri(window.location.href).queryKey.graph;
+            var newLocation = split[0] + "?uri=" + encodeURI(newResource);
+            if(graph && (graph != "")) {
+                newLocation = newLocation + "&graph=" + graph;
+            }
+            window.location.href = newLocation;
         },
 
         setResourceFromUrl: function () {
@@ -402,21 +429,21 @@ var SchemaEdit = (function () {
         setupCreateButtons: function () {
             $("#createClassButton").click(
                 function () {
-                  var createBlock = $("#newClass");
+                    var createBlock = $("#newClass");
                     SchemaEdit.createButtonHandler(createBlock, "http://www.w3.org/2000/01/rdf-schema#Class");
                 }
             );
             $("#createPropertyButton").click(
                 function () {
-                  var createBlock = $("#newProperty");
+                    var createBlock = $("#newProperty");
                     SchemaEdit.createButtonHandler(createBlock, "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property");
                 }
             );
         },
 
         createButtonHandler: function (createBlock, rdfType) {
-          var resourceName = createBlock.find(".resourceName").val();
-          resourceName = SEUtils.resolveToURI(resourceName);
+            var resourceName = createBlock.find(".resourceName").val();
+            resourceName = SEUtils.resolveToURI(resourceName);
             var map = {
                 "graphURI": Config.getGraphURI(),
                 "rdfType": rdfType,
@@ -425,7 +452,7 @@ var SchemaEdit = (function () {
             var callback = function () {
                 SchemaEdit.postConfirmDialog();
                 Config.setCurrentResource(resourceName);
-                console.log("resourceName = "+resourceName);
+                console.log("resourceName = " + resourceName);
                 SchemaEdit.loadNewResource(resourceName);
             };
             var updateTermSparql = sparqlTemplater(
