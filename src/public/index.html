@@ -186,6 +186,43 @@
 
       <div id="editor"></div>
 
+      <div id="newClass" class="editBlock block">
+
+        <div class="help">
+          <button id="#addClassHelpButton" class="helpButton">?</button>
+          <div id="addClassHelpText" title="Add Class" class="helpText">
+            <p>At minimum specify a class name, then click the Add Class button. </p>
+            <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name).
+              Alternately full QNames (namespace+local name) may be used.
+            </p>
+            <p>To add extra label/comment fields, click the (+) button.</p>
+          </div>
+        </div>
+
+        <h4>New Class</h4>
+        <label for="className">Class Name</label>
+        <input id="className" title="Enter text" />
+        <button id="createClassButton">Create</button>
+      </div>
+
+      <div id="newProperty" class="editBlock block">
+        <div class="help">
+          <button id="#addPropertyHelpButton" class="helpButton">?</button>
+          <div id="addPropertyHelpText" title="Add Property" class="helpText">
+            <p>At minimum specify a property name, then click the Add Property button. </p>
+            <p>To add extra label/comment fields, click the (+) button.</p>
+            <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name).
+              Alternately full QNames (namespace+local name) may be used.
+            </p>
+          </div>
+        </div>
+
+        <h4>New Property</h4>
+        <label for="propertyName">Property Name</label>
+        <input id="propertyName" title="Enter text" />
+        <button id="createPropertyButton">Create</button>
+      </div>
+      <!--
       <div id="addClass" class="editBlock">
 
         <div class="help">
@@ -223,9 +260,9 @@
 
         <button id="addClassButton">Add Class</button>
       </div>
-
+-->
       <hr/>
-
+      <!--
       <div id="addPropertyBlock" class="editBlock">
 
         <div class="help">
@@ -269,7 +306,7 @@
 
         <button id="addPropertyButton">Add Property</button>
       </div>
-
+-->
       <hr/>
 
       <div id="addPropertyValueBlock" class="editBlock">
@@ -381,7 +418,7 @@
     <label for="languageIt">it</label>
     <input id="languageIt" value="it" type="radio" name="language" class="languageRadio" />
     <label for="addLanguage">Add Language</label>
-    <input id="addLanguage" type="text" name="addLanguage" title="enter language code" size="6"/>
+    <input id="addLanguage" type="text" name="addLanguage" title="enter language code" size="6" />
     <button id="addLanguageButton">Add</button>
   </div>
 

@@ -31,6 +31,12 @@
   text-align: right;
 }
 
+.block {
+   border: 1px solid gray;
+   padding: 5px;
+   margin: 5px;
+}
+
 #currentContext {
   display: block;
 }

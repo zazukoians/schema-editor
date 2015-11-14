@@ -37,8 +37,8 @@ var SchemaEdit = (function () {
 
             SchemaEdit.makePropertyChooser();
 
-            SchemaEdit.addClassHandler();
-            SchemaEdit.addPropertyHandler();
+          //  SchemaEdit.addClassHandler();
+          //  SchemaEdit.addPropertyHandler();
 
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.makeTurtleButton();
@@ -277,14 +277,13 @@ var SchemaEdit = (function () {
 
         makeTermEditBlock: function (json) {
             var replacementMap = SchemaEdit.transformResourceJSON(json);
-            var block = templater(SE_HtmlTemplates.termTemplate, replacementMap);
-            $("#editor").append(block);
+            var termEditBlock = templater(SE_HtmlTemplates.termTemplate, replacementMap);
+            $("#editor").append(termEditBlock);
         },
 
         setupUpdateTermButtons: function () {
             $(".updateTermButton").click(
                 function () {
-                    // $(this).log()
                     var termEditBlock = $(this).parent();
 
                     var resourceName = termEditBlock.find(".resourceName").val();
@@ -293,6 +292,7 @@ var SchemaEdit = (function () {
                     var rdfType = termEditBlock.find(".rdfType").val();
                     rdfType = SEUtils.resolveToURI(rdfType);
 
+/*
                     var subClassOfList = [];
                     termEditBlock.find(".subClassOf").each(function () {
                         var subClassOf = $(this).val();
@@ -301,6 +301,8 @@ var SchemaEdit = (function () {
                             "subClassOf": subClassOf
                         });
                     });
+  */
+                    var subClassOfList = SchemaEdit.makeURITermList(termEditBlock, "subClassOf");
 
                     /*
                                         var subPropertyOf = termEditBlock.find(".subPropertyOf").val();
@@ -314,6 +316,15 @@ var SchemaEdit = (function () {
                         subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
                         subPropertyOfList.push({
                             "subPropertyOf": subPropertyOf
+                        });
+                    });
+
+                    var domainList = [];
+                    termEditBlock.find(".domain").each(function () {
+                        var domain = $(this).val();
+                        domain = SEUtils.resolveToURI(domain);
+                        domain.push({
+                            "domain": domain
                         });
                     });
 
@@ -379,6 +390,21 @@ var SchemaEdit = (function () {
                 }
             );
         },
+
+//   var subClassOfList = SchemaEdit.makeURITermList(termEditBlock, "subClassOf");
+        makeURITermList: function (termEditBlock, termName) {
+        var termList = [];
+        console.log("termName = "+termName);
+        termEditBlock.find("."+termName).each(function () {
+            var term = $(this).val();
+            term = SEUtils.resolveToURI(term);
+            var entry = {};
+            entry[termName] = term;
+            termList.push(entry);
+        });
+        console.log("termList = \n"+JSON.stringify(termList,false,4));
+        return termList;
+      },
 
         setupPlusButtons: function () {
             $(".plusButton").unbind("click");
@@ -1090,13 +1116,14 @@ var SchemaEdit = (function () {
         */
 
         // TODO is this used?
+        /*
         makeAddClass: function (uri) {
             var addClassButton = $("<button id='addClass'>Add Class</button>");
             $("#editor").prepend(addClassButton);
             addClassButton.click(function () {});
             var chooser = SchemaEdit.makeClassChooser(uri);
         },
-
+*/
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
             return Config.getQueryEndpoint() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
