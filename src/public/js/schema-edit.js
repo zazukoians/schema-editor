@@ -292,49 +292,14 @@ var SchemaEdit = (function () {
                     var rdfType = termEditBlock.find(".rdfType").val();
                     rdfType = SEUtils.resolveToURI(rdfType);
 
-                    /*
-                                        var subClassOfList = [];
-                                        termEditBlock.find(".subClassOf").each(function () {
-                                            var subClassOf = $(this).val();
-                                            subClassOf = SEUtils.resolveToURI(subClassOf);
-                                            subClassOfList.push({
-                                                "subClassOf": subClassOf
-                                            });
-                                        });
-                      */
                     var subClassOfList = SchemaEdit.makeURITermList(termEditBlock, "subClassOf");
                     var subPropertyOfList = SchemaEdit.makeURITermList(termEditBlock, "subPropertyOf");
                     var domainList = SchemaEdit.makeURITermList(termEditBlock, "domain");
                     var rangeList = SchemaEdit.makeURITermList(termEditBlock, "range");
-var labelList = SchemaEdit.makeLiteralTermList(termEditBlock, "label");
-var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
-/*
-                    var labelList = [];
-                    termEditBlock.find(".label").each(function () {
-                        var li = {};
-                        li["labelText"] = $(this).val();
-                        var lang = $(this).attr("lang");
-                        if(!lang || lang == "") {
-                            lang = "en";
-                        }
-                        li["labelLang"] = lang;
-                        labelList.push(li);
-                    });
-                    //  console.log("labelList = \n"+JSON.stringify(labelList,false,4));
 
-                    var commentList = [];
-                    termEditBlock.find(".comment").each(function () {
-                        var li = {};
-                        li["commentText"] = $(this).val();
-                        var lang = $(this).attr("lang");
-                        if(!lang || lang == "") {
-                            lang = "en";
-                        }
-                        li["commentLang"] = lang;
-                        commentList.push(li);
-                    });
-                    //  console.log("commentList = \n"+JSON.stringify(commentList,false,4));
-*/
+                    var labelList = SchemaEdit.makeLiteralTermList(termEditBlock, "label");
+                    var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
+
                     var callback = function (msg) {}
 
                     var map = {
@@ -349,14 +314,11 @@ var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
                         "comment": commentList,
                     };
                     var notifyOfUpdate = function () {
-                        console.log("update done.");
-                        //   window.location.reload();
-
                         SchemaEdit.postConfirmDialog();
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
-                    console.log("updateTermSparql = \n" + updateTermSparql);
+                  //  console.log("updateTermSparql = \n" + updateTermSparql);
                     SparqlConnector.postData(updateTermSparql, notifyOfUpdate);
                 }
             );
@@ -364,8 +326,15 @@ var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
 
         /**
          * makeURITermList
-         * reads values from an input block via class name
-         * populates an Array with values
+         * reads values from an input block via CSS class name
+         * populates an Array with values, e.g.
+         *
+         * [
+         *   {
+         *      "range": "http://test.org/false"
+         *   },
+         * ...
+         * ]
          *
          * @param {jQuery} termEditBlock the block in the editor to address
          * @param {string} termName name of the CSS class/term
@@ -381,23 +350,39 @@ var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
                 entry[termName] = term;
                 termList.push(entry);
             });
-            // console.log("termList = \n" + JSON.stringify(termList, false, 4));
+             console.log("termList = \n" + JSON.stringify(termList, false, 4));
             return termList;
         },
 
+        /**
+         * makeLiteralTermList
+         * reads values from an input block via CSS class name
+         * populates an Array with values, e.g.
+         * [
+         *    {
+         *       "commentText": "asdasd",
+         *       "commentLang": "en"
+         *    },
+         * ...
+         *
+         * @param {jQuery} termEditBlock the block in the editor to address
+         * @param {string} termName name of the CSS class/term
+         * @return {Array} termList list of name:value mappings
+         */
         makeLiteralTermList: function (termEditBlock, termName) {
-          var termList = [];
-          termEditBlock.find("." + termName).each(function () {
-              var li = {};
-              li[termName+"Text"] = $(this).val();
-              var lang = $(this).attr("lang");
-              if(!lang || lang == "") {
-                  lang = "en";
-              }
-              li[termName+"Lang"] = lang;
-              termList.push(li);
-          });
-          return termList;
+            var termList = [];
+            termEditBlock.find("." + termName).each(function () {
+                var li = {};
+                li[termName + "Text"] = $(this).val();
+                var lang = $(this).attr("lang");
+                if(!lang || lang == "") {
+                    lang = "en";
+                }
+                li[termName + "Lang"] = lang;
+                termList.push(li);
+            });
+             console.log("termList = \n" + JSON.stringify(termList, false, 4));
+            return termList;
         },
 
         setupPlusButtons: function () {
