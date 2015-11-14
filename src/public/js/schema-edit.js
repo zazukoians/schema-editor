@@ -306,40 +306,9 @@ var SchemaEdit = (function () {
                     var subPropertyOfList = SchemaEdit.makeURITermList(termEditBlock, "subPropertyOf");
                     var domainList = SchemaEdit.makeURITermList(termEditBlock, "domain");
                     var rangeList = SchemaEdit.makeURITermList(termEditBlock, "range");
-                    /*
-                                        var subPropertyOf = termEditBlock.find(".subPropertyOf").val();
-                                        if(subPropertyOf) {
-                                            subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
-                                        }
-
-                    var subPropertyOfList = [];
-                    termEditBlock.find(".subPropertyOf").each(function () {
-                        var subPropertyOf = $(this).val();
-                        subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
-                        subPropertyOfList.push({
-                            "subPropertyOf": subPropertyOf
-                        });
-                    });
-
-                    var domainList = [];
-                    termEditBlock.find(".domain").each(function () {
-                        var domain = $(this).val();
-                        domain = SEUtils.resolveToURI(domain);
-                        domain.push({
-                            "domain": domain
-                        });
-                    });
-
-                    var domain = termEditBlock.find(".domain").val();
-                    if(domain) {
-                        domain = SEUtils.resolveToURI(domain);
-                    }
-
-                    var range = termEditBlock.find(".range").val();
-                    if(range) {
-                        range = SEUtils.resolveToURI(range);
-                    }
-  */
+var labelList = SchemaEdit.makeLiteralTermList(termEditBlock, "label");
+var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
+/*
                     var labelList = [];
                     termEditBlock.find(".label").each(function () {
                         var li = {};
@@ -365,7 +334,7 @@ var SchemaEdit = (function () {
                         commentList.push(li);
                     });
                     //  console.log("commentList = \n"+JSON.stringify(commentList,false,4));
-
+*/
                     var callback = function (msg) {}
 
                     var map = {
@@ -414,6 +383,21 @@ var SchemaEdit = (function () {
             });
             // console.log("termList = \n" + JSON.stringify(termList, false, 4));
             return termList;
+        },
+
+        makeLiteralTermList: function (termEditBlock, termName) {
+          var termList = [];
+          termEditBlock.find("." + termName).each(function () {
+              var li = {};
+              li[termName+"Text"] = $(this).val();
+              var lang = $(this).attr("lang");
+              if(!lang || lang == "") {
+                  lang = "en";
+              }
+              li[termName+"Lang"] = lang;
+              termList.push(li);
+          });
+          return termList;
         },
 
         setupPlusButtons: function () {
