@@ -37,8 +37,8 @@ var SchemaEdit = (function () {
 
             SchemaEdit.makePropertyChooser();
 
-          //  SchemaEdit.addClassHandler();
-          //  SchemaEdit.addPropertyHandler();
+            //  SchemaEdit.addClassHandler();
+            //  SchemaEdit.addPropertyHandler();
 
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.makeTurtleButton();
@@ -292,24 +292,26 @@ var SchemaEdit = (function () {
                     var rdfType = termEditBlock.find(".rdfType").val();
                     rdfType = SEUtils.resolveToURI(rdfType);
 
-/*
-                    var subClassOfList = [];
-                    termEditBlock.find(".subClassOf").each(function () {
-                        var subClassOf = $(this).val();
-                        subClassOf = SEUtils.resolveToURI(subClassOf);
-                        subClassOfList.push({
-                            "subClassOf": subClassOf
-                        });
-                    });
-  */
+                    /*
+                                        var subClassOfList = [];
+                                        termEditBlock.find(".subClassOf").each(function () {
+                                            var subClassOf = $(this).val();
+                                            subClassOf = SEUtils.resolveToURI(subClassOf);
+                                            subClassOfList.push({
+                                                "subClassOf": subClassOf
+                                            });
+                                        });
+                      */
                     var subClassOfList = SchemaEdit.makeURITermList(termEditBlock, "subClassOf");
-
+                    var subPropertyOfList = SchemaEdit.makeURITermList(termEditBlock, "subPropertyOf");
+                    var domainList = SchemaEdit.makeURITermList(termEditBlock, "domain");
+                    var rangeList = SchemaEdit.makeURITermList(termEditBlock, "range");
                     /*
                                         var subPropertyOf = termEditBlock.find(".subPropertyOf").val();
                                         if(subPropertyOf) {
                                             subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
                                         }
-                      */
+
                     var subPropertyOfList = [];
                     termEditBlock.find(".subPropertyOf").each(function () {
                         var subPropertyOf = $(this).val();
@@ -337,7 +339,7 @@ var SchemaEdit = (function () {
                     if(range) {
                         range = SEUtils.resolveToURI(range);
                     }
-
+  */
                     var labelList = [];
                     termEditBlock.find(".label").each(function () {
                         var li = {};
@@ -372,8 +374,8 @@ var SchemaEdit = (function () {
                         "resourceName": resourceName,
                         "subClassOf": subClassOfList,
                         "subPropertyOf": subPropertyOfList,
-                        "domain": domain,
-                        "range": range,
+                        "domain": domainList,
+                        "range": rangeList,
                         "label": labelList,
                         "comment": commentList,
                     };
@@ -391,20 +393,28 @@ var SchemaEdit = (function () {
             );
         },
 
-//   var subClassOfList = SchemaEdit.makeURITermList(termEditBlock, "subClassOf");
+        /**
+         * makeURITermList
+         * reads values from an input block via class name
+         * populates an Array with values
+         *
+         * @param {jQuery} termEditBlock the block in the editor to address
+         * @param {string} termName name of the CSS class/term
+         * @return {Array} termList list of name:value mappings
+         */
         makeURITermList: function (termEditBlock, termName) {
-        var termList = [];
-        console.log("termName = "+termName);
-        termEditBlock.find("."+termName).each(function () {
-            var term = $(this).val();
-            term = SEUtils.resolveToURI(term);
-            var entry = {};
-            entry[termName] = term;
-            termList.push(entry);
-        });
-        console.log("termList = \n"+JSON.stringify(termList,false,4));
-        return termList;
-      },
+            var termList = [];
+            // console.log("termName = " + termName);
+            termEditBlock.find("." + termName).each(function () {
+                var term = $(this).val();
+                term = SEUtils.resolveToURI(term);
+                var entry = {};
+                entry[termName] = term;
+                termList.push(entry);
+            });
+            // console.log("termList = \n" + JSON.stringify(termList, false, 4));
+            return termList;
+        },
 
         setupPlusButtons: function () {
             $(".plusButton").unbind("click");
