@@ -46,6 +46,8 @@ var SchemaEdit = (function () {
             SchemaEdit.initResourceButtons();
             SchemaEdit.setupResourceButtons();
 
+            SchemaEdit.setupCreateButtons();
+
             SchemaEdit.makeAdvancedButton();
 
             SchemaEdit.initLangButtons();
@@ -158,19 +160,9 @@ var SchemaEdit = (function () {
                 combobox.combobox("setInputId", id);
                 combobox.combobox({
                     select: function (event, ui) {
-                        //    var newResource = $("#resource").val();
-                        var newResource = this.value;
                         // relocate with new URL query params
-                        var split = window.location.href.split("?");
-                        var graph = parseUri(window.location.href).queryKey.graph;
-                        var newLocation = split[0] + "?uri=" + encodeURI(newResource);
-                        if(graph && (graph != "")) {
-                            newLocation = newLocation + "&graph=" + graph;
-                        }
-                        window.location.href = newLocation;
-
+                        SchemaEdit.loadNewResource(this.value);
                         Config.getGraphURI(newResource);
-
                         $("html, body").animate({ // the above can sometimes leave you far down the page, so scroll up
                             scrollTop: 0
                         }, "slow");
@@ -179,6 +171,16 @@ var SchemaEdit = (function () {
                 SchemaEdit.setResourceFromUrl();
             };
             SparqlConnector.listResources(callback);
+        },
+
+        loadNewResource: function (newResource) {
+          var split = window.location.href.split("?");
+          var graph = parseUri(window.location.href).queryKey.graph;
+          var newLocation = split[0] + "?uri=" + encodeURI(newResource);
+          if(graph && (graph != "")) {
+              newLocation = newLocation + "&graph=" + graph;
+          }
+          window.location.href = newLocation;
         },
 
         setResourceFromUrl: function () {
@@ -300,7 +302,7 @@ var SchemaEdit = (function () {
                     var labelList = SchemaEdit.makeLiteralTermList(termEditBlock, "label");
                     var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
 
-                    var callback = function (msg) {}
+                    // var callback = function (msg) {}
 
                     var map = {
                         "graphURI": Config.getGraphURI(),
@@ -311,14 +313,14 @@ var SchemaEdit = (function () {
                         "domain": domainList,
                         "range": rangeList,
                         "label": labelList,
-                        "comment": commentList,
+                        "comment": commentList
                     };
                     var notifyOfUpdate = function () {
                         SchemaEdit.postConfirmDialog();
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
-                  //  console.log("updateTermSparql = \n" + updateTermSparql);
+                    //  console.log("updateTermSparql = \n" + updateTermSparql);
                     SparqlConnector.postData(updateTermSparql, notifyOfUpdate);
                 }
             );
@@ -350,7 +352,7 @@ var SchemaEdit = (function () {
                 entry[termName] = term;
                 termList.push(entry);
             });
-             console.log("termList = \n" + JSON.stringify(termList, false, 4));
+            //console.log("termList = \n" + JSON.stringify(termList, false, 4));
             return termList;
         },
 
@@ -381,7 +383,7 @@ var SchemaEdit = (function () {
                 li[termName + "Lang"] = lang;
                 termList.push(li);
             });
-             console.log("termList = \n" + JSON.stringify(termList, false, 4));
+            //console.log("termList = \n" + JSON.stringify(termList, false, 4));
             return termList;
         },
 
@@ -395,6 +397,41 @@ var SchemaEdit = (function () {
                     SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
                 }
             );
+        },
+
+        setupCreateButtons: function () {
+            $("#createClassButton").click(
+                function () {
+                  var createBlock = $("#newClass");
+                    SchemaEdit.createButtonHandler(createBlock, "http://www.w3.org/2000/01/rdf-schema#Class");
+                }
+            );
+            $("#createPropertyButton").click(
+                function () {
+                  var createBlock = $("#newProperty");
+                    SchemaEdit.createButtonHandler(createBlock, "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property");
+                }
+            );
+        },
+
+        createButtonHandler: function (createBlock, rdfType) {
+          var resourceName = createBlock.find(".resourceName").val();
+          resourceName = SEUtils.resolveToURI(resourceName);
+            var map = {
+                "graphURI": Config.getGraphURI(),
+                "rdfType": rdfType,
+                "resourceName": resourceName
+            };
+            var callback = function () {
+                SchemaEdit.postConfirmDialog();
+                Config.setCurrentResource(resourceName);
+                console.log("resourceName = "+resourceName);
+                SchemaEdit.loadNewResource(resourceName);
+            };
+            var updateTermSparql = sparqlTemplater(
+                SE_SparqlTemplates.updateTerm, map);
+            //  console.log("updateTermSparql = \n" + updateTermSparql);
+            SparqlConnector.postData(updateTermSparql, callback);
         },
 
         makeAdvancedButton: function () {
