@@ -87,8 +87,15 @@ var SE_HtmlTemplates = (function () {
 \n\
    <button class='updateTermButton'>Update</button> \n\
 </div>"
-    };
-
+  ,
+languageChoiceTemplate :
+        "~{#langList}~ \n\
+            <p class='languageChoice'> \n\
+               <label>~{lang}~</label> \n\
+               <input value='~{lang}~' type='radio' name='language' class='languageRadio' /> \n\
+            </p> \n\
+        ~{/langList}~"
+  }
     return SE_HtmlTemplates;
 }());
 

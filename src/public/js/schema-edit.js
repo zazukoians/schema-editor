@@ -17,8 +17,6 @@ var SchemaEdit = (function () {
                 SEUtils.initPrefixes();
             }
 
-            SchemaEdit.collectLanguages();
-
             SchemaEdit.makeNewVocabButton();
             SchemaEdit.makeNewVocabBlock();
 
@@ -63,31 +61,6 @@ var SchemaEdit = (function () {
             $(".resourceButton").hide(); // for selecting skos properties etc - maybe come back to later
 
             SparqlConnector.init();
-        },
-
-        collectLanguages: function () {
-          console.log("languages sparql = \n" + SE_SparqlTemplates.getLanguages);
-
-          var getLanguagesSparql = sparqlTemplater(
-              SE_SparqlTemplates.getLanguages, {
-                  "graphURI": Config.getGraphURI(),
-              });
-
-            var getLanguagesUrl = Config.getQueryEndpoint() + "?query=" +
-                encodeURIComponent(getLanguagesSparql) + "&output=xml";
-
-            var callback = function (json) {
-            //    console.log("json = \n" + JSON.stringify(json, false, 4));
-                var languages = [];
-                for(var i=0;i<json.length;i++){
-                  var lang = json[i]["language"];
-                  if(lang && lang != ""){
-                    languages.push(lang);
-                  }
-                }
-                console.log("languages = \n" + JSON.stringify(languages, false, 4));
-            }
-            SparqlConnector.getJsonForSparqlURL(getLanguagesUrl, callback);
         },
 
         render: function () {
@@ -869,22 +842,27 @@ var SchemaEdit = (function () {
                 }
             );
         },
-
         setLangButtonValue: function ($button) {
             var target = $($button).prev();
             var lang = target.attr("lang");
-
             if(!lang || lang == "") {
                 lang = "lang";
-            }
-
-            // console.log("setLangButtonValue lang = " + lang);
+            };
             $button.text(lang);
         },
 
         /* language choice for literals */
         /*   alternate representations for resources */
         setupLangButtons: function () {
+            var prepareLanguages = function (langMap) {
+              //  console.log("langMap = \n" + JSON.stringify(langMap, false, 4));
+              //  console.log("SE_HtmlTemplates.languageChoiceTemplate = \n" +SE_HtmlTemplates.languageChoiceTemplate);
+                var langChoices = templater(SE_HtmlTemplates.languageChoiceTemplate, langMap);
+              //  console.log("langChoices = \n" + langChoices);
+              $(".languageChoice").filter(":last").log();
+                $(".languageChoice").filter(":last").after($(langChoices));
+            }
+            SchemaEdit.collectLanguages(prepareLanguages);
             $(".langButton").click(
                 function () {
                     var target = $(this).prev();
@@ -904,19 +882,18 @@ var SchemaEdit = (function () {
                         target.attr("lang", language);
                         SchemaEdit.initLangButtons();
                     }
-// resizable: false,
-                    dialog.dialog({
-                        title: "Choose Language",
-
-                        modal: true,
-                        width:300,
-                        buttons: {
-                            "Update": changeLangHandler,
-                            Cancel: function () {
-                                $(this).dialog("close");
+                    resizable: false,
+                        dialog.dialog({
+                            title: "Choose Language",
+                            modal: true,
+                            width: 300,
+                            buttons: {
+                                "Update": changeLangHandler,
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
                             }
-                        }
-                    });
+                        });
                 });
             SchemaEdit.setupAddLanguageButton();
         },
@@ -927,6 +904,43 @@ var SchemaEdit = (function () {
                     console.log("click");
                     $(this).prev().log();
                 });
+        },
+
+        collectLanguages: function (callback) {
+          //  console.log("languages sparql = \n" + SE_SparqlTemplates.getLanguages);
+
+            var getLanguagesSparql = sparqlTemplater(
+                SE_SparqlTemplates.getLanguages, {
+                    "graphURI": Config.getGraphURI(),
+                });
+
+            var getLanguagesUrl = Config.getQueryEndpoint() + "?query=" +
+                encodeURIComponent(getLanguagesSparql) + "&output=xml";
+
+            var restructureJSON = function (json) {
+                var langList = [];
+                /* target :
+                {
+                   "langList": [
+                                 { "lang": "en" },
+                                 { "lang": "de" }
+                               ]
+                }
+                */
+                for(var i = 0; i < json.length; i++) {
+                    var lang = json[i]["language"];
+                    if(lang && lang != "") {
+                        var entry = {};
+                        entry["lang"] = lang;
+                        langList.push(entry);
+                    }
+                }
+                var langMap = {};
+                langMap["langList"] = langList;
+              //  console.log("langList = \n" + JSON.stringify(langList, false, 4));
+                callback(langMap);
+            }
+            SparqlConnector.getJsonForSparqlURL(getLanguagesUrl, restructureJSON);
         },
 
         /*
