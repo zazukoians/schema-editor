@@ -173,7 +173,7 @@ var SE_SparqlTemplates = (function () {
                ~{/comment}~  \n\
 \n\
                rdfs:isDefinedBy <~{graphURI}~> \n\
-         }, \n\
+         } \n\
        }",
         getLanguages: "SELECT DISTINCT ?language \n\
                 FROM <~{graphURI}~>  \n\

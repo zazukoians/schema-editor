@@ -67,17 +67,17 @@ var SEUtils = (function () {
          *  "http://xmlns.com/foaf/0.1/" => "foaf"
          */
         curieFromURI: function (uri) {
-        //  console.log("uri = "+uri);
+            //  console.log("uri = "+uri);
             var index = uri.indexOf("#");
             if(index == -1) {
                 index = uri.lastIndexOf("/");
             }
-            var ns = uri.substring(0, index+1);
-        //    console.log("ns = "+ns);
+            var ns = uri.substring(0, index + 1);
+            //    console.log("ns = "+ns);
             var prefix = SEUtils.getPrefixForNamespace(ns);
-            var name = uri.substring(index+1);
-        //    console.log("prefix = "+prefix);
-        //    console.log("name = "+name);
+            var name = uri.substring(index + 1);
+            //    console.log("prefix = "+prefix);
+            //    console.log("name = "+name);
             return prefix + ":" + name;
         },
 
@@ -120,31 +120,39 @@ var SEUtils = (function () {
         algorithm no doubt can be improved...
         */
         resolveToURI: function (resource) {
-                console.log("resource = " + resource);
-                // empty
-                if(!resource || resource == "") {
-                    return false;
-                }
-                // CURIE (with colon, no dot or slash ) http://www.w3.org/TR/curie/
-                // look up namespace
-                if(resource.indexOf(":") != -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
-                    console.log("curie recognised");
-
-                    var split = resource.split(":");
-                    var ns = Config.getGraphURI();
-                    if(split[0] != "") { // isn't  :name
-                        ns = SEUtils.getNamespaceForPrefix(split[0]);
-                    }
-                    return ns + split[1];
-                }
-                // just name (no colon)
-                // use current graph URI as namespace
-                if(resource.indexOf(":") == -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
-                    return Config.getGraphURI() + resource;
-                }
-                return resource;
+            console.log("resource = " + resource);
+            // empty
+            if(!resource || resource == "") {
+                return false;
             }
-            /* *** Prefixes/Namespaces Map related END *** */
+            // CURIE (with colon, no dot or slash ) http://www.w3.org/TR/curie/
+            // look up namespace
+            if(resource.indexOf(":") != -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
+                console.log("curie recognised");
+
+                var split = resource.split(":");
+                var ns = Config.getGraphURI();
+                if(split[0] != "") { // isn't  :name
+                    ns = SEUtils.getNamespaceForPrefix(split[0]);
+                }
+                return ns + split[1];
+            }
+            // just name (no colon)
+            // use current graph URI as namespace
+            if(resource.indexOf(":") == -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
+                return Config.getGraphURI() + resource;
+            }
+            return resource;
+        },
+        /* *** Prefixes/Namespaces Map related END *** */
+
+        setLocalStorageObject: function (key, object) {
+            localStorage.setItem(key, JSON.stringify(object));
+        },
+
+        getLocalStorageObject: function (key) {
+            JSON.parse(localStorage.getItem(key));
+        }
     };
 
     return SEUtils;
@@ -159,15 +167,6 @@ function refresh() {
     elem.offsetHeight; // no need to store this anywhere, the reference is enough
     elem.style.display = 'flex';
     refreshResourceInput();
-}
-
-
-function setLocalStorageObject(key, object) {
-    localStorage.setItem(key, JSON.stringify(object));
-}
-
-function getLocalStorageObject(key) {
-    JSON.parse(localStorage.getItem(key));
 }
 
 /* was to be regex-based way of tweaking turtle-sparql to valid sparql */
@@ -465,7 +464,7 @@ function includeContent(aElement) {
         $(aElement).replaceWith(content);
     }
 
-  //  console.log("uri=" + uri);
+    //  console.log("uri=" + uri);
     getResource(uri, handler);
 
 }

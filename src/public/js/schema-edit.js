@@ -51,7 +51,7 @@ var SchemaEdit = (function () {
             SchemaEdit.makeAdvancedButton();
 
             SchemaEdit.initLangButtons();
-            SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
+            //      SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
 
             SchemaEdit.setupPlusButtons();
 
@@ -303,7 +303,7 @@ var SchemaEdit = (function () {
                     var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
 
                     // var callback = function (msg) {}
-
+                    console.log("subPropertyOfList = " + JSON.stringify(subPropertyOfList, false, 4));
                     var map = {
                         "graphURI": Config.getGraphURI(),
                         "rdfType": rdfType,
@@ -320,7 +320,7 @@ var SchemaEdit = (function () {
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
-                    //  console.log("updateTermSparql = \n" + updateTermSparql);
+                    console.log("updateTermSparql = \n" + updateTermSparql);
                     SparqlConnector.postData(updateTermSparql, notifyOfUpdate);
                 }
             );
@@ -347,10 +347,13 @@ var SchemaEdit = (function () {
             // console.log("termName = " + termName);
             termEditBlock.find("." + termName).each(function () {
                 var term = $(this).val();
-                term = SEUtils.resolveToURI(term);
-                var entry = {};
-                entry[termName] = term;
-                termList.push(entry);
+                console.log("term = " + term);
+                if(term && term != "") {
+                    term = SEUtils.resolveToURI(term);
+                    var entry = {};
+                    entry[termName] = term;
+                    termList.push(entry);
+                }
             });
             //console.log("termList = \n" + JSON.stringify(termList, false, 4));
             return termList;
@@ -394,7 +397,7 @@ var SchemaEdit = (function () {
                     var prev = $(this).prev(".fieldBlock");
                     prev.log();
                     $(prev).after(prev.clone(true));
-                    SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
+                    //  SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
                 }
             );
         },
@@ -835,7 +838,7 @@ var SchemaEdit = (function () {
             return choices;
         },
 
-        initLangButtons: function () { // TODO what's this doing?
+        initLangButtons: function () {
             $(".langButton").each(
                 function () {
                     $(SchemaEdit.setLangButtonValue($(this)));
@@ -855,12 +858,11 @@ var SchemaEdit = (function () {
         /*   alternate representations for resources */
         setupLangButtons: function () {
             var prepareLanguages = function (langMap) {
-              //  console.log("langMap = \n" + JSON.stringify(langMap, false, 4));
-              //  console.log("SE_HtmlTemplates.languageChoiceTemplate = \n" +SE_HtmlTemplates.languageChoiceTemplate);
                 var langChoices = templater(SE_HtmlTemplates.languageChoiceTemplate, langMap);
-              //  console.log("langChoices = \n" + langChoices);
-              $(".languageChoice").filter(":last").log();
-                $(".languageChoice").filter(":last").after($(langChoices));
+                //  $(".languageChoice").filter(":last").log();
+                // $(".languageChoice").filter(":last").after($(langChoices));
+                $("#languageChooser").append($(langChoices));
+
             }
             SchemaEdit.collectLanguages(prepareLanguages);
             $(".langButton").click(
@@ -876,11 +878,12 @@ var SchemaEdit = (function () {
                         $('.languageRadio').each(function () {
                             if(this.type == 'radio' && this.checked) {
                                 language = $(this).val();
+                                //  console.log("checked = "+language);
                             }
                         });
                         $(this).dialog("close");
                         target.attr("lang", language);
-                        SchemaEdit.initLangButtons();
+                        SchemaEdit.initLangButtons(); // TODO why is this called so often?
                     }
                     resizable: false,
                         dialog.dialog({
@@ -907,7 +910,7 @@ var SchemaEdit = (function () {
         },
 
         collectLanguages: function (callback) {
-          //  console.log("languages sparql = \n" + SE_SparqlTemplates.getLanguages);
+            //  console.log("languages sparql = \n" + SE_SparqlTemplates.getLanguages);
 
             var getLanguagesSparql = sparqlTemplater(
                 SE_SparqlTemplates.getLanguages, {
@@ -918,7 +921,10 @@ var SchemaEdit = (function () {
                 encodeURIComponent(getLanguagesSparql) + "&output=xml";
 
             var restructureJSON = function (json) {
-                var langList = [];
+                var languages = SEUtils.getLocalStorageObject("languages");
+                if(!languages) {
+                    languages = [];
+                }
                 /* target :
                 {
                    "langList": [
@@ -927,17 +933,23 @@ var SchemaEdit = (function () {
                                ]
                 }
                 */
+                var langList = [];
                 for(var i = 0; i < json.length; i++) {
                     var lang = json[i]["language"];
+
                     if(lang && lang != "") {
                         var entry = {};
                         entry["lang"] = lang;
-                        langList.push(entry);
+                        if(languages.indexOf(lang) == -1) {
+                            languages.push(lang);
+                            langList.push(entry);
+                        }
                     }
                 }
                 var langMap = {};
                 langMap["langList"] = langList;
-              //  console.log("langList = \n" + JSON.stringify(langList, false, 4));
+                SEUtils.setLocalStorageObject("languages", languages);
+                //  console.log("langList = \n" + JSON.stringify(langList, false, 4));
                 callback(langMap);
             }
             SparqlConnector.getJsonForSparqlURL(getLanguagesUrl, restructureJSON);
