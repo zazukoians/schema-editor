@@ -32,9 +32,9 @@
 }
 
 .block {
-   border: 1px solid gray;
-   padding: 5px;
-   margin: 5px;
+  border: 1px solid gray;
+  padding: 5px;
+  margin: 5px;
 }
 
 #currentContext {
@@ -79,26 +79,22 @@ button, .button {
   display: inline-block;
 }
 
-
 .termEditBlock {
-    display: inline;
-    align-items: left;
+  display: inline;
+  align-items: left;
 }
 
-
 .updatePropertyButton {
-      display: block;
-  margin-top: auto ;
-    margin-right: auto ;
-      margin-left: 0px ;
-        margin-bottom: 0px ;
+  display: block;
+  margin-top: auto;
+  margin-right: auto;
+  margin-left: 0px;
+  margin-bottom: 0px;
 }
 
 #addClassButton {
   text-align: left;
 }
-
-
 
 .resource {
   border: 2px solid #96F;
@@ -108,24 +104,12 @@ button, .button {
   /*    display: block; */
 }
 
-#dialog {
-  display: none;
-}
-
-.dialog {
-  display: none;
-}
-
 #languageSelect, #postConfirmDialog {
-    display: none;
+  display: none;
 }
 
 #advancedBlock {
   display: none;
-}
-
-#languageSelect {
-  background-color: white;
 }
 
 input, textarea, select {
@@ -189,11 +173,62 @@ textarea {
 }
 
 
-/* for popup dialog */
+/* for popup dialogs */
+
+#dialog {
+  display: none;
+}
+
+.dialog {
+  display: none;
+}
 
 #languageSelect * {
+  width: 100px;
   text-align: left;
   vertical-align: middle;
+  background-color: white;
+}
+
+fieldset {
+  display: table;
+  border: none;
+}
+
+fieldset p {
+  display: table-row;
+  margin: 6px;
+}
+
+fieldset input, fieldset select, fieldset label {
+  display: table-cell;
+  margin: 3px;
+}
+
+fieldset label {
+  text-align: right;
+}
+
+#languageChooser {
+  float: left;
+  padding: 5px;
+}
+
+.languageRadio {
+  width: 60px;
+}
+
+#addLanguage {
+  width: 60px;
+}
+
+#addLanguageBlock {
+  float: right;
+  display: block;
+  border-style: solid none none none;
+  border-width: 1px;
+  padding: 5px;
+  border-color: lightgrey;
 }
 
 .inform {
@@ -283,9 +318,10 @@ textarea {
   top: 1px;
 }
 
-.uriObject{
+.uriObject {
   margin: 8px;
 }
+
 
 /* collapsible chunks */
 

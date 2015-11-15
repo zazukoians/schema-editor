@@ -219,7 +219,7 @@
 
         <h4>New Property</h4>
         <label>Property Name</label>
-        <input class="resourceName" title="Enter text"  value="" />
+        <input class="resourceName" title="Enter text" value="" />
         <button id="createPropertyButton">Create</button>
       </div>
 
@@ -325,15 +325,26 @@
   </div>
 
   <div id="languageSelect" class="dialog">
-    <label for="languageEn">en</label>
-    <input id="languageEn" value="en" type="radio" name="language" checked="checked" class="languageRadio" />
-    <label for="languageDe">de</label>
-    <input id="languageDe" value="de" type="radio" name="language" class="languageRadio" />
-    <label for="languageIt">it</label>
-    <input id="languageIt" value="it" type="radio" name="language" class="languageRadio" />
-    <label for="addLanguage">Add Language</label>
-    <input id="addLanguage" type="text" name="addLanguage" title="enter language code" size="6" />
-    <button id="addLanguageButton">Add</button>
+    <fieldset id="languageChooser">
+      <p>
+        <label>en</label>
+        <input value="en" type="radio" name="language" checked="checked" class="languageRadio" />
+      </p>
+      <p>
+        <label>de</label>
+        <input value="de" type="radio" name="language" class="languageRadio" />
+      </p>
+      <p>
+        <label>it</label>
+        <input value="it" type="radio" name="language" class="languageRadio" />
+      </p>
+    </fieldset>
+
+    <div id="addLanguageBlock">
+      <!-- label for="addLanguage">Add Language</label -->
+      <input id="addLanguage" type="text" name="addLanguage" title="enter language code" />
+      <button id="addLanguageButton">Add</button>
+    </div>
   </div>
 
   <div id="postConfirmDialog" class="dialog" title="Confirmation">

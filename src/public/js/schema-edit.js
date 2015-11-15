@@ -862,7 +862,7 @@ var SchemaEdit = (function () {
             return choices;
         },
 
-        initLangButtons: function () {
+        initLangButtons: function () { // TODO what's this doing?
             $(".langButton").each(
                 function () {
                     $(SchemaEdit.setLangButtonValue($(this)));
@@ -904,11 +904,12 @@ var SchemaEdit = (function () {
                         target.attr("lang", language);
                         SchemaEdit.initLangButtons();
                     }
-
+// resizable: false,
                     dialog.dialog({
                         title: "Choose Language",
-                        resizable: false,
+
                         modal: true,
+                        width:300,
                         buttons: {
                             "Update": changeLangHandler,
                             Cancel: function () {
