@@ -86,16 +86,14 @@ var SE_HtmlTemplates = (function () {
    <button class='plusButton'>+</button> \n\
 \n\
    <button class='updateTermButton'>Update</button> \n\
-</div>"
-  ,
-languageChoiceTemplate :
-        "~{#langList}~ \n\
+</div>",
+        languageChoiceTemplate: "~{#langList}~ \n\
             <p class='languageChoice'> \n\
                <label>~{lang}~</label> \n\
                <input value='~{lang}~' type='radio' name='language' class='languageRadio' /> \n\
             </p> \n\
         ~{/langList}~"
-  }
+    }
     return SE_HtmlTemplates;
 }());
 
@@ -175,6 +173,25 @@ var SE_SparqlTemplates = (function () {
                rdfs:isDefinedBy <~{graphURI}~> \n\
          } \n\
        }",
+
+        labelBlock: " \n\
+       ~{#label}~ \n\
+           ~{#labelText}~ \n\
+              rdfs:label \"\"\"~{labelText}~\"\"\"@~{labelLang}~ ; \n\
+              skos:prefLabel \"\"\"~{labelText}~\"\"\"@~{labelLang}~ ; \n\
+           ~{/labelText}~ ; \n\
+       ~{/label}~ ; \n\
+       ",
+
+        commentBlock: " \n\
+       ~{#comment}~ \n\
+          ~{#commentText}~ \n\
+               rdfs:comment \"\"\"~{commentText}~\"\"\"@~{commentLang}~ ; \n\
+               skos:definition \"\"\"~{commentText}~\"\"\"@~{commentLang}~ ; \n\
+          ~{/commentText}~  \n\
+       ~{/comment}~  \n\
+       ",
+
         getLanguages: "SELECT DISTINCT ?language \n\
                 FROM <~{graphURI}~>  \n\
                 WHERE { \n\

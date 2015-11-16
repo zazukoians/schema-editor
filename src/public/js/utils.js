@@ -151,8 +151,6 @@ var SEUtils = (function () {
         },
 
         getLocalStorageObject: function (key) {
-            console.log("here");
-            // localStorage.removeItem(key);
             var value = false;
             try {
                 value = JSON.parse(localStorage.getItem(key));
@@ -160,7 +158,7 @@ var SEUtils = (function () {
                 localStorage.removeItem(key);
             }
             var value = JSON.parse(localStorage.getItem(key));
-          //  console.log("value = \n" + JSON.stringify(value, false, 4));
+            //  console.log("value = \n" + JSON.stringify(value, false, 4));
             return value;
         }
     };
@@ -269,11 +267,7 @@ function setupErrorHandling() {
 }
 
 /**
- * Comment template.
- * @param {string} foo This is a param with a description too long to fit in
- *     one line.
- * @return {number} This returns something that has a description too long to
- *     fit in one line.
+TODO it should be possible to replace this with templater(template, replacementMap)
  */
 function sparqlTemplater(raw, replacementMap, isWrite) {
     if(isWrite && replacementMap["content"]) {

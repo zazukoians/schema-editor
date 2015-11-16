@@ -224,16 +224,13 @@
       </div>
 
       <div id="addPropertyValueBlock" class="editBlock">
-
         <div class="help">
           <span id="#addPropertyValueHelpButton" class="helpButton">?</span>
           <div id="addPropertyValueHelpText" title="Add Property Value" class="helpText">
             <p>A Current Resource must have been selected (above), then this may be used to add a specific triple. Provide values for the property and its value (literal or resource).</p>
           </div>
         </div>
-        <!-- class="ui-widget" -->
 
-        <button id="advancedButton">Advanced</button>
         <div id="advancedBlock">
           <h4>Add Property To Current Resource</h4>
           <div id="propertyChooser">
@@ -255,9 +252,8 @@
           </div>
         </div>
       </div>
-      <hr/>
 
-      <div id="uploadRDFBlock" class="editBlock">
+      <div id="uploadRDFBlock" class="editBlock block">
 
         <div class="help">
           <span id="#uploadRDFHelpButton" class="helpButton">?</span>
@@ -277,9 +273,9 @@
         </form>
       </div>
 
-      <hr/>
+      <br/>
 
-      <div id="exportTurtleBlock" class="editBlock">
+      <div id="exportTurtleBlock" class="editBlock block">
         <div class="help">
           <span id="#exportTurtleHelpButton" class="helpButton">?</span>
           <div id="exportTurtleHelpText" title="Upload RDF" class="helpText">
@@ -287,13 +283,15 @@
           </div>
         </div>
 
+        <br/>
+
         <h3 class="blockTitle">Export Turtle</h3>
         <button id="turtle">Export</button>
       </div>
 
-      <hr/>
+      <br/>
 
-      <div id="endpoints">
+      <div id="endpoints" class="editBlock block">
         <strong>Endpoint Settings</strong>
         <br/>
         <div>
@@ -309,6 +307,10 @@
         <button id="endpointClearButton">Clear</button>
       </div>
 
+
+      <div class="block">
+        <button id="advancedButton">Advanced</button>
+      </div>
     </div>
     <!--*** End Center Panel *** -->
 
@@ -332,8 +334,6 @@
       <input id="addLanguage" type="text" name="addLanguage" title="enter language code" />
     </div>
   </div>
-
-
 
   <div id="postConfirmDialog" class="dialog" title="Confirmation">
     Data posted.

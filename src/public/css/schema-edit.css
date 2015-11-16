@@ -32,9 +32,13 @@
 }
 
 .block {
-  border: 1px solid gray;
+  border: 1px solid lightgray;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
   padding: 5px;
   margin: 5px;
+  width: 70%;
 }
 
 #currentContext {
@@ -67,6 +71,13 @@
 }
 
 button, .button {
+  /*
+  position: absolute;
+right:    0;
+bottom:   0;
+*/
+position: relative;
+
   color: white;
   background-color: purple;
   font-size: 70%;
@@ -218,14 +229,12 @@ fieldset label {
   width: 60px;
 }
 
-
 #addLanguage {
-margin: 10px;
+  margin: 10px;
 }
 
-
 #addLanguageBlock {
-    width: 200px;
+  width: 200px;
   float: right;
   display: block;
   padding: 5px;

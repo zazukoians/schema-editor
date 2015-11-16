@@ -35,7 +35,7 @@ var SchemaEdit = (function () {
 
             SchemaEdit.makeDeleteResourceButton();
 
-            SchemaEdit.makePropertyChooser();
+            //SchemaEdit.makePropertyChooser();
 
             //  SchemaEdit.addClassHandler();
             //  SchemaEdit.addPropertyHandler();
@@ -202,7 +202,6 @@ var SchemaEdit = (function () {
                 }
             );
         },
-
         /* ***  Current Graph & Resource Choosers END *** */
 
         /* ***  Classes & Properties (link) Lists START *** */
@@ -254,7 +253,6 @@ var SchemaEdit = (function () {
                 listElement.append(itemElement);
             }
         },
-
         /* ***  Classes & Properties (link) Lists END *** */
 
         /* fill in main block with details of current resource */
@@ -263,28 +261,68 @@ var SchemaEdit = (function () {
                 graphURI: Config.getGraphURI(),
                 uri: uri
             };
-
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
-
-            var makeTermBlocks = function (json) {
-                SchemaEdit.makeTermEditBlock(json);
-                SchemaEdit.setupUpdateTermButtons();
-                SchemaEdit.initLangButtons();
-                SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
-                SchemaEdit.setupPlusButtons();
-            }
-            SparqlConnector.getJsonForSparqlURL(getResourceUrl, makeTermBlocks);
+            SparqlConnector.getJsonForSparqlURL(getResourceUrl, SchemaEdit.makeTermEditBlock);
         },
 
         makeTermEditBlock: function (json) {
             var replacementMap = SchemaEdit.transformResourceJSON(json);
-            var termEditBlock = templater(SE_HtmlTemplates.termTemplate, replacementMap);
-            $("#editor").append(termEditBlock);
+
+            /* prepare empty fields for each language in use */
+            var addElementsForLanguages = function (languages, langMap) {
+                var label = replacementMap["label"]; // TODO make names plural
+                var comment = replacementMap["comment"];
+
+                for(var i = 0; i < languages.length; i++) {
+                    var lang = languages[i];
+                    if(!SchemaEdit.mapContainsLang(label, lang)) {
+                        label.push({
+                            "content": "",
+                            "language": lang
+                        });
+                    }
+                    if(!SchemaEdit.mapContainsLang(comment, lang)) {
+                        comment.push({
+                            "content": "",
+                            "language": lang
+                        });
+                    }
+                }
+
+                var termEditBlock = templater(SE_HtmlTemplates.termTemplate, replacementMap);
+                $("#editor").append(termEditBlock);
+                SchemaEdit.initLangButtons();
+                SchemaEdit.setupUpdateTermButtons();
+                SchemaEdit.initLangButtons();
+                SchemaEdit.setupLangButtons();
+                SchemaEdit.setupPlusButtons();
+                console.log("makeTermBlocks");
+                $(".updateTermButton").log();
+            }
+            SchemaEdit.collectLanguages(addElementsForLanguages);
+        },
+
+        /*
+        [
+            {
+                "content": "wer",
+                "language": "gr"
+            },
+            */
+        mapContainsLang: function (list, lang) {
+            for(var i = 0; i < list.length; i++) {
+                if(list[i]["language"] == lang) return true;
+            }
+            return false;
         },
 
         setupUpdateTermButtons: function () {
+          console.log("setupUpdateTermButtons");
+          $(".updateTermButton").log();
             $(".updateTermButton").click(
+
                 function () {
+                  console.log("click");
                     var termEditBlock = $(this).parent();
 
                     var resourceName = termEditBlock.find(".resourceName").val();
@@ -301,8 +339,6 @@ var SchemaEdit = (function () {
                     var labelList = SchemaEdit.makeLiteralTermList(termEditBlock, "label");
                     var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
 
-                    // var callback = function (msg) {}
-                    console.log("subPropertyOfList = " + JSON.stringify(subPropertyOfList, false, 4));
                     var map = {
                         "graphURI": Config.getGraphURI(),
                         "rdfType": rdfType,
@@ -319,7 +355,7 @@ var SchemaEdit = (function () {
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
-                    console.log("updateTermSparql = \n" + updateTermSparql);
+                    // console.log("updateTermSparql = \n" + updateTermSparql);
                     SparqlConnector.postData(updateTermSparql, notifyOfUpdate);
                 }
             );
@@ -396,7 +432,6 @@ var SchemaEdit = (function () {
                     var prev = $(this).prev(".fieldBlock");
                     prev.log();
                     $(prev).after(prev.clone(true));
-                    //  SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
                 }
             );
         },
@@ -427,7 +462,7 @@ var SchemaEdit = (function () {
             var callback = function () {
                 SchemaEdit.postConfirmDialog();
                 Config.setCurrentResource(resourceName);
-                console.log("resourceName = " + resourceName);
+                // console.log("resourceName = " + resourceName);
                 SchemaEdit.loadNewResource(resourceName);
             };
             var updateTermSparql = sparqlTemplater(
@@ -445,8 +480,7 @@ var SchemaEdit = (function () {
         },
 
         endpointsDialog: function () {
-
-            // this is the button on the main form, not dialog
+            // button on the main form
             $("#endpointButton").click(function () {
                 Config.setQueryEndpoint($("#queryEndpoint").val());
                 Config.setUpdateEndpoint($("#updateEndpoint").val());
@@ -524,13 +558,10 @@ var SchemaEdit = (function () {
             return choices;
         },
 
-
-
         /* takes SPARQL results JSON and changes it into
          * a form that's easier to insert into template
          */
-        transformResourceJSON: function (json) { // ugly, but will do for now
-
+        transformResourceJSON: function (json) {
             var isClass = false;
             var isProperty = false;
 
@@ -541,6 +572,9 @@ var SchemaEdit = (function () {
             var range = [];
             var label = [];
             var comment = [];
+
+            var labelLanguages = [];
+            var commentLanguages = [];
 
             for(var i = 0; i < json.length; i++) {
                 var current = json[i];
@@ -597,6 +631,7 @@ var SchemaEdit = (function () {
                     });
                 }
             }
+
             if(rdfType.length == 0) {
                 rdfType.push("");
             }
@@ -653,207 +688,20 @@ var SchemaEdit = (function () {
 
         },
 
-        // TODO merge with updateTerm
-        addClassHandler: function () {
-            var button = $("#addClassButton");
-            button.click(function () {
-
-                var callback = function (msg) {
-                    SchemaEdit.postConfirmDialog();
-                }
-
-                var subClassOf = $("#subClassOf").val();
-                subClassOf = SEUtils.resolveToURI(subClassOf);
-
-                var map = {
-                    "graphURI": Config.getGraphURI(),
-                    "name": $("#className").val(),
-                    "subClassOf": subClassOf
-                }
-
-                /* Currently looping through different values here,
-                 * making a server call for each.
-                 * TODO move to looping within template
-                 */
-                $("#addClass .classLabel").each(
-                    function () {
-                        map["label"] = $(this).val();
-                        map["labelLang"] = $(this).attr("lang");
-                        SparqlConnector.addClass(map, callback);
-                    }
-                );
-                $("#addClass .classComment").each(
-                    function () {
-                        map["comment"] = $(this).val();
-                        map["commentLang"] = $(this).attr("lang");
-                        SparqlConnector.addClass(map, callback);
-                    }
-                );
-
-            });
-        },
-
-        // TODO merge with updateTerm
-        addPropertyHandler: function () {
-            var button = $("#addPropertyButton");
-            button.click(function () {
-                var name = $("#propertyName").val();
-
-                var domain = $("#domain").val();
-                if(domain) {
-                    domain = SEUtils.resolveToURI(domain);
-                }
-
-                var range = $("#range").val();
-                if(range) {
-                    range = SEUtils.resolveToURI(range);
-                }
-                var subPropertyOf = $("#subPropertyOf").val();
-                if(subPropertyOf) {
-                    subPropertyOf = SEUtils.resolveToURI(subPropertyOf);
-                }
-
-                var callback = function () {
-                    SchemaEdit.postConfirmDialog();
-                }
-
-                var map = {
-                    "graphURI": Config.getGraphURI(),
-                    "name": name,
-                    "domain": domain,
-                    "range": range,
-                    "subPropertyOf": subPropertyOf,
-                    "label": "",
-                    "labelLang": "",
-                    "comment": "",
-                    "commentLang": ""
-                };
-
-                // TODO I don't like the look of these... merge with edit term & get rid of loops
-                $("#addPropertyBlock .propertyLabel").each(
-                    function () {
-                        //  console.log("label = " + $(this).val());
-                        map["label"] = $(this).val();
-                        map["labelLang"] = $(this).attr("lang");
-                        SparqlConnector.addProperty(map, callback);
-                    }
-                );
-                $("#addPropertyBlock .propertyComment").each(
-                    function () {
-                        map["comment"] = $(this).val();
-                        map["commentLang"] = $(this).attr("lang");
-                        SparqlConnector.addProperty(map, callback);
-                    }
-                );
-                window.location.reload();
-            });
-        },
-
-        /**
-         * Loads list of properties from SPARQL store into combo box(es)
-         */
-        makePropertyChooser: function () {
-            var callback = function (json) {}
-
-            var propertiesList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
-            var chooser = SchemaEdit.makeTypedChooser("rdf:Property");
-            $("#propertyChooser").append($("<label for='addPropertyValue'>Property</label>"));
-            chooser.appendTo($("#propertyChooser"));
-
-            var combobox = chooser.combobox();
-            combobox.combobox("setInputId", "addPropertyValue");
-
-            $("#addPropertyValueButton").click(function () {
-                var subject = Config.getCurrentResource();
-                if(!Config.getCurrentResource()) {
-                    $("#noResourceError").dialog();
-                    return;
-                }
-                var predicate = $("#propertyChooser").find("input").val();
-
-                predicate = angleBrackets(predicate);
-
-                var object = $("#propertyLiteralValue").val();
-                var isLiteral = true;
-                if(!object || object == "") { // so URI object
-                    isLiteral = false;
-                    object = $("#uriValue").val();
-                    object = angleBrackets(object);
-                }
-                var language = "en";
-                var callback = function (msg) {
-                    alert(msg);
-                    window.location.reload();
-                };
-                if(isLiteral) { // TODO refactor
-                    SparqlConnector.updateLiteralTriple(subject, predicate, object, language, callback);
-                } else {
-                    SparqlConnector.insertProperty(subject, predicate, object, language, callback);
-                }
-            });
-        },
-
-        // NOT USED?
-        /*
-        populateClassesCombobox: function () {
-            var callback = function (json) {
-                // SchemaEdit.makeListBlock(json, $("#properties"));
-            }
-            var classedList = SparqlConnector.listProperties(callback); // TODO this is called again below, cache somewhere?
-            var chooser = SchemaEdit.makeTypedChooser("rdfs:Class");
-            chooser.appendTo($("#classChooser"));
-            chooser.combobox();
-            $("#addClassButton").click(function () {
-                var subject = Config.getCurrentResource();
-                var predicate = $("#classChooser").find("input").val();
-                var object = "dummy object";
-                var language = "en";
-                var callback = function () {
-                    refresh();
-                };
-                SparqlConnector.updateTriple(subject, predicate, object, language, callback);
-            });
-        },
-        */
-
-        makeTypedChooser: function (type) { // TODO getResourcesOfTypeSparqlTemplate is used elsewhere, refactor
-            var choices = $("<select></select>");
-            var map = {
-                "graphURI": Config.getGraphURI(),
-                "type": type
-            };
-
-            var getTypesUrl = SchemaEdit.generateGetUrl(getResourcesOfTypeSparqlTemplate, map);
-            var callback = function (typesArray) {
-                for(var i = 0; i < typesArray.length; i++) {
-                    var type = typesArray[i]["uri"];
-                    var option = $("<option class='choice'></option>");
-                    option.attr("value", type);
-                    option.text(type);
-                    choices.append(option);
-                }
-            };
-            SparqlConnector.getJsonForSparqlURL(getTypesUrl, callback);
-            return choices;
-        },
-
         initLangButtons: function () {
             $(".langButton").each(
                 function () {
-                    $(SchemaEdit.setLangButtonValue($(this)));
+                    var target = $(this).prev();
+                    var lang = target.attr("lang");
+                    if(!lang || lang == "") {
+                        lang = "lang";
+                    };
+                    $(this).text(lang);
                 }
             );
         },
-        setLangButtonValue: function ($button) {
-            var target = $($button).prev();
-            var lang = target.attr("lang");
-            if(!lang || lang == "") {
-                lang = "lang";
-            };
-            $button.text(lang);
-        },
 
-        addLanguageChoices: function (langMap) {
+        addLanguageChoices: function (languages, langMap) {
             // console.log("langMap = " + JSON.stringify(langMap, false, 4));
             var langChoices = templater(SE_HtmlTemplates.languageChoiceTemplate, langMap);
             $("#languageChooser").append($(langChoices));
@@ -862,9 +710,7 @@ var SchemaEdit = (function () {
         /* language choice for literals */
         /*   alternate representations for resources */
         setupLangButtons: function () {
-
             SchemaEdit.collectLanguages(SchemaEdit.addLanguageChoices);
-
             $(".langButton").click(
                 function () {
 
@@ -886,9 +732,8 @@ var SchemaEdit = (function () {
                     };
 
                     var addLanguageHandler = function () {
-                      //  $(dialog).log();
                         var lang = $("#addLanguage").val();
-                        console.log("Handler lang = " + lang);
+                        //  console.log("Handler lang = " + lang);
                         var languages = SEUtils.getLocalStorageObject("languages");
                         if(!languages) {
                             languages = [];
@@ -917,12 +762,11 @@ var SchemaEdit = (function () {
                         }
                     });
                 });
-
         },
 
-        collectLanguages: function (callback) {
-            //  console.log("languages sparql = \n" + SE_SparqlTemplates.getLanguages);
+        languages: [],
 
+        collectLanguages: function (callback) {
             var getLanguagesSparql = sparqlTemplater(
                 SE_SparqlTemplates.getLanguages, {
                     "graphURI": Config.getGraphURI(),
@@ -932,9 +776,9 @@ var SchemaEdit = (function () {
                 encodeURIComponent(getLanguagesSparql) + "&output=xml";
 
             var restructureJSON = function (json) {
-                var languages = SEUtils.getLocalStorageObject("languages");
-                if(!languages) {
-                    languages = [];
+                SchemaEdit.languages = SEUtils.getLocalStorageObject("languages");
+                if(!SchemaEdit.languages) {
+                    SchemaEdit.languages = [];
                 }
                 /* target :
                 {
@@ -955,19 +799,22 @@ var SchemaEdit = (function () {
                         if(!SchemaEdit.langListContains(langList, lang)) {
                             langList.push(entry);
                         }
-                        if(languages.indexOf(lang) == -1) {
-                            languages.push(lang);
+                        if(SchemaEdit.languages.indexOf(lang) == -1) {
+                            SchemaEdit.languages.push(lang);
                         }
                     }
                 }
                 var langMap = {};
                 langMap["langList"] = langList;
                 //  console.log("languages = \n" + JSON.stringify(languages, false, 4));
-                SEUtils.setLocalStorageObject("languages", languages);
+                SEUtils.setLocalStorageObject("languages", SchemaEdit.languages);
                 //  console.log("languages2 = \n" + JSON.stringify(SEUtils.getLocalStorageObject("languages"), false, 4));
                 // console.log("langList = \n" + JSON.stringify(langMap, false, 4));
                 // console.log("languages = \n" + JSON.stringify(langList, false, 4));
-                callback(langMap);
+                if(callback) {
+                    callback(SchemaEdit.languages, langMap);
+                }
+            //    console.log("SchemaEdit.languages in collect = " + JSON.stringify(SchemaEdit.languages));
             }
             SparqlConnector.getJsonForSparqlURL(getLanguagesUrl, restructureJSON);
         },
