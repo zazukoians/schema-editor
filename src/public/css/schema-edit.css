@@ -218,15 +218,16 @@ fieldset label {
   width: 60px;
 }
 
+
 #addLanguage {
-  width: 60px;
+margin: 10px;
 }
 
+
 #addLanguageBlock {
+    width: 200px;
   float: right;
   display: block;
-  border-style: solid none none none;
-  border-width: 1px;
   padding: 5px;
   border-color: lightgrey;
 }

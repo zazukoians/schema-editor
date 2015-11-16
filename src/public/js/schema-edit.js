@@ -43,15 +43,14 @@ var SchemaEdit = (function () {
             SchemaEdit.makeUploadGraphButton();
             SchemaEdit.makeTurtleButton();
 
-            SchemaEdit.initResourceButtons();
-            SchemaEdit.setupResourceButtons();
+            //    SchemaEdit.initResourceButtons();
+            //    SchemaEdit.setupResourceButtons();
 
             SchemaEdit.setupCreateButtons();
 
             SchemaEdit.makeAdvancedButton();
 
             SchemaEdit.initLangButtons();
-            //      SchemaEdit.setupLangButtons(); // TODO does this need to be called so often?
 
             SchemaEdit.setupPlusButtons();
 
@@ -854,59 +853,71 @@ var SchemaEdit = (function () {
             $button.text(lang);
         },
 
+        addLanguageChoices: function (langMap) {
+            // console.log("langMap = " + JSON.stringify(langMap, false, 4));
+            var langChoices = templater(SE_HtmlTemplates.languageChoiceTemplate, langMap);
+            $("#languageChooser").append($(langChoices));
+        },
+
         /* language choice for literals */
         /*   alternate representations for resources */
         setupLangButtons: function () {
-            var prepareLanguages = function (langMap) {
-                var langChoices = templater(SE_HtmlTemplates.languageChoiceTemplate, langMap);
-                //  $(".languageChoice").filter(":last").log();
-                // $(".languageChoice").filter(":last").after($(langChoices));
-                $("#languageChooser").append($(langChoices));
 
-            }
-            SchemaEdit.collectLanguages(prepareLanguages);
+            SchemaEdit.collectLanguages(SchemaEdit.addLanguageChoices);
+
             $(".langButton").click(
                 function () {
+
                     var target = $(this).prev();
                     var languageChoices = $("#languageSelect").html();
-                    var dialog = $("#dialog");
-                    // dialog.addClass("show");
-                    dialog.html(languageChoices);
+                    var dialog = $("#languageSelect");
+                    // dialog.html(languageChoices);
 
                     var changeLangHandler = function () {
                         var language;
                         $('.languageRadio').each(function () {
                             if(this.type == 'radio' && this.checked) {
                                 language = $(this).val();
-                                //  console.log("checked = "+language);
                             }
                         });
                         $(this).dialog("close");
                         target.attr("lang", language);
                         SchemaEdit.initLangButtons(); // TODO why is this called so often?
-                    }
-                    resizable: false,
-                        dialog.dialog({
-                            title: "Choose Language",
-                            modal: true,
-                            width: 300,
-                            buttons: {
-                                "Update": changeLangHandler,
-                                Cancel: function () {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        });
-                });
-            SchemaEdit.setupAddLanguageButton();
-        },
+                    };
 
-        setupAddLanguageButton: function () {
-            $("#addLanguageButton").click(
-                function () {
-                    console.log("click");
-                    $(this).prev().log();
+                    var addLanguageHandler = function () {
+                      //  $(dialog).log();
+                        var lang = $("#addLanguage").val();
+                        console.log("Handler lang = " + lang);
+                        var languages = SEUtils.getLocalStorageObject("languages");
+                        if(!languages) {
+                            languages = [];
+                        }
+                        languages.push(lang);
+                        SEUtils.setLocalStorageObject("languages");
+                        var langMap = {
+                            "langList": [{
+                                "lang": lang
+                            }]
+                        };
+                        SchemaEdit.addLanguageChoices(langMap);
+                    };
+
+                    //  resizable: false,
+                    dialog.dialog({
+                        title: "Choose Language",
+                        modal: true,
+                        width: 500,
+                        buttons: {
+                            "Set Language": changeLangHandler,
+                            "Add Language": addLanguageHandler,
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            },
+                        }
+                    });
                 });
+
         },
 
         collectLanguages: function (callback) {
@@ -940,73 +951,38 @@ var SchemaEdit = (function () {
                     if(lang && lang != "") {
                         var entry = {};
                         entry["lang"] = lang;
+
+                        if(!SchemaEdit.langListContains(langList, lang)) {
+                            langList.push(entry);
+                        }
                         if(languages.indexOf(lang) == -1) {
                             languages.push(lang);
-                            langList.push(entry);
                         }
                     }
                 }
                 var langMap = {};
                 langMap["langList"] = langList;
+                //  console.log("languages = \n" + JSON.stringify(languages, false, 4));
                 SEUtils.setLocalStorageObject("languages", languages);
-                //  console.log("langList = \n" + JSON.stringify(langList, false, 4));
+                //  console.log("languages2 = \n" + JSON.stringify(SEUtils.getLocalStorageObject("languages"), false, 4));
+                // console.log("langList = \n" + JSON.stringify(langMap, false, 4));
+                // console.log("languages = \n" + JSON.stringify(langList, false, 4));
                 callback(langMap);
             }
             SparqlConnector.getJsonForSparqlURL(getLanguagesUrl, restructureJSON);
         },
 
         /*
-        <label for="addLanguage">Add Language</label>
-        <input id="addLanguage" type="text" name="addLanguage" title="enter language code"/>
-        <button id="addLanguageButton">Add</button>
-        */
-        initResourceButtons: function () {
-            $(".resourceButton").each(
-                function () {
-                    $(SchemaEdit.setResourceButtonValue($(this)));
-                }
-            );
-        },
-
-        setResourceButtonValue: function ($button) {
-            var target = $($button).prev();
-            $button.text("R");
-        },
-
-        /*   alternate predicates rdfs:label/skos:prefLabel etc. */
-        setupResourceButtons: function () {
-            $(".resourceButton").click(
-                function () {
-                    var target = $(this).prev();
-                    var propertiesChoices = $("#propertiesSelect").html();
-                    var dialog = $("#dialog");
-                    // dialog.addClass("show");
-                    dialog.html(propertiesChoices);
-
-                    var changePropertiesHandler = function () {
-                        //  var language;
-                        $('.propertiesCheckbox').each(function () {
-                            if(this.checked) {
-                                //      language = $(this).val();
-                            }
-                        });
-                        $(this).dialog("close");
-                        //  target.attr("lang", language);
-                        //    SchemaEdit.initLangButtons();
-                    }
-
-                    dialog.dialog({
-                        title: "Choose Language",
-                        resizable: false,
-                        modal: true,
-                        buttons: {
-                            "Update": changePropertiesHandler,
-                            Cancel: function () {
-                                $(this).dialog("close");
-                            }
-                        }
-                    });
-                });
+        [
+                      { "lang": "en" },
+                      { "lang": "de" }
+                    ]
+                    */
+        langListContains: function (langList, lang) {
+            for(var i = 0; i < langList.length; i++) {
+                if(langList[i]["lang"] == lang) return true;
+            }
+            return false;
         },
 
         makeUpdateButton: function (subject, predicate, object, language) {

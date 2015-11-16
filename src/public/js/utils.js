@@ -151,7 +151,17 @@ var SEUtils = (function () {
         },
 
         getLocalStorageObject: function (key) {
-            JSON.parse(localStorage.getItem(key));
+            console.log("here");
+            // localStorage.removeItem(key);
+            var value = false;
+            try {
+                value = JSON.parse(localStorage.getItem(key));
+            } catch(err) { // probably corrupted - wipe it
+                localStorage.removeItem(key);
+            }
+            var value = JSON.parse(localStorage.getItem(key));
+          //  console.log("value = \n" + JSON.stringify(value, false, 4));
+            return value;
         }
     };
 
