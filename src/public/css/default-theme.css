@@ -2,9 +2,11 @@
 
 html,
 body {
-    font-family: "Lucida Console", Monaco, monospace;
+    /* font-family: "Lucida Console", Monaco, monospace; */
+    font-family: Verdana,Arial,sans-serif;
     border-right: 1px solid lightgray;
     border-left: 1px solid lightgray;
+    background: darkgray;
 }
 
 #dialog {
@@ -27,18 +29,19 @@ body {
 }
 
 #center {
-    background-color:lightyellow;
-    border: 1px solid #cccc33;
+    background-color:#eee;
+    border: 1px solid darkgray;
     border-radius: 7pt;
   /*  background: #dddd88; */
 }
 
 #header,
 #footer {
-  width: 100%;
-  border: 1px solid #eebb55;
+  width: 98%;
+  border: 1px solid darkgray;
   border-radius: 7pt;
-  background: #ffeebb;
+/*  background: #ffeebb; */
+background: #dcdcdc;
 }
 
 #header {

@@ -41,6 +41,12 @@
   width: 70%;
 }
 
+.termEditBlock {
+  display: inline;
+  align-items: left;
+  padding: 20px;
+}
+
 #currentContext {
   display: block;
 }
@@ -70,6 +76,8 @@
   float: left;
 }
 
+
+
 button, .button {
   /*
   position: absolute;
@@ -78,8 +86,8 @@ bottom:   0;
 */
 position: relative;
 
-  color: white;
-  background-color: purple;
+  color: black;
+  background-color: #eee;
   font-size: 70%;
   margin: 0px 4px 4px 4px;
   /*   margin: 10px; */
@@ -90,10 +98,7 @@ position: relative;
   display: inline-block;
 }
 
-.termEditBlock {
-  display: inline;
-  align-items: left;
-}
+
 
 .updatePropertyButton {
   display: block;

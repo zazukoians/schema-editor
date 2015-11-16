@@ -2,12 +2,13 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Schema Editor</title>
 
   <!-- a Reset CSS, to cancel any browser-specifics -->
   <link rel="stylesheet" href="css/normalize.css" />
 
+  <!-- jQuery UI theme -->
   <link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css" />
 
   <!-- 3-column layout using CSS3 flexbox -->
@@ -58,9 +59,7 @@
   <script src="js/schema-edit.js"></script>
   <script src="js/utils.js"></script>
 
-
-  <!-- TODO refactor scripts to more appropriate files -->
-  <script type="text/javascript" language="javascript">
+  <script type="text/javascript">
     $(function() {
       SchemaEdit.init();
       spinner();
@@ -70,8 +69,6 @@
 </head>
 
 <body>
-  <div id="dialog">popup/alert dialog</div>
-
   <div id="spinner" class="spinner"></div>
 
   <div id="header">
@@ -325,6 +322,9 @@
 
   <div id="footer">
   </div>
+
+  <!-- the following are display:none, only used in dialogs -->
+  <div id="dialog">popup/alert dialog</div>
 
   <div id="languageSelect" class="dialog">
     <fieldset id="languageChooser">
