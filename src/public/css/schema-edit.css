@@ -76,16 +76,8 @@
   float: left;
 }
 
-
-
 button, .button {
-  /*
-  position: absolute;
-right:    0;
-bottom:   0;
-*/
-position: relative;
-
+  position: relative;
   color: black;
   background-color: #eee;
   font-size: 70%;
@@ -97,8 +89,6 @@ position: relative;
 .editBlock {
   display: inline-block;
 }
-
-
 
 .updatePropertyButton {
   display: block;

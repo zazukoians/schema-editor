@@ -297,7 +297,7 @@ var SchemaEdit = (function () {
                 SchemaEdit.setupLangButtons();
                 SchemaEdit.setupPlusButtons();
                 console.log("makeTermBlocks");
-                $(".updateTermButton").log();
+            //    $(".updateTermButton").log();
             }
             SchemaEdit.collectLanguages(addElementsForLanguages);
         },
@@ -317,8 +317,6 @@ var SchemaEdit = (function () {
         },
 
         setupUpdateTermButtons: function () {
-          console.log("setupUpdateTermButtons");
-          $(".updateTermButton").log();
             $(".updateTermButton").click(
 
                 function () {
@@ -430,7 +428,7 @@ var SchemaEdit = (function () {
             $(".plusButton").click(
                 function () {
                     var prev = $(this).prev(".fieldBlock");
-                    prev.log();
+                    // prev.log();
                     $(prev).after(prev.clone(true));
                 }
             );
