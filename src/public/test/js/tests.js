@@ -2,6 +2,14 @@ QUnit.test("hello test", function (assert) {
     assert.ok(1 == "1", "Passed!");
 });
 
+QUnit.test("getting graph component of URL", function (assert) {
+    var url = "http://localhost:8888/?uri=http://p.org/pr&graph=http://example.org/here#";
+    var graph = "http://example.org/here#"
+    var result = SEUtils.graphFromLocation(url);
+    assert.equal(result, graph, "http://example.org/here#");
+});
+
+
 QUnit.module("prefix/namespace group");
 //  "foaf": "http://xmlns.com/foaf/0.1/",
 QUnit.test("test SEUtils prefix/namespace mapping", function (assert) {

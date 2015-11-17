@@ -146,6 +146,21 @@ var SEUtils = (function () {
         },
         /* *** Prefixes/Namespaces Map related END *** */
 
+        graphFromLocation: function (url) { // allow url for testing
+            if(!url) {
+                url = window.location.href;
+            }
+            var graph = parseUri(url).queryKey.graph;
+            console.log("graphFromLocation graph = "+graph);
+            if(!graph || (graph == "")) {
+                return false;
+            }
+            if(!graph.endsWith("/") && !graph.endsWith("#")) {
+                graph = graph + "#";
+            }
+            return graph;
+        },
+
         setLocalStorageObject: function (key, object) {
             localStorage.setItem(key, JSON.stringify(object));
         },
