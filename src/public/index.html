@@ -73,7 +73,7 @@
 
   <div id="header">
 
-    <div id="titleBlock" class="editBlock">
+    <div id="titleBlock">
 
       <div class="help">
         <button id="#overviewHelp" class="helpButton">?</button>
@@ -87,26 +87,6 @@
       <h2 id="pageTitle">Schema Editor</h2>
 
     </div>
-    <br/>
-    <button id="newVocabButton" title="Create new vocabulary">New Vocab</button>
-    <div id="newVocabBlock" class="editBlock">
-      <div class="help">
-        <button class="helpButton">?</button>
-        <div id="newVocabHelpText" title="New Vocab" class="helpText">
-          <p>Create a new vocab</p>
-        </div>
-      </div>
-      <a href="#uploadRDF">Upload RDF</a>
-      <h4>Create New Vocab</h4>
-
-      <label for="vocabName">Name</label>
-      <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
-      <label for="vocabNamespace">Namespace/Graph Name</label>
-      <input id="vocabNamespace" type="text" name="vocabNamespace" title="namespace of vocab" />
-      <label for="vocabPrefix">Preferred Prefix</label>
-      <input id="vocabPrefix" type="text" name="vocabPrefix" title="vocab preferred prefix" />
-      <button id="createVocabButton">Create</button>
-    </div>
 
     <div id="currentContext">
       <div id="currentGraphBlock" class="editBlock">
@@ -118,9 +98,10 @@
           </div>
         </div>
 
-        <strong>
-          Current Graph :
-        </strong>
+        <label>
+          <strong>Current Graph :</strong>
+        </label>
+
         <div id="currentGraph">
           <span id="graphChooser"></span>
         </div>
@@ -136,18 +117,39 @@
           </div>
         </div>
 
-        <strong>
-          Current Resource :
-        </strong>
-        <div id="currentR">
-          <span id="resourceChooser"></span>
-          <button id="deleteResource">Delete Resource</button>
-          <div id="deleteResourceText" class="dialog">
-            <p>Resource Deleted</p>
-          </div>
+        <label>
+          <strong>Current Resource :</strong>
+        </label>
+
+        <!-- div id="currentR" -->
+        <span id="resourceChooser"></span>
+        <button id="deleteResource">Delete Resource</button>
+        <div id="deleteResourceText" class="dialog">
+          <p>Resource Deleted</p>
         </div>
+        <!-- /div -->
 
       </div>
+    </div>
+
+    <button id="newVocabButton" title="Create new RDF Schema">New Schema</button>
+    <div id="newVocabBlock" class="editBlock">
+      <div class="help">
+        <button class="helpButton">?</button>
+        <div id="newVocabHelpText" title="New Vocab" class="helpText">
+          <p>Create a new schema</p>
+        </div>
+      </div>
+      <a href="#uploadRDF">Upload RDF</a>
+      <h4>Create New Vocab</h4>
+
+      <label for="vocabName">Name</label>
+      <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
+      <label for="vocabNamespace">Namespace/Graph Name</label>
+      <input id="vocabNamespace" type="text" name="vocabNamespace" title="namespace of vocab" />
+      <label for="vocabPrefix">Preferred Prefix</label>
+      <input id="vocabPrefix" type="text" name="vocabPrefix" title="vocab preferred prefix" />
+      <button id="createVocabButton">Create</button>
     </div>
 
   </div>
@@ -165,15 +167,17 @@
             <p>These are the RDF classes and properties in the current graph. Clicking on a class or property will set it to the Current Resource.</p>
           </div>
         </div>
-
-        <h2 id="classesTitle" class="header">Classes</h2>
-
-        <div id="classes" class="block resourceList small"></div>
+        <div class="classesBlock">
+          <h2 id="classesTitle" class="header">Classes</h2>
+          <div id="classes" class="block resourceList small"></div>
+        </div>
       </div>
       <br/>
       <div class="list-block">
-        <h2 id="propertiesTitle" class="header">Properties</h2>
-        <div id="properties" class="block resourceList small"></div>
+        <div class="propertiesBlock">
+          <h2 id="propertiesTitle" class="header">Properties</h2>
+          <div id="properties" class="block resourceList small"></div>
+        </div>
       </div>
     </div>
     <!--*** End Left Panel *** -->

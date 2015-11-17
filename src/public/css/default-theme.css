@@ -1,52 +1,52 @@
 /* Styling for 3-column - columns.css and modal dialog */
 
-html,
-body {
-    /* font-family: "Lucida Console", Monaco, monospace; */
-    font-family: Verdana,Arial,sans-serif;
-    border-right: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-    background: darkgray;
+html, body {
+  /* font-family: "Lucida Console", Monaco, monospace; */
+  font-family: Verdana, Arial, sans-serif;
+  border-right: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  background: darkgray;
 }
 
 #dialog {
-    display: none;
+  display: none;
 }
 
 .ui-dialog-content, .ui-widget-content {
-/*    display: none; */
-    background-color: white;
-    border: 1px solid lightgray;
-    border-radius: 7pt;
+  /*    display: none; */
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 7pt;
 }
 
 #left, #right {
-    background-color: lightgray;
+  background-color: lightgray;
 }
 
 #left {
-    /* font-size: 50%; */
+  /* font-size: 50%; */
 }
 
 #center {
-    background-color:#eee;
-    border: 1px solid darkgray;
-    border-radius: 7pt;
+  background-color: #eee;
+  border: 1px solid darkgray;
+  border-radius: 7pt;
   /*  background: #dddd88; */
 }
 
-#header,
-#footer {
+#header, #footer {
   width: 98%;
   border: 1px solid darkgray;
   border-radius: 7pt;
-/*  background: #ffeebb; */
-background: #dcdcdc;
+  /*  background: #ffeebb; */
+  background: #dcdcdc;
 }
 
+/*
 #header {
   text-align: center;
 }
+*/
 
 
 /* --- End "Themes" --- */

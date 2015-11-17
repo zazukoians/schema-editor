@@ -64,6 +64,22 @@ var SE_HtmlTemplates = (function () {
          </div> \n\
       ~{/range}~ \n\
          <button class='plusButton'>+</button> \n\
+         \n\
+               ~{#domainIncludes}~ \n\
+                 <div class='fieldBlock'> \n\
+                  <label>schema:domainIncludes</label> \n\
+                  <input value='~{domainIncludesURI}~' class='resource domainIncludes' /> \n\
+                  </div> \n\
+               ~{/domainIncludes}~ \n\
+                  <button class='plusButton'>+</button> \n\
+         \n\
+               ~{#rangeIncludes}~ \n\
+                 <div class='fieldBlock'> \n\
+                  <label>schema:rangeIncludes</label> \n\
+                  <input value='~{rangeIncludesURI}~' class='resource rangeIncludes' /> \n\
+                  </div> \n\
+               ~{/rangeIncludes}~ \n\
+                  <button class='plusButton'>+</button> \n\
    ~{/isProperty}~ \n\
 \n\
    ~{#label}~ \n\
@@ -155,6 +171,14 @@ var SE_SparqlTemplates = (function () {
                ~{#range}~ \n\
                    rdfs:range <~{range}~> ; \n\
                ~{/range}~ \n\
+               \n\
+                              ~{#domainIncludes}~ \n\
+                                  schema:domainIncludes <~{domainIncludes}~> ; \n\
+                              ~{/domainIncludes}~  \n\
+               \n\
+                              ~{#rangeIncludes}~ \n\
+                                  schema:rangeIncludes <~{rangeIncludes}~> ; \n\
+                              ~{/rangeIncludes}~ \n\
 \n\
                ~{#label}~ \n\
                    ~{#labelText}~ \n\

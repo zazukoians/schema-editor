@@ -333,6 +333,8 @@ var SchemaEdit = (function () {
                     var subPropertyOfList = SchemaEdit.makeURITermList(termEditBlock, "subPropertyOf");
                     var domainList = SchemaEdit.makeURITermList(termEditBlock, "domain");
                     var rangeList = SchemaEdit.makeURITermList(termEditBlock, "range");
+                    var domainIncludesList = SchemaEdit.makeURITermList(termEditBlock, "domainIncludes");
+                    var rangeIncludesList = SchemaEdit.makeURITermList(termEditBlock, "rangeIncludes");
 
                     var labelList = SchemaEdit.makeLiteralTermList(termEditBlock, "label");
                     var commentList = SchemaEdit.makeLiteralTermList(termEditBlock, "comment");
@@ -345,6 +347,8 @@ var SchemaEdit = (function () {
                         "subPropertyOf": subPropertyOfList,
                         "domain": domainList,
                         "range": rangeList,
+                        "domainIncludes": domainIncludesList,
+                        "rangeIncludes": rangeIncludesList,
                         "label": labelList,
                         "comment": commentList
                     };
@@ -568,6 +572,8 @@ var SchemaEdit = (function () {
             var subPropertyOf = [];
             var domain = [];
             var range = [];
+            var domainIncludes = [];
+            var rangeIncludes = [];
             var label = [];
             var comment = [];
 
@@ -616,6 +622,16 @@ var SchemaEdit = (function () {
                         "rangeURI": object
                     });
                 }
+                if(predicate == "http://schema.org/domainIncludes") {
+                    domainIncludes.push({
+                        "domainIncludesURI": object
+                    });
+                }
+                if(predicate == "http://schema.org/rangeIncludes") {
+                    rangeIncludes.push({
+                        "rangeIncludesURI": object
+                    });
+                }
                 if(predicate == "http://www.w3.org/2000/01/rdf-schema#label") {
                     label.push({
                         "content": object,
@@ -648,6 +664,12 @@ var SchemaEdit = (function () {
                 if(range.length == 0) {
                     range.push("");
                 }
+                if(domainIncludes.length == 0) {
+                    domainIncludes.push("");
+                }
+                if(rangeIncludes.length == 0) {
+                    rangeIncludes.push("");
+                }
             }
             if(label.length == 0) {
                 label.push("");
@@ -667,6 +689,8 @@ var SchemaEdit = (function () {
                 "subClassOf": subClassOf,
                 "domain": domain,
                 "range": range,
+                "domainIncludes": domainIncludes,
+                "rangeIncludes": rangeIncludes,
                 "label": label,
                 "comment": comment
             }
