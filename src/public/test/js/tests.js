@@ -5,12 +5,64 @@ QUnit.test("hello test", function (assert) {
 QUnit.test("getting graph component of URL", function (assert) {
     var url = "http://localhost:8888/?uri=http://p.org/pr&graph=http://example.org/here#";
     var graph = "http://example.org/here#"
-    var result = SEUtils.graphFromLocation(url);
+    var result = SEUtils.parameterFromLocation("graph", url);
     assert.equal(result, graph, "http://example.org/here#");
 });
 
+QUnit.test("base test", function (assert) {
+    var uri = "http://localhost:8888/?uri=http://b.org/b#Z&graph=http://b.org/b#";
+    var expected = "http://localhost:8888/";
+    var result = getBase(uri);
+    assert.equal(result, expected, "http://example.org/here#");
+});
+
+QUnit.test("nameFromURI / namespace", function (assert) {
+    var uri = "http://example.org/here/name";
+    var expected = "name";
+    var result = SEUtils.nameFromURI(uri);
+    assert.equal(result, expected, "name");
+});
+
+QUnit.test("nameFromURI # namespace", function (assert) {
+    var uri = "http://example.org/here#name";
+    var expected = "name";
+    var result = SEUtils.nameFromURI(uri);
+    assert.equal(result, expected, "name");
+});
 
 QUnit.module("prefix/namespace group");
+
+QUnit.test("test SEUtils resolveToURI", function (assert) {
+    assert.expect(4);
+    var done = assert.async();
+
+    var resolveTests = function () {
+
+
+        var slashURI = "http://xmlns.com/foaf/0.1/name";
+        var result = SEUtils.resolveToURI(slashURI);
+        assert.equal(result, slashURI, "http://xmlns.com/foaf/0.1/name => http://xmlns.com/foaf/0.1/name");
+
+        var hashURI = "http://www.w3.org/2000/01/rdf-schema#Class";
+        var result = SEUtils.resolveToURI(hashURI);
+        assert.equal(result, hashURI, "http://www.w3.org/2000/01/rdf-schema#Class => http://www.w3.org/2000/01/rdf-schema#Class");
+
+        // console.log("resolveToURI SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
+
+        var curie = "foaf:name";
+        var result = SEUtils.resolveToURI(curie);
+        assert.equal(result, "http://xmlns.com/foaf/0.1/name", "foaf:name => http://xmlns.com/foaf/0.1/name");
+
+        Config.setGraphURI("http://example.org/", false);
+        console.log("Config.getGraphURI() = "+Config.getGraphURI());
+        var name = "thingy";
+        var result = SEUtils.resolveToURI(name);
+        assert.equal(result, "http://example.org/thingy", "thingy => http://example.org/thingy");
+      //  done();
+    }
+    SEUtils.initPrefixes(resolveTests);
+});
+
 //  "foaf": "http://xmlns.com/foaf/0.1/",
 QUnit.test("test SEUtils prefix/namespace mapping", function (assert) {
     assert.expect(2);
@@ -30,31 +82,30 @@ QUnit.test("test SEUtils prefix/namespace mapping", function (assert) {
     SEUtils.initPrefixes(callback);
 });
 
-QUnit.test("test SEUtils resolveToURI", function (assert) {
-    assert.expect(4);
-    var done = assert.async();
 
-    var resolveTests = function () {
 
-        var slashURI = "http://xmlns.com/foaf/0.1/name";
-        var result = SEUtils.resolveToURI(slashURI);
-        assert.equal(result, slashURI, "http://xmlns.com/foaf/0.1/name => http://xmlns.com/foaf/0.1/name");
+QUnit.test("curieFromURI: known prefix, / namespace", function (assert) {
+    var uri = "http://xmlns.com/foaf/0.1/name";
+    var expected = "foaf:name";
+    var result = SEUtils.curieFromURI(uri);
+    assert.equal(result, expected, "foaf:name");
+});
 
-        var hashURI = "http://www.w3.org/2000/01/rdf-schema#Class";
-        var result = SEUtils.resolveToURI(hashURI);
-        assert.equal(result, hashURI, "http://www.w3.org/2000/01/rdf-schema#Class => http://www.w3.org/2000/01/rdf-schema#Class");
+QUnit.test("curieFromURI: known prefix, # namespace", function (assert) {
+    var uri = "http://www.w3.org/2000/01/rdf-schema#Class";
+    var expected = "rdfs:Class";
+    var result = SEUtils.curieFromURI(uri);
+    assert.equal(result, expected, "rdfs:Class");
+});
 
-        // console.log("resolveToURI SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
+QUnit.test("curieFromURI: unknown prefix, / namespace", function (assert) {
+    var uri = "http://xxxx.org/yyy";
+    var result = SEUtils.curieFromURI(uri);
+    assert.equal(result, uri, "uri");
+});
 
-        var curie = "foaf:name";
-        var result = SEUtils.resolveToURI(curie);
-        assert.equal(result, "http://xmlns.com/foaf/0.1/name", "foaf:name => http://xmlns.com/foaf/0.1/name");
-
-        Config.setGraphURI("http://example.org/");
-        var name = "thingy";
-        var result = SEUtils.resolveToURI(name);
-        assert.equal(result, "http://example.org/thingy", "thingy => http://example.org/thingy");
-        done();
-    }
-    SEUtils.initPrefixes(resolveTests);
+QUnit.test("curieFromURI: unknown prefix, # namespace", function (assert) {
+    var uri = "http://xxxx.org/yyy#zzz";
+    var result = SEUtils.curieFromURI(uri);
+    assert.equal(result, uri, "uri");
 });

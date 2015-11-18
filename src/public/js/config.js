@@ -43,24 +43,57 @@ var Config = (function () {
         */
 
 
-        /* *** Value Getters *** */
+        setCurrentResource: function (uri) {
+            // Config.current.currentResource = currentResource;
+            // Config.setToLocalStorage("currentResource", currentResource);
+
+            uri = SEUtils.encodeHash(uri);
+            var graph = SEUtils.parameterFromLocation("graph");
+            graph = SEUtils.encodeHash(graph);
+            //  console.log("setCurrentResource graph = "+graph);
+            // var graph = parseUri(window.location.href).queryKey.graph;
+            // var split = window.location.href.split("?");
+            window.location.href = getBase(window.location.href) + "?uri=" + uri + "&graph=" + graph;
+        },
+
         getCurrentResource: function () {
-            var currentResource = parseUri(window.location.href).queryKey.uri;
-            if(currentResource && (currentResource != "")) {
-                return currentResource;
+          //  var currentResource = parseUri(window.location.href).queryKey.uri;
+            var uri = SEUtils.parameterFromLocation("uri");
+            if(!uri){
+              return "";
             }
-            var stored = Config.getFromLocalStorage("currentResource");
-            return stored ? stored : Config.current.currentResource;
+            return SEUtils.decodeHash(uri);
+        },
+
+        setGraphURI: function (graphURI, reload) {
+            console.log("setGraphURI graphURI = " + graphURI);
+            graphURI = SEUtils.encodeHash(graphURI);
+            // Config.setToLocalStorage("graphURI", graphURI);
+
+            if(reload) {
+                var href = getBase(window.location.href) + "?graph=" + graphURI;
+                console.log("href = " + href);
+                window.location.href = href;
+            }
         },
 
         getGraphURI: function () {
-            var graphURI = parseUri(window.location.href).queryKey.graph;
-            if(graphURI && (graphURI != "")) {
-                return graphURI;
+            var graphURI = SEUtils.parameterFromLocation("graph");
+            if(!graphURI) return "";
+            if(!graphURI.endsWith("/") && !graphURI.endsWith("#")) {
+                graphURI = graphURI + "#";
             }
-            var stored = Config.getFromLocalStorage("graphURI");
-            return stored ? stored : Config.current.graphURI;
+          //  console.log("before " + graphURI);
+            // graphURI = SEUtils.decodeHash(graphURI);
+          //  console.log("after " + graphURI);
+            return graphURI;
+            //  var stored = Config.getFromLocalStorage("graphURI");
+            //  return stored ? stored : Config.current.graphURI;
+            // console.log("graphURI = " + graphURI);
+
         },
+
+
 
         getQueryEndpoint: function () {
             var stored = Config.getFromLocalStorage("queryEndpoint");
@@ -80,28 +113,8 @@ var Config = (function () {
             return false;
         },
 
-        /* *** Value Setters *** */
-        setCurrentResource: function (currentResource) {
-            Config.current.currentResource = currentResource;
-            Config.setToLocalStorage("currentResource", currentResource);
-            var graph = parseUri(window.location.href).queryKey.graph;
-            var split = window.location.href.split("?");
-            var newUrl = split[0] + "?uri=" + currentResource;
-            if(graph && (graph != "")) {
-                newUrl = newUrl + "&graph=" + graph;
-            }
-            window.location.href = newUrl;
-        },
 
-        setGraphURI: function (graphURI, reload) {
-          console.log("setGraphURI graphURI = " + graphURI);
-            Config.current.graphURI = graphURI;
-            Config.setToLocalStorage("graphURI", graphURI);
-            if(reload) {
-                var split = window.location.href.split("?");
-                window.location.href = split[0] + "?graph=" + graphURI;
-            }
-        },
+
 
         setQueryEndpoint: function (queryEndpoint) {
             // console.log("setqueryEndpoint = " + queryEndpoint);

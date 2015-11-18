@@ -51,6 +51,9 @@ var SparqlConnector = (function () {
         },
 
         listResources: function (callback) {
+          if(!Config.getGraphURI()){
+            return;
+          }
             var resources = [];
             var getResourceListSparql = sparqlTemplater(
                 getResourceListSparqlTemplate, {

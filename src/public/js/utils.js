@@ -41,11 +41,6 @@ var SEUtils = (function () {
          */
         getNamespaceForPrefix: function (prefix) {
             // TODO if not found, delegate to http://prefix.cc/foaf.file.json
-            /*
-            console.log("getNamespaceForPrefix SEUtils.prefixes = \n" + JSON.stringify(SEUtils.prefixes, false, 4));
-            console.log("foaf = "+SEUtils.prefixes['foaf']);
-            console.log("prefix = "+prefix);
-            */
             return SEUtils.prefixes[prefix];
         },
 
@@ -57,7 +52,6 @@ var SEUtils = (function () {
         getPrefixForNamespace: function (namespace) {
             // TODO if not found, delegate to http://prefix.cc
             var prefix = SEUtils.getKeyByValue(SEUtils.prefixes, namespace);
-            if(!prefix) return namespace;
             return prefix;
         },
 
@@ -67,18 +61,30 @@ var SEUtils = (function () {
          *  "http://xmlns.com/foaf/0.1/" => "foaf"
          */
         curieFromURI: function (uri) {
-            //  console.log("uri = "+uri);
+            // console.log("curieFromURI SEUtils.prefixes = " + JSON.stringify(SEUtils.prefixes, false, 4));
+            // console.log("curieFromURI uri = " + uri);
             var index = uri.indexOf("#");
             if(index == -1) {
                 index = uri.lastIndexOf("/");
             }
             var ns = uri.substring(0, index + 1);
-            //    console.log("ns = "+ns);
+            // console.log("curieFromURI ns = " + ns);
             var prefix = SEUtils.getPrefixForNamespace(ns);
+            if(!prefix) {
+                return uri;
+            }
             var name = uri.substring(index + 1);
-            //    console.log("prefix = "+prefix);
-            //    console.log("name = "+name);
+            // console.log("curieFromURI prefix = " + prefix);
+            // console.log("curieFromURI name = " + name);
             return prefix + ":" + name;
+        },
+
+        nameFromURI: function (uri) { // TODO merge with curieFromURI?
+            var index = uri.indexOf("#");
+            if(index == -1) {
+                index = uri.lastIndexOf("/");
+            }
+            return uri.substring(index + 1);
         },
 
         /* reverse lookup in map { key : value } */
@@ -120,7 +126,7 @@ var SEUtils = (function () {
         algorithm no doubt can be improved...
         */
         resolveToURI: function (resource) {
-            console.log("resource = " + resource);
+            // console.log("resource = " + resource);
             // empty
             if(!resource || resource == "") {
                 return false;
@@ -128,7 +134,7 @@ var SEUtils = (function () {
             // CURIE (with colon, no dot or slash ) http://www.w3.org/TR/curie/
             // look up namespace
             if(resource.indexOf(":") != -1 && resource.indexOf(".") == -1 && resource.indexOf("/") == -1) {
-                console.log("curie recognised");
+                // console.log("curie recognised");
 
                 var split = resource.split(":");
                 var ns = Config.getGraphURI();
@@ -146,19 +152,41 @@ var SEUtils = (function () {
         },
         /* *** Prefixes/Namespaces Map related END *** */
 
-        graphFromLocation: function (url) { // allow url for testing
+        parameterFromLocation: function (name, url) { // allow url for testing
             if(!url) {
                 url = window.location.href;
             }
-            var graph = parseUri(url).queryKey.graph;
-            console.log("graphFromLocation graph = "+graph);
-            if(!graph || (graph == "")) {
+            //  console.log("parseUri(url).queryKey = " + JSON.stringify(parseUri(url).queryKey,false,4));
+            var param = parseUri(url).queryKey[name];
+
+            console.log("parameterFromLocation name = "+name+ " param = " + param);
+            if(!param || (param == "")) {
                 return false;
             }
-            if(!graph.endsWith("/") && !graph.endsWith("#")) {
-                graph = graph + "#";
+            param = SEUtils.decodeHash(param);
+
+/*
+            if(!param.endsWith("/") && !param.endsWith("#")) {
+                param = param + "#";
             }
-            return graph;
+            */
+            //console.log("parameterFromLocation2 name = "+name+ " param = " + param);
+            return param;
+        },
+
+        encodeHash: function (uri) {
+          console.log("encodeHash uri = "+uri);
+            if(uri.substring(uri.length-1) == "#") {
+                uri = uri.substring(0, uri.length - 1) + "%23";
+            }
+            return uri;
+        },
+
+        decodeHash: function (uri) {
+            if(uri.substring(uri.length-3) == "%23") {
+                uri = uri.substring(0, uri.length - 3) + "#";
+            }
+            return uri;
         },
 
         setLocalStorageObject: function (key, object) {
@@ -353,9 +381,11 @@ var queryString = (function (a) {
  * @return {number} This returns something that has a description too long to
  *     fit in one line.
  */
+/*
 function getCurrentPageURI() {
     return encodeURI(queryString["uri"]);
 }
+*/
 
 /**
  * Comment template.
@@ -634,6 +664,12 @@ parseUri.options = {
         loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
     }
 };
+
+function getBase(uri) { // getRacine?
+    var parsed = parseUri(uri);
+    //  console.log("parsed = "+JSON.stringify(parsed, false, 4));
+    return parsed.protocol + "://" + parsed.host + ":" + parsed.port + parsed.path;
+}
 
 /* jQuery logging utility
 usage : e.g. $("#thing").log()

@@ -142,11 +142,11 @@
       </div>
       <a href="#uploadRDF">Upload RDF</a>
       <h4>Create New Vocab</h4>
-
+      <em>All fields required</em>
       <label for="vocabName">Name</label>
       <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
       <label for="vocabNamespace">Namespace/Graph Name</label>
-      <input id="vocabNamespace" type="text" name="vocabNamespace" title="namespace of vocab" />
+      <input id="vocabNamespace" type="text" name="vocabNamespace" title="namespace of vocab" value="http://" />
       <label for="vocabPrefix">Preferred Prefix</label>
       <input id="vocabPrefix" type="text" name="vocabPrefix" title="vocab preferred prefix" />
       <button id="createVocabButton">Create</button>
@@ -325,6 +325,7 @@
   <!--*** End Right Panel *** -->
 
   <div id="footer">
+    <a href="/test/tests.html">Run Tests</a>
   </div>
 
   <!-- the following are display:none, only used in dialogs -->

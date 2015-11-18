@@ -63,23 +63,23 @@ var SchemaEdit = (function () {
         },
 
         render: function () {
-            var graph = queryString["graph"];
-
-            // TODO use parseUri
-            var uri = queryString["uri"];
+            //  var graph = queryString["graph"];
+            var graph = SEUtils.parameterFromLocation("graph");
+            //  var uri = queryString["uri"];
+            var uri = SEUtils.parameterFromLocation("uri");
             if((!uri || uri == "") && (!graph || graph == "")) {
                 // alert("undefined");
                 //  SchemaEdit.makeNewVocabBlock();
                 return;
             }
-            uri = encodeURI(uri);
+            // uri = encodeURI(uri); ???
 
             $("#currentResource").text(uri);
             $("#resource").text(uri);
 
-            var uri = queryString["uri"];
+            //  var uri = queryString["uri"];
             if(uri) { // TODO need to check if this if() is working
-                uri = encodeURI(uri);
+                //    uri = encodeURI(uri);
                 SchemaEdit.renderTerm(uri);
             }
             refresh(); // redraws flex columns
@@ -104,7 +104,11 @@ var SchemaEdit = (function () {
                 var prefix = $("#vocabPrefix").val();
                 SEUtils.prefixes[prefix] = graph;
                 var callback = function () {
+                  // Config.setCurrentResource("");
+                        console.log("makeNewVocabBlock graph = " + graph);
                         Config.setGraphURI(graph, true);
+                        console.log("makeNewVocabBlock getgraph = " + Config.getGraphURI());
+
                     }
                     // mystring[mystring.length-1] === '#'
                 SparqlConnector.createNewVocab(name, graph, prefix, callback);
@@ -131,7 +135,9 @@ var SchemaEdit = (function () {
                         var newGraph = this.value;
                         Config.setGraphURI(newGraph);
                         var split = window.location.href.split("?");
-                        window.location.href = split[0] + "?graph=" + encodeURI(newGraph);
+                        var href = getBase(window.location.href);
+                        var graph = SEUtils.parameterFromLocation("graph");
+                        window.location.href = href + "?graph=" + graph;
 
                         // the above can sometimes leave you far down the page, so scroll up
                         $("html, body").animate({
@@ -139,7 +145,9 @@ var SchemaEdit = (function () {
                         }, "slow");
                     }
                 });
-                SchemaEdit.setGraphFromUrl();
+                var graph = SEUtils.parameterFromLocation("graph");
+
+                $("#graph").val(graph);
             };
             SparqlConnector.listGraphs(populateChooser);
         },
@@ -167,28 +175,28 @@ var SchemaEdit = (function () {
                         }, "slow");
                     }
                 });
-                SchemaEdit.setResourceFromUrl();
+                var uri = SEUtils.parameterFromLocation("uri");
+                $("#resource").val(uri);
             };
             SparqlConnector.listResources(callback);
         },
 
         loadNewResource: function (newResource) {
             var split = window.location.href.split("?");
-            var graph = parseUri(window.location.href).queryKey.graph;
-            var newLocation = split[0] + "?uri=" + encodeURI(newResource);
-            if(graph && (graph != "")) {
-                newLocation = newLocation + "&graph=" + graph;
-            }
+            //    var graph = parseUri(window.location.href).queryKey.graph;
+            var graph = SEUtils.parameterFromLocation("graph");
+            var newLocation = getBase(window.location.href) + "?uri=" + newResource + "&graph=" + graph;
             window.location.href = newLocation;
         },
 
-        setResourceFromUrl: function () {
-            var uri = parseUri(window.location.href).queryKey.uri;
-            if(uri && (uri != "")) {
-                $("#resource").val(uri);
-            }
-        },
-
+        /*
+                setResourceFromUrl: function () {
+                    var uri = parseUri(window.location.href).queryKey.uri;
+                    if(uri && (uri != "")) {
+                        $("#resource").val(uri);
+                    }
+                },
+        */
         makeDeleteResourceButton: function () {
             $("#deleteResource").click(
                 function () {
@@ -197,8 +205,9 @@ var SchemaEdit = (function () {
                         $("#deleteResourceText").dialog();
                     }
                     SparqlConnector.deleteResource(resource, callback);
-                    var split = window.location.href.split("?");
-                    window.location.href = split[0] + "?graph=" + Config.getGraphURI();
+                    //  var split = window.location.href.split("?");
+                    var href = getBase(window.location.href);
+                    window.location.href = href + "?graph=" + Config.getGraphURI();
                 }
             );
         },
@@ -242,12 +251,21 @@ var SchemaEdit = (function () {
 
             for(var i = 0; i < json.length; i++) {
                 var uri = json[i]["uri"];
+                /*
                 var split = uri.split("/");
                 var name = split[split.length - 1];
+                */
+                var name = SEUtils.nameFromURI(uri);
                 var itemElement = $("<li></li>");
+
+                /*
                 var split = window.location.href.split("?");
                 var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(Config.getGraphURI());
+                */
+
+                var url = getBase(window.location.href) + "?uri=" + uri + "&graph=" + Config.getGraphURI();
                 var aElement = $("<a/>").attr("href", url);
+
                 aElement.text(name);
                 itemElement.append(aElement);
                 listElement.append(itemElement);
@@ -261,13 +279,16 @@ var SchemaEdit = (function () {
                 graphURI: Config.getGraphURI(),
                 uri: uri
             };
+            console.log("renderTerm map = " + JSON.stringify(map, false, 4));
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, SchemaEdit.makeTermEditBlock);
         },
 
         makeTermEditBlock: function (json) {
+            console.log("makeTermEditBlock json = " + JSON.stringify(json, false, 4));
             var replacementMap = SchemaEdit.transformResourceJSON(json);
 
+            console.log("makeTermEditBlock replacementMap = " + JSON.stringify(replacementMap, false, 4));
             /* prepare empty fields for each language in use */
             var addElementsForLanguages = function (languages, langMap) {
                 var label = replacementMap["label"]; // TODO make names plural
@@ -297,7 +318,7 @@ var SchemaEdit = (function () {
                 SchemaEdit.setupLangButtons();
                 SchemaEdit.setupPlusButtons();
                 console.log("makeTermBlocks");
-            //    $(".updateTermButton").log();
+                //    $(".updateTermButton").log();
             }
             SchemaEdit.collectLanguages(addElementsForLanguages);
         },
@@ -316,11 +337,13 @@ var SchemaEdit = (function () {
             return false;
         },
 
+        /* on click, post to store
+         */
         setupUpdateTermButtons: function () {
             $(".updateTermButton").click(
 
                 function () {
-                  console.log("click");
+                  //  console.log("click");
                     var termEditBlock = $(this).parent();
 
                     var resourceName = termEditBlock.find(".resourceName").val();
@@ -529,16 +552,6 @@ var SchemaEdit = (function () {
             );
         },
 
-        setGraphFromUrl: function () {
-            var graph = parseUri(window.location.href).queryKey.graph;
-            if(graph && (graph != "")) {
-                if(graph[graph.length - 1] != '/') {
-                    graph = graph + "#";
-                }
-                $("#graph").val(graph);
-            }
-        },
-
         /**
          * Shared function for combobox/autocomplete creation
          * creates and populates a <select> block from an array of values
@@ -564,6 +577,7 @@ var SchemaEdit = (function () {
          * a form that's easier to insert into template
          */
         transformResourceJSON: function (json) {
+            console.log("transformResourceJSON json = " + JSON.stringify(json, false, 4));
             var isClass = false;
             var isProperty = false;
 
@@ -678,7 +692,11 @@ var SchemaEdit = (function () {
                 comment.push("");
             }
 
+            console.log("transformResourceJSON subject = " + subject);
+
             var resourceName = SEUtils.curieFromURI(subject);
+
+            console.log("transformResourceJSON resourceName = " + resourceName);
 
             return {
                 "isClass": isClass,
@@ -724,7 +742,7 @@ var SchemaEdit = (function () {
         },
 
         addLanguageChoices: function (languages, langMap) {
-            // console.log("langMap = " + JSON.stringify(langMap, false, 4));
+           console.log("addLanguageChoices langMap = " + JSON.stringify(langMap, false, 4));
             var langChoices = templater(SE_HtmlTemplates.languageChoiceTemplate, langMap);
             $("#languageChooser").append($(langChoices));
         },
@@ -755,7 +773,7 @@ var SchemaEdit = (function () {
 
                     var addLanguageHandler = function () {
                         var lang = $("#addLanguage").val();
-                        //  console.log("Handler lang = " + lang);
+                       console.log("addLanguageHandler lang = " + lang);
                         var languages = SEUtils.getLocalStorageObject("languages");
                         if(!languages) {
                             languages = [];
@@ -767,7 +785,8 @@ var SchemaEdit = (function () {
                                 "lang": lang
                             }]
                         };
-                        SchemaEdit.addLanguageChoices(langMap);
+                        console.log("addLanguageHandler langMap = " + JSON.stringify(langMap, false, 4));
+                        SchemaEdit.addLanguageChoices(languages, langMap);
                     };
 
                     //  resizable: false,
@@ -798,7 +817,9 @@ var SchemaEdit = (function () {
                 encodeURIComponent(getLanguagesSparql) + "&output=xml";
 
             var restructureJSON = function (json) {
+                 console.log("restructureJSON json = " + JSON.stringify(json, false, 4));
                 SchemaEdit.languages = SEUtils.getLocalStorageObject("languages");
+                 console.log("restructureJSON SchemaEdit.languages = " + JSON.stringify(SchemaEdit.languages, false, 4));
                 if(!SchemaEdit.languages) {
                     SchemaEdit.languages = [];
                 }
@@ -811,6 +832,7 @@ var SchemaEdit = (function () {
                 }
                 */
                 var langList = [];
+
                 for(var i = 0; i < json.length; i++) {
                     var lang = json[i]["language"];
 
@@ -826,17 +848,24 @@ var SchemaEdit = (function () {
                         }
                     }
                 }
-                var langMap = {};
-                langMap["langList"] = langList;
-                //  console.log("languages = \n" + JSON.stringify(languages, false, 4));
+                var langMap = SEUtils.getLocalStorageObject("langMap");
+                if(!langMap){
+                  langMap = {};
+                  langMap["langList"] = [];
+                }
+                // langMap["langList"] = langList;
+                langMap["langList"].concat(langList);
+                langMap["langList"].sort();
+                console.log("langMap = \n" + JSON.stringify(langMap, false, 4));
                 SEUtils.setLocalStorageObject("languages", SchemaEdit.languages);
+                SEUtils.setLocalStorageObject("langMap", langMap);
                 //  console.log("languages2 = \n" + JSON.stringify(SEUtils.getLocalStorageObject("languages"), false, 4));
                 // console.log("langList = \n" + JSON.stringify(langMap, false, 4));
                 // console.log("languages = \n" + JSON.stringify(langList, false, 4));
                 if(callback) {
                     callback(SchemaEdit.languages, langMap);
                 }
-            //    console.log("SchemaEdit.languages in collect = " + JSON.stringify(SchemaEdit.languages));
+                //    console.log("SchemaEdit.languages in collect = " + JSON.stringify(SchemaEdit.languages));
             }
             SparqlConnector.getJsonForSparqlURL(getLanguagesUrl, restructureJSON);
         },
@@ -992,55 +1021,9 @@ var SchemaEdit = (function () {
                         */
         },
 
-        /*
-                makeAddPropertyValue: function (uri) {
-                    var updatePropertyButton = $("<button id='updateProperty'>Add this property</button>");
-                    // updatePropertyButton.append($("<hr/>"));
-                    var updateClassButton = $("<button id='updateClass'>Add this class</button>");
-                    //  updateClassButton.append($("<hr/>"));
-                    $("#newProperty").append(updatePropertyButton);
-                    $("#newClass").append(updateClassButton);
-                    // $("#newProperty") is <input>
-                    updatePropertyButton.click(function () {
-
-                    });
-                    updateClassButton.click(function () {});
-                },
-        */
-
-        /*
-                makePropertyChooser: function () {
-                    var map = {
-                        graphURI: Config.getGraphURI(),
-                    };
-                    var getAllPropertiesUrl = SchemaEdit.generateGetUrl(getPropertyListSparqlTemplate, map);
-                    var callback = function (propertiesArray) {
-                        // {"type":"uri","uri":"http://data.admin.ch/def/hgv/longName","range":"http://www.w3.org/2000/01/rdf-schema#Literal"},
-                        for(var i = 0; i < propertiesArray.length; i++) {
-                            var property = propertiesArray[i]["uri"];
-                            //     <option value="ActionScript">ActionScript</option>
-                            var option = $("<option class='propertychoice'></option>");
-                            option.attr("value", property);
-                            option.text(property);
-                            var last = $(".propertyChoice").last();
-                            last.after(option);
-                        }
-                    };
-                    SparqlConnector.getJsonForSparqlURL(getAllPropertiesUrl, callback);
-                },
-        */
-
-        // TODO is this used?
-        /*
-        makeAddClass: function (uri) {
-            var addClassButton = $("<button id='addClass'>Add Class</button>");
-            $("#editor").prepend(addClassButton);
-            addClassButton.click(function () {});
-            var chooser = SchemaEdit.makeClassChooser(uri);
-        },
-*/
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
+            console.log("SPARQL = \n" + sparql);
             return Config.getQueryEndpoint() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
         },
 
