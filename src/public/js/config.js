@@ -43,20 +43,20 @@ var Config = (function () {
         */
 
         setGraphURI: function (graphURI, reload) {
-            console.log("setGraphURI graphURI = " + graphURI);
+        //    console.log("setGraphURI graphURI = " + graphURI);
             graphURI = SEUtils.encodeHash(graphURI);
             // Config.setToLocalStorage("graphURI", graphURI);
 
             if(reload) {
                 var href = getBase(window.location.href) + "?graph=" + graphURI;
-                console.log("href = " + href);
+          //      console.log("href = " + href);
                 window.location.href = href;
             }
         },
 
         getGraphURI: function () {
             var graphURI = SEUtils.parameterFromLocation("graph");
-            console.log("getGraphURI = " + graphURI);
+      //      console.log("getGraphURI = " + graphURI);
             if(!graphURI) return "";
             if(!graphURI.endsWith("/") && !graphURI.endsWith("#")) {
                 graphURI = graphURI + "#";
@@ -76,7 +76,7 @@ var Config = (function () {
             // Config.setToLocalStorage("currentResource", currentResource);
 
             uri = SEUtils.encodeHash(uri);
-            console.log("setCurrentResource uri = "+uri);
+        //    console.log("setCurrentResource uri = "+uri);
             if(!graph) {
                 graph = SEUtils.parameterFromLocation("graph");
             }

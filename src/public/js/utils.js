@@ -162,7 +162,7 @@ var SEUtils = (function () {
             //  console.log("parseUri(url).queryKey = " + JSON.stringify(parseUri(url).queryKey,false,4));
             var param = parseUri(url).queryKey[name];
 
-            console.log("parameterFromLocation name = " + name + " param = " + param);
+          //  console.log("parameterFromLocation name = " + name + " param = " + param);
             if(!param || (param == "")) {
                 return false;
             }
@@ -178,9 +178,9 @@ var SEUtils = (function () {
         },
 
         encodeHash: function (uri) {
-            console.log("encodeHash uri = " + uri);
+          //  console.log("encodeHash uri = " + uri);
             uri = uri.replace(/#/g, "%23");
-            console.log("encoded Hash uri = " + uri);
+        //    console.log("encoded Hash uri = " + uri);
             return uri;
         },
 

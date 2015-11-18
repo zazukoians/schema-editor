@@ -42,7 +42,7 @@ var SchemaEdit = (function () {
 
             SchemaEdit.makeAdvancedButton();
 
-            SchemaEdit.initLangButtons();
+            SchemaEdit.labelLangButtons();
 
             SchemaEdit.setupPlusButtons();
 
@@ -65,7 +65,7 @@ var SchemaEdit = (function () {
                 uri = graph;
             }
             $("#currentResource").val(uri);
-            console.log("currentResource uri = " + uri);
+          //  console.log("currentResource uri = " + uri);
             $("#resource").val(uri);
 
             SchemaEdit.renderTerm(uri);
@@ -272,7 +272,7 @@ var SchemaEdit = (function () {
                 graphURI: Config.getGraphURI(),
                 uri: uri
             };
-            console.log("renderTerm map = " + JSON.stringify(map, false, 4));
+          //  console.log("renderTerm map = " + JSON.stringify(map, false, 4));
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, SchemaEdit.makeTermEditBlock);
         },
@@ -305,11 +305,13 @@ var SchemaEdit = (function () {
 
                 var termEditBlock = templater(SE_HtmlTemplates.termTemplate, replacementMap);
                 $("#editor").append(termEditBlock);
-                SchemaEdit.initLangButtons();
+
                 SchemaEdit.setupUpdateTermButtons();
-                SchemaEdit.initLangButtons();
+              //  SchemaEdit.labelLangButtons();
+                    SchemaEdit.labelLangButtons();
                 SchemaEdit.setupLangButtons();
-                SchemaEdit.setupPlusButtons();
+
+          //      SchemaEdit.setupPlusButtons();
                 console.log("makeTermBlocks");
                 //    $(".updateTermButton").log();
             }
@@ -686,11 +688,11 @@ var SchemaEdit = (function () {
                 comment.push("");
             }
 
-            console.log("transformResourceJSON subject = " + subject);
+        //    console.log("transformResourceJSON subject = " + subject);
 
             var resourceName = SEUtils.curieFromURI(subject);
 
-            console.log("transformResourceJSON resourceName = " + resourceName);
+        //    console.log("transformResourceJSON resourceName = " + resourceName);
 
             return {
                 "isClass": isClass,
@@ -722,7 +724,7 @@ var SchemaEdit = (function () {
 
         },
 
-        initLangButtons: function () {
+        labelLangButtons: function () {
             $(".langButton").each(
                 function () {
                     var target = $(this).prev();
@@ -749,7 +751,7 @@ var SchemaEdit = (function () {
                 function () {
 
                     var target = $(this).prev();
-                    var languageChoices = $("#languageSelect").html();
+                    // var languageChoices = $("#languageSelect").html();
                     var dialog = $("#languageSelect");
                     // dialog.html(languageChoices);
 
@@ -762,7 +764,7 @@ var SchemaEdit = (function () {
                         });
                         $(this).dialog("close");
                         target.attr("lang", language);
-                        SchemaEdit.initLangButtons(); // TODO why is this called so often?
+                   SchemaEdit.labelLangButtons();
                     };
 
                     var addLanguageHandler = function () {
@@ -806,7 +808,7 @@ var SchemaEdit = (function () {
                 SE_SparqlTemplates.getLanguages, {
                     "graphURI": Config.getGraphURI(),
                 });
-
+console.log("getLanguagesSparql = \n"+getLanguagesSparql);
             var getLanguagesUrl = Config.getQueryEndpoint() + "?query=" +
                 encodeURIComponent(getLanguagesSparql) + "&output=xml";
 
@@ -850,7 +852,7 @@ var SchemaEdit = (function () {
                 // langMap["langList"] = langList;
                 langMap["langList"].concat(langList);
                 langMap["langList"].sort();
-                console.log("langMap = \n" + JSON.stringify(langMap, false, 4));
+                console.log("langMap after of concat = \n" + JSON.stringify(langMap, false, 4));
                 SEUtils.setLocalStorageObject("languages", SchemaEdit.languages);
                 SEUtils.setLocalStorageObject("langMap", langMap);
                 //  console.log("languages2 = \n" + JSON.stringify(SEUtils.getLocalStorageObject("languages"), false, 4));
@@ -913,10 +915,6 @@ var SchemaEdit = (function () {
                     });
                 }
                 SparqlConnector.deleteTurtle(triple, callback);
-                // history.add("before",currentState)
-                // history.add("undo",sparql)
-                // history.add("after",currentState)
-                // history.add("item",undo button)
             });
             return deleteButton;
         },
@@ -943,10 +941,6 @@ var SchemaEdit = (function () {
                     });
                 };
                 SparqlConnector.updateTriple(triple, callback);
-                // history.add("before",currentState)
-                // history.add("undo",sparql)
-                // history.add("after",currentState)
-                // history.add("item",undo button)
             });
             return changePredicateButton;
         },
@@ -993,26 +987,6 @@ var SchemaEdit = (function () {
             $("#turtle").click(function () {
                 location.href = SparqlConnector.getTurtleUrl();
             });
-        },
-
-        setupButtons: function () { // TODO refactor - move local to buttons?
-
-            /*
-                        // TODO this button doesn't appear to exist!
-                        $("#upload-button").click(function () {
-                            var data = new FormData($("#upload-file").val());
-                            $.ajax({
-                                url: Config.getSparqlUpdatePath(),
-                                type: 'POST',
-                                data: ({
-                                    update: data
-                                }),
-                                processData: false,
-                                contentType: false
-                            });
-                            //    e.preventDefault();
-                        });
-                        */
         },
 
         generateGetUrl: function (sparqlTemplate, map) {
