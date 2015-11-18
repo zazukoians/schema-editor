@@ -42,29 +42,6 @@ var Config = (function () {
                 http://sandbox.fusepool.info:8181/sparql/update
         */
 
-
-        setCurrentResource: function (uri) {
-            // Config.current.currentResource = currentResource;
-            // Config.setToLocalStorage("currentResource", currentResource);
-
-            uri = SEUtils.encodeHash(uri);
-            var graph = SEUtils.parameterFromLocation("graph");
-            graph = SEUtils.encodeHash(graph);
-            //  console.log("setCurrentResource graph = "+graph);
-            // var graph = parseUri(window.location.href).queryKey.graph;
-            // var split = window.location.href.split("?");
-            window.location.href = getBase(window.location.href) + "?uri=" + uri + "&graph=" + graph;
-        },
-
-        getCurrentResource: function () {
-          //  var currentResource = parseUri(window.location.href).queryKey.uri;
-            var uri = SEUtils.parameterFromLocation("uri");
-            if(!uri){
-              return "";
-            }
-            return SEUtils.decodeHash(uri);
-        },
-
         setGraphURI: function (graphURI, reload) {
             console.log("setGraphURI graphURI = " + graphURI);
             graphURI = SEUtils.encodeHash(graphURI);
@@ -79,13 +56,14 @@ var Config = (function () {
 
         getGraphURI: function () {
             var graphURI = SEUtils.parameterFromLocation("graph");
+            console.log("getGraphURI = " + graphURI);
             if(!graphURI) return "";
             if(!graphURI.endsWith("/") && !graphURI.endsWith("#")) {
                 graphURI = graphURI + "#";
             }
-          //  console.log("before " + graphURI);
+            //  console.log("before " + graphURI);
             // graphURI = SEUtils.decodeHash(graphURI);
-          //  console.log("after " + graphURI);
+            //  console.log("after " + graphURI);
             return graphURI;
             //  var stored = Config.getFromLocalStorage("graphURI");
             //  return stored ? stored : Config.current.graphURI;
@@ -93,7 +71,27 @@ var Config = (function () {
 
         },
 
+        setCurrentResource: function (uri, graph) {
+            // Config.current.currentResource = currentResource;
+            // Config.setToLocalStorage("currentResource", currentResource);
 
+            uri = SEUtils.encodeHash(uri);
+            console.log("setCurrentResource uri = "+uri);
+            if(!graph) {
+                graph = SEUtils.parameterFromLocation("graph");
+            }
+            graph = SEUtils.encodeHash(graph);
+            window.location.href = getBase(window.location.href) + "?uri=" + uri + "&graph=" + graph;
+        },
+
+        getCurrentResource: function () {
+            //  var currentResource = parseUri(window.location.href).queryKey.uri;
+            var uri = SEUtils.parameterFromLocation("uri");
+            if(!uri) {
+                return "";
+            }
+            return SEUtils.decodeHash(uri);
+        },
 
         getQueryEndpoint: function () {
             var stored = Config.getFromLocalStorage("queryEndpoint");

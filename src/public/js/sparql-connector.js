@@ -300,7 +300,7 @@ var SparqlConnector = (function () {
                     "object": object,
                     "language": language
                 });
-            console.log("updateTripleSparql = \n" + updateTripleSparql);
+            // console.log("updateTripleSparql = \n" + updateTripleSparql);
             SparqlConnector.postData(updateTripleSparql, callback);
             return false;
         },

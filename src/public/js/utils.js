@@ -63,6 +63,9 @@ var SEUtils = (function () {
         curieFromURI: function (uri) {
             // console.log("curieFromURI SEUtils.prefixes = " + JSON.stringify(SEUtils.prefixes, false, 4));
             // console.log("curieFromURI uri = " + uri);
+            if(uri.endsWith("/") || uri.endsWith("#")){ // probably a namespace/graph
+              return uri;
+            }
             var index = uri.indexOf("#");
             if(index == -1) {
                 index = uri.lastIndexOf("/");
@@ -159,33 +162,30 @@ var SEUtils = (function () {
             //  console.log("parseUri(url).queryKey = " + JSON.stringify(parseUri(url).queryKey,false,4));
             var param = parseUri(url).queryKey[name];
 
-            console.log("parameterFromLocation name = "+name+ " param = " + param);
+            console.log("parameterFromLocation name = " + name + " param = " + param);
             if(!param || (param == "")) {
                 return false;
             }
             param = SEUtils.decodeHash(param);
 
-/*
-            if(!param.endsWith("/") && !param.endsWith("#")) {
-                param = param + "#";
-            }
-            */
+            /*
+                        if(!param.endsWith("/") && !param.endsWith("#")) {
+                            param = param + "#";
+                        }
+                        */
             //console.log("parameterFromLocation2 name = "+name+ " param = " + param);
             return param;
         },
 
         encodeHash: function (uri) {
-          console.log("encodeHash uri = "+uri);
-            if(uri.substring(uri.length-1) == "#") {
-                uri = uri.substring(0, uri.length - 1) + "%23";
-            }
+            console.log("encodeHash uri = " + uri);
+            uri = uri.replace(/#/g, "%23");
+            console.log("encoded Hash uri = " + uri);
             return uri;
         },
 
         decodeHash: function (uri) {
-            if(uri.substring(uri.length-3) == "%23") {
-                uri = uri.substring(0, uri.length - 3) + "#";
-            }
+            uri = uri.replace(/%23/g, "#");
             return uri;
         },
 
@@ -214,9 +214,10 @@ var SEUtils = (function () {
  */
 function refresh() {
     var elem = document.getElementById("wrapper");
+    var display = elem.style.display;
     elem.style.display = 'none';
     elem.offsetHeight; // no need to store this anywhere, the reference is enough
-    elem.style.display = 'flex';
+    elem.style.display = display; // 'flex';
     refreshResourceInput();
 }
 
@@ -359,6 +360,7 @@ function templater(raw, replacementMap) {
 }
 
 /* parse URL */
+/*
 var queryString = (function (a) {
     if(a == "") return {};
     var b = {};
@@ -371,6 +373,7 @@ var queryString = (function (a) {
     }
     return b;
 })(window.location.search.substr(1).split('&'));
+*/
 
 // TODO material below appears mostly to come from FooWiki - check & remove
 
