@@ -88,7 +88,7 @@ var Config = (function () {
             //  var currentResource = parseUri(window.location.href).queryKey.uri;
             var uri = SEUtils.parameterFromLocation("uri");
             if(!uri) {
-                return "";
+                return Config.getGraphURI();
             }
             return SEUtils.decodeHash(uri);
         },

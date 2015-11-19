@@ -63,6 +63,8 @@ var SEUtils = (function () {
         curieFromURI: function (uri) {
             // console.log("curieFromURI SEUtils.prefixes = " + JSON.stringify(SEUtils.prefixes, false, 4));
             // console.log("curieFromURI uri = " + uri);
+            if(!uri) return Config.getGraphURI();
+
             if(uri.endsWith("/") || uri.endsWith("#")){ // probably a namespace/graph
               return uri;
             }

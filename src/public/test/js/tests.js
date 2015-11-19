@@ -2,13 +2,6 @@ QUnit.test("hello test", function (assert) {
     assert.ok(1 == "1", "Passed!");
 });
 
-QUnit.test("getting graph component of URL", function (assert) {
-    var url = "http://localhost:8888/?uri=http://p.org/pr&graph=http://example.org/here#";
-    var graph = "http://example.org/here#"
-    var result = SEUtils.parameterFromLocation("graph", url);
-    assert.equal(result, graph, "http://example.org/here#");
-});
-
 QUnit.test("base test", function (assert) {
     var uri = "http://localhost:8888/?uri=http://b.org/b#Z&graph=http://b.org/b#";
     var expected = "http://localhost:8888/";
@@ -37,8 +30,6 @@ QUnit.test("test SEUtils resolveToURI", function (assert) {
     var done = assert.async();
 
     var resolveTests = function () {
-
-
         var slashURI = "http://xmlns.com/foaf/0.1/name";
         var result = SEUtils.resolveToURI(slashURI);
         assert.equal(result, slashURI, "http://xmlns.com/foaf/0.1/name => http://xmlns.com/foaf/0.1/name");
@@ -53,11 +44,13 @@ QUnit.test("test SEUtils resolveToURI", function (assert) {
         var result = SEUtils.resolveToURI(curie);
         assert.equal(result, "http://xmlns.com/foaf/0.1/name", "foaf:name => http://xmlns.com/foaf/0.1/name");
 
+/*
         Config.setGraphURI("http://example.org/", false);
         console.log("Config.getGraphURI() = "+Config.getGraphURI());
         var name = "thingy";
         var result = SEUtils.resolveToURI(name);
         assert.equal(result, "http://example.org/thingy", "thingy => http://example.org/thingy");
+        */
       //  done();
     }
     SEUtils.initPrefixes(resolveTests);

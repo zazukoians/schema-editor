@@ -124,7 +124,9 @@ var SchemaEdit = (function () {
 
                         var graph = SEUtils.parameterFromLocation("graph");
                         graph = SEUtils.encodeHash(graph);
-                        window.location.href = getBase(window.location.href) + "?graph=" + graph;
+                        var uri = Config.getGraphURI();
+                        uri = SEUtils.encodeHash(uri);
+                        window.location.href = getBase(window.location.href) + "?graph=" + graph + "&uri=" + uri;
 
                         // the above can sometimes leave you far down the page, so scroll up
                         $("html, body").animate({
@@ -166,6 +168,7 @@ var SchemaEdit = (function () {
                     }
                 });
                 var uri = SEUtils.parameterFromLocation("uri");
+                if(!uri) uri = Config.getGraphURI();
                 $("#resource").val(uri);
             };
             SparqlConnector.listResources(callback);
