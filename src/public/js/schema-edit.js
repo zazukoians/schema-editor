@@ -245,19 +245,14 @@ var SchemaEdit = (function () {
 
             for(var i = 0; i < json.length; i++) {
                 var uri = json[i]["uri"];
-                /*
-                var split = uri.split("/");
-                var name = split[split.length - 1];
-                */
+                var graph = Config.getGraphURI();
                 var name = SEUtils.nameFromURI(uri);
                 var itemElement = $("<li></li>");
 
-                /*
-                var split = window.location.href.split("?");
-                var url = split[0] + "?uri=" + encodeURI(uri) + "&graph=" + encodeURI(Config.getGraphURI());
-                */
+                uri = SEUtils.encodeHash(uri);
+                graph = SEUtils.encodeHash(graph);
 
-                var url = getBase(window.location.href) + "?uri=" + uri + "&graph=" + Config.getGraphURI();
+                var url = getBase(window.location.href) + "?uri=" + uri + "&graph=" + graph;
                 var aElement = $("<a/>").attr("href", url);
 
                 aElement.text(name);
@@ -279,10 +274,10 @@ var SchemaEdit = (function () {
         },
 
         makeTermEditBlock: function (json) {
-            // console.log("makeTermEditBlock json = " + JSON.stringify(json, false, 4));
+            console.log("makeTermEditBlock json = " + JSON.stringify(json, false, 4));
             var replacementMap = SchemaEdit.transformResourceJSON(json);
 
-            //  console.log("makeTermEditBlock replacementMap = " + JSON.stringify(replacementMap, false, 4));
+            console.log("makeTermEditBlock replacementMap = " + JSON.stringify(replacementMap, false, 4));
             /* prepare empty fields for each language in use */
             var addElementsForLanguages = function (languages, langMap) {
                 var label = replacementMap["label"]; // TODO make names plural
@@ -644,16 +639,20 @@ var SchemaEdit = (function () {
                     });
                 }
                 if(predicate == "http://www.w3.org/2000/01/rdf-schema#label") {
-                    label.push({
-                        "content": object,
-                        "language": language
-                    });
+                    if(object && object != "") {
+                        label.push({
+                            "content": object,
+                            "language": language
+                        });
+                    }
                 }
                 if(predicate == "http://www.w3.org/2000/01/rdf-schema#comment") {
-                    comment.push({
-                        "content": object,
-                        "language": language
-                    });
+                    if(object && object != "") {
+                        comment.push({
+                            "content": object,
+                            "language": language
+                        });
+                    }
                 }
             }
 
@@ -682,12 +681,14 @@ var SchemaEdit = (function () {
                     rangeIncludes.push("");
                 }
             }
+            /*
             if(label.length == 0) {
                 label.push("");
             }
             if(comment.length == 0) {
                 comment.push("");
             }
+            */
 
             //    console.log("transformResourceJSON subject = " + subject);
 
@@ -745,7 +746,6 @@ var SchemaEdit = (function () {
         },
 
         /* language choice for literals */
-        /*   alternate representations for resources */
         setupLangButtons: function () {
             SchemaEdit.collectLanguages(SchemaEdit.addLanguageChoices);
             $(".langButton").click(
@@ -835,51 +835,51 @@ var SchemaEdit = (function () {
                 };
                 var langList = langMap["langList"];
 
-// TODO the same data is stored twice: languages & langMap, combine
+                // TODO the same data is stored twice: languages & langMap, combine
 
                 /* add values from localStorage : languages */
                 var storedLanguages = SEUtils.getLocalStorageObject("languages");
-                if(storedLanguages){
-                for(var i = 0; i < storedLanguages.length; i++) {
-                    var lang = storedLanguages[i];
+                if(storedLanguages) {
+                    for(var i = 0; i < storedLanguages.length; i++) {
+                        var lang = storedLanguages[i];
 
-                    if(lang && lang != "") {
-                        var entry = {};
-                        entry["lang"] = lang;
+                        if(lang && lang != "") {
+                            var entry = {};
+                            entry["lang"] = lang;
 
-                        if(!SchemaEdit.langListContains(langList, lang)) {
-                            langList.push(entry);
-                        }
-                        if(SchemaEdit.languages.indexOf(lang) == -1) {
-                            SchemaEdit.languages.push(lang);
+                            if(!SchemaEdit.langListContains(langList, lang)) {
+                                langList.push(entry);
+                            }
+                            if(SchemaEdit.languages.indexOf(lang) == -1) {
+                                SchemaEdit.languages.push(lang);
+                            }
                         }
                     }
                 }
-}
 
-/* add values from localStorage : langMap */
+                /* add values from localStorage : langMap */
                 var storedLangMap = SEUtils.getLocalStorageObject("langMap");
 
-                if(storedLangMap){
-                  var storedLangList = storedLangMap["langList"];
-                for(var i = 0; i < storedLangList.length; i++) {
-                    var lang = storedLangList[i]["lang"];
+                if(storedLangMap) {
+                    var storedLangList = storedLangMap["langList"];
+                    for(var i = 0; i < storedLangList.length; i++) {
+                        var lang = storedLangList[i]["lang"];
 
-                    if(lang && lang != "") {
-                        var entry = {};
-                        entry["lang"] = lang;
+                        if(lang && lang != "") {
+                            var entry = {};
+                            entry["lang"] = lang;
 
-                        if(!SchemaEdit.langListContains(langList, lang)) {
-                            langList.push(entry);
-                        }
-                        if(SchemaEdit.languages.indexOf(lang) == -1) {
-                            SchemaEdit.languages.push(lang);
+                            if(!SchemaEdit.langListContains(langList, lang)) {
+                                langList.push(entry);
+                            }
+                            if(SchemaEdit.languages.indexOf(lang) == -1) {
+                                SchemaEdit.languages.push(lang);
+                            }
                         }
                     }
                 }
-              }
 
-/* add values retrieved from current schema via SPARQL */
+                /* add values retrieved from current schema via SPARQL */
                 for(var i = 0; i < json.length; i++) {
                     var lang = json[i]["language"];
 
@@ -897,7 +897,7 @@ var SchemaEdit = (function () {
                 }
 
                 // langMap["langList"] = langList;
-              //  langMap["langList"].concat(langList);
+                //  langMap["langList"].concat(langList);
                 langMap["langList"].sort();
                 console.log("SchemaEdit.languages after combined = \n" + JSON.stringify(SchemaEdit.languages, false, 4));
                 console.log("langMap after combined = \n" + JSON.stringify(langMap, false, 4));

@@ -24,11 +24,11 @@ var SE_HtmlTemplates = (function () {
          */
         termTemplate: "\n\
 <div class='termEditBlock'> \n\
-   <label>RDF Type</label> \n\
-   <input class='resource rdfType' value='~{rdfType}~' /> \n\
-\n\
    <label>Resource Name</label> \n\
    <input class='resource resourceName' value='~{resourceName}~' /> \n\
+\n\
+   <label>RDF Type</label> \n\
+   <input class='resource rdfType' value='~{rdfType}~' /> \n\
 \n\
    ~{#isClass}~ \n\
       ~{#subClassOf}~ \n\
@@ -40,22 +40,22 @@ var SE_HtmlTemplates = (function () {
    <button class='plusButton'>+</button> \n\
    ~{/isClass}~ \n\
 \n\
-         ~{#isProperty}~ \n\
-            ~{#subPropertyOf}~ \n\
-              <div class='fieldBlock'> \n\
-               <label>rdfs:subPropertyOf</label> \n\
-               <input class='resource subPropertyOf' value='~{subPropertyOfURI}~' /> \n\
-               </div> \n\
-            ~{/subPropertyOf}~ \n\
-               <button class='plusButton'>+</button> \n\
+   ~{#isProperty}~ \n\
+      ~{#subPropertyOf}~ \n\
+         <div class='fieldBlock'> \n\
+            <label>rdfs:subPropertyOf</label> \n\
+            <input class='resource subPropertyOf' value='~{subPropertyOfURI}~' /> \n\
+         </div> \n\
+      ~{/subPropertyOf}~ \n\
+   <button class='plusButton'>+</button> \n\
 \n\
-      ~{#domain}~ \n\
-        <div class='fieldBlock'> \n\
+   ~{#domain}~ \n\
+      <div class='fieldBlock'> \n\
          <label>rdfs:domain</label> \n\
          <input value='~{domainURI}~' class='resource domain' /> \n\
-         </div> \n\
-      ~{/domain}~ \n\
-         <button class='plusButton'>+</button> \n\
+      </div> \n\
+   ~{/domain}~ \n\
+   <button class='plusButton'>+</button> \n\
 \n\
       ~{#range}~ \n\
         <div class='fieldBlock'> \n\
@@ -103,6 +103,7 @@ var SE_HtmlTemplates = (function () {
 \n\
    <button class='updateTermButton'>Update</button> \n\
 </div>",
+
         languageChoiceTemplate: "~{#langList}~ \n\
             <p class='languageChoice'> \n\
                <label>~{lang}~</label> \n\
