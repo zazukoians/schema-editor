@@ -24,7 +24,7 @@ var SE_HtmlTemplates = (function () {
          */
         termTemplate: "\n\
 <div class='termEditBlock'> \n\
-<h3>Edit Term</h3> \n\
+<h3  class='hasHelp' data-help-id='termHelpText'>Edit Term</h3> \n\
    <label>Resource Name</label> \n\
    <input class='resource resourceName' value='~{resourceName}~' /> \n\
 \n\

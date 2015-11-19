@@ -272,10 +272,10 @@ var SchemaEdit = (function () {
         },
 
         makeTermEditBlock: function (json) {
-          //  console.log("makeTermEditBlock json = " + JSON.stringify(json, false, 4));
+            //  console.log("makeTermEditBlock json = " + JSON.stringify(json, false, 4));
             var replacementMap = SchemaEdit.transformResourceJSON(json);
 
-        //    console.log("makeTermEditBlock replacementMap = " + JSON.stringify(replacementMap, false, 4));
+            //    console.log("makeTermEditBlock replacementMap = " + JSON.stringify(replacementMap, false, 4));
             /* prepare empty fields for each language in use */
             var addElementsForLanguages = function (languages, langMap) {
                 var label = replacementMap["label"]; // TODO make names plural
@@ -305,9 +305,9 @@ var SchemaEdit = (function () {
                 SchemaEdit.labelLangButtons();
                 SchemaEdit.setupLangButtons();
                 SchemaEdit.setupPlusButtons();
-
+                SchemaEdit.setupHelpElements();
                 //      SchemaEdit.setupPlusButtons();
-        //        console.log("makeTermBlocks");
+                //        console.log("makeTermBlocks");
                 //    $(".updateTermButton").log();
             }
             SchemaEdit.collectLanguages(addElementsForLanguages);
@@ -365,20 +365,20 @@ var SchemaEdit = (function () {
                         "label": labelList,
                         "comment": commentList
                     };
-                    var notifyOfUpdate = function () {
-                      console.log("NOTIFY");
-                      //  SchemaEdit.postConfirmDialog();
-                        $("#posted").show();
-                        setTimeout(function () {
-                            $("#posted").fadeOut();
-                        }, 1000);
-                    };
+
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
                     // console.log("updateTermSparql = \n" + updateTermSparql);
-                    SparqlConnector.postData(updateTermSparql, notifyOfUpdate);
+                    SparqlConnector.postData(updateTermSparql, SchemaEdit.notifyOfUpdate);
                 }
             );
+        },
+
+        notifyOfUpdate: function () {
+            $("#posted").show();
+            setTimeout(function () {
+                $("#posted").fadeOut();
+            }, 1000);
         },
 
         /**
@@ -475,9 +475,9 @@ var SchemaEdit = (function () {
         createButtonHandler: function (createBlock, rdfType) {
             var resourceName = createBlock.find(".resourceName").val();
             resourceName = resourceName.trim();
-            if(resourceName == ""){
-              SchemaEdit.noValueDialog();
-              return;
+            if(resourceName == "") {
+                SchemaEdit.noValueDialog();
+                return;
             }
             resourceName = SEUtils.resolveToURI(resourceName);
             var map = {
@@ -533,11 +533,12 @@ var SchemaEdit = (function () {
             SparqlConnector.ping(dialog);
         },
 
-          setupHelpElements: function () {
+        setupHelpElements: function () {
+            $(".hasHelp").unbind();
             $(".hasHelp").click(
                 function () {
-                    var id = "#"+$(this).attr("data-help-id");
-                  //  console.log("help id = "+id);
+                    var id = "#" + $(this).attr("data-help-id");
+                    //  console.log("help id = "+id);
                     var $dialog = $(id).dialog({
                         autoOpen: false,
                         width: 800
@@ -545,7 +546,7 @@ var SchemaEdit = (function () {
                     $dialog.dialog('open');
                 }
             );
-          },
+        },
 
         /**
          * Shared function for combobox/autocomplete creation
@@ -754,7 +755,7 @@ var SchemaEdit = (function () {
         },
 
         addLanguageChoices: function (languages, langMap) {
-        //    console.log("addLanguageChoices langMap = " + JSON.stringify(langMap, false, 4));
+            //    console.log("addLanguageChoices langMap = " + JSON.stringify(langMap, false, 4));
             var langChoices = templater(SE_HtmlTemplates.languageChoiceTemplate, langMap);
             $("#languageChooser").append($(langChoices));
         },
@@ -796,7 +797,7 @@ var SchemaEdit = (function () {
                                 "lang": lang
                             }]
                         };
-                    //    console.log("addLanguageHandler langMap = " + JSON.stringify(langMap, false, 4));
+                        //    console.log("addLanguageHandler langMap = " + JSON.stringify(langMap, false, 4));
                         SchemaEdit.addLanguageChoices(languages, langMap);
                     };
 
@@ -913,8 +914,8 @@ var SchemaEdit = (function () {
                 // langMap["langList"] = langList;
                 //  langMap["langList"].concat(langList);
                 langMap["langList"].sort();
-        //        console.log("SchemaEdit.languages after combined = \n" + JSON.stringify(SchemaEdit.languages, false, 4));
-          //      console.log("langMap after combined = \n" + JSON.stringify(langMap, false, 4));
+                //        console.log("SchemaEdit.languages after combined = \n" + JSON.stringify(SchemaEdit.languages, false, 4));
+                //      console.log("langMap after combined = \n" + JSON.stringify(langMap, false, 4));
 
                 SEUtils.setLocalStorageObject("languages", SchemaEdit.languages);
                 SEUtils.setLocalStorageObject("langMap", langMap);
@@ -1021,7 +1022,8 @@ var SchemaEdit = (function () {
                                 var turtle = e.target.result;
 
                                 var callback = function (msg) {
-                                    Config.setGraphURI(graphURI);
+                                    Config.setGraphURI(graphURI, true);
+                                    SchemaEdit.notifyOfUpdate();
                                 }
                                 var graphURI = $("#graphName").val();
                                 SparqlConnector.uploadTurtle(graphURI, turtle, callback);

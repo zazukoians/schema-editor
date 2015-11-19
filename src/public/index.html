@@ -183,6 +183,24 @@
 
       <div id="editor"></div>
 
+      <div class="help">
+        <div id="termHelpText" title="Edit Term" class="helpText">
+          <p>Values of key properties of the current resource may be entered, edited and added here.
+            <ul>
+              <li>The <strong>(+)</strong> button creates a new field</li>
+              <li>The language for each literal field may be set by the corresponding button</li>
+              <li>The <strong>Update</strong> button passes the new values to the store</li>
+            </ul>
+            Resource (URI) values may be entered in 3 forms:
+            <ul>
+              <li>plain name, e.g. <em>Cat</em> - this will be interpreted as being in the current namespace</li>
+              <li><em>namespace:name</em> (CURIE) e.g. <em>foaf:name</em> - various well-known vocabularies are supported</li>
+              <li>full URI</li>
+            </ul>
+          </p>
+        </div>
+      </div>
+
       <div id="newClass" class="editBlock block">
 
         <div class="help">
@@ -278,11 +296,16 @@
       <div id="endpoints" class="editBlock block">
         <div class="help">
           <div id="endpointsHelpText" title="Endpoints" class="helpText">
-            <p>These URLs should point to the SPARQL 1.1 store in which you want create the schema. e.g. when running Fuseki locally,
-              the values might be:
+            <p>These URLs should point to the SPARQL 1.1 store in which you want create the schema. e.g. when running Fuseki locally, the values might be:
             </p>
-            <p><strong>Query Endpoint :</strong>   <pre>http://localhost:3333/schema-edit/query</pre></p>
-            <p><strong>Update Endpoint :</strong> <pre>http://localhost:3333/schema-edit/update</pre></p>
+            <p>
+              <strong>Query Endpoint :</strong>
+              <pre>http://localhost:3333/schema-edit/query</pre>
+            </p>
+            <p>
+              <strong>Update Endpoint :</strong>
+              <pre>http://localhost:3333/schema-edit/update</pre>
+            </p>
           </div>
         </div>
         <h3 class="blockTitle hasHelp" data-help-id="endpointsHelpText">Endpoint Settings</h3>
