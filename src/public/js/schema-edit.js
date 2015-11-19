@@ -306,6 +306,7 @@ var SchemaEdit = (function () {
                 //  SchemaEdit.labelLangButtons();
                 SchemaEdit.labelLangButtons();
                 SchemaEdit.setupLangButtons();
+                SchemaEdit.setupPlusButtons();
 
                 //      SchemaEdit.setupPlusButtons();
                 console.log("makeTermBlocks");
