@@ -276,7 +276,16 @@
       <br/>
 
       <div id="endpoints" class="editBlock block">
-        <strong>Endpoint Settings</strong>
+        <div class="help">
+          <div id="endpointsHelpText" title="Endpoints" class="helpText">
+            <p>These URLs should point to the SPARQL 1.1 store in which you want create the schema. e.g. when running Fuseki locally,
+              the values might be:
+            </p>
+            <p><strong>Query Endpoint :</strong>   <pre>http://localhost:3333/schema-edit/query</pre></p>
+            <p><strong>Update Endpoint :</strong> <pre>http://localhost:3333/schema-edit/update</pre></p>
+          </div>
+        </div>
+        <h3 class="blockTitle hasHelp" data-help-id="endpointsHelpText">Endpoint Settings</h3>
         <br/>
         <div>
           <label for="queryEndpoint">Query Endpoint</label>
