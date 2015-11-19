@@ -274,10 +274,10 @@ var SchemaEdit = (function () {
         },
 
         makeTermEditBlock: function (json) {
-            console.log("makeTermEditBlock json = " + JSON.stringify(json, false, 4));
+          //  console.log("makeTermEditBlock json = " + JSON.stringify(json, false, 4));
             var replacementMap = SchemaEdit.transformResourceJSON(json);
 
-            console.log("makeTermEditBlock replacementMap = " + JSON.stringify(replacementMap, false, 4));
+        //    console.log("makeTermEditBlock replacementMap = " + JSON.stringify(replacementMap, false, 4));
             /* prepare empty fields for each language in use */
             var addElementsForLanguages = function (languages, langMap) {
                 var label = replacementMap["label"]; // TODO make names plural
@@ -368,11 +368,12 @@ var SchemaEdit = (function () {
                         "comment": commentList
                     };
                     var notifyOfUpdate = function () {
-                        // SchemaEdit.postConfirmDialog();
+                      console.log("NOTIFY");
+                        SchemaEdit.postConfirmDialog();
                         $("#posted").show();
                         setTimeout(function () {
                             $("#posted").fadeOut();
-                        }, 1000);
+                        }, 50000);
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
@@ -606,10 +607,10 @@ var SchemaEdit = (function () {
 
                 if(predicate == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
                     rdfType.push(object);
-                    if(object == "rdfs:Class") {
+                    if(object == "rdfs:Class" || object == "http://www.w3.org/2000/01/rdf-schema#Class") {
                         isClass = true;
                     }
-                    if(object == "rdf:Property") {
+                    if(object == "rdf:Property" || object == "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property") {
                         isProperty = true;
                     }
                 }
@@ -745,7 +746,7 @@ var SchemaEdit = (function () {
         },
 
         addLanguageChoices: function (languages, langMap) {
-            console.log("addLanguageChoices langMap = " + JSON.stringify(langMap, false, 4));
+        //    console.log("addLanguageChoices langMap = " + JSON.stringify(langMap, false, 4));
             var langChoices = templater(SE_HtmlTemplates.languageChoiceTemplate, langMap);
             $("#languageChooser").append($(langChoices));
         },
@@ -787,7 +788,7 @@ var SchemaEdit = (function () {
                                 "lang": lang
                             }]
                         };
-                        console.log("addLanguageHandler langMap = " + JSON.stringify(langMap, false, 4));
+                    //    console.log("addLanguageHandler langMap = " + JSON.stringify(langMap, false, 4));
                         SchemaEdit.addLanguageChoices(languages, langMap);
                     };
 
@@ -904,8 +905,8 @@ var SchemaEdit = (function () {
                 // langMap["langList"] = langList;
                 //  langMap["langList"].concat(langList);
                 langMap["langList"].sort();
-                console.log("SchemaEdit.languages after combined = \n" + JSON.stringify(SchemaEdit.languages, false, 4));
-                console.log("langMap after combined = \n" + JSON.stringify(langMap, false, 4));
+        //        console.log("SchemaEdit.languages after combined = \n" + JSON.stringify(SchemaEdit.languages, false, 4));
+          //      console.log("langMap after combined = \n" + JSON.stringify(langMap, false, 4));
 
                 SEUtils.setLocalStorageObject("languages", SchemaEdit.languages);
                 SEUtils.setLocalStorageObject("langMap", langMap);
@@ -1045,7 +1046,7 @@ var SchemaEdit = (function () {
 
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
-            //    console.log("SPARQL = \n" + sparql);
+            console.log("SPARQL = \n" + sparql);
             return Config.getQueryEndpoint() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
         },
 

@@ -21,8 +21,12 @@
 }
 
 #posted {
+  z-index: 100;
   color: darkred;
   display: none;
+  position:absolute;
+  margin: 20px 20px auto auto;
+  float: right;
 }
 
 #currentResource, #currentGraph {
