@@ -42,7 +42,7 @@ var SchemaEdit = (function () {
 
             SchemaEdit.makeAdvancedButton();
 
-            SchemaEdit.labelLangButtons();
+            //    SchemaEdit.labelLangButtons();
 
             SchemaEdit.setupPlusButtons();
 
@@ -65,7 +65,7 @@ var SchemaEdit = (function () {
                 uri = graph;
             }
             $("#currentResource").val(uri);
-          //  console.log("currentResource uri = " + uri);
+            //  console.log("currentResource uri = " + uri);
             $("#resource").val(uri);
 
             SchemaEdit.renderTerm(uri);
@@ -78,6 +78,7 @@ var SchemaEdit = (function () {
             $("#newVocabButton").click(
                 function () {
                     $("#newVocabBlock").show();
+                    $("#newVocabButton").hide();
                     $("#currentResourceBlock").hide();
                     $("#currentGraphBlock").hide();
                 }
@@ -92,9 +93,9 @@ var SchemaEdit = (function () {
                 SEUtils.prefixes[prefix] = graph;
                 var callback = function () {
                         // Config.setCurrentResource("");
-                        console.log("makeNewVocabBlock graph = " + graph);
+                        // console.log("makeNewVocabBlock graph = " + graph);
                         Config.setGraphURI(graph, true);
-                        console.log("makeNewVocabBlock getgraph = " + Config.getGraphURI());
+                        // console.log("makeNewVocabBlock getgraph = " + Config.getGraphURI());
                         Config.setCurrentResource(graph, graph);
                     }
                     // mystring[mystring.length-1] === '#'
@@ -121,7 +122,7 @@ var SchemaEdit = (function () {
                     select: function (event, ui) {
                         var newGraph = this.value;
                         Config.setGraphURI(newGraph);
-                      //  var split = window.location.href.split("?");
+                        //  var split = window.location.href.split("?");
 
                         var graph = SEUtils.parameterFromLocation("graph");
                         graph = SEUtils.encodeHash(graph);
@@ -135,7 +136,7 @@ var SchemaEdit = (function () {
                 });
                 var graph = SEUtils.parameterFromLocation("graph");
 
-                if(!(graph.substring(graph.length-1) ) && !graph.endsWith("#")) {
+                if(!(graph.substring(graph.length - 1)) && !graph.endsWith("#")) {
                     graph = graph + "#";
                 }
                 $("#graph").val(graph);
@@ -272,7 +273,7 @@ var SchemaEdit = (function () {
                 graphURI: Config.getGraphURI(),
                 uri: uri
             };
-          //  console.log("renderTerm map = " + JSON.stringify(map, false, 4));
+            //  console.log("renderTerm map = " + JSON.stringify(map, false, 4));
             var getResourceUrl = SchemaEdit.generateGetUrl(getResourceSparqlTemplate, map);
             SparqlConnector.getJsonForSparqlURL(getResourceUrl, SchemaEdit.makeTermEditBlock);
         },
@@ -307,11 +308,11 @@ var SchemaEdit = (function () {
                 $("#editor").append(termEditBlock);
 
                 SchemaEdit.setupUpdateTermButtons();
-              //  SchemaEdit.labelLangButtons();
-                    SchemaEdit.labelLangButtons();
+                //  SchemaEdit.labelLangButtons();
+                SchemaEdit.labelLangButtons();
                 SchemaEdit.setupLangButtons();
 
-          //      SchemaEdit.setupPlusButtons();
+                //      SchemaEdit.setupPlusButtons();
                 console.log("makeTermBlocks");
                 //    $(".updateTermButton").log();
             }
@@ -471,7 +472,7 @@ var SchemaEdit = (function () {
             );
         },
 
-/* create new class/property, post to store */
+        /* create new class/property, post to store */
         createButtonHandler: function (createBlock, rdfType) {
             var resourceName = createBlock.find(".resourceName").val();
             resourceName = SEUtils.resolveToURI(resourceName);
@@ -688,11 +689,11 @@ var SchemaEdit = (function () {
                 comment.push("");
             }
 
-        //    console.log("transformResourceJSON subject = " + subject);
+            //    console.log("transformResourceJSON subject = " + subject);
 
             var resourceName = SEUtils.curieFromURI(subject);
 
-        //    console.log("transformResourceJSON resourceName = " + resourceName);
+            //    console.log("transformResourceJSON resourceName = " + resourceName);
 
             return {
                 "isClass": isClass,
@@ -764,7 +765,7 @@ var SchemaEdit = (function () {
                         });
                         $(this).dialog("close");
                         target.attr("lang", language);
-                   SchemaEdit.labelLangButtons();
+                        SchemaEdit.labelLangButtons();
                     };
 
                     var addLanguageHandler = function () {
@@ -808,27 +809,77 @@ var SchemaEdit = (function () {
                 SE_SparqlTemplates.getLanguages, {
                     "graphURI": Config.getGraphURI(),
                 });
-console.log("getLanguagesSparql = \n"+getLanguagesSparql);
+
             var getLanguagesUrl = Config.getQueryEndpoint() + "?query=" +
                 encodeURIComponent(getLanguagesSparql) + "&output=xml";
 
             var restructureJSON = function (json) {
-                console.log("restructureJSON json = " + JSON.stringify(json, false, 4));
-                SchemaEdit.languages = SEUtils.getLocalStorageObject("languages");
-                console.log("restructureJSON SchemaEdit.languages = " + JSON.stringify(SchemaEdit.languages, false, 4));
-                if(!SchemaEdit.languages) {
-                    SchemaEdit.languages = [];
-                }
-                /* target :
+                /* targets :
+                languages = ["en", "de"...]
+
+                langMap =
                 {
                    "langList": [
                                  { "lang": "en" },
                                  { "lang": "de" }
+                                 ...
                                ]
                 }
                 */
-                var langList = [];
+                /* seed values */
+                if(!SchemaEdit.languages) SchemaEdit.languages = ["en"];
+                var langMap = {
+                    "langList": [{
+                        "lang": "en"
+                    }]
+                };
+                var langList = langMap["langList"];
 
+// TODO the same data is stored twice: languages & langMap, combine
+
+                /* add values from localStorage : languages */
+                var storedLanguages = SEUtils.getLocalStorageObject("languages");
+                if(storedLanguages){
+                for(var i = 0; i < storedLanguages.length; i++) {
+                    var lang = storedLanguages[i];
+
+                    if(lang && lang != "") {
+                        var entry = {};
+                        entry["lang"] = lang;
+
+                        if(!SchemaEdit.langListContains(langList, lang)) {
+                            langList.push(entry);
+                        }
+                        if(SchemaEdit.languages.indexOf(lang) == -1) {
+                            SchemaEdit.languages.push(lang);
+                        }
+                    }
+                }
+}
+
+/* add values from localStorage : langMap */
+                var storedLangMap = SEUtils.getLocalStorageObject("langMap");
+
+                if(storedLangMap){
+                  var storedLangList = storedLangMap["langList"];
+                for(var i = 0; i < storedLangList.length; i++) {
+                    var lang = storedLangList[i]["lang"];
+
+                    if(lang && lang != "") {
+                        var entry = {};
+                        entry["lang"] = lang;
+
+                        if(!SchemaEdit.langListContains(langList, lang)) {
+                            langList.push(entry);
+                        }
+                        if(SchemaEdit.languages.indexOf(lang) == -1) {
+                            SchemaEdit.languages.push(lang);
+                        }
+                    }
+                }
+              }
+
+/* add values retrieved from current schema via SPARQL */
                 for(var i = 0; i < json.length; i++) {
                     var lang = json[i]["language"];
 
@@ -844,15 +895,13 @@ console.log("getLanguagesSparql = \n"+getLanguagesSparql);
                         }
                     }
                 }
-                var langMap = SEUtils.getLocalStorageObject("langMap");
-                if(!langMap) {
-                    langMap = {};
-                    langMap["langList"] = [];
-                }
+
                 // langMap["langList"] = langList;
-                langMap["langList"].concat(langList);
+              //  langMap["langList"].concat(langList);
                 langMap["langList"].sort();
-                console.log("langMap after of concat = \n" + JSON.stringify(langMap, false, 4));
+                console.log("SchemaEdit.languages after combined = \n" + JSON.stringify(SchemaEdit.languages, false, 4));
+                console.log("langMap after combined = \n" + JSON.stringify(langMap, false, 4));
+
                 SEUtils.setLocalStorageObject("languages", SchemaEdit.languages);
                 SEUtils.setLocalStorageObject("langMap", langMap);
                 //  console.log("languages2 = \n" + JSON.stringify(SEUtils.getLocalStorageObject("languages"), false, 4));
