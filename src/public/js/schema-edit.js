@@ -48,6 +48,7 @@ var SchemaEdit = (function () {
 
             SchemaEdit.helpMap = {};
             SchemaEdit.setupHelpButtons();
+            SchemaEdit.setupHelpElements();
 
             $(".resourceButton").hide(); // for selecting skos properties etc - maybe come back to later
 
@@ -549,6 +550,20 @@ var SchemaEdit = (function () {
                 }
             );
         },
+
+          setupHelpElements: function () {
+            $(".hasHelp").click(
+                function () {
+                    var id = "#"+$(this).attr("data-help-id");
+                  //  console.log("help id = "+id);
+                    var $dialog = $(id).dialog({
+                        autoOpen: false,
+                        width: 800
+                    });
+                    $dialog.dialog('open');
+                }
+            );
+          },
 
         /**
          * Shared function for combobox/autocomplete creation

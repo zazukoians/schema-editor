@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <h2 id="pageTitle">Schema Editor</h2>
+      <h2 id="pageTitle" class="hasHelp" data-help-id="overviewHelpText">Schema Editor</h2>
 
     </div>
 
@@ -99,7 +99,7 @@
         </div>
 
         <label>
-          <strong>Current Graph :</strong>
+          <strong class="hasHelp" data-help-id="graphChooserHelpText">Current Graph :</strong>
         </label>
 
         <div id="currentGraph">
@@ -117,7 +117,7 @@
           </div>
         </div>
 
-        <label>
+        <label class="hasHelp" data-help-id="currentResourceHelpText">
           <strong>Current Resource :</strong>
         </label>
 
@@ -141,7 +141,7 @@
         </div>
       </div>
       <a href="#uploadRDF">Upload RDF</a>
-      <h4>Create New Vocab</h4>
+      <h4 class="hasHelp" data-help-id="newVocabHelpText">Create New Vocab</h4>
       <em>All fields required</em>
       <label for="vocabName">Name</label>
       <input id="vocabName" type="text" name="vocabName" title="name of vocab" />
@@ -167,14 +167,14 @@
             <p>These are the RDF classes and properties in the current graph. Clicking on a class or property will set it to the Current Resource.</p>
           </div>
         </div>
-        <div class="classesBlock">
+        <div class="classesBlock hasHelp" data-help-id="classesPropertiesHelpText">
           <h2 id="classesTitle" class="header">Classes</h2>
           <div id="classes" class="block resourceList small"></div>
         </div>
       </div>
       <br/>
       <div class="list-block">
-        <div class="propertiesBlock">
+        <div class="propertiesBlock hasHelp" data-help-id="classesPropertiesHelpText">
           <h2 id="propertiesTitle" class="header">Properties</h2>
           <div id="properties" class="block resourceList small"></div>
         </div>
@@ -191,16 +191,12 @@
 
         <div class="help">
           <button id="#addClassHelpButton" class="helpButton">?</button>
-          <div id="addClassHelpText" title="Add Class" class="helpText">
-            <p>At minimum specify a class name, then click the Add Class button. </p>
-            <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name).
-              Alternately full QNames (namespace+local name) may be used.
-            </p>
-            <p>To add extra label/comment fields, click the (+) button.</p>
+          <div id="addClassHelpText" title="New Class" class="helpText">
+            <p>Enter the name of the new class (it will be placed in the current namespace), and click the New Class button. </p>
           </div>
         </div>
 
-        <h4>New Class</h4>
+        <h4 class="hasHelp" data-help-id="addClassHelpText">New Class</h4>
         <label>Class Name</label>
         <input class="resourceName" title="Enter text" value="" />
         <button id="createClassButton">Create</button>
@@ -210,15 +206,11 @@
         <div class="help">
           <button id="#addPropertyHelpButton" class="helpButton">?</button>
           <div id="addPropertyHelpText" title="Add Property" class="helpText">
-            <p>At minimum specify a property name, then click the Add Property button. </p>
-            <p>To add extra label/comment fields, click the (+) button.</p>
-            <p>Fields which require a resource value are highlighted with a purple border. These may be input as a bare (local) name, which will be placed in the current namespace. Certain well-know vocabularies are also supported for input as CURIES (prefix:name).
-              Alternately full QNames (namespace+local name) may be used.
-            </p>
+            <p>Enter the name of the new property (it will be placed in the current namespace), and click the New Property button.</p>
           </div>
         </div>
 
-        <h4>New Property</h4>
+        <h4 class="hasHelp" data-help-id="addPropertyHelpText">New Property</h4>
         <label>Property Name</label>
         <input class="resourceName" title="Enter text" value="" />
         <button id="createPropertyButton">Create</button>
@@ -233,7 +225,7 @@
         </div>
 
         <div id="advancedBlock">
-          <h4>Add Property To Current Resource</h4>
+          <h4 class="hasHelp" data-help-id="addPropertyValueHelpText">Add Property To Current Resource</h4>
           <div id="propertyChooser">
           </div>
 
@@ -264,7 +256,7 @@
         </div>
 
         <a name="uploadRDF" />
-        <h3>Upload RDF</h3>
+        <h3 class="hasHelp" data-help-id="uploadRDFHelpText">Upload RDF</h3>
 
         <form id="upload" enctype="text/turtle" method="post">
           <label for='graphName'>Graph</label>
@@ -286,7 +278,7 @@
 
         <br/>
 
-        <h3 class="blockTitle">Export Turtle</h3>
+        <h3 class="hasHelp blockTitle" data-help-id="exportTurtleHelpText">Export Turtle</h3>
         <button id="turtle">Export</button>
       </div>
 
