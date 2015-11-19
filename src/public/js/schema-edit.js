@@ -46,8 +46,6 @@ var SchemaEdit = (function () {
 
             SchemaEdit.setupPlusButtons();
 
-            SchemaEdit.helpMap = {};
-            SchemaEdit.setupHelpButtons();
             SchemaEdit.setupHelpElements();
 
             $(".resourceButton").hide(); // for selecting skos properties etc - maybe come back to later
@@ -529,26 +527,6 @@ var SchemaEdit = (function () {
             }
 
             SparqlConnector.ping(dialog);
-        },
-
-        setupHelpButtons: function () {
-            $(".helpButton").each(
-                function () {
-                    var id = $(this).attr("id");
-                    var $dialog = $(this).next().dialog({
-                        autoOpen: false,
-                        width: 800
-                    });
-                    SchemaEdit.helpMap[id] = $dialog;
-                }
-            );
-
-            $(".helpButton").click(
-                function () {
-                    var id = $(this).attr("id");
-                    SchemaEdit.helpMap[id].dialog('open');
-                }
-            );
         },
 
           setupHelpElements: function () {
