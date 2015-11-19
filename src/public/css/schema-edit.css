@@ -20,6 +20,11 @@
   width: 25em;
 }
 
+#posted {
+  color: darkred;
+  display: none;
+}
+
 #currentResource, #currentGraph {
   display: inline-block;
   text-align: right;

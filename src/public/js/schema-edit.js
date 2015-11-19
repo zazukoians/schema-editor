@@ -367,7 +367,11 @@ var SchemaEdit = (function () {
                         "comment": commentList
                     };
                     var notifyOfUpdate = function () {
-                        SchemaEdit.postConfirmDialog();
+                        // SchemaEdit.postConfirmDialog();
+                        $("#posted").show();
+                        setTimeout(function () {
+                            $("#posted").fadeOut();
+                        }, 1000);
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
