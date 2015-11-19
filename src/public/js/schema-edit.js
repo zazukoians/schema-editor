@@ -16,7 +16,6 @@ var SchemaEdit = (function () {
             if(!SEUtils.prefixes || !(SEUtils.prefixes["loaded"] == true)) {
                 SEUtils.initPrefixes();
             }
-
             SchemaEdit.makeNewVocabButton();
             SchemaEdit.makeNewVocabBlock();
 
@@ -308,7 +307,7 @@ var SchemaEdit = (function () {
                 SchemaEdit.setupPlusButtons();
 
                 //      SchemaEdit.setupPlusButtons();
-                console.log("makeTermBlocks");
+        //        console.log("makeTermBlocks");
                 //    $(".updateTermButton").log();
             }
             SchemaEdit.collectLanguages(addElementsForLanguages);
@@ -368,11 +367,11 @@ var SchemaEdit = (function () {
                     };
                     var notifyOfUpdate = function () {
                       console.log("NOTIFY");
-                        SchemaEdit.postConfirmDialog();
+                      //  SchemaEdit.postConfirmDialog();
                         $("#posted").show();
                         setTimeout(function () {
                             $("#posted").fadeOut();
-                        }, 50000);
+                        }, 1000);
                     };
                     var updateTermSparql = sparqlTemplater(
                         SE_SparqlTemplates.updateTerm, map);
@@ -475,6 +474,11 @@ var SchemaEdit = (function () {
         /* create new class/property, post to store */
         createButtonHandler: function (createBlock, rdfType) {
             var resourceName = createBlock.find(".resourceName").val();
+            resourceName = resourceName.trim();
+            if(resourceName == ""){
+              SchemaEdit.noValueDialog();
+              return;
+            }
             resourceName = SEUtils.resolveToURI(resourceName);
             var map = {
                 "graphURI": Config.getGraphURI(),
@@ -506,7 +510,7 @@ var SchemaEdit = (function () {
             $("#endpointButton").click(function () {
                 Config.setQueryEndpoint($("#queryEndpoint").val());
                 Config.setUpdateEndpoint($("#updateEndpoint").val());
-                window.location.reload();
+                window.location.href = getBase(window.location.href);
             });
 
             var dialog = function () {
@@ -722,7 +726,18 @@ var SchemaEdit = (function () {
                     }
                 }
             });
+        },
 
+        noValueDialog: function () {
+            $("#noValueDialog").dialog({
+                width: 200,
+                modal: true,
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
         },
 
         labelLangButtons: function () {

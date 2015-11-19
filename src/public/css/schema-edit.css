@@ -10,14 +10,14 @@
 }
 
 #pageTitle {
-    display: inline-block;
+  display: inline-block;
   text-align: center;
-      margin-left: 30%;
+  margin-left: 30%;
 }
 
 #currentContext {
   display: block;
-      margin-left: 30%;
+  margin-left: 30%;
 }
 
 #resource, #graph {
@@ -25,12 +25,21 @@
 }
 
 #posted {
-  z-index: 100;
-  color: darkred;
   display: none;
-  position:absolute;
-  margin: 20px 20px auto auto;
-  float: right;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  color: green;
+  background-color: darkgray;
+  border: 1px solid lightgray;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+#noValueDialog {
+  display: none;
 }
 
 #currentResource, #currentGraph {
@@ -43,7 +52,7 @@
 }
 
 #currentResource label, #currentGraph label {
-  display:inline-block;
+  display: inline-block;
   float: left;
   padding-top: 5px;
   text-align: right;
@@ -51,11 +60,11 @@
 }
 
 #graphChooser, #currentResource input {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    display:inline-block;
-    vertical-align:middle;
-    margin-left:20px
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 20px
 }
 
 #currentGraphBlock .help, #currentResourceBlock .help {
@@ -95,7 +104,7 @@
 }
 
 #editor {
-  padding: 30px 0px 0px 0px;
+  padding: 5px 0px 0px 0px;
 }
 
 .block, .classesBlock, .propertiesBlock {
@@ -111,7 +120,7 @@
 .termEditBlock {
   display: inline;
   align-items: left;
-  padding: 20px;
+  /* padding: 10px; */
 }
 
 #center label {

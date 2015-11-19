@@ -3,7 +3,7 @@
 
 ## Revising docs for npm-based install
 
-*https://zazuko.plan.io/projects/ontology-editor/repository*
+**remember to pre-load prefixes.ttl**
 
 prerequisites : node + npm
 
