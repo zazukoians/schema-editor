@@ -135,7 +135,7 @@ var SchemaEdit = (function () {
                     }
                 });
                 var graph = SEUtils.parameterFromLocation("graph");
-
+                if(!graph) return;
                 if(!(graph.substring(graph.length - 1)) && !graph.endsWith("#")) {
                     graph = graph + "#";
                 }
