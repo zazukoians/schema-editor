@@ -490,7 +490,8 @@ var SchemaEdit = (function () {
                 "resourceName": resourceName
             };
             var callback = function () {
-                SchemaEdit.postConfirmDialog();
+              //  SchemaEdit.postConfirmDialog();
+              SchemaEdit.notifyOfUpdate();
                 Config.setCurrentResource(resourceName);
                 // console.log("resourceName = " + resourceName);
                 SchemaEdit.loadNewResource(resourceName);
@@ -726,6 +727,7 @@ var SchemaEdit = (function () {
             }
         },
 
+/*
         postConfirmDialog: function () {
             $("#postConfirmDialog").dialog({
                 width: 200,
@@ -738,6 +740,7 @@ var SchemaEdit = (function () {
                 }
             });
         },
+*/
 
         noValueDialog: function () {
             $("#noValueDialog").dialog({
