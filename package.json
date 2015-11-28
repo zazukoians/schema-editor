@@ -11,7 +11,7 @@
 		"RDF Interfaces"
 	],
 	"author": "danja",
-	"license": "Apache 2.0",
+	"license": "Apache-2.0",
 	  "dependencies": {
 		    "connect": "~3.3",
 		    "serve-static": "~1.9",
@@ -19,7 +19,8 @@
 		  },
 			"scripts": {
 	 "preinstall": "bin/install-fuseki.sh",
-	 "start": "bin/start.sh"
+	 "start": "bin/start.sh",
+	 "stop": "bin/stop.sh"
 	 },
 	"bugs": {
 		"url": "https://github.com/danja/tbd..."

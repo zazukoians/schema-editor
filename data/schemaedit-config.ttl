@@ -1,6 +1,8 @@
-# Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0
+## Apache Jena Fuseki config for schema-edit
 
-## Example of a TDB dataset published using Fuseki: persistent storage.
+# TDB dataset published using Fuseki: persistent storage.
+
+# Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0
 
 @prefix :        <#> .
 @prefix fuseki:  <http://jena.apache.org/fuseki#> .
@@ -55,7 +57,7 @@ tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
 <#service1> rdf:type fuseki:Service ;
     # URI of the dataset -- http://host:port/ds
-    fuseki:name                     "test" ; 
+    fuseki:name                     "test" ;
 
     # SPARQL query services e.g. http://host:port/ds/sparql?query=...
     fuseki:serviceQuery             "sparql" ;
@@ -70,7 +72,7 @@ tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
     # SPARQL Graph store protocol (read and write)
     # GET, PUT, POST DELETE to http://host:port/ds/data?graph= or ?default=
-    fuseki:serviceReadWriteGraphStore      "data" ;     
+    fuseki:serviceReadWriteGraphStore      "data" ;
 
     # A separate read-only graph store endpoint:
     fuseki:serviceReadGraphStore       "get" ;   # Graph store protocol (read only) -- /ds/get
@@ -80,9 +82,3 @@ tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
 ## In-memory, initially empty.
 <#emptyDataset> rdf:type ja:RDFDataset .
-
-
-
-
-
-

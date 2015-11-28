@@ -1,5 +1,71 @@
 # Schema Editor
-*working title*
+
+*Note: where "SPARQL store" is used here, it refers to an online (or local) RDF store with SPARQL 1.1 Update facilities. Such a store is Apache Jena Fuseki, referred to here as "Fuseki"*
+
+Schema Editor is a single-page browser-based web application designed to allow rapid creation and editing of RDF Schemas (also know as *ontologies* and *vocabularies* etc.). It is *not* a general-purpose RDF editor. It should work in any modern browser with Javascript enabled.
+
+The emphasis is on creating schemas with good documentary support through the use of multi-lingual labels and comments. Standard RDFS terms are used and so subsequent inference across created schemas is possible, though this aspect isn't treated as a priority.
+
+The editor operates against a SPARQL store, where data is persisted (subject to the configuration of the store).
+
+*Warning:* if pre-existing schemas are edited, any statements involving terms outside of core RDFS may be lost.
+
+To run Schema Editor, the following are required:
+
+* HTTP Server
+* SPARQL 1.1 Update-capable online RDF store
+
+This repository includes an npm (node) install script that will install a minimal HTTP server and a suitable SPARQL store.
+
+## Installation
+
+If a HTTP server and SPARQL store are already available, all that is necessary for installation is firstly to clone this repository and copy the *src/public* directory (with subdirectories) onto the target machine and serve as web pages.
+
+You should then follow the instructions for **Uploading Prefixes Map** below.
+
+If not, the following procedure can be followed to build a minimal HTTP server and install a SPARQL store.
+
+### Requirements
+
+These instructions should work on most Linux distros although they have only been tested on Ubuntu. There's nothing too complicated and installation should be straightforward on any OS.
+
+* Java 8+ runtime (for Fuseki) *
+* node.js (for npm-based installation and minimal HTTP server)
+
+_ * (The version of Fuseki referred to in the install script can be built from source with Java 7, but the pre-built snapshot binaries require v. 8)_
+
+On a bare Ubuntu machine these may be installed using:
+
+    sudo apt-get update
+    sudo apt-get install openjdk-8-jre
+    sudo apt-get install node
+
+### Procedure
+
+You should be logged into the target machine as a non-root user, and in a terminal enter:
+
+    git clone https://github.com/zazuko/schema-editor.git
+
+    cd schema-editor/
+
+    npm install
+
+This should
+
+## Running Schema Editor
+
+
+### Uploading Prefixes Map
+
+To enable the use of well-known namespace prefixes within Schema Editor (e.g. *rdf: => http://www.w3.org/1999/02/22-rdf-syntax-ns#*), the file *data/prefixes* should be uploaded to the store with the graph name *http://purl.org/stuff/prefix/*
+
+This may be achieved using whatever tools are available for an existing SPARQL store, or using Schema Editor as follows:
+
+* navigate to Schema Editor page
+* enter appropriate URLs for SPARQL store endpoints
+* scroll down to **Upload RDF**
+* enter Graph Name : *http://purl.org/stuff/prefix/*
+* click **Choose File** and navigate to *data/prefixes.ttl*
 
 ## Revising docs for npm-based install
 
