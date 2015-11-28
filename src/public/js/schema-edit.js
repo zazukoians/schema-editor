@@ -793,15 +793,39 @@ var SchemaEdit = (function () {
                         SchemaEdit.labelLangButtons();
                     };
 
+                    var removeLanguageHandler = function () {
+                        var language;
+                        $('.languageRadio').each(function () {
+                            if(this.type == 'radio' && this.checked) {
+                              language = $(this).val();
+                              var parent = $($(this).parent());
+                              parent.log();
+                              parent.remove();
+                            }
+                        });
+                        var languages = SEUtils.getLocalStorageObject("languages");
+                        if(languages){
+                          var index = languages.indexOf(language);
+                          if(index != -1){
+                            languages.splice(index, 1);
+                          }
+                          SEUtils.setLocalStorageObject("languages", languages);
+                        }
+
+                    //    $(this).dialog("close");
+                    //    target.attr("lang", language);
+                    //    SchemaEdit.labelLangButtons();
+                    };
+
                     var addLanguageHandler = function () {
                         var lang = $("#addLanguage").val();
-                        console.log("addLanguageHandler lang = " + lang);
+                        // console.log("addLanguageHandler lang = " + lang);
                         var languages = SEUtils.getLocalStorageObject("languages");
                         if(!languages) {
                             languages = [];
                         }
                         languages.push(lang);
-                        SEUtils.setLocalStorageObject("languages");
+                        SEUtils.setLocalStorageObject("languages", languages);
                         var langMap = {
                             "langList": [{
                                 "lang": lang
@@ -816,10 +840,11 @@ var SchemaEdit = (function () {
                     dialog.dialog({
                         title: "Choose Language",
                         modal: true,
-                        width: 500,
+                        width: 400,
                         buttons: {
                           "Set Language": changeLangHandler,
                           "Add Language": addLanguageHandler,
+                          "Remove Language": removeLanguageHandler,
                             Cancel: function () {
                                 $(this).dialog("close");
                             },
