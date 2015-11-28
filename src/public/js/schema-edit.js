@@ -39,7 +39,7 @@ var SchemaEdit = (function () {
 
             SchemaEdit.setupCreateButtons();
 
-            SchemaEdit.makeAdvancedButton();
+            // SchemaEdit.makeAdvancedButton();
 
             //    SchemaEdit.labelLangButtons();
 
@@ -807,14 +807,15 @@ var SchemaEdit = (function () {
                         SchemaEdit.addLanguageChoices(languages, langMap);
                     };
 
-                    //  resizable: false,
+                    //  resizable: false,,
+
                     dialog.dialog({
                         title: "Choose Language",
                         modal: true,
                         width: 500,
                         buttons: {
-                            "Set Language": changeLangHandler,
-                            "Add Language": addLanguageHandler,
+                          "Set Language": changeLangHandler,
+                          "Add Language": addLanguageHandler,
                             Cancel: function () {
                                 $(this).dialog("close");
                             },
