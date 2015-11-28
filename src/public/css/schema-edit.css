@@ -170,7 +170,9 @@ button, .button {
   /*    display: block; */
 }
 
-#languageSelect, #postConfirmDialog {
+/* , #postConfirmDialog */
+
+#languageSelect {
   display: none;
 }
 
