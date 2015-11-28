@@ -21,9 +21,9 @@ This repository includes an npm (node) install script that will install a minima
 
 If a HTTP server and SPARQL store are already available, all that is necessary for installation is firstly to clone this repository and copy the *src/public* directory (with subdirectories) onto the target machine and serve as web pages.
 
-You should then follow the instructions for **Uploading Prefixes Map** below.
+You should then follow the instructions for **Uploading Prefixes Map** under **Running Schema Editor** below.
 
-If not, the following procedure can be followed to build a minimal HTTP server and install a SPARQL store.
+If facilities aren't already available, the following procedure can be followed to build a minimal HTTP server and install a SPARQL store.
 
 ### Requirements
 
@@ -50,10 +50,30 @@ You should be logged into the target machine as a non-root user, and in a termin
 
     npm install
 
-This should
+This should install Fuseki under *data/store* together with the depencies for the mini HTTP server.
 
 ## Running Schema Editor
 
+If you have installed as above, then the command:
+
+    npm start
+
+will set Fuseki and the mini HTTP server running.
+
+    npm stop
+
+will stop Fuseki & the HTTP server.
+
+*Warning: npm stop is a little brutal,
+
+When you first open the Schema Editor page, you will be presented with a dialog, **Endpoint Settings**. You should enter the appropriate values for the SPARQL store you wish to address.
+
+If you've installed Fuseki as above, the required values will be:
+
+    http://localhost:3333/schema-edit/sparql
+    http://localhost:3333/schema-edit/update
+
+On a remote server, replace *localhost* with the domain name or IP address of that server.
 
 ### Uploading Prefixes Map
 
@@ -61,48 +81,75 @@ To enable the use of well-known namespace prefixes within Schema Editor (e.g. *r
 
 This may be achieved using whatever tools are available for an existing SPARQL store, or using Schema Editor as follows:
 
-* navigate to Schema Editor page
-* enter appropriate URLs for SPARQL store endpoints
 * scroll down to **Upload RDF**
 * enter Graph Name : *http://purl.org/stuff/prefix/*
 * click **Choose File** and navigate to *data/prefixes.ttl*
 
-## Revising docs for npm-based install
+## Using Schema Editor
 
-**remember to pre-load prefixes.ttl**
+### Built-in Help
 
-prerequisites : node + npm
+All the parts of Schema Editor have associated help information. When the mouse cursor is over a heading it will change into a (?). Clicking will reveal the help text.
 
-mine:
-node --version
-v0.10.28
+### New Schema
+To create a new schema, click **New Schema** and fill in the fields.
 
-npm --version
-1.4.9
+The namespace of the schema will be used as the graph name within the SPARQL store. It must end with a "#" or "/" character.
 
-mkdir ~/home/SE
-cd SE
-git clone git@zazuko.plan.io:zazuko-ontology-editor.git
+### Current Graph
+This field will show the graph name/namespace of the schema currently being edited. The drop-down list to the right of the text field will show a list of other graphs available in the store. If you wish to edit one of these, select it.
 
-cd zazuko-ontology-editor
-chmod 755 bin/*
+### Current Resource
+This field will show the resource currently being edited, typically a term (class or property) in the current schema. You can select a different resource using the drop-down list or by clicking on a link to the required class/property in the left-hand column.
 
-npm install
+### Classes/Properties Lists (left column)
+These are the instances of **rdfs:Class** and **rdf:Property** in the current graph. Clicking on any of these will bring them into focus in the editor.
 
-npm start
+### Edit Term
+When a class or property has been selected its details will be loaded into the fields here.
 
-*note* if server is already running, will get an error.
-Can use :
-netstat -nlp | grep 8888
-(or grep node, but take care...)
-and kill the result.
+Fields with a purple border are for resources. Their values may be set in any of three ways:
 
-Finally:
-point browser at localhost:8888
+* name - e.g. *Cat* - this will be interpreted as being in the current graph/namespace
+* namespace:name (CURIE) - e.g. *foaf:name* - if the prefix is one of the well-know values loaded in the store (or that of the current schema), it will be interpreted as being in the corresponding well-know namespace
+* full URI - e.g. *http://xmlns.com/foaf/0.1/*
 
-there is an npm stop as well, but it's a little brutal, use at your own risk :)
+To the right of the editable fields are two kinds of buttons:
+
+* __+__ - clicking on one of these will add an extra field for the same property
+* __lang__ or e.g. __en__ - these display the language associate with the literal field (__lang__ indicates no value has been set). Clicking on one of these will launch the **Choose Language** dialog
+
+#### Choose Language dialog
+
+On the left you will see a list of currently available language tags. Selecting one of these and clicking **Set Language** will associate the tag with the literal field.
+If you don't see a language with which you wish to tag the literal field, you may enter its tag in the **Add Language** field and clicking the **Add Language** button will add it to the list. Select it and click **Set Language** to associate the tag with the literal field.
+
+Clicking the **Update** button will push your changes to the SPARQL store.
+
+*__Warning:__ if you are editing a pre-existing schema that has been uploaded to the store, any properties not seen in the editor will be wiped (Update initially wipes all properties before adding those in the fields)*
+
+### New Class/New Property
+To add a new class or property to the current schema, enter its name in the appropriate edit field and click **Create**. The term will be initialised in the store and you will be presented with the editing facilities for the term as described above.
+
+### Upload RDF
+To edit an existing schema, **first** enter its namespace/graph name in the corresponding field, then click **Choose File** and navigate to the required file.
+Currently only Turtle format files are supported.
+
+### Export Turtle
+Clicking on this button will reveal a Turtle representation of the current schema. You can save this by right-clicking and selecting **Save As...** (or whatever corresponds to that in your browser).
+The schema will remain in the store for future editing.
+
+### Endpoint Settings
+To address a different SPARQL store, enter its details here.
+
+### Run Tests
+Unit tests may be run by clicking on this link.
+
 
 ----
+
+*editing the following 2015-11-27*
+
 ## Implementation Notes
 
 ### Overall Layout/Design
