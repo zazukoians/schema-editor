@@ -109,6 +109,8 @@ This field will show the graph name/namespace of the schema currently being edit
 ### Current Resource
 This field will show the resource currently being edited, typically a term (class or property) in the current schema. You can select a different resource using the drop-down list or by clicking on a link to the required class/property in the left-hand column.
 
+Clicking on **Delete** will remove the current resource from the schema (all triples with this resource as subject).
+
 ### Classes/Properties Lists (left column)
 These are the instances of **rdfs:Class** and **rdf:Property** in the current graph. Clicking on any of these will bring them into focus in the editor.
 

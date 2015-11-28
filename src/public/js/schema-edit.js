@@ -511,6 +511,21 @@ var SchemaEdit = (function () {
         },
         */
 
+        /* removed from endpoints dialog
+        ,
+        buttons: {
+            "Clear": function () {
+                $("#endpoints input").val("");
+            },
+            "Update": function () {
+                Config.setQueryEndpoint($("#queryEndpoint").val());
+                Config.setUpdateEndpoint($("#updateEndpoint").val());
+                $(this).dialog("close");
+                window.location.reload();
+            }
+        }
+        */
+
         endpointsDialog: function () {
             // button on the main form
             $("#endpointButton").click(function () {
@@ -521,18 +536,7 @@ var SchemaEdit = (function () {
 
             var dialog = function () {
                 $("#endpoints").dialog({
-                    width: 800,
-                    buttons: {
-                        "Clear": function () {
-                            $("#endpoints input").val("");
-                        },
-                        "Update": function () {
-                            Config.setQueryEndpoint($("#queryEndpoint").val());
-                            Config.setUpdateEndpoint($("#updateEndpoint").val());
-                            $(this).dialog("close");
-                            window.location.reload();
-                        }
-                    }
+                    width: 800
                 });
             }
 
