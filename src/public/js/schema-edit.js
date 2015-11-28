@@ -122,11 +122,11 @@ var SchemaEdit = (function () {
                         Config.setGraphURI(newGraph);
                         //  var split = window.location.href.split("?");
 
-                        var graph = SEUtils.parameterFromLocation("graph");
-                        graph = SEUtils.encodeHash(graph);
-                        var uri = Config.getGraphURI();
-                        uri = SEUtils.encodeHash(uri);
-                        window.location.href = getBase(window.location.href) + "?graph=" + graph + "&uri=" + uri;
+                      //  var graph = SEUtils.parameterFromLocation("graph");
+                        // graph = SEUtils.encodeHash(graph);
+                        var graph = SEUtils.encodeHash(newGraph);
+
+                        window.location.href = getBase(window.location.href) + "?graph=" + graph + "&uri=" + graph;
 
                         // the above can sometimes leave you far down the page, so scroll up
                         $("html, body").animate({
@@ -139,6 +139,7 @@ var SchemaEdit = (function () {
                 if(!(graph.substring(graph.length - 1)) && !graph.endsWith("#")) {
                     graph = graph + "#";
                 }
+                console.log("newGraph = "+graph);
                 $("#graph").val(graph);
             };
             SparqlConnector.listGraphs(populateChooser);
@@ -1059,7 +1060,7 @@ var SchemaEdit = (function () {
 
         generateGetUrl: function (sparqlTemplate, map) {
             var sparql = sparqlTemplater(sparqlTemplate, map);
-            console.log("SPARQL = \n" + sparql);
+            //console.log("SPARQL = \n" + sparql);
             return Config.getQueryEndpoint() + "?query=" + encodeURIComponent(sparql) + "&output=xml";
         },
 
