@@ -501,6 +501,7 @@ var SchemaEdit = (function () {
             SparqlConnector.postData(updateTermSparql, callback);
         },
 
+/*
         makeAdvancedButton: function () {
             $("#advancedButton").click(
                 function () {
@@ -508,6 +509,7 @@ var SchemaEdit = (function () {
                 }
             );
         },
+        */
 
         endpointsDialog: function () {
             // button on the main form

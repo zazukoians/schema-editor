@@ -64,9 +64,15 @@ will set Fuseki and the mini HTTP server running.
 
 will stop Fuseki & the HTTP server.
 
-*Warning: npm stop is a little brutal,
+*Warning: npm stop is rough & ready, it's unlikely but possible that it might kill other processes*
 
-When you first open the Schema Editor page, you will be presented with a dialog, **Endpoint Settings**. You should enter the appropriate values for the SPARQL store you wish to address.
+If you now point a browser at:
+
+    http://localhost:8888/
+
+You should see the Schema Editor.
+
+When you first see this, you will be presented with a dialog, **Endpoint Settings**. You should enter the appropriate values for the SPARQL store you wish to address.
 
 If you've installed Fuseki as above, the required values will be:
 
@@ -74,6 +80,7 @@ If you've installed Fuseki as above, the required values will be:
     http://localhost:3333/schema-edit/update
 
 On a remote server, replace *localhost* with the domain name or IP address of that server.
+
 
 ### Uploading Prefixes Map
 
@@ -132,7 +139,7 @@ Clicking the **Update** button will push your changes to the SPARQL store.
 To add a new class or property to the current schema, enter its name in the appropriate edit field and click **Create**. The term will be initialised in the store and you will be presented with the editing facilities for the term as described above.
 
 ### Upload RDF
-To edit an existing schema, **first** enter its namespace/graph name in the corresponding field, then click **Choose File** and navigate to the required file.
+To edit an existing schema, **first** enter its namespace/graph name in the corresponding field, then click **Choose File** and navigate to the required file. There may be a few seconds delay when uploading larger schemas (e.g. schema.org), please be patient.
 Currently only Turtle format files are supported.
 
 ### Export Turtle
