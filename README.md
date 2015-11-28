@@ -157,3 +157,4 @@ Unit tests may be run by clicking on this link.
 **TODO**
 * check rendering of this at github
 * add notes about separate scripts
+* write up how it works, how to extend etc.
