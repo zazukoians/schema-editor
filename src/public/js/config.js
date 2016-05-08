@@ -18,8 +18,8 @@ var Config = (function () {
             queryPath: "/schema-edit/sparql",
             updatePath: "/schema-edit/update",
 */
-            queryEndpoint: "http://localhost:3333/schema-edit/sparql",
-            updateEndpoint: "http://localhost:3333/schema-edit/update",
+            queryEndpoint: "http://localhost:3030/schema-edit/sparql",
+            updateEndpoint: "http://localhost:3030/schema-edit/update",
 
             currentResource: "",
             graphURI: ""
