@@ -158,3 +158,5 @@ Unit tests may be run by clicking on this link.
 * check rendering of this at github
 * add notes about separate scripts
 * write up how it works, how to extend etc.
+
+[Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0) (c) [Zazuko](http://www.zazuko.com/) 2015, 2016 
